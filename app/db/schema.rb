@@ -11,19 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131204045935) do
+ActiveRecord::Schema.define(version: 20131204061446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "tracks", force: true do |t|
-    t.string   "tite"
     t.string   "artist"
+    t.string   "title"
     t.string   "profile_url"
     t.string   "page_url"
-    t.decimal  "elapsed"
-    t.string   "duration"
-    t.integer  "timestamp"
+    t.decimal  "duration"
+    t.decimal  "timestamp"
+    t.string   "timeformat"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
