@@ -1,0 +1,36 @@
+{
+    "browser_action": {
+	"default_icon": "icon-toolbar.png",
+	"default_title": "SoundByte"
+	/*, can't have both onclick browser action w/ popup
+	"default_popup": "popup.html"
+	*/
+    },
+    "background": {
+	"persistence": false,
+	"scripts": [ "bg.js" ]
+    },
+/*
+  //we will inject via bg.js onclick
+    "content_scripts": [ {
+	"js": [ "content.js" ],
+	"matches": [ "*://*.soundcloud.com/*", 
+		     "*://*.youtube.com/*",
+		     "*://*.mixcloud.com/*",
+		     "*://*.8tracks.com/*",
+		     "*://*.grooveshark.com/*",
+		     "*://*.spotify.com/*"]
+    } ],
+*/
+    "manifest_version": 2,
+    "name": "SoundByte",
+    "description": "SoundByte for Chrome",
+    "homepage_url": "http://www.SoundByte.com",
+    "version": "0.1",
+    "permissions": [ "tabs", "*://*/*" ],
+    "icons": {
+	"16": "icon-16.png",
+	"48": "icon-48.png",
+	"128": "icon-128.png"
+    }
+}
