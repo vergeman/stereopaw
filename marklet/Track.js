@@ -20,15 +20,16 @@ SB.Track = (function() {
 
     track.set = function(artist, title, profile_url, duration, timestamp, timeformat, page_url) {
 
-	_title = title
 	_artist = artist
+	_title = title
 	_profile_url = profile_url
-	_duration = duration
-	_timestamp = timestamp
+	_duration = duration	//length of song/mix
+	_timestamp = timestamp  //raw time ex: 12312310 (ms)
+	_timeformat = timeformat  //time of submission ex: 1:12
 	_page_url = page_url
 
-	_timeformat = timeformat
-	_elapsed = timestamp / duration
+	_elapsed = timestamp / duration //% of track elapsed
+
 	/*might want to add some img urls, etc*/
     };
 
