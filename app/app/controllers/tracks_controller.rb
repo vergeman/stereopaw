@@ -9,6 +9,21 @@ class TracksController < ApplicationController
   end
 
 
+  def create
+    @track = Track.new(new_params)
+    if @track.save
+      flash[:success] = "Success"
+      redirect_to @track
+    else
+      render 'new'
+    end
+  end
+
+
+  def show
+    @track = Track.find_by_id(params[:id])
+  end
+
 #strong params
 private
   def new_params

@@ -21,4 +21,11 @@ class Track < ActiveRecord::Base
   validates :profile_url, :page_url, url: true #/validators/UrlValidator
   validates :duration, :timestamp, numericality: true
   validates_format_of :timeformat, :with => /\A([^0:\D][0-9]*:)?([1-5]?[0-9]:)([0-5][0-9])\Z/
+
+  after_initialize :default_values
+
+  def default_values
+    self.timestamp ||= 0
+    self.duration ||= 0
+  end
 end

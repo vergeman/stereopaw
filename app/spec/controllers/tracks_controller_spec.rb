@@ -43,12 +43,25 @@ describe TracksController do
   end
 
 
+  describe "GET #show" do
 
-  pending "GET #create"
-  pending "GET #show"
+    before do
+      @track = FactoryGirl.create(:track)
+    end
+
+    it "responds successfully with an HTTP 302 redirect code" do
+
+      get :show, id: @track
+      expect(response.status).to eq(200)
+    end
+
+    it "renders the appropriate track page" do 
+      get :show, id: @track
+      response.should render_template(:show)
+    end
+  end
 
   pending "GET #edit  [:id]"
-
   pending "PATCH/PUT #update [:id]"
   pending "DELETE #destroy"
 
