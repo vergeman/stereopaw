@@ -13,7 +13,7 @@ SB.Util = (function() {
     {
 	if (hours < 1)
 	{
-	    return prezero(min) + ":" + prezero(sec)
+	    return min + ":" + prezero(sec)
 	}
 
 	return hours + ":" + prezero(min) + ":" + prezero(sec)

@@ -15,6 +15,8 @@
 #
 
 class Track < ActiveRecord::Base
+  attr_accessor :timeformat_optional
+
   validates :artist, :title, :page_url, :profile_url, presence: true
   validates :profile_url, :page_url, url: true #/validators/UrlValidator
   validates :duration, :timestamp, numericality: true

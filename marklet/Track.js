@@ -3,7 +3,7 @@
  * contains information to be marked
  */
 SB.Track = (function() {
-    _url = "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/Track/new";
+    _url = "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/tracks/new";
 
     var track = {};
     _title = '', 
@@ -35,12 +35,18 @@ SB.Track = (function() {
 
     track.getURL = function() {
 	return _url + "?" 
-	    + "u=" + encodeURIComponent(_page_url) + "&"
-	    + "ts=" + encodeURIComponent(this.getTimeFormat()) + "&"
-	    + "t=" + encodeURIComponent(_title) + "&"
-	    + "a=" + encodeURIComponent(_artist) + "&"
-	    + "st=" + encodeURIComponent(_subtrack) + "&"
-	    + "sa=" + encodeURIComponent(_subartist);
+	    + "track[artist]=" + encodeURIComponent(_artist) + "&"
+	    + "track[title]=" + encodeURIComponent(_title) + "&"
+	    + "track[page_url]=" + encodeURIComponent(_page_url) + "&"
+	    + "track[profile_url]=" + encodeURIComponent(_profile_url) +"&"
+	    + "track[timeformat]=" + encodeURIComponent(this.getTimeFormat()) + "&"
+	    + "track[timestamp]=" + encodeURIComponent(_timestamp) +"&"
+	    + "track[duration]=" + encodeURIComponent(_duration) +"&"
+
+//not sure about these
+	    + "track[subtrack]=" + encodeURIComponent(_subtrack) + "&"
+	    + "track[subartist]=" + encodeURIComponent(_subartist);
+	
     }
 
     track.getTitle = function() {

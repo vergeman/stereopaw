@@ -1,1 +1,25 @@
 %h1 Tracks#new
+
+= form_for @track do |f|
+  = f.label :artist
+  = f.text_field :artist
+
+  = f.label :title
+  = f.text_field :title
+
+  = f.label :page_url
+  = f.text_field :page_url
+
+  = f.label :profile_url
+  = f.text_field :profile_url
+
+  = f.label :timeformat
+  = f.text_field :timeformat
+
+  = f.label :timeformat_optional
+  = f.check_box :timeformat_optional
+
+  = f.hidden_field :timestamp
+  = f.hidden_field :duration
+
+  = f.submit :id => 'track_submit'
