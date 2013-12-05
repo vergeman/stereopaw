@@ -116,6 +116,88 @@ describe Track do
       end
     end
 
+    #  duration    :decimal(, )
+    #  timestamp   :decimal(, )
+
+    context "duration / timestamp format" do
+      it "has a valid numerical duration value [3434 or 343.343]" do
+        @track.duration = "sdkfj"
+        @track.should_not be_valid
+      end
+
+      it "duration only accepts numeric values" do
+        @track.duration = "342.34"
+        @track.should be_valid
+      end
+
+      it "has a valid timestamp value [12312312 or 123123.01]" do
+        @track.timestamp = "nzln"
+        @track.should_not be_valid
+      end
+
+      it "timestamp only accepts numeric values" do
+        @track.timestamp = "123"
+        @track.should be_valid
+      end
+
+    end
+
+    #  timeformat  :string(255)
+    #valid ex [0:23, 1:23, 59:59, 100:12:32]
+    context "timeformat validations" do
+      it "21242 integer is not a valid format" do
+        @track.timeformat = "212412"
+        @track.should_not be_valid
+      end
+
+      it "has a valid timeformat [0:42]" do
+        @track.timeformat = "0:42"
+        @track.should be_valid
+      end
+
+      it "[:42] does not have a leading colon" do
+        @track.timeformat = ":23"
+        @track.should_not be_valid
+      end
+
+      it "has a valid timeformat [3:23], [1:23:12]" do
+        @track.timeformat = "3:42"
+        @track.should be_valid
+      end
+
+      it "has a valid timeformat [1:23:12]" do
+        @track.timeformat = "1:23:45"
+        @track.should be_valid
+      end
+
+      it "has a valid timeformat [71:23:45]" do
+        @track.timeformat = "71:23:45"
+        @track.should be_valid
+      end
+
+      it "has a valid timeformat [1:23:12]" do
+        @track.timeformat = "71:23:45"
+        @track.should be_valid
+      end
+
+      it "timeformat values (min/sec/hr) shoult not be >= 60" do
+        @track.timeformat = "61:60:52"
+        @track.should_not be_valid
+      end
+
+      it "timeformat values shoult contain valid leading characters" do
+        @track.timeformat = ":23:23"
+        @track.should_not be_valid
+      end
+
+      it "timeformat values shoult contain valid characters" do
+        @track.timeformat = "2z4:23:23"
+        @track.should_not be_valid
+      end
+
+    end
+
+
   end
 
 

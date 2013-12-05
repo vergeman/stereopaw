@@ -17,6 +17,6 @@
 class Track < ActiveRecord::Base
   validates :artist, :title, :page_url, :profile_url, presence: true
   validates :profile_url, :page_url, url: true #/validators/UrlValidator
-
-
+  validates :duration, :timestamp, numericality: true
+  validates_format_of :timeformat, :with => /\A([^0:\D][0-9]*:)?([1-5]?[0-9]:)([0-5][0-9])\Z/
 end
