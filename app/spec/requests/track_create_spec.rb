@@ -34,7 +34,7 @@ describe "TrackCreate" do
 
     it "should redirect to the Track/:id" do
       click_button submit
-      t = Track.all.sort_by(&:created_at)
+      t = Track.all.sort_by(&:created_at).last
       current_path.should eq track_path(t)
     end
 

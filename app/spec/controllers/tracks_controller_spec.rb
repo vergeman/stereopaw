@@ -30,14 +30,16 @@ describe TracksController do
 
   describe "GET #index" do
 
-    it "responds successfully with an HTTP 302 redirect code" do
+    pending "user logged in, renders index, else redirect"
+
+    it "responds successfully with an HTTP 200 redirect code" do
       get :index
-      expect(response.status).to eq(302)
+      expect(response.status).to eq(200)
     end
 
-    it "renders the root page" do 
+    it "renders the index page" do 
       get :index
-      response.should redirect_to root_path
+      response.should render_template(:index)
     end
 
   end

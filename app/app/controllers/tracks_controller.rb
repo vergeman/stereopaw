@@ -1,7 +1,7 @@
 class TracksController < ApplicationController
 
   def index
-    redirect_to root_path
+    @tracks = Track.all
   end
 
   def new
