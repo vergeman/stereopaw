@@ -14,6 +14,27 @@ TODO:
 SB.Data = (function() {
     _service = null;
     _track = null;
+
+    /* 
+     * try/catch around data grab
+     * handles only main and one alternate for now
+     */
+    function try_get(f1, f2, def) {
+	try {
+	    return f1();
+	}
+	catch(err) {
+	    try {
+		return f2(); 
+	    }
+	    catch (err2) {
+		return def;
+	    }
+	}
+
+    }
+
+
     _set = {
 
 	/*
@@ -23,17 +44,24 @@ SB.Data = (function() {
 	'mixcloud': function() 
 	{
 	    var mc = {}, mc_time;
-	    try {
-		mc = $("#player-module").data()['controller:player_module'].playerStatus
-		mc_time = mc.audio_position
-	    }
-	    catch(err) {
-		mc.now_playing_audio_length = 0;
-		mc_time = 0;
-	    }
+
+	    mc = try_get(
+		function() { return $("#player-module").data()['controller:player_module'].playerStatus }, 
+		function() { return 0; },
+		{}
+	    )
+
+	    mc_time = try_get(
+		function() { return mc.audio_position},
+		function() { return 0; },
+		0
+	    )
 	    
 	    _track.set(
-		$('#cloudcast-owner-link > span')[0].innerHTML,
+		try_get( function() { return $('#cloudcast-owner-link > span')[0].innerHTML; }, 
+			 function() { return $('#cloudcast-owner-link')[0].innerHTML; },
+			 ''
+		       ),
 		$('#cloudcast-name').html(),
 		"http://www.mixcloud.com" + $('#cloudcast-owner-link').attr("href"),
 		mc.now_playing_audio_length,
