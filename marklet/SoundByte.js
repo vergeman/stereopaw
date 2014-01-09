@@ -7,7 +7,7 @@ console.log("[SoundByte 2.0]");
 
 var SB = (function () {
 
-    self = null,
+    var self = null,
     _interval = null,
     _sbjq = null,
     service = '';

@@ -12,8 +12,8 @@ TODO:
  */
 
 SB.Data = (function() {
-    _service = null;
-    _track = null;
+    var _service = null,
+    _track = null,
     _player = null;
 
     /* 
@@ -36,7 +36,7 @@ SB.Data = (function() {
     }
 
 
-    _set = {
+    var _set = {
 
 	/*
 	 * MIXCLOUD
@@ -122,7 +122,7 @@ SB.Data = (function() {
  * _audiomgr: service specific interface for controlling their player 
  * set the reference to the player in _set
  */
-    _audiomgr = {
+    var _audiomgr = {
 
 	'soundcloud' : {
 
@@ -140,7 +140,7 @@ SB.Data = (function() {
 	'NA' : function() { return "NA" }
     }
 
-    /*public*/
+
     var data = {};
 
     data.setTrack = function(service, track) {

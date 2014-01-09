@@ -5,12 +5,13 @@
 
 SB.Service = (function () {
     var service = {};
-    _services = 
+
+    var _services = 
 	[
 		/^https?:\/\/.*(mixcloud).com/g,
 		/^https?:\/\/.*(soundcloud).com/g
 	],
-    _match = null;
+    _match = null,
     _locale = window.location.origin;
 
     function _find() {

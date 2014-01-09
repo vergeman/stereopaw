@@ -4,7 +4,7 @@
 
 SB.Page = (function() {
 
-	_content =
+	var _content =
 	    '<div id = "sb-close">x</div>' +
 	    '<h1 id = "sb-title">SoundByte</h1>' + 
 	    '<div id = "sb-track">' +        //info
@@ -33,7 +33,7 @@ SB.Page = (function() {
 	    '</div>' + //soundbyte-submit
 	    '</div>'; //player,
 	    
-	_style =
+	var _style =
 	'#sb-app { ' + 
 	    'position: fixed; ' +
 	    'top: 50px; ' +

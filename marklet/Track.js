@@ -6,7 +6,8 @@ SB.Track = (function() {
     _url = "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/tracks/new";
 
     var track = {};
-    _title = '', 
+
+    var _title = '', 
     _artist = '', 
     _profile_url='',
     _duration='',
