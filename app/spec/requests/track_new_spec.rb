@@ -27,6 +27,7 @@ describe "TrackNew" do
       it { should have_field("track_profile_url") }
       it { should have_field("track_timeformat") }
       it { should have_field("track_timeformat_optional") }
+      it { should have_field("track_comment") }
 
       #user testing, so should be inaccesbile to user --hacky
       it { should have_selector("input#track_timestamp") }

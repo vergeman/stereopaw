@@ -12,6 +12,7 @@
 #  timeformat  :string(255)
 #  created_at  :datetime
 #  updated_at  :datetime
+#  comment     :text
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
@@ -25,5 +26,6 @@ FactoryGirl.define do
     timestamp "1232123"
     timeformat "0:30"
     page_url "http://www.mixcloud.com/satoshifumi/satoshi-fumi-mixtape-in-nov-2013/"
+    comment "I am a test comment"
   end
 end

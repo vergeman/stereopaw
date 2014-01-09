@@ -24,6 +24,7 @@ describe "TrackCreate" do
       fill_in "track_profile_url",     with: "http://www.google.com"
       fill_in "track_page_url", with: "http://www.google.com"
       fill_in "track_timeformat", with: "9:42"      
+      fill_in "track_comment", with: "I am a Test comment"
       check "track_timeformat_optional"
     end
 
@@ -38,12 +39,21 @@ describe "TrackCreate" do
       current_path.should eq track_path(t)
     end
 
+    it "should have the fields that were submitted" do
+      click_button submit
+      page.should have_content("DJ User")
+      page.should have_content("iamamtitle")
+      page.should have_content("http://www.google.com")
+      page.should have_content("http://www.google.com")
+      page.should have_content("9:42")
+      page.should have_content("I am a Test comment")
 
-
-
+    end    
 
   end
 
 
 
+
 end
+

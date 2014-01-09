@@ -12,6 +12,7 @@
 #  timeformat  :string(255)
 #  created_at  :datetime
 #  updated_at  :datetime
+#  comment     :text
 #
 
 class Track < ActiveRecord::Base
@@ -21,7 +22,7 @@ class Track < ActiveRecord::Base
   validates :profile_url, :page_url, url: true #/validators/UrlValidator
   validates :duration, :timestamp, numericality: true
   validates_format_of :timeformat, :with => /\A([^0:\D][0-9]*:)?([1-5]?[0-9]:)([0-5][0-9])\Z/
-
+  validates :comment, length: { maximum: 1000 }
   after_initialize :default_values
 
   def default_values

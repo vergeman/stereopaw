@@ -65,6 +65,9 @@ SB.Track = (function() {
 	return _elapsed
     };
 
+    track.getDuration = function() {
+	return _duration
+    }
 
     return track;
 

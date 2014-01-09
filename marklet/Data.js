@@ -14,6 +14,7 @@ TODO:
 SB.Data = (function() {
     _service = null;
     _track = null;
+    _player = null;
 
     /* 
      * try/catch around data grab
@@ -79,8 +80,12 @@ SB.Data = (function() {
 	{
 	    /*distinct vs mobile - need mobile filter*/		
 	    var sc_mgr = require("lib/play-manager")
-	    var sc_md = sc_mgr.getCurrentMetadata()
 
+	    //player
+	    _player = sc_mgr.getCurrentSound()
+
+	    //track meta data
+	    var sc_md = sc_mgr.getCurrentMetadata()
 	    var sc_time = sc_md.sound.audio.currentTime()
 
 	    _track.set
@@ -93,6 +98,7 @@ SB.Data = (function() {
 		SB.Util.toTime(sc_time, "ms"),
 		sc_md.sound.attributes.permalink_url
 	    );
+
 	},
 	'spotify': function() {
 	    
@@ -102,6 +108,7 @@ SB.Data = (function() {
 	'youtube' : function() {},
 	'grooveshark' : function() {},
 	'8tracks' : function() {},
+	'earbits' : function() {},
 	'pandora': function() {},
 	'NA' : function()
 	{
@@ -111,6 +118,27 @@ SB.Data = (function() {
 
     }
 
+/*
+ * _audiomgr: service specific interface for controlling their player 
+ * set the reference to the player in _set
+ */
+    _audiomgr = {
+
+	'soundcloud' : {
+
+	    'seek' : function(percentage) {
+		_player.seek( percentage * _track.getDuration() );
+	    },
+	    'pause' : function() {
+
+	    },
+	    'play' : function() {
+
+	    }
+
+	},
+	'NA' : function() { return "NA" }
+    }
 
     /*public*/
     var data = {};
@@ -119,6 +147,11 @@ SB.Data = (function() {
 	_service = service;
 	_track = track;
 	_set[_service]()
+    }
+
+    /*want to separate service & player */
+    data.seek = function(percentage) {
+	_audiomgr[_service]['seek'](percentage);
     }
 
     return data;

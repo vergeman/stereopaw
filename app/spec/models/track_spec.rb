@@ -12,6 +12,7 @@
 #  timeformat  :string(255)
 #  created_at  :datetime
 #  updated_at  :datetime
+#  comment     :text
 #
 
 require 'spec_helper'
@@ -27,32 +28,35 @@ describe Track do
     end
     
     it "has the title attr" do
-      @track.attributes.has_key?("title")
+      @track.attributes.has_key?("title").should eq true
     end
 
     it "has the artist attr" do
-      @track.attributes.has_key?("artist")
+      @track.attributes.has_key?("artist").should eq true
     end
 
     it "has the profile_url attr" do
-      @track.attributes.has_key?("profile_url")
+      @track.attributes.has_key?("profile_url").should eq true
     end
     it "has the duration attr" do
-      @track.attributes.has_key?("duration")
+      @track.attributes.has_key?("duration").should eq true
     end
 
     it "has the timestamp attr" do
-      @track.attributes.has_key?("timestamp")
+      @track.attributes.has_key?("timestamp").should eq true
     end
 
     it "has the timeformat attr" do
-      @track.attributes.has_key?("timeformat")
+      @track.attributes.has_key?("timeformat").should eq true
     end
 
     it "has the page_url attr" do
-      @track.attributes.has_key?("page_url")
+      @track.attributes.has_key?("page_url").should eq true
     end
 
+    it "has the comment attr" do
+      @track.attributes.has_key?("comment").should eq true
+    end
 
   end
 
@@ -66,6 +70,16 @@ describe Track do
         @track.should be_valid
       end
     end
+
+
+    #COMMENT
+    context "Comment Validation" do
+      it "cannot be longer than 1000 characters" do
+        @track.comment = "a" * 1001
+        @track.should_not be_valid
+      end
+    end
+
 
     #PRESENCE
     context "Presence Validations" do

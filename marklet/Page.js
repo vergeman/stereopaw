@@ -20,6 +20,7 @@ SB.Page = (function() {
 
 	    '<div id = "sb-display-bar">' + //graphic bar, seektime
 	    '<div id = "sb-display-bar-elapsed"></div>' +
+	    '<div id = "sb-display-seek"></div>' +
 	    '</div>' + 
 
 	    '<div id = "sb-player-play">></div>' +
@@ -50,6 +51,7 @@ SB.Page = (function() {
 
 	'#sb-display-bar { ' +
 	    'width: 100%;' +
+	    'cursor: pointer;' + 
 	    'height: 10px;' + 
 	    'background-color: #000;' +
 	    '}' +
@@ -58,6 +60,15 @@ SB.Page = (function() {
 	    'width: 0%;' +
 	    'height: 8px;' +
 	    'background-color: #aaa' +
+	'}' +
+
+	'#sb-display-seek { ' +
+	    'position:relative;' +
+	    'top: -8px;' +
+	    'width: 2px;' +
+	    'height: 10px;' +
+	    'background-color: #eee111;' +
+	    'display:none;' +	
 	'}';
 
     function build_element(element, content) {

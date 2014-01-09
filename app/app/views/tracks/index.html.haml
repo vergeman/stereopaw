@@ -1,6 +1,6 @@
 %h1 Track#Index
 
 .tracks
-  - @tracks.each do |track|
+  - @tracks.reverse.each do |track|
     %p
       = render :partial => "data", :locals => {:track => track}

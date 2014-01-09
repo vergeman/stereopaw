@@ -70,7 +70,8 @@ var SB = (function () {
 
 		clearInterval(self._interval)
 
-		$('sb-close').unbind('click')
+		$('#sb-submit-button').unbind('click');
+		$('#sb-close').unbind('click')
 
 		$('#sb-script').remove();
 		$('#sb-style').remove();
@@ -84,12 +85,40 @@ var SB = (function () {
 		 e.preventDefault();
 		 window.open(self.Track.getURL(), 'SoundByte', 'top=0,left=0,width=600, height=500');
 		 console.log("clicked")
+		 $('#sb-close').click();
+		 console.log("closing")
 	     });
 
 	    /*player controls*/
 	    //pause/play
 	    //seek
+	    $('#sb-display-bar').mouseover(function(e) {
+		$('#sb-display-seek').show();
+	    });
 
+	    $('#sb-display-bar').mouseout(function(e) {
+		$('#sb-display-seek').hide();
+	    });
+
+
+	    $('#sb-display-bar').mousemove(function(e) {
+
+		var offset = $(this).parent().offset();
+		var x = e.pageX - offset.left;
+		//var y = e.pageY - offset.top;
+
+		$('#sb-display-seek').css("left", x + "px");
+	    });
+
+	    //track seek - serviceplayer unique
+	    $('#sb-display-bar').click(function(e) {
+		console.log("seek");
+
+		var offset = $(this).parent().offset();
+		var x = e.pageX - offset.left;
+
+		self.Data.seek( x / $('#sb-display-bar').width() )
+	    });
 	  
 	},
 
@@ -103,6 +132,7 @@ var SB = (function () {
 		self.Data.setTrack(self.service, self.Track)
 
 		//need error handling on empty track (not started plaing, etc)
+
 
 		self.render()		
 	    }, 300)

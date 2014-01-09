@@ -1,3 +1,5 @@
+require 'net/http'
+
 class TracksController < ApplicationController
 
   def index
@@ -27,7 +29,7 @@ class TracksController < ApplicationController
 #strong params
 private
   def new_params
-    params.require(:track).permit(:artist, :title, :page_url, :profile_url, :timeformat, :timestamp, :duration) if params[:track]
+    params.require(:track).permit(:artist, :title, :page_url, :profile_url, :timeformat, :timestamp, :duration, :comment) if params[:track]
   end
 
 end
