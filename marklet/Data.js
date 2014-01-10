@@ -90,6 +90,7 @@ SB.Data = (function() {
 
 	    _track.set
 	    (
+		sc_md.sound.attributes.id,
 		sc_md.sound.attributes.user.username,
 		sc_md.sound.attributes.title,
 		sc_md.sound.attributes.user.permalink_url,
@@ -98,6 +99,7 @@ SB.Data = (function() {
 		SB.Util.toTime(sc_time, "ms"),
 		sc_md.sound.attributes.permalink_url
 	    );
+
 
 	},
 	'spotify': function() {
@@ -140,9 +142,10 @@ SB.Data = (function() {
 	'NA' : function() { return "NA" }
     }
 
-
+    
     var data = {};
 
+    //called in SoundByte.js
     data.setTrack = function(service, track) {
 	_service = service;
 	_track = track;

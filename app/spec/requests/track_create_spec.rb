@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "TrackCreate" do
 
   before { visit new_track_path }
+
   let (:submit) { "Create Track" }
   
   describe  "with invalid info" do

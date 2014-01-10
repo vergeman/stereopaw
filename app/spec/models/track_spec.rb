@@ -13,6 +13,7 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  comment     :text
+#  track_id    :string(255)
 #
 
 require 'spec_helper'
@@ -26,7 +27,11 @@ describe Track do
     before(:each) do
       @track = Track.new()
     end
-    
+
+    it "has the track_id attr" do
+      @track.attributes.has_key?("track_id").should eq true
+    end
+
     it "has the title attr" do
       @track.attributes.has_key?("title").should eq true
     end

@@ -10,6 +10,7 @@ describe "TrackNew" do
     before { visit new_track_path({
                                     :track => 
                                     {
+                                      :track_id => "123",
                                       :artist => "Artist",
                                       :title => "Title",
                                       :page_url => "mypageurl",
@@ -32,12 +33,15 @@ describe "TrackNew" do
       #user testing, so should be inaccesbile to user --hacky
       it { should have_selector("input#track_timestamp") }
       it { should have_selector("input#track_duration" ) }
+      it { should have_selector("input#track_track_id") }
 
       it { should have_selector("input#track_submit[type=submit]") }
     end
 
 
     describe "with form_fields populated by new_params" do
+
+      it { should have_selector("input#track_track_id[value=\"123\"]") }
 
       it { should have_selector("input#track_artist[value=\"Artist\"]") }
       it { should have_selector("input#track_title[value=\"Title\"]") }

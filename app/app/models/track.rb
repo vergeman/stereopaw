@@ -13,6 +13,7 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  comment     :text
+#  track_id    :string(255)
 #
 
 class Track < ActiveRecord::Base

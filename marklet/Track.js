@@ -8,6 +8,7 @@ SB.Track = (function() {
     var track = {};
 
     var _title = '', 
+    _track_id = '', //service dependent
     _artist = '', 
     _profile_url='',
     _duration='',
@@ -19,8 +20,9 @@ SB.Track = (function() {
     _elapsed='';
 
 
-    track.set = function(artist, title, profile_url, duration, timestamp, timeformat, page_url) {
+    track.set = function(track_id, artist, title, profile_url, duration, timestamp, timeformat, page_url) {
 
+	_track_id = track_id
 	_artist = artist
 	_title = title
 	_profile_url = profile_url
@@ -36,6 +38,7 @@ SB.Track = (function() {
 
     track.getURL = function() {
 	return _url + "?" 
+	    + "track[track_id]=" + encodeURIComponent(_track_id) + "&"
 	    + "track[artist]=" + encodeURIComponent(_artist) + "&"
 	    + "track[title]=" + encodeURIComponent(_title) + "&"
 	    + "track[page_url]=" + encodeURIComponent(_page_url) + "&"
