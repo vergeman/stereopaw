@@ -16,6 +16,7 @@ describe "TrackNew" do
                                       :page_url => "mypageurl",
                                       :profile_url => "profileurl",
                                       :timeformat => "1:23",
+                                      :shareable => "true"
                                     }
                                   }
                                     )}
@@ -31,6 +32,7 @@ describe "TrackNew" do
       it { should have_field("track_comment") }
 
       #user testing, so should be inaccesbile to user --hacky
+      it { should have_selector("input#track_shareable") }
       it { should have_selector("input#track_timestamp") }
       it { should have_selector("input#track_duration" ) }
       it { should have_selector("input#track_track_id") }
@@ -41,6 +43,7 @@ describe "TrackNew" do
 
     describe "with form_fields populated by new_params" do
 
+      it { should have_selector("input#track_shareable[value=\"true\"]") }
       it { should have_selector("input#track_track_id[value=\"123\"]") }
 
       it { should have_selector("input#track_artist[value=\"Artist\"]") }

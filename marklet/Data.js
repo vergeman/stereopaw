@@ -97,9 +97,9 @@ SB.Data = (function() {
 		sc_md.sound.attributes.duration,
 		sc_time,
 		SB.Util.toTime(sc_time, "ms"),
-		sc_md.sound.attributes.permalink_url
+		sc_md.sound.attributes.permalink_url,
+		(sc_md.sound.attributes.sharing == "public" ? true : false)
 	    );
-
 
 	},
 	'spotify': function() {
@@ -158,4 +158,5 @@ SB.Data = (function() {
     }
 
     return data;
+
 }());

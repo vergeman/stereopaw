@@ -155,6 +155,7 @@ var SB = (function () {
 	    /*render elapsed time bar*/
 	    document.getElementById('sb-display-bar-elapsed').setAttribute('style', 'width: ' + self.Track.getElapsed() * 100 + '%;');
 
+
 	}
 
     };

@@ -63,6 +63,10 @@ describe Track do
       @track.attributes.has_key?("comment").should eq true
     end
 
+    it "has the shareable attr" do
+      @track.attributes.has_key?("shareable").should eq true
+    end
+
   end
 
   describe "Track Validations" do
@@ -106,6 +110,11 @@ describe Track do
 
       it "cannot have a blank artist" do
         @track.artist = nil
+        @track.should_not be_valid        
+      end
+
+      it "cannot have a blank shareable" do
+        @track.shareable = nil
         @track.should_not be_valid        
       end
 

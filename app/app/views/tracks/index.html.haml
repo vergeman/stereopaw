@@ -2,5 +2,5 @@
 
 .tracks
   - @tracks.reverse.each do |track|
-    %p
-      = render :partial => "data", :locals => {:track => track}
+    = render :partial => "data", :locals => {:track => track}
+    %br

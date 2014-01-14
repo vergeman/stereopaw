@@ -20,12 +20,16 @@ describe "TrackCreate" do
   describe "valid info test" do
 
     before do
-      fill_in "Artist",         with: "DJ User"
-      fill_in "Title",        with: "iamamtitle"
+      fill_in "track_artist",         with: "DJ User"
+      fill_in "track_title",        with: "iamamtitle"
       fill_in "track_profile_url",     with: "http://www.google.com"
       fill_in "track_page_url", with: "http://www.google.com"
       fill_in "track_timeformat", with: "9:42"      
       fill_in "track_comment", with: "I am a Test comment"
+
+      #hidden, but requried for validation
+      find(:xpath, "//input[@id='track_shareable']").set "true"
+
       check "track_timeformat_optional"
     end
 
