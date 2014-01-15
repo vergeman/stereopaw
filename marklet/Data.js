@@ -164,11 +164,37 @@ SB.Data = (function() {
 	    );
 
 	},
+	'spotify': function() 
+	{
+
+	    /*not sure if it's always window.frames[1] - will have to do a check */
+	    
+	    var duration = SB.Util.TimetoMs(window.frames[1].document.getElementById('track-length').innerHTML);
+
+	    var time = SB.Util.TimetoMs(window.frames[1].document.getElementById('track-current').innerHTML);
+
+	    //convert track-length/track-current to ms
+	    _track.set
+	    (
+		window.frames[1].document.getElementById('track-name').children[0].href.match(/track\/(.*)/)[1],
+		window.frames[1].document.getElementById('track-artist').children[0].text,
+		window.frames[1].document.getElementById('track-name').children[0].text,
+		window.frames[1].document.getElementById('track-artist').children[0].href,
+		duration,
+		time,
+		window.frames[1].document.getElementById('track-current').innerHTML,
+		window.frames[1].document.getElementById('track-name').children[0].href,
+		true,
+		"spotify"
+	    )
+
+
+
+	},
 	'grooveshark' : function() {},
 	'8tracks' : function() {},
 	'earbits' : function() {},
 	'pandora': function() {},
-	'spotify': function() {},
 	'NA' : function()
 	{
 	    return "NA"

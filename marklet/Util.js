@@ -19,6 +19,12 @@ SB.Util = (function() {
 	return hours + ":" + prezero(min) + ":" + prezero(sec)
     }
 
+    util.TimetoMs = function(timestring) {
+	min = timestring.split(":")[0];
+	sec = timestring.split(":")[1];
+
+	return (min * 60 * 1000) + (sec * 1000)
+    }
 
     /*toTime - returns formatted time from ms or secs*/
     util.toTime = function(secs, scale)

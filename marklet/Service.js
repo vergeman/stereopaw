@@ -10,7 +10,8 @@ SB.Service = (function () {
 	[
 		/^https?:\/\/.*(mixcloud).com/g,
 		/^https?:\/\/.*(soundcloud).com/g,
-		/^https?:\/\/.*(youtube).com/g,	    
+		/^https?:\/\/.*(youtube).com/g,
+		/^https?:\/\/.*(spotify).com/g,
 	],
     _match = null,
     _locale = window.location.origin;

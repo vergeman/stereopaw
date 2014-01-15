@@ -3,6 +3,6 @@
 #player
 
 .tracks
-  - @tracks.reverse.each do |track|
+  - @tracks.order('created_at DESC').each do |track|
     = render :partial => "data", :locals => {:track => track}
     %br
