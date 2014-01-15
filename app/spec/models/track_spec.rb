@@ -14,6 +14,8 @@
 #  updated_at  :datetime
 #  comment     :text
 #  track_id    :string(255)
+#  shareable   :boolean
+#  service     :string(255)
 #
 
 require 'spec_helper'
@@ -67,6 +69,10 @@ describe Track do
       @track.attributes.has_key?("shareable").should eq true
     end
 
+    it "has the service attr" do
+      @track.attributes.has_key?("service").should eq true
+    end
+
   end
 
   describe "Track Validations" do
@@ -117,6 +123,12 @@ describe Track do
         @track.shareable = nil
         @track.should_not be_valid        
       end
+
+      it "cannot have a blank service" do
+        @track.service = nil
+        @track.should_not be_valid        
+      end
+
 
     end
 

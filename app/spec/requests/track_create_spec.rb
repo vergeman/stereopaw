@@ -29,6 +29,7 @@ describe "TrackCreate" do
 
       #hidden, but requried for validation
       find(:xpath, "//input[@id='track_shareable']").set "true"
+      find(:xpath, "//input[@id='track_service']").set "youtube"
 
       check "track_timeformat_optional"
     end
@@ -52,7 +53,6 @@ describe "TrackCreate" do
       page.should have_content("http://www.google.com")
       page.should have_content("9:42")
       page.should have_content("I am a Test comment")
-
     end    
 
   end

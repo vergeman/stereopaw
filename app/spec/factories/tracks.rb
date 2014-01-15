@@ -15,6 +15,7 @@
 #  comment     :text
 #  track_id    :string(255)
 #  shareable   :boolean
+#  service     :string(255)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
@@ -30,5 +31,6 @@ FactoryGirl.define do
     page_url "http://www.mixcloud.com/satoshifumi/satoshi-fumi-mixtape-in-nov-2013/"
     comment "I am a test comment"
     shareable "true"
+    service "youtube"
   end
 end

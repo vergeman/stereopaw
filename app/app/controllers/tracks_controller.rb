@@ -29,7 +29,17 @@ class TracksController < ApplicationController
 #strong params
 private
   def new_params
-    params.require(:track).permit(:track_id, :artist, :title, :page_url, :profile_url, :timeformat, :timestamp, :duration, :comment, :shareable) if params[:track]
+    params.require(:track).permit(:track_id, 
+                                  :artist, 
+                                  :title, 
+                                  :page_url, 
+                                  :profile_url, 
+                                  :timeformat, 
+                                  :timestamp, 
+                                  :duration, 
+                                  :comment, 
+                                  :shareable,
+                                  :service) if params[:track]
   end
 
 end

@@ -98,20 +98,77 @@ SB.Data = (function() {
 		sc_time,
 		SB.Util.toTime(sc_time, "ms"),
 		sc_md.sound.attributes.permalink_url,
-		(sc_md.sound.attributes.sharing == "public" ? true : false)
+		(sc_md.sound.attributes.sharing == "public" ? true : false),
+		_service
 	    );
 
 	},
-	'spotify': function() {
-	    
+	'youtube' : function() {
+	    if(_player == null) {
+		_player = document.getElementById("movie_player");
+	    }
 
+	    var yt_artist = try_get
+	    (
+		function() { return document.getElementsByClassName('metadata-info-title')[1].nextSibling.nextSibling.innerHTML},
+		function() { return "" },
+		""
+	    )
+
+
+	    var yt_title = try_get
+	    (
+		function() 
+		{
+		    return document.getElementsByClassName('metadata-info-title')[0].innerHTML.match(/"(.*)\"/)[1]
+		},
+		function() 
+		{
+		    return ytplayer.config.args.title
+		},
+		""
+	    )
+
+	    var yt_time = try_get
+	    (
+		function() 
+		{ 
+		    return _player.getCurrentTime();
+		},
+		function() { return 0 },
+		0
+	    )
+
+	    var yt_duration = try_get
+	    (
+		function() 
+		{ 
+		    return _player.getDuration();
+		},
+		function() { return 0 },
+		0
+	    )
+
+	    _track.set
+	    (
+		ytplayer.config.args.video_id,
+		yt_artist,
+		yt_title,
+		ytplayer.config.args.loaderUrl,
+		yt_duration,
+		yt_time,
+		SB.Util.toTime(yt_time, "secs"),
+		ytplayer.config.args.loaderUrl,
+		true,
+		_service
+	    );
 
 	},
-	'youtube' : function() {},
 	'grooveshark' : function() {},
 	'8tracks' : function() {},
 	'earbits' : function() {},
 	'pandora': function() {},
+	'spotify': function() {},
 	'NA' : function()
 	{
 	    return "NA"
@@ -139,7 +196,20 @@ SB.Data = (function() {
 	    }
 
 	},
+	'youtube' : {
+	    'seek' : function(percentage) {
+		_player.seekTo( percentage * _track.getDuration() )
+	    },
+	    'pause' : function() {
+
+	    },
+	    'play' : function() {
+
+	    }
+
+	},
 	'NA' : function() { return "NA" }
+
     }
 
     

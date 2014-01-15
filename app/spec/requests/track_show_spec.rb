@@ -21,6 +21,9 @@ describe "TrackShow" do
       it { should have_content(track.duration.to_s) }
       it { should have_content(track.timestamp.to_s) }
       it { should have_content(track.comment) }
+
+      pending "play / stop button"
+      pending "youtube player"
     end
 
 

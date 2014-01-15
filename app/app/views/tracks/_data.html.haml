@@ -10,5 +10,6 @@
     .track-shareable #{track.shareable}
     .track-duration #{track.duration.to_s}
     .track-timestamp #{track.timestamp.to_s}
-  .play{:track_id => track.track_id, :timestamp => track.timestamp} Play
+    .track-service #{track.service}
+  .play{:track_id => track.track_id, :timestamp => track.timestamp, :service => track.service} Play
   .stop Stop

@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require SBPlayer.js
 //= require_tree .
 //= stub SoundByte-min.js
 

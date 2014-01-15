@@ -15,9 +15,20 @@ describe "TrackIndex" do
       page.should have_css("div.track", :count => t.count)
     end
 
+    describe "should have a youtube player" do
+
+      it "has the youtube 'player' div" do
+        page.should have_css("#player")
+      end
+
+
+    end
+
   end
 
   pending "must be logged in"
   pending "displays user index"
+  pending "youtube player"
+  pending "play/stop button"
 
 end
