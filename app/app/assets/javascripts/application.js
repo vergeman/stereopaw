@@ -13,7 +13,17 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require SBPlayer.js
+
+//= require ./lib/underscore-min.js
+//= require ./lib/backbone-min.js
+
+//= require handlebars.runtime
+//= require_tree ../templates
+
+//= require_tree ./models
+//= require_tree ./collections
+//= require_tree ./routers
+//= require_tree ./views
 //= require_tree .
 //= stub SoundByte-min.js
 
