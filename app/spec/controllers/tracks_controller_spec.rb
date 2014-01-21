@@ -30,8 +30,6 @@ describe TracksController do
 
   describe "GET #index" do
 
-    pending "user logged in, renders index, else redirect"
-
     it "responds successfully with an HTTP 200 redirect code" do
       get :index
       expect(response.status).to eq(200)
@@ -63,8 +61,5 @@ describe TracksController do
     end
   end
 
-  pending "GET #edit  [:id]"
-  pending "PATCH/PUT #update [:id]"
-  pending "DELETE #destroy"
 
 end

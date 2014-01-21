@@ -1,16 +1,15 @@
-.track{:id => "{{track.id}}"}
-  .track-meta
-    .track-artist {{track.artist}}
-    .track-id {{track.track_id}}
-    .track-title {{track.title}}
-    .track-profile-url {{track.profile_url}}
-    .track-page-url {{track.page_url}}
-    .track-timeformat Time: {{track.timeformat}}
-    .track-comment {{track.comment}}
-    .track-shareable {{track.shareable}}
-    .track-duration {{track.duration.to_s}}
-    .track-timestamp {{track.timestamp.to_s}}
-    .track-service {{track.service}}
-  .play{:track_id => "{{track.track_id}}", :timestamp => "{{track.timestamp}}", :service => "{{track.service}}" } Play
-  .stop Stop
+.track-meta
+  .track-artist {{track.artist}}
+  .track-id {{track.track_id}}
+  .track-title {{track.title}}
+  .track-profile-url {{track.profile_url}}
+  .track-page-url {{track.page_url}}
+  .track-timeformat Time: {{track.timeformat}}
+  .track-comment {{track.comment}}
+  .track-shareable {{track.shareable}}
+  .track-duration {{track.duration.to_s}}
+  .track-timestamp {{track.timestamp.to_s}}
+  .track-service {{track.service}}
+.play{:track_id => "{{track.track_id}}", :timestamp => "{{track.timestamp}}", :service => "{{track.service}}" } Play
+.stop Stop
 %br				

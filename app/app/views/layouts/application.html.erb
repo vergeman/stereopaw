@@ -4,6 +4,13 @@
   <title>SoundByte</title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
+
+<script> 
+  <% if Rails.env == 'test' || Rails.env == 'production' %>
+  <%= "var console = {}; console.log = function(){};"  %>
+  <% end %>
+</script>  
+
 </head>
 <body>
 

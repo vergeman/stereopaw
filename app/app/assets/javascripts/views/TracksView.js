@@ -17,7 +17,7 @@ app.TracksView = Backbone.View.extend({
 
     render: function() {
 	console.log("[TracksView] render")
-
+	
 	this.collection.each(function(t) {
 	    this.renderTrack(t);
 	}, this);

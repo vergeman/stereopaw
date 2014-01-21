@@ -62,7 +62,4 @@ describe "TrackNew" do
   end
 
 
-  pending "must be logged in"
-  pending "not logged in, redirect to login"
-
 end

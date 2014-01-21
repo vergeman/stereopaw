@@ -1,21 +1,37 @@
-#
-# Testing JS
-#
+require 'spec_helper'
 
-describe 'some stuff which requires js', :js => true do
-  before { visit root_path() }
+describe "Root Page" do
 
-  it 'will use the default js driver' do
-    page.should_not have_css("div.main")
+  describe "Visits '/' page", :js => true do
+    @track1 = FactoryGirl.create(:track)
+    @track2 =  FactoryGirl.create(:track)
+
+    before { 
+      visit root_path()
+    }
+
+    it "should have display all of the tracks" do
+      t = Track.all
+      page.should have_css("div.track", :count => t.count)
+      Rails.logger.info(t.count)
+    end
+
+    describe "should have a youtube player" do
+
+      it "has the youtube 'player' div" do
+        page.should have_css("div#player")
+      end
+
+    end
+
+    describe "should have a soundcloud " do
+      it "api key" do
+        page.should have_css("div#soundcloud_key")
+      end
+    end
+
   end
 
-  it "will have a test div" do
-    page.should have_css("div.test")
-  end
-
-  it "will display TEST" do
-    page.should have_content("TEST")
-  end
 
 
 end
