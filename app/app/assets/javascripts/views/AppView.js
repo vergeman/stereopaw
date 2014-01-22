@@ -9,19 +9,19 @@ app.AppView = Backbone.View.extend({
 
     initialize: function() {
 	console.log("[AppView] initialize")
+
+	this.render() //render base layout
+
 	this.tracksview = new app.TracksView();
-	this.render()
     },
 
     render: function() {
 
-	this.$el.html( this.template({title : 'TEST'}) )
+	//this.$el.append( this.template({title : 'TEST'}) )
 
     }
 
 });
-
-//app.vents = _.extend({}, Backbone.Events);
 
 app.player = new app.Player();
 

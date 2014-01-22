@@ -12,6 +12,8 @@ app.TracksView = Backbone.View.extend({
 	this.listenTo( this.collection, 'reset', this.render );
 
 	this.collection.fetch({reset: true});
+
+	this.parent = '#content';
 	this.render();
     },
 
@@ -22,7 +24,9 @@ app.TracksView = Backbone.View.extend({
 	    this.renderTrack(t);
 	}, this);
 
-	$('#main').append(this.$el);
+
+	$(this.parent).append(this.$el);
+
     },
 
     renderTrack: function(track) {
@@ -31,6 +35,7 @@ app.TracksView = Backbone.View.extend({
 	var trackView = new app.TrackView( {
 	    model: track
 	});
+
 	this.$el.append( trackView.render().el );
     }
 

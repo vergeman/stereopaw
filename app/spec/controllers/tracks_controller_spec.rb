@@ -40,6 +40,30 @@ describe TracksController do
       response.should render_template(:index)
     end
 
+    #API
+    describe "GET #index  as json" do
+
+      before do
+        get :index, :format => :json
+        @parse_json = JSON.parse(response.body)
+      end
+
+      it "responds with a json object" do
+        response.header['Content-Type'].should include 'application/json'
+      end
+
+      it "responds with an array" do
+        expect(@parse_json.class).to eq(Array)
+      end
+
+      it "reponds with an array of all Tracks, sorted by created_at DESCENDING" do
+        #note escaped
+        tracks = Track.all        
+        expect(@parse_json.to_json).to eq( tracks.order("created_at DESC").to_json )
+      end
+      
+    end
+
   end
 
 
