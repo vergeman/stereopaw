@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require foundation
 //= require turbolinks
 
 //= require ./lib/underscore-min.js
@@ -27,3 +28,5 @@
 //= require_tree .
 //= stub SoundByte-min.js
 
+
+$(function(){ $(document).foundation(); });

@@ -1,23 +1,26 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>SoundByte</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<script> 
-  <% if Rails.env == 'test' || Rails.env == 'production' %>
-  <%= "var console = {}; console.log = function(){};"  %>
-  <% end %>
-</script>  
+    <title><%= content_for?(:title) ? yield(:title) : "SpinClip" %></title>
 
-</head>
-<body>
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "vendor/modernizr" %>
+    <%= csrf_meta_tags %>
+  </head>
 
-<%= yield %>
+  <body>
+    <div id="soundcloud_key" data=<%= "#{ENV['SOUNDCLOUD_KEY']}" %> ></div>
+    <%= yield %>
+    <%= javascript_include_tag "application" %>
 
-</body>
-<div id="soundcloud_key" data=<%= "#{ENV['SOUNDCLOUD_KEY']}" %> ></div>
-<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-<footer></footer>
+    <script> 
+      <% if Rails.env == 'test' || Rails.env == 'production' %>
+      <%= "var console = {}; console.log = function(){};"  %>
+      <% end %>
+    </script>  
+
+  </body>
 </html>
