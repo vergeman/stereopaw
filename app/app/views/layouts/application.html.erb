@@ -14,7 +14,6 @@
   <body>
     <div id="soundcloud_key" data=<%= "#{ENV['SOUNDCLOUD_KEY']}" %> ></div>
     <%= yield %>
-    <%= javascript_include_tag "application" %>
 
     <script> 
       <% if Rails.env == 'test' || Rails.env == 'production' %>
@@ -22,5 +21,8 @@
       <% end %>
     </script>  
 
+    <%= javascript_include_tag "application" %>
+
+    <footer></footer>
   </body>
 </html>
