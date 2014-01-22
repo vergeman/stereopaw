@@ -1,0 +1,35 @@
+/*Layout*/
+
+header {}
+
+#main {
+    @include grid-row($behavior: collapse);
+}
+
+#topbar {
+    @extend .show-for-small;
+}
+
+#sidebar {
+    @include grid-column($columns: 2);
+    @extend .columns;
+    @extend .hide-for-small;
+    position:fixed;
+}
+
+#content {
+    @include grid-column($columns: 10,
+			 $push: 2,
+			 $last-column:true);
+    @extend .columns;
+}
+
+@media #{$small-only} { 
+    #content {
+	@include grid-column($columns: 12, 
+			     $push: 0, 
+			     $last-column:true);
+	@extend .columns;
+    }
+
+}

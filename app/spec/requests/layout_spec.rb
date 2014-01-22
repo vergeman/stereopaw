@@ -10,6 +10,16 @@ describe "Root Page" do
 
     describe 'Layout' do
       
+      #--header--#
+      it "should have a header element" do
+        page.should have_css("body > header")
+      end
+
+      it "should have a div#topbar in header" do
+        page.should have_css("header > div#topbar")
+      end
+
+      #--main--#
       it "should have a div#main" do
         page.should have_css("div#main")
       end
@@ -22,13 +32,13 @@ describe "Root Page" do
         page.should have_css("div#main > div#sidebar > nav")
       end
 
-      it "should have a div#player in #sidebar#main" do
-        #for youtube
-        page.should have_css("div#main > div#sidebar > div#player")
-      end
-
       it "should have a div#content in #main" do
         page.should have_css("div#main > div#content")
+      end
+
+      it "should have a div#player in #main" do
+        #for youtube
+        page.should have_css("div#main > div#player")
       end
 
       it "should have a footer" do

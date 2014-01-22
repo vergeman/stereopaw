@@ -15,11 +15,17 @@
     <div id="soundcloud_key" data=<%= "#{ENV['SOUNDCLOUD_KEY']}" %> ></div>
     <%= yield %>
 
-    <script> 
-      <% if Rails.env == 'test' || Rails.env == 'production' %>
-      <%= "var console = {}; console.log = function(){};"  %>
-      <% end %>
-    </script>  
+
+    <% if Rails.env == 'test' || Rails.env == 'production' %>
+
+    <%=
+       "<script>
+	var console = {}; console.log = function(){};
+	</script>".html_safe
+       %>
+
+    <% end %>
+
 
     <%= javascript_include_tag "application" %>
 
