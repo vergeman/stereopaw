@@ -1,9 +1,8 @@
 /*Layout*/
 
-header {}
-
 #main {
     @include grid-row($behavior: collapse);
+    height:100%;
 }
 
 #topbar {
@@ -11,25 +10,53 @@ header {}
 }
 
 #sidebar {
+
     @include grid-column($columns: 2);
     @extend .columns;
     @extend .hide-for-small;
-    position:fixed;
+    position:absolute !important;
+
+    nav {
+	position: fixed !important;
+    }
 }
 
+
 #content {
+
     @include grid-column($columns: 10,
-			 $push: 2,
 			 $last-column:true);
     @extend .columns;
+    @extend .push-2;
+
 }
 
 @media #{$small-only} { 
+
     #content {
+
 	@include grid-column($columns: 12, 
 			     $push: 0, 
 			     $last-column:true);
 	@extend .columns;
+	overflow:auto;
     }
 
+}
+
+/* 
+ *  fix for topbar zombie padding 
+ * case; when loaded in zoom, and then zoomed out
+ * shoudn't be a problem for mobile but looks funky on desktop
+ */
+@media #{$small-up} {
+    body.f-topbar-fixed {
+        padding-top: 0px !important;
+    }
+}
+
+@media #{$small-only} {
+    body.f-topbar-fixed {
+        padding-top: $topbar-height !important;
+    }
 }
