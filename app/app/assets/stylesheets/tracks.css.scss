@@ -1,0 +1,127 @@
+/*dont' forget tracks/new*/
+$image-size-large: 140px;
+$image-size-default: 100px;
+
+#tracks{}
+.track {
+    margin-bottom: 1rem;
+}
+
+.track-meta{
+    @include grid-row($behavior: collapse);
+}
+
+
+.track-artwork-wrap {
+    @include grid-column($columns: 3);
+    @extend .columns;
+}
+.track-info-wrap {
+    @include grid-column($columns: 8,
+			 $last-column: true);
+    @extend .columns;
+}
+
+/* Track info/data*/
+.track-artist, .track-title, .track-notes-info, .track-notes {
+    @include grid-row($behavior: collapse)
+}
+.track-notes {
+    margin-top: .25rem;
+}
+.track-notes-info {    
+    margin-top: 1rem;
+    color: #aaa;
+}
+
+/*Meta data*/
+
+.track-artwork-url {
+    @include grid-row($behavior:collapse);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+/*note - we'll need to do something w/ mobile.
+  background-image renders at expected large size
+  looks funny probably around medium
+  */
+    width: $image-size-default;
+    height: $image-size-default;
+	
+    @media #{$large-up} {
+	width: $image-size-large;
+	height: $image-size-large;
+    }
+
+}
+
+/*play*/
+.play {
+    width: 100%;
+    height: 100%;
+}
+
+/*mask over image*/
+.track-play-mask {
+    position: absolute;
+    width: $image-size-default / 2;
+    height: 100%;
+    z-index: 2;
+    cursor:pointer;
+
+    &:hover {
+	background-color:black;
+	opacity: .5;
+    }
+
+    @media #{$large-up} {
+	width: $image-size-large / 2;
+    }
+}
+
+.track-play-full-mask {
+    margin-top: -$image-size-default;
+    @extend .track-play-mask;
+
+    @media #{$large-up} {
+	margin-top: -$image-size-large;
+    }
+}
+
+.track-play-time-mask {
+    margin-top: -$image-size-default;
+    margin-left: $image-size-default /2;
+    @extend .track-play-mask;
+
+    @media #{$large-up} {
+	margin-top: -$image-size-large;
+	margin-left: $image-size-large / 2;
+    }
+}
+
+/*play - full/time icons*/
+.track-plays {
+    @include grid-row($behavior:collapse);
+    margin-top: .5rem;
+    width: 100px;
+    text-align:center;
+
+    .track-play-time {
+	@include grid-column($columns:6);
+    }
+    .track-play-full {
+	@include grid-column($columns:6,
+			    $last-column: true);
+    }
+
+    @media #{$large-up} {
+	width: 140px;
+    }
+}
+
+.track-plays {
+    i.fi-play, i.fi-clock {
+	font-size: 35px;
+    }
+}
+

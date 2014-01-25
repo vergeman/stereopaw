@@ -99,7 +99,8 @@ SB.Data = (function() {
 		SB.Util.toTime(sc_time, "ms"),
 		sc_md.sound.attributes.permalink_url,
 		(sc_md.sound.attributes.sharing == "public" ? true : false),
-		_service
+		_service,
+		sc_md.sound.attributes.artwork_url.replace("-large.jpg", "-t200x200.jpg")
 	    );
 
 	},
@@ -160,7 +161,8 @@ SB.Data = (function() {
 		SB.Util.toTime(yt_time, "secs"),
 		ytplayer.config.args.loaderUrl,
 		true,
-		_service
+		_service,
+		"http://img.youtube.com/vi/" + ytplayer.config.args.video_id + "/0.jpg"
 	    );
 
 	},

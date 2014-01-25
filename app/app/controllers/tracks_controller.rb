@@ -46,6 +46,7 @@ private
                                   :duration, 
                                   :comment, 
                                   :shareable,
+                                  :artwork_url,
                                   :service) if params[:track]
   end
 

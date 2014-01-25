@@ -20,8 +20,9 @@ SB.Track = (function() {
     _elapsed='',
     _shareable='';
     _service ='';
+    _artwork_url= '';
 
-    track.set = function(track_id, artist, title, profile_url, duration, timestamp, timeformat, page_url, shareable, service) {
+    track.set = function(track_id, artist, title, profile_url, duration, timestamp, timeformat, page_url, shareable, service, artwork_url) {
 
 	_track_id = track_id
 	_artist = artist
@@ -33,8 +34,9 @@ SB.Track = (function() {
 	_page_url = page_url
 	_shareable = shareable
 	_service = service
+	_artwork_url = artwork_url
 	_elapsed = timestamp / duration //% of track elapsed
-
+	
 	/*might want to add some img urls, etc*/
     };
 
@@ -50,7 +52,7 @@ SB.Track = (function() {
 	    + "track[duration]=" + encodeURIComponent(_duration) +"&"
 	    + "track[shareable]=" + encodeURIComponent(_shareable) +"&"
 	    + "track[service]=" + encodeURIComponent(_service) +"&"
-
+	    + "track[artwork_url]=" + encodeURIComponent(_artwork_url) +"&"
 //not sure about these
 	    + "track[subtrack]=" + encodeURIComponent(_subtrack) + "&"
 	    + "track[subartist]=" + encodeURIComponent(_subartist);

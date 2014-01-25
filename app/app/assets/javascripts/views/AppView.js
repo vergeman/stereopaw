@@ -13,15 +13,18 @@ app.AppView = Backbone.View.extend({
 	this.render() //render base layout
 
 	this.tracksview = new app.TracksView();
+
     },
 
     render: function() {
 
-	//this.$el.append( this.template({title : 'TEST'}) )
+//	this.$el.append( this.template({title : 'TEST'}) )
+
+	//fix fout styling with no content
+	$('#content').css('min-height', 'none');
 
     }
 
 });
 
 app.player = new app.Player();
-

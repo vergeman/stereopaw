@@ -16,6 +16,7 @@
 #  track_id    :string(255)
 #  shareable   :boolean
 #  service     :string(255)
+#  artwork_url :string(255)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
@@ -32,5 +33,6 @@ FactoryGirl.define do
     comment "I am a test comment"
     shareable "true"
     service "youtube"
+    artwork_url "http://www.youtube.com/0.jpg"
   end
 end

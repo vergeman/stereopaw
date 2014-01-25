@@ -1,8 +1,8 @@
 /*navbar*/
+$sidebar-bg-color: #11171c;
 #sidebar {
-    background-color: #2C3E50;
-    color: #fff;
-    opacity: .8;
+    background-color: $sidebar-bg-color; //#446CB3;
+    color: darken(#fff, 20%);
     height: 100%;
 }
 #content {
@@ -10,6 +10,17 @@
 }
 .side-nav > li {
     font-size: 1rem;
-    //background-color: #34495E;
+    padding: 1rem 6rem;
+    margin-left: -6rem;
 
+    &:hover {
+	background-color: lighten($sidebar-bg-color, 10%);
+	color: #fff;
+    }
+
+
+}
+
+.active-nav {
+    //background-color: #1c242b;
 }

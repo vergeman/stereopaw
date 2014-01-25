@@ -1,15 +1,56 @@
 .track-meta
-  .track-artist {{track.artist}}
+
+  .track-artwork-wrap
+    
+    .track-artwork-url{:style => "background-image:url(\"{{track.artwork_url}}\")"}
+      
+    .track-play-full-mask
+      .play{:track_id => "{{track.track_id}}", :timestamp => 0, :service => "{{track.service}}" }
+
+    .track-play-time-mask
+      .play{:track_id => "{{track.track_id}}", :timestamp => "{{track.timestamp}}", :service => "{{track.service}}" }
+
+      
+    .track-plays
+      .track-play-time
+        %i.fi-play
+
+      .track-play-full
+        %i.fi-clock
+
+          
+  .track-info-wrap
+    .track-title
+      %a{:href => "{{track.page_url}}" } {{track.title}}
+    
+    .track-artist
+      %a{:href => "{{track.profile_url}}"} {{track.artist}}
+
+    .track-attribution
+      %img{:src => "{{track.attribution_url}}",
+           :width => "{{track.attribution_width}}",
+           :height => "{{track.attribution_height}}" }
+
+    .track-timeformat
+      %i.fi-clock
+      {{track.timeformat}}
+    
+    .track-notes-info
+      Notes
+
+    %blockquote.track-notes
+      {{track.comment}}
+
+
+-#
   .track-id {{track.track_id}}
-  .track-title {{track.title}}
   .track-profile-url {{track.profile_url}}
   .track-page-url {{track.page_url}}
   .track-timeformat Time: {{track.timeformat}}
-  .track-comment {{track.comment}}
   .track-shareable {{track.shareable}}
   .track-duration {{track.duration.to_s}}
   .track-timestamp {{track.timestamp.to_s}}
   .track-service {{track.service}}
-.play{:track_id => "{{track.track_id}}", :timestamp => "{{track.timestamp}}", :service => "{{track.service}}" } Play
-.stop Stop
+
+-#.stop Stop
 %br				

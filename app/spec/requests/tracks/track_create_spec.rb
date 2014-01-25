@@ -30,6 +30,7 @@ describe "TrackCreate" do
       #hidden, but requried for validation
       find(:xpath, "//input[@id='track_shareable']").set "true"
       find(:xpath, "//input[@id='track_service']").set "youtube"
+      find(:xpath, "//input[@id='track_artwork_url']").set "http://www.youtube.com/vi/123123123/0.jpg"
 
       check "track_timeformat_optional"
     end

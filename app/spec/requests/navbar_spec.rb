@@ -56,7 +56,7 @@ describe "Root Page" do
         #setup our navbar elements
         @navbar = [
                    {
-                     :content => 'My Links',
+                     :content => 'Tracks',
                      :div => '#links'
                    },
                    {

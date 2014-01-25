@@ -16,6 +16,7 @@
 #  track_id    :string(255)
 #  shareable   :boolean
 #  service     :string(255)
+#  artwork_url :string(255)
 #
 
 require 'spec_helper'
@@ -71,6 +72,10 @@ describe Track do
 
     it "has the service attr" do
       @track.attributes.has_key?("service").should eq true
+    end
+
+    it "has the artwork_url attr" do
+      @track.attributes.has_key?("artwork_url").should eq true
     end
 
   end
@@ -129,11 +134,16 @@ describe Track do
         @track.should_not be_valid        
       end
 
+      it "cannot have a blank artwork_url" do
+        @track.artwork_url = nil
+        @track.should_not be_valid        
+      end
+
 
     end
 
     #URL Format
-    context "page_url & profile_url URL type Validations" do
+    context "page_url | profile_url | artwork_url URL type Validations" do
 
       it "page_url must be of url type" do
         @track.page_url = "https://www.google.com/dfdkf"
@@ -152,6 +162,16 @@ describe Track do
 
       it "profile_url must only be of url type" do
         @track.profile_url = "aalkenfek"
+        @track.should_not be_valid
+      end
+
+      it "artwork_url must be of url type" do
+        @track.artwork_url = "https://www.google.com/dfdkf?dfd=etes&dfd=dfd"
+        @track.should be_valid
+      end
+
+      it "artwork_url must only be of url type" do
+        @track.artwork_url = "aalkenfek"
         @track.should_not be_valid
       end
     end

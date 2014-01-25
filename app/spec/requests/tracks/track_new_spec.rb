@@ -17,7 +17,8 @@ describe "TrackNew" do
                                       :profile_url => "profileurl",
                                       :timeformat => "1:23",
                                       :shareable => "true",
-                                      :service => "youtube"
+                                      :service => "youtube",
+                                      :artwork_url => "http://www.youtube.com/vi/images/0.jpg"
                                     }
                                   }
                                     )}
@@ -38,6 +39,7 @@ describe "TrackNew" do
       it { should have_selector("input#track_duration" ) }
       it { should have_selector("input#track_track_id") }
       it { should have_selector("input#track_service") }
+      it { should have_selector("input#track_artwork_url") }
 
       it { should have_selector("input#track_submit[type=submit]") }
     end
@@ -56,6 +58,7 @@ describe "TrackNew" do
       it { should have_selector("input#track_timeformat[value=\"1:23\"]") }
       it { should have_selector("input#track_timeformat_optional[value=\"1\"]") }
       it { should have_selector("input#track_service[value=\"youtube\"]") }
+      it { should have_selector("input#track_artwork_url[value=\"http://www.youtube.com/vi/images/0.jpg\"]") }      
 
     end
 

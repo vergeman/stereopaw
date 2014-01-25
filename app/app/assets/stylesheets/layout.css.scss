@@ -4,6 +4,7 @@
     @include grid-row($behavior: collapse);
     height:100%;
 }
+#main:before{}
 
 #topbar {
     @extend .show-for-small;
@@ -17,10 +18,10 @@
     position:absolute !important;
 
     nav {
-	position: fixed !important;
+	position: fixed;
+	margin-left: 1rem;
     }
 }
-
 
 #content {
 
@@ -29,6 +30,10 @@
     @extend .columns;
     @extend .push-2;
 
+    //padding-top: 1.875rem;
+
+    //give some height - prevents fout (reset in js)
+    min-height:1024px;
 }
 
 @media #{$small-only} { 

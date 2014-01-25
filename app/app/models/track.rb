@@ -16,13 +16,15 @@
 #  track_id    :string(255)
 #  shareable   :boolean
 #  service     :string(255)
+#  artwork_url :string(255)
 #
 
 class Track < ActiveRecord::Base
   attr_accessor :timeformat_optional
 
-  validates :artist, :title, :page_url, :profile_url, :shareable, :service, presence: true
-  validates :profile_url, :page_url, url: true #/validators/UrlValidator
+  validates :artist, :title, :page_url, :profile_url, :shareable, :service, :artwork_url, presence: true
+
+  validates :profile_url, :page_url, :artwork_url, url: true #/validators/UrlValidator
   validates :duration, :timestamp, numericality: true
   validates_format_of :timeformat, :with => /\A([^0:\D][0-9]*:)?([1-5]?[0-9]:)([0-5][0-9])\Z/
   validates :comment, length: { maximum: 1000 }
