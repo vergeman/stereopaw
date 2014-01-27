@@ -36,15 +36,16 @@ describe "Root Page" do
         page.should have_css("div#main > div#content")
       end
 
-      it "should have a div#player in #main" do
-        #for youtube
-        page.should have_css("div#main > div#player")
-      end
-
       it "should have a footer" do
         page.should have_css("footer")
       end
       
+
+      #--player--#
+      
+      it "should have a div#player" do
+        page.should have_css("div#player")
+      end
 
     end
 

@@ -20,11 +20,19 @@ $image-size-default: 100px;
     @include grid-column($columns: 8,
 			 $last-column: true);
     @extend .columns;
+    margin-top: -0.5rem;
+    margin-left: 1.0rem;
 }
 
 /* Track info/data*/
-.track-artist, .track-title, .track-notes-info, .track-notes {
-    @include grid-row($behavior: collapse)
+.track-artist, .track-title, .track-attribution, .track-timeformat, .track-notes-info, .track-notes {
+    @include grid-row($behavior: collapse);
+}
+.track-artist {
+    margin-top: -.5rem;
+}
+.track-timeformat {
+    margin-top: .75rem;
 }
 .track-notes {
     margin-top: .25rem;

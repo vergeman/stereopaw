@@ -21,25 +21,33 @@
           
   .track-info-wrap
     .track-title
-      %a{:href => "{{track.page_url}}" } {{track.title}}
+      %h4
+        %a{:href => "{{track.page_url}}",
+           :target => "_blank"}
+          {{track.title}}
     
     .track-artist
-      %a{:href => "{{track.profile_url}}"} {{track.artist}}
+      %h5
+        %a{:href => "{{track.profile_url}}",
+           :target => "_blank"}
+          {{track.artist}}
 
     .track-attribution
-      %img{:src => "{{track.attribution_url}}",
-           :width => "{{track.attribution_width}}",
-           :height => "{{track.attribution_height}}" }
+      %a{:href => "{{track.page_url}}",
+         :target => "_blank"}
+        %img{:src => "{{track.attribution_url}}",
+             :width => "{{track.attribution_width}}",
+             :height => "{{track.attribution_height}}" }
 
     .track-timeformat
       %i.fi-clock
       {{track.timeformat}}
     
-    .track-notes-info
-      Notes
-
-    %blockquote.track-notes
-      {{track.comment}}
+    = hb 'if track.comment' do
+      .track-notes-info
+        Notes
+      %blockquote.track-notes
+        {{track.comment}}
 
 
 -#
@@ -53,4 +61,4 @@
   .track-service {{track.service}}
 
 -#.stop Stop
-%br				
+%hr

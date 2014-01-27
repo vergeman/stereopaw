@@ -4,7 +4,6 @@
     @include grid-row($behavior: collapse);
     height:100%;
 }
-#main:before{}
 
 #topbar {
     @extend .show-for-small;
@@ -29,9 +28,9 @@
 			 $last-column:true);
     @extend .columns;
     @extend .push-2;
+    padding-left: 4rem;
 
     //padding-top: 1.875rem;
-
     //give some height - prevents fout (reset in js)
     min-height:1024px;
 }
@@ -43,8 +42,10 @@
 	@include grid-column($columns: 12, 
 			     $push: 0, 
 			     $last-column:true);
+
 	@extend .columns;
 	overflow:auto;
+	padding-left: .5rem;
     }
 
 }
