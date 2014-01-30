@@ -1,8 +1,9 @@
 var app = app || {};
 
 function onYouTubeIframeAPIReady() {
-
-    app.player.youtube_player.set_player();
+    //need global event bus to call PlyaerView.set_youtube()
+    console.log("Trigger");
+    app.vent.trigger("YouTube_Player:set_player");
 }
 
 
@@ -13,6 +14,9 @@ app.YouTube_Player = Backbone.Model.extend({
 	this. _track_id = null;
 	this._timestamp=null
 	this._init_player();
+
+	app.vent.on("YouTube_Player:set_player", this.set_player, this)
+
     },
 
     _init_player : function() {
@@ -43,9 +47,9 @@ app.YouTube_Player = Backbone.Model.extend({
     set_player : function() {
 	console.log("setPlayer")
 
-	this._player = new YT.Player('player', {
-	    height: '360',
-	    width: '640',	
+	this._player = new YT.Player('ytplayer', {
+	    height: '200',
+	    width: '267',	
 	    //videoId: track_id,
 	    events: {
 		'onReady': _.bind(this.onPlayerReady, this),
@@ -108,6 +112,7 @@ app.YouTube_Player = Backbone.Model.extend({
     stop : function() {
 	console.log("youtube stop")
 	this._player.stopVideo();
+	
     },
     unload : function() {
 	this._player.clearVideo();

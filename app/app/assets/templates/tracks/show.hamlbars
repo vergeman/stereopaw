@@ -5,10 +5,10 @@
     .track-artwork-url{:style => "background-image:url(\"{{track.artwork_url}}\")"}
       
     .track-play-full-mask
-      .play{:track_id => "{{track.track_id}}", :timestamp => 0, :service => "{{track.service}}" }
+      .play{:track_id => "{{track.track_id}}", :timestamp => 0, :service => "{{track.service}}", :artist => "{{track.artist}}", :title => "{{track.title}}", :duration => "{{track.duration}}" }
 
     .track-play-time-mask
-      .play{:track_id => "{{track.track_id}}", :timestamp => "{{track.timestamp}}", :service => "{{track.service}}" }
+      .play{:track_id => "{{track.track_id}}", :timestamp => "{{track.timestamp}}", :service => "{{track.service}}", :artist => "{{track.artist}}", :title => "{{track.title}}", :duration => "{{track.duration}}" }
 
       
     .track-plays

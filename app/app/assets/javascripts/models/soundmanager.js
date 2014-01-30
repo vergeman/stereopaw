@@ -69,6 +69,7 @@ app.SoundManager_Player = Backbone.Model.extend({
     {
 	console.log("[Soundmanager] stop")
 	this._sound.stop();
+	this.unload();
     },
     unload : function() 
     {

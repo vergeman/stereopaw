@@ -28,6 +28,8 @@
 }
 #play-play {
     margin: 0 1rem;
+    width: 27px;
+    text-align:center;
 }
 
 @media #{$small-only} {
@@ -71,4 +73,14 @@
 }
 #track-timeslid {
     
+}
+
+/*ytplayer*/
+#ytplayer {
+    width: 267px;
+    height: 200px;
+    position: absolute;
+    bottom: 4rem;    
+    right: 0;
+    opacity: 1;
 }

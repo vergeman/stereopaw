@@ -5,14 +5,21 @@ app.AppView = Backbone.View.extend({
     el: '#main',
 
     template: HandlebarsTemplates['main'],
-    player : null,
+
+    events : {
+	'click .play' : 'play',
+	'click .stop' : 'stop'
+    },
 
     initialize: function() {
 	console.log("[AppView] initialize")
 
 	this.render() //render base layout
 
+	this.playerview = new app.PlayerView();
+
 	this.tracksview = new app.TracksView();
+
 
     },
 
@@ -23,8 +30,14 @@ app.AppView = Backbone.View.extend({
 	//fix fout styling with no content
 	$('#content').css('min-height', 'none');
 
-    }
+    },
+    play: function(e) {
+	this.playerview.play(e);
+    },
 
+    stop: function(e) {
+	this.playerview.stop()
+    },
 });
 
-app.player = new app.Player();
+
