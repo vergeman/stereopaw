@@ -1,53 +1,58 @@
 .track-meta
-
+  
   .track-artwork-wrap
-    
+
+    .track-artwork-mask
+      %i.fi-play-circle
+        
     .track-artwork-url{:style => "background-image:url(\"{{track.artwork_url}}\")"}
-      
-    .track-play-full-mask
-      .play{:track_id => "{{track.track_id}}", :timestamp => 0, :service => "{{track.service}}", :artist => "{{track.artist}}", :title => "{{track.title}}", :duration => "{{track.duration}}" }
 
-    .track-play-time-mask
-      .play{:track_id => "{{track.track_id}}", :timestamp => "{{track.timestamp}}", :service => "{{track.service}}", :artist => "{{track.artist}}", :title => "{{track.title}}", :duration => "{{track.duration}}" }
 
-      
-    .track-plays
-      .track-play-time
-        %i.fi-play
-
-      .track-play-full
-        %i.fi-clock
-
-          
   .track-info-wrap
+
     .track-title
-      %h4
+      %h4.text
         %a{:href => "{{track.page_url}}",
-           :target => "_blank"}
+           :target => "_blank"}          
           {{track.title}}
-    
+
     .track-artist
-      %h5
+      %h6.subheader.text
         %a{:href => "{{track.profile_url}}",
            :target => "_blank"}
           {{track.artist}}
 
-    .track-attribution
-      %a{:href => "{{track.page_url}}",
-         :target => "_blank"}
-        %img{:src => "{{track.attribution_url}}",
-             :width => "{{track.attribution_width}}",
-             :height => "{{track.attribution_height}}" }
-
-    .track-timeformat
-      %i.fi-clock
-      {{track.timeformat}}
-    
     = hb 'if track.comment' do
-      .track-notes-info
-        Notes
-      %blockquote.track-notes
-        {{track.comment}}
+      .track-notes
+        %i.fi-quote
+        %p
+          {{track.comment}}
+
+          
+  .track-controls-wrap
+    
+    %ul.track-controls
+      
+      %li.play{:track_id => "{{track.track_id}}", :timestamp => "{{track.timestamp}}", :service => "{{track.service}}", :artist => "{{track.artist}}", :title => "{{track.title}}", :duration => "{{track.duration}}" }
+        %i.fi-play-circle
+        %span
+          {{track.timeformat}}
+          
+      %li.play{:track_id => "{{track.track_id}}", :timestamp => 0, :service => "{{track.service}}", :artist => "{{track.artist}}", :title => "{{track.title}}", :duration => "{{track.duration}}" }
+        %i.fi-play
+        %span
+          Full
+
+      %li.playlist
+        %i.fi-plus
+        %span
+          Add
+
+      %li.share
+        %i.fi-share
+        %span
+          Share
+
 
 
 -#
@@ -61,4 +66,7 @@
   .track-service {{track.service}}
 
 -#.stop Stop
+  .track-attribution
+    %a{:href => "{{track.page_url}}", :target => "_blank"}
+      %img{:src => "{{track.attribution_url}}", :width => "{{track.attribution_width}}",:height => "{{track.attribution_height}}" }
 %hr

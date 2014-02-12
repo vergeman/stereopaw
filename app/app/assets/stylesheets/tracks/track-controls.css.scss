@@ -1,0 +1,56 @@
+
+/* 
+ * Controls & Mask 
+ */
+
+$control-small-width: 4rem;
+$control-medium-width: 4.25rem;
+$control-large-width: 6rem;
+
+.track-controls {
+    float:left;
+    margin-left:0;
+    margin-bottom:0;
+    display:inline;
+    list-style-type:none;
+    padding-left: .25rem;
+
+    li { 
+	float:left;
+	display: inline;
+	margin-right: 1rem;  	
+
+	&:hover {
+	    color: lighten(#000, 70%);
+	    cursor:pointer;
+	}
+    }
+        
+    i { 
+	float:left;
+	font-style:normal;
+	font-size: 24px;
+    }
+    span {
+	float:left;
+	padding-left: .5rem;
+	padding-top: .5rem;
+	font-size: 14px;
+	width: $control-small-width;
+
+	@media #{$medium-up} {
+	    width: $control-medium-width;
+	}
+
+	@media #{$large-up} {
+	    width: $control-large-width;
+	}
+
+    }
+    .play {
+	height: 100%;
+    }
+}
+
+
+

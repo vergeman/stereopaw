@@ -1,60 +1,88 @@
-/*Layout*/
-
-#main {
-    @include grid-row($behavior: collapse);
-    height:100%;
-}
-
-#topbar {
-    @extend .show-for-small;
-}
-
-#sidebar {
-
-    @include grid-column($columns: 2);
-    @extend .columns;
-    @extend .hide-for-small;
-    position:absolute !important;
-
-    nav {
-	position: fixed;
-	margin-left: 1rem;
+/*Layout --mobile first*/
+$sidebar-bg-color: #11171c;
+$sidebar-width: 140px;
+header {
+    @media #{$medium-up} {
+	margin-left: 1.25rem;
     }
 }
+nav {
+    width: 100%;
+    height: auto;
+
+    position:fixed !important;
+    top:0;
+    left:0;
+
+    display:inline;
+    z-index:100;
+
+    background: $sidebar-bg-color;
+    color: white;
+    
+    a { float: left;}
+    a.menu-icon{
+	float:right;
+	span {
+	    box-shadow: 0 10px 0 1px white, 0 16px 0 1px white, 0 22px 0 1px white;
+	}
+    }
+
+    li { display:block;}
+    ul { 
+	display:none; 
+	clear:both;
+	float:left; 
+	list-style:none;
+	li:hover {
+	    background-color: lighten($sidebar-bg-color, 10%);
+	    color: #fff;
+	}
+
+    }
+
+    /*on hamburger toggle (via js) */
+    ul.mobile {
+	display:inline !important;
+    }
+
+
+    /*navbar to sidebar adjust*/
+    @media #{$medium-up} {
+	width: $sidebar-width;
+	height: 100%;
+	display:block;
+
+	a {display:block;}
+	a.menu-icon { display : none;}
+	ul {display:block;}
+	li {display:block;}
+
+    }
+
+}
+
 
 #content {
 
-    @include grid-column($columns: 10,
-			 $last-column:true);
-    @extend .columns;
-    @extend .push-2;
-    padding-left: 4rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    margin-top: 4rem;
+    overflow:auto;
 
-    //padding-top: 1.875rem;
-    //give some height - prevents fout (reset in js)
-    min-height:1024px;
-}
-
-@media #{$small-only} { 
-
-    #content {
-
-	@include grid-column($columns: 12, 
-			     $push: 0, 
-			     $last-column:true);
-
-	@extend .columns;
-	overflow:auto;
-	padding-left: .5rem;
+    @media #{$medium-up} {
+	margin-top: 0;
+	margin-left: $sidebar-width;
     }
 
 }
 
+hr { margin: 0}
 /* 
  *  fix for topbar zombie padding 
  * case; when loaded in zoom, and then zoomed out
  * shoudn't be a problem for mobile but looks funky on desktop
- */
+
 @media #{$small-up} {
     body.f-topbar-fixed {
         padding-top: 0px !important;
@@ -66,3 +94,4 @@
         padding-top: $topbar-height !important;
     }
 }
+ */

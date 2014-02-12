@@ -1,0 +1,48 @@
+/* Track info/data*/
+.track-title, .track-artist {
+
+    .text {
+	margin-top:0;
+	margin-bottom:0;
+	overflow:hidden;
+
+	max-height: 25px;
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100%;
+
+	@media #{$medium-up} {
+	    max-height: 35px;
+	}
+    }
+
+    h4 > a { color: $header-font-color;
+	     &:hover { color: $anchor-font-color-hover;}}
+    h6 > a { color: $subheader-font-color;
+	     &:hover { color: $anchor-font-color-hover;}}
+}
+
+/*track comments*/
+.track-notes {
+
+    font-size: .75rem;
+    
+    i { 
+	font-size: 1.25rem; 
+	padding-top: .25rem;
+	padding-right: .5rem;
+	float:left;
+	color: #2980b9;
+    }
+
+    p {
+	font-family: 'helvetica-neue', 'georgia', 'open-sans';
+	font-size: .85rem;
+	padding-top: .15rem;
+	color: lighten(#000, 10%);
+	margin-bottom: 0;
+    }
+
+}
+

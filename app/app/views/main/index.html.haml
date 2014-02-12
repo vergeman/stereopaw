@@ -1,49 +1,26 @@
-%header
-  #topbar.fixed
-    %nav.top-bar{:'data-topbar' => ''}
-      %ul.title-area
-        %li.name
-          %h1
-            %a{:href => "#"} SpinClip
-        %li.toggle-topbar.menu-icon
-          %a{:href => "#"} MENU
-          
-      %section.top-bar-section
-        %ul.hidden-for-large-up          
-          %li#links
-            Tracks
-          %li#playlist
-            Playlists
-          %li#popular
-            Popular
-          %li#new
-            New
-          %li#submit
-            Submit
-          %li#settings
-            Settings
 
+%nav
+  %h6
+    %a{:href => "#"} Logo
+  %a.menu-icon{:href => "#"} 
+    %span
+    %span
+    %span
+  %ul
+    %li#links
+      Tracks
+    %li#playlist
+      Playlists
+    %li#popular
+      Popular
+    %li#new
+      New
+    %li#submit
+      Submit
+    %li#settings
+      Settings
 
-
-#main
-  #sidebar
-    %nav
-      %ul.side-nav
-        %li#links.active-nav
-          Tracks
-        %li#playlist
-          Playlists
-        %li#popular
-          Popular
-        %li#new
-          New
-        %li#submit
-          Submit
-        %li#settings
-          Settings
-
-
-  #content
+#content
 
 #player
   #controls
@@ -53,7 +30,7 @@
       %i.fi-play
     #play-prev.control
       %i.fi-previous
-      
+
   #track-meta
     #track-info
       Current Track and artist here

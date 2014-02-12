@@ -1,0 +1,63 @@
+/*
+ * Artwork
+ */
+
+/*album art*/
+.track-artwork-url {
+    @include grid-row($behavior:collapse);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    width: $image-size-default;
+    height: $image-size-default;
+	
+    @media #{$large-up} {
+	width: $image-size-large;
+	height: $image-size-large;
+    }
+
+}
+
+/* on hover, opacity w/ icon*/
+.track-artwork-mask {
+    position: absolute;
+    width: $image-size-default;
+    height: $image-size-default;
+    z-index: 2;
+    cursor:pointer;
+
+    @media #{$large-up} {
+	width: $image-size-large;
+	height: $image-size-large;
+    }
+
+    .fi-play-circle {
+	display:none;
+	text-align:center;
+    }
+
+    &:hover {
+	background-color:black;
+	opacity: .5;
+
+	/*icon hover behavior & resize*/
+	.fi-play-circle {
+	    display:block;
+	    color: white;
+	    opacity: 1;
+
+	    font-size: $image-size-default /2;
+	    margin-top: $image-size-default / 4;
+
+	    @media #{$large-up} {
+		font-size: $image-size-large / 2;
+		margin-top: $image-size-large / 4;
+	    }
+
+
+	}
+
+    }
+
+}

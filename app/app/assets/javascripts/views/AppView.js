@@ -20,7 +20,6 @@ app.AppView = Backbone.View.extend({
 
 	this.tracksview = new app.TracksView();
 
-
     },
 
     render: function() {
