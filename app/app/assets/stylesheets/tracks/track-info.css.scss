@@ -1,4 +1,7 @@
 /* Track info/data*/
+.track-title, .track-artist, .track-notes{
+    width: 90%;
+}
 .track-title, .track-artist {
 
     .text {
@@ -21,6 +24,15 @@
 	     &:hover { color: $anchor-font-color-hover;}}
     h6 > a { color: $subheader-font-color;
 	     &:hover { color: $anchor-font-color-hover;}}
+}
+
+/*track date*/
+.track-date {
+    position:absolute;
+    right: 1.2rem;
+
+    font-size: .75rem;
+    color: #6f6f6f;
 }
 
 /*track comments*/

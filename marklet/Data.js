@@ -88,6 +88,10 @@ SB.Data = (function() {
 	    var sc_md = sc_mgr.getCurrentMetadata()
 	    var sc_time = sc_md.sound.audio.currentTime()
 
+	    var artwork_url = sc_md.sound.attributes.artwork_url || 
+		sc_md.sound.attributes.user.avatar_url;
+	    artwork_url == null ? "" : artwork_url.replace("-large.jpg", "-t200x200.jpg");
+
 	    _track.set
 	    (
 		sc_md.sound.attributes.id,
@@ -100,7 +104,7 @@ SB.Data = (function() {
 		sc_md.sound.attributes.permalink_url,
 		(sc_md.sound.attributes.sharing == "public" ? true : false),
 		_service,
-		sc_md.sound.attributes.artwork_url.replace("-large.jpg", "-t200x200.jpg")
+		artwork_url
 	    );
 
 	},

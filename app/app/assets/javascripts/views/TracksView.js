@@ -40,6 +40,7 @@ app.TracksView = Backbone.View.extend({
 	    model: track
 	});
 
+	//console.log(trackView.model)
 	this.$el.append( trackView.render().el );
 
     },
