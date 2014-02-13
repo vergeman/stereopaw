@@ -30,9 +30,14 @@
 .track-date {
     position:absolute;
     right: 1.2rem;
-
+    
     font-size: .75rem;
     color: #6f6f6f;
+
+    display:none;
+    @media #{$medium-up} {
+	display:block;
+    }
 }
 
 /*track comments*/

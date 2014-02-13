@@ -19,9 +19,11 @@ $control-large-width: 6rem;
 	float:left;
 	display: inline;
 	margin-right: 1rem;  	
+	//color: lighten(#000, 70%);
+	color: lighten(#6f6f6f, 20%);
 
 	&:hover {
-	    color: lighten(#000, 70%);
+	    color: #3498db;//#000; //#e74c3c; //#3498db;
 	    cursor:pointer;
 	}
     }
