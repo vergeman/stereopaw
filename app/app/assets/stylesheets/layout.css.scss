@@ -1,11 +1,15 @@
 /*Layout --mobile first*/
-$sidebar-bg-color: #11171c;
+$sidebar-bg-color: #191818; //#11171c;
+$sidebar-color: #666666 ;//#fff;//#666666;
+
 $sidebar-width: 140px;
+
 header {
     @media #{$medium-up} {
 	margin-left: 1.25rem;
     }
 }
+
 nav {
     width: 100%;
     height: auto;
@@ -18,8 +22,37 @@ nav {
     z-index:100;
 
     background: $sidebar-bg-color;
-    color: white;
-    
+    color: $sidebar-color;
+    font-family: 'lato', 'helvetica neue', 'georgia';
+
+    i {
+	padding-right: 1rem;
+	color: lighten($sidebar-color, 40%);
+    }
+
+    ul { 
+	display:none; 
+	clear:both;
+	float:left; 
+	list-style:none;
+	width: 100%;
+	margin-left: 0;
+	margin-bottom: 0;
+	cursor:pointer;
+
+	li:hover, .active {
+	    background-color: lighten($sidebar-bg-color, 10%);
+	    color: #fff;
+	    i { color: #fff;}
+	}
+
+    }
+    li { 
+	display:block;
+	padding: .5rem 0 .5rem 1.1rem;
+    }
+
+    /*mobile*/
     a { float: left;}
     a.menu-icon{
 	float:right;
@@ -28,18 +61,6 @@ nav {
 	}
     }
 
-    li { display:block;}
-    ul { 
-	display:none; 
-	clear:both;
-	float:left; 
-	list-style:none;
-	li:hover {
-	    background-color: lighten($sidebar-bg-color, 10%);
-	    color: #fff;
-	}
-
-    }
 
     /*on hamburger toggle (via js) */
     ul.mobile {
@@ -47,7 +68,7 @@ nav {
     }
 
 
-    /*navbar to sidebar adjust*/
+    /*SIDEBAR (adjusted navbar)*/
     @media #{$medium-up} {
 	width: $sidebar-width;
 	height: 100%;
@@ -55,8 +76,18 @@ nav {
 
 	a {display:block;}
 	a.menu-icon { display : none;}
-	ul {display:block;}
-	li {display:block;}
+
+	ul {
+	    display:block;
+	    margin-left: 0;
+	    margin-top: 3rem;
+	}
+	li {
+	    display:block;
+	    width: $sidebar-width;
+	    padding-left: 1.1rem;
+	    //margin-bottom:1rem;
+	}
 
     }
 

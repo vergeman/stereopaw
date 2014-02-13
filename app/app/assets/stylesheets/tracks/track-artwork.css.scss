@@ -39,7 +39,7 @@
 
     &:hover {
 	background-color:black;
-	opacity: .5;
+	opacity: .7;
 
 	/*icon hover behavior & resize*/
 	.fi-play-circle {
@@ -48,16 +48,26 @@
 	    opacity: 1;
 
 	    font-size: $image-size-default /2;
-	    margin-top: $image-size-default / 4;
+	    margin-top: ($image-size-default / 4) - 7px;
 
 	    @media #{$large-up} {
 		font-size: $image-size-large / 2;
-		margin-top: $image-size-large / 4;
+		margin-top: ($image-size-large / 4) - 7px;
 	    }
 
 
 	}
+	/*time*/
+	.timestamp {
+	    text-align:center;
+	    font-style:normal;
+	    font-size: 12px;
+	    
+	    @media #{$large-up} {
+		font-size: 16px;
+	    }
 
+	}
     }
 
 }

@@ -17,7 +17,6 @@ app.TracksView = Backbone.View.extend({
 	//we set listener that calls render
 	this.listenTo( this.collection, 'reset', this.render );
 
-
 	this.collection.fetch({reset: true});
     },
 

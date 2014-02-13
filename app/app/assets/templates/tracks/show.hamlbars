@@ -1,10 +1,12 @@
-.track-meta
+.track-meta{:track_id => "{{track.track_id}}", :timestamp => "{{track.timestamp}}", :service => "{{track.service}}", :artist => "{{track.artist}}", :title => "{{track.title}}", :duration => "{{track.duration}}" }
   
-  .track-artwork-wrap
+  .track-artwork-wrap.play{:timestamp => "{{track.timestamp}}"}
 
     .track-artwork-mask
       %i.fi-play-circle
-        
+        .timestamp
+          {{track.timeformat}}
+      
     .track-artwork-url{:style => "background-image:url(\"{{track.artwork_url}}\")"}
 
 
@@ -33,12 +35,12 @@
     
     %ul.track-controls
       
-      %li.play{:track_id => "{{track.track_id}}", :timestamp => "{{track.timestamp}}", :service => "{{track.service}}", :artist => "{{track.artist}}", :title => "{{track.title}}", :duration => "{{track.duration}}" }
+      %li.play{:timestamp => "{{track.timestamp}}"}
         %i.fi-play-circle
         %span
           {{track.timeformat}}
           
-      %li.play{:track_id => "{{track.track_id}}", :timestamp => 0, :service => "{{track.service}}", :artist => "{{track.artist}}", :title => "{{track.title}}", :duration => "{{track.duration}}" }
+      %li.play{:timestamp => 0 }
         %i.fi-play
         %span
           Full

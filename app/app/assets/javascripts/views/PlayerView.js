@@ -20,12 +20,12 @@ app.PlayerView = Backbone.View.extend({
 	return this;
     },
 
-    play : function(e) {
+    play : function(e, time) {
 	console.log("[TrackView] trackplay")
-
+	console.log(e)
 	var track_info = this.getTrackInfo(e)
 
-	this.player.play[track_info.service](this.player, track_info.track_id, track_info.timestamp)
+	this.player.play[track_info.service](this.player, track_info.track_id, time)
 
 	this.updateTrackInfo(track_info)
 	$('#play-play > .fi-play').attr('class', 'fi-pause')
@@ -53,12 +53,12 @@ app.PlayerView = Backbone.View.extend({
     getTrackInfo : function(e) {
 
 	return { 
-	    track_id : $(e.currentTarget).attr('track_id'),
-	    service : $(e.currentTarget).attr('service'),
-	    timestamp : $(e.currentTarget).attr('timestamp'),
-	    artist: $(e.currentTarget).attr('artist'),
-	    title: $(e.currentTarget).attr('title'),
-	    duration: $(e.currentTarget).attr('duration')
+	    track_id : $(e).attr('track_id'),
+	    service : $(e).attr('service'),
+	    timestamp : $(e).attr('timestamp'),
+	    artist: $(e).attr('artist'),
+	    title: $(e).attr('title'),
+	    duration: $(e).attr('duration')
 	}
     }
 
