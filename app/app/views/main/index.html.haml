@@ -27,25 +27,38 @@
       Settings
 
 #content
+  <!--here be stuffs-->
 
+  
 #player
-  #controls
-    #play-next.control
-      %i.fi-next
-    #play-play.control
-      %i.fi-play
+  #track-progressbar.progress
+    %span.meter{:style => "width: 50%"}
+  
+  #player-controls
     #play-prev.control
       %i.fi-previous
-
-  #track-meta
+    #play-play.control
+      %i.fi-play
+    #play-next.control
+      %i.fi-next
+       
+      
+  #player-track-meta
+    
     #track-info
-      Current Track and artist here
-    #track-position
-      #track-starttime
-        0:10
-      #track-timeslider
-        #track-timeslid
-          Test
-      #track-endtime
-        123:00
+      Current Track and artist here    
+
+    #track-add.control
+      %i.fi-plus
+        %span
+          Add
+    #track-share.control
+      %i.fi-share
+        %span
+          Share
+
+    #track-time
+      0:10 / 12:23:00
+
+        
   #ytplayer

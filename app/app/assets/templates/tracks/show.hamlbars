@@ -17,13 +17,13 @@
     .track-title
       %h4.text
         %a{:href => "{{track.page_url}}",
-           :target => "_blank"}          
+           :target => "_blank", :title => "{{track.title}}"}          
           {{track.title}}
 
     .track-artist
       %h6.subheader.text
         %a{:href => "{{track.profile_url}}",
-           :target => "_blank"}
+           :target => "_blank", :title => "{{track.artist}}"}
           {{track.artist}}
 
     = hb 'if track.comment' do
