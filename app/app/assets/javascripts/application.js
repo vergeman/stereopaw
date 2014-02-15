@@ -29,4 +29,4 @@
 //= stub SoundByte-min.js
 
 
-$(function(){ $(document).foundation(); });
+$(document).foundation();
