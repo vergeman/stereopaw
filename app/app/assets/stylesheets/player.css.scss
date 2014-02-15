@@ -7,13 +7,13 @@
     z-index:100;
 
     background-color: #ecf0f1;//#7f8c8d;
-    border-top: 1px solid #bdc3c7;
+    //border-top: 1px solid #bdc3c7;
     width: 100%;
 }
 
 /*Progressbar*/
-#track-progressbar{
-    float:left;
+.progress{
+    position:relative;
     width: 100%;
     height: .5rem;
 
@@ -21,20 +21,56 @@
     padding: 0;
     margin:0;
     border: none;
-    margin-bottom:.75rem;
+    cursor:pointer;
+/*
+    @media #{$small-only} {
+	height: 1rem;
+    }
+*/
+    /*filled component*/
+    .meter {
+	width: 0;
+    }
+
+    .handle { 
+	position:absolute;
+	margin-top: -5px;
+	width: 18px;
+	height: 18px;
+	background:#3498db;
+	border-radius: 9px;
+
+/*
+	@media #{$small-only} {
+	    width: 36px;
+	    height: 36px;
+	    border-radius: 18px;
+	    margin-top:-10px;
+	    
+	}
+*/	
+    }
 }
+
 
 #player-controls {
     float:left;
     width: $sidebar-width;
     height:100%;
-    padding-left: 1.25rem;
-
+    padding: .75rem 0 0 1.25rem;
+    border-right: 1px solid #dbdbda;
+    
     .control {
 	float:left;
 	display:inline;
 	margin-top: .7rem;
 	font-size: 1.5rem;
+	//color: #a2a2a2;
+	color: #191818;
+	cursor:pointer;
+	&:hover {
+	    color: #3498db;
+	}
     }
 
     #play-play {
@@ -66,8 +102,7 @@
     #track-info {
 	float:left;
 	width:100%;
-	padding-top:.25rem;
-	padding-right:1rem;
+	padding: 1rem 1rem 0 0;
 	font-family: 'lato', 'helvetica neue';
 	overflow:hidden;
 	text-overflow:ellipsis;
@@ -80,8 +115,14 @@
 	font-style:normal;
 	padding-top: .1rem;
 	margin-top:.25rem;
+
     }
-    i { cursor:pointer;}
+    i { 
+	cursor:pointer;
+	&:hover {
+	    color: #3498db;
+	}
+    }
     span {
 	padding-left: .25rem;
 	padding-right: 1.5rem;
