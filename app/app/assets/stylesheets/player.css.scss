@@ -107,6 +107,11 @@
 	overflow:hidden;
 	text-overflow:ellipsis;
 	white-space: nowrap;
+
+	@media #{$medium-up} {
+	    font-size: 20px;
+	    padding-top: .75rem;
+	}
     }
 
     i, #track-time {
@@ -115,7 +120,7 @@
 	font-style:normal;
 	padding-top: .1rem;
 	margin-top:.25rem;
-
+	font-size: 12px;
     }
     i { 
 	cursor:pointer;
@@ -125,10 +130,12 @@
     }
     span {
 	padding-left: .25rem;
-	padding-right: 1.5rem;
+	padding-right: 1.25rem;
+	font-size: 12px;
     }
 
     #track-time {
+	padding-top:.1rem;
 	@media screen and (max-width: 400px) {
 	    display:none;
 	}
