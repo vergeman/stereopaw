@@ -135,7 +135,8 @@
     }
 
     #track-time {
-	padding-top:.1rem;
+	font-size: 10px;
+	padding-top: .2rem;
 	@media screen and (max-width: 400px) {
 	    display:none;
 	}

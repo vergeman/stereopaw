@@ -18,13 +18,15 @@ $control-large-width: 6rem;
     li { 
 	float:left;
 	display: inline;
-	margin-right: 1.25rem;  	
+	margin-right: 1rem;  	
 	color: lighten(#6f6f6f, 20%);
 
 	&:hover {
 	    color: #3498db;
 	    cursor:pointer;
 	}
+
+	@media #{$medium-up} { margin-right: 1.25rem;}
     }
         
     i { 
