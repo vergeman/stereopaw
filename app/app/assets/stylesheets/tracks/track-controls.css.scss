@@ -14,6 +14,7 @@ $control-large-width: 6rem;
     display:inline;
     list-style-type:none;
     padding-left: .25rem;
+    width: 100%;
 
     li { 
 	float:left;
@@ -57,4 +58,7 @@ $control-large-width: 6rem;
 }
 
 
-
+.track-attribution {
+    float: right;
+    padding-top: .25rem;
+}

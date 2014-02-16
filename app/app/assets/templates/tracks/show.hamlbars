@@ -57,6 +57,9 @@
         %span
           Share
 
+      .track-attribution
+        %a{:href => "{{track.page_url}}", :target => "_blank"}
+          %img{:src => "{{track.attribution_url}}", :width => "{{track.attribution_width}}",:height => "{{track.attribution_height}}" }
 
 
 -#
