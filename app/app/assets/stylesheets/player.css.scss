@@ -1,4 +1,8 @@
 /*Player wrap*/
+$ytplayer-width: 266.7px;
+$ytplayer-height: 200px;
+
+
 #player {
     position: fixed;
     width: 100%;
@@ -148,8 +152,8 @@
 
 /*ytplayer*/
 #ytplayer {
-    width: 267px;
-    height: 200px;
+    width: $ytplayer-width;
+    height: $ytplayer-height;
     position: absolute;
     bottom: 4rem;    
     right: 0;

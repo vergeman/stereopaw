@@ -1,5 +1,8 @@
 var app = app || {}
 
+
+/* try to keep limited to view & click events */
+
 app.PlayerView = Backbone.View.extend({
 
 
@@ -21,7 +24,7 @@ app.PlayerView = Backbone.View.extend({
     },
 
     play : function(e, time) {
-	console.log("[TrackView] trackplay")
+	console.log("[PlayerView] trackplay")
 	console.log(e)
 	var track_info = this.getTrackInfo(e)
 
@@ -31,15 +34,12 @@ app.PlayerView = Backbone.View.extend({
 	$('#play-play > .fi-play').attr('class', 'fi-pause')
 
     },
-    clear_youtube : function() {
-	$('#play-play > .fi-pause').attr('class', 'fi-play')
-	$("#ytplayer").fadeOut();
 
-    },
-    render_youtube : function() {
-	$("#ytplayer").fadeIn();
-    },
-
+    pause: function() {},
+    resume: function() {},
+    seek: function() {},
+    next: function() {},
+    prev: function() {},
 
 
     /*Utility functions*/

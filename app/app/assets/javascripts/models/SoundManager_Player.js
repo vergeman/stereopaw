@@ -46,7 +46,6 @@ app.SoundManager_Player = Backbone.Model.extend({
 	    autoLoad: true,
 	    onload: function() {
 		console.log("onload")
-		//self._sound.setPosition(timestamp)
 		self._sound.play({position: timestamp})
 	    }
         })
