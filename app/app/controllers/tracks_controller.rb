@@ -43,7 +43,7 @@ private
                                   :profile_url, 
                                   :timeformat, 
                                   :timestamp, 
-                                  :duration, 
+                                  :duration,
                                   :comment, 
                                   :shareable,
                                   :artwork_url,

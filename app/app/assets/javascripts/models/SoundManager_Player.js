@@ -42,7 +42,6 @@ app.SoundManager_Player = Backbone.Model.extend({
             id: '_sound',
             url: 'http://api.soundcloud.com/tracks/' + track_id + '/stream?client_id=' + soundcloud_key,
 	    stream: true,
-	    //autoLoad: true,
 	    autoLoad: true,
 	    onload: function() {
 		console.log("onload")
@@ -50,7 +49,6 @@ app.SoundManager_Player = Backbone.Model.extend({
 	    }
         })
 
-	//this._sound.setPosition(timestamp);        
     },
     play : function(track_id, timestamp) {
 	console.log("[SoundManager] play")

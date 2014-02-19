@@ -144,6 +144,10 @@ $ytplayer-height: 200px;
 	@media screen and (max-width: 400px) {
 	    display:none;
 	}
+	#elapsed, #duration {
+	    padding-right: 0;
+	    padding-left:0;
+	}
     }
 }
 
@@ -157,5 +161,6 @@ $ytplayer-height: 200px;
     position: absolute;
     bottom: 4rem;    
     right: 0;
+    left: -999rem;  /*off screen*/
     z-index:100;
 }

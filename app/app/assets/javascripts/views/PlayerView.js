@@ -12,6 +12,10 @@ app.PlayerView = Backbone.View.extend({
 
 	console.log("[PlayerView] initialize")
 	this.player = new app.Player(this);
+
+	/*triggered from YouTube_Player*/
+	app.vent.on("YouTube_Player:hide", this.hide_yt, this)
+	app.vent.on("YouTube_Player:show", this.show_yt, this)
     },
 
 
@@ -41,13 +45,20 @@ app.PlayerView = Backbone.View.extend({
     next: function() {},
     prev: function() {},
 
+    show_yt : function () {
+	$('#ytplayer').css('left', 'auto')
+    },
+
+    hide_yt : function() {
+	$('#ytplayer').css('left', '-999rem')
+    },
 
     /*Utility functions*/
     updateTrackInfo : function(track_info) {
-	$('#player > #track-meta > #track-info').html( track_info.artist + " | " + track_info.title)	
-	$('#track-starttime').html( "0:00" )
-	$('#track-endtime').html( track_info.duration )
+	$('#player > #player-track-meta > #track-info').html( track_info.title + " | " + track_info.artist)
 
+	console.log(track_info.duration_format);
+	$("#track-time > #duration").html( " / " + track_info.duration_format )
     },
     
     getTrackInfo : function(e) {
@@ -58,7 +69,8 @@ app.PlayerView = Backbone.View.extend({
 	    timestamp : $(e).attr('timestamp'),
 	    artist: $(e).attr('artist'),
 	    title: $(e).attr('title'),
-	    duration: $(e).attr('duration')
+	    duration: $(e).attr('duration'),
+	    duration_format: $(e).attr('duration_format')
 	}
     }
 

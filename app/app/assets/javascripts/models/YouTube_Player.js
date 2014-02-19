@@ -2,7 +2,6 @@ var app = app || {};
 
 function onYouTubeIframeAPIReady() {
     //need global event bus to call PlayerView.set_youtube()
-    console.log("Trigger");
     app.vent.trigger("YouTube_Player:set_player");
 }
 
@@ -13,10 +12,6 @@ app.YouTube_Player = Backbone.Model.extend({
 	this._player = null
 	this. _track_id = null
 	this._timestamp = null
-
-
-	this.state = -1
-
 	
 	this._load_player(); //load player
 
@@ -70,7 +65,7 @@ app.YouTube_Player = Backbone.Model.extend({
     },
 
     onPlayerError : function(event) {
-	console.log("error")
+	console.log("[YouTube_Player] onPlayerError")
 	console.log(event)
 	console.log(event.data)
 	
@@ -99,21 +94,24 @@ app.YouTube_Player = Backbone.Model.extend({
 
     },
     show : function () {
-	$('#ytplayer').css('left', 'auto')
+	app.vent.trigger("YouTube_Player:show");
     },
 
     hide : function() {
-	$('#ytplayer').css('left', '-999rem')
+	app.vent.trigger("YouTube_Player:hide");
     },
     //called by Player
     play : function(self, track_id, timestamp) {
 	console.log("[YouTube_Player]")
 
-	//player hasn't loaded, i.e. case of initial player load 
-	//_play action in called in onPlayerReady, here we just set track
 	if (!this._player) 
 	{
-	    console.log('queing track')
+	    /* player not yet loaded:
+	     * i.e. case of initial player load _play action
+	     * called in onPlayerReady, here we just set track
+	     */
+
+	    console.log('[YouTube_player] setting track')
 	    this._track_id = track_id
 	    this._timestamp = timestamp
 	}
