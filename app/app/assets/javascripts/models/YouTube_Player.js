@@ -105,7 +105,12 @@ app.YouTube_Player = Backbone.Model.extend({
 	//secs
 	this._player.seekTo(time, true)
     },
-
+    pause : function() {
+	this._player.pauseVideo()
+    },
+    resume : function() {
+	this._player.playVideo()
+    },
     play : function(self, track_id, timestamp) {
 	console.log("[YouTube_Player]")
 

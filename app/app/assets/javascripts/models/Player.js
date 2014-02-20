@@ -80,8 +80,12 @@ app.Player = Backbone.Model.extend({
     seek : function(time) {
 	this.current_player.seek(time)
     },
-    pause : function(){},
-    resume : function(){},
+    pause : function(){
+	this.current_player.pause()
+    },
+    resume : function(){
+	this.current_player.resume()
+    },
     next : function(){},
     prev : function(){}
     

@@ -26,7 +26,10 @@ app.PlayerView = Backbone.View.extend({
     },
 
 
-    events : {},
+    events : {
+	'click #play-play' : 'resume',
+	'click #play-pause' : 'pause'
+    },
 
 
     render: function() {
@@ -45,15 +48,22 @@ app.PlayerView = Backbone.View.extend({
 
 	this.refreshTime(this.current_track)
 
-	$('#play-play > .fi-play').attr('class', 'fi-pause')
-
+	this.toggle_play_controls()
     },
 
     pause: function() {
-	clearInterval(this._update_time_interval)
+	//clearInterval(this._update_time_interval)
+	console.log("[PlayerView] pause")
+	this.player.pause()
+	this.toggle_pause_controls()
     },
+
     resume: function() {
-	this.refreshTime()
+	console.log("[PlayerView] resume")
+	this.player.resume()
+	this.toggle_play_controls()
+	//this.refreshTime()
+	
     },
     seek: function(posX_percent) {
 	console.log("[PlayerView] seek " + posX_percent)
@@ -88,7 +98,14 @@ app.PlayerView = Backbone.View.extend({
     update_time : function(time) {
 	$("#track-time > #elapsed").html(time)
     },
-
+    toggle_play_controls : function() {
+	$('#play-play > .fi-play').attr('class', 'fi-pause')
+	$('#play-play').attr('id', 'play-pause')
+    },
+    toggle_pause_controls : function() {
+	$('#play-pause > .fi-pause').attr('class', 'fi-play')
+	$('#play-pause').attr('id', 'play-play')
+    },
     updateTrackInfo : function(track_info) {
 	$('#player > #player-track-meta > #track-info').html( track_info.title + " | " + track_info.artist)
 

@@ -66,8 +66,12 @@ app.SoundManager_Player = Backbone.Model.extend({
 	this._timestamp = timestamp
 
     },
-    resume: function() {},
-    pause: function() {},
+    resume: function() {
+    	this._sound.resume()
+    },
+    pause: function() {
+	this._sound.pause()
+    },
     seek : function(time) {
 	//msec offset
 	this._sound.setPosition(time)
