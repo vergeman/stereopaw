@@ -24,13 +24,12 @@ app.SoundManager_Player = Backbone.Model.extend({
 	    onready: function() {
 		self._ready = true;
 		if (self._track_id || self.timestamp) {
-		    //if track_id/timetstamp are null, we haven't called play yet, so don't load
-		    //if they are populated, we've calleed play, but sm wasn't ready at the time.  now it is so load.
+/*
+track_id/timetstamp is null, we haven't called play yet, so don't load. If populated, we've called play, but sm wasn't ready at the time -- now it is so load.
+*/
 		    self._load(self._track_id, self._timestamp)
 		}
-	    },
-	    ontimeout: function() {},
-	    
+	    },	    
 	});
 	console.log("init_player")
     },
@@ -43,15 +42,24 @@ app.SoundManager_Player = Backbone.Model.extend({
             url: 'http://api.soundcloud.com/tracks/' + track_id + '/stream?client_id=' + soundcloud_key,
 	    stream: true,
 	    autoLoad: true,
-	    onload: function() {
+	    onload: function(is_ok) {
+
 		self._sound.play(
 		    {
 			position: timestamp,
 			onfinish: function() {
 			    app.vent.trigger("Player:next")
-			}
+			}			
 		    }
 		)
+
+		if (!is_ok) {
+		    /*sound didn't load properly*/
+		    console.log("[SoundManager_Player] fail load")
+		    app.vent.trigger("Player:next")
+		}
+
+
 	    }	    
         })
 

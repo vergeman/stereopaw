@@ -56,7 +56,7 @@ app.YouTube_Player = Backbone.Model.extend({
 	console.log("[YouTube_Player] onPlayerError")
 	console.log(event)
 	console.log(event.data)
-	
+	app.vent.trigger("Player:next")
     },
     
     /* Create YT.Player */
