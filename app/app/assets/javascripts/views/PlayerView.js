@@ -55,9 +55,12 @@ app.PlayerView = Backbone.View.extend({
 	this.prev_track = this.getTrackInfo($('#'+ this.current_track.id).parents(".track").prev().children()[0] )
 	this.next_track = this.getTrackInfo($('#'+ this.current_track.id).parents(".track").next().children()[0] )
 
+	this.updateTrackInfo(this.current_track)
+	$('#player').show()
+
 	this.player.play[this.current_track.service](this.player, this.current_track.track_id, time)
 
-	this.updateTrackInfo(this.current_track)
+
 	this.refreshTime(this.current_track)
 	this.toggle_play_controls()
     },
