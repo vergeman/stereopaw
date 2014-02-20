@@ -12,7 +12,7 @@ app.SoundManager_Player = Backbone.Model.extend({
 	this._init_player();
     },
 
-    _init_player : function() 
+    _init_player : function()
     {
 	var self = this;
 
@@ -24,22 +24,24 @@ app.SoundManager_Player = Backbone.Model.extend({
 	    onready: function() {
 		self._ready = true;
 		if (self._track_id || self.timestamp) {
-/*
-track_id/timetstamp is null, we haven't called play yet, so don't load. If populated, we've called play, but sm wasn't ready at the time -- now it is so load.
-*/
+		    /*
+		      track_id/timetstamp is null, we haven't called play yet,
+		      so don't load. If populated, we've called play, but sm
+		      wasn't ready at the time -- now it is so load.
+		    */
 		    self._load(self._track_id, self._timestamp)
 		}
-	    },	    
+	    },
 	});
 	console.log("init_player")
     },
-    _load : function(track_id, timestamp) 
+    _load : function(track_id, timestamp)
     {
 	var soundcloud_key = $('#soundcloud_key').attr('data');
 	var self = this;
-        this._sound = soundManager.createSound({
-            id: '_sound',
-            url: 'http://api.soundcloud.com/tracks/' + track_id + '/stream?client_id=' + soundcloud_key,
+	this._sound = soundManager.createSound({
+	    id: '_sound',
+	    url: 'http://api.soundcloud.com/tracks/' + track_id + '/stream?client_id=' + soundcloud_key,
 	    stream: true,
 	    autoLoad: true,
 	    onload: function(is_ok) {
@@ -49,7 +51,7 @@ track_id/timetstamp is null, we haven't called play yet, so don't load. If popul
 			position: timestamp,
 			onfinish: function() {
 			    app.vent.trigger("Player:next")
-			}			
+			}
 		    }
 		)
 
@@ -60,8 +62,8 @@ track_id/timetstamp is null, we haven't called play yet, so don't load. If popul
 		}
 
 
-	    }	    
-        })
+	    }
+	})
 
     },
     getElapsed : function() {
@@ -72,16 +74,16 @@ track_id/timetstamp is null, we haven't called play yet, so don't load. If popul
     },
     play : function(track_id, timestamp) {
 	console.log("[SoundManager] play")
-	
+
 	if (this._ready) {
-            this._load(track_id, timestamp)
+	    this._load(track_id, timestamp)
 	}
 	this._track_id = track_id
 	this._timestamp = timestamp
 
     },
     resume: function() {
-    	this._sound.resume()
+	this._sound.resume()
     },
     pause: function() {
 	this._sound.pause()
@@ -96,7 +98,7 @@ track_id/timetstamp is null, we haven't called play yet, so don't load. If popul
 	this._sound.stop();
 	this.unload();
     },
-    unload : function() 
+    unload : function()
     {
 	console.log("[Soundmanager] destruct")
 	this._sound.destruct()
