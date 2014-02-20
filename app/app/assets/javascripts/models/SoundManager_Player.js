@@ -44,9 +44,15 @@ app.SoundManager_Player = Backbone.Model.extend({
 	    stream: true,
 	    autoLoad: true,
 	    onload: function() {
-		console.log("onload")
-		self._sound.play({position: timestamp})
-	    }
+		self._sound.play(
+		    {
+			position: timestamp,
+			onfinish: function() {
+			    app.vent.trigger("Player:next")
+			}
+		    }
+		)
+	    }	    
         })
 
     },

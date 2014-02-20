@@ -46,21 +46,9 @@ app.YouTube_Player = Backbone.Model.extend({
 	console.log("state: " + this.state)
 	console.log(this)
 
-
-/*
-	    // trigger clear video
-	    if ( (this.state != YT.PlayerState.PLAYING) || (this.state != YT.PlayerState.BUFFERING))
-	    {
-
-		//this.hide()
-		this.pending_clear = false 
-	    }
+	if ( this.state === YT.PlayerState.ENDED ) {
+	    app.vent.trigger("Player:next")
 	}
-	if ( (this.state == YT.PlayerState.PLAYING) || (this.state == YT.PlayerState.BUFFERING))
-	{
-	    //this.show()
-	}
-*/
 
     },
 
@@ -93,6 +81,7 @@ app.YouTube_Player = Backbone.Model.extend({
 	});
 
     },
+
     show : function () {
 	app.vent.trigger("YouTube_Player:show");
     },

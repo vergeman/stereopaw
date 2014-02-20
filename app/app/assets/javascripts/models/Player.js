@@ -1,6 +1,10 @@
 var app = app || {};
 
-
+/* 
+ * Player controls and interface for multiple players
+ * try to keep any dom stuff, playlist, etc outside
+ * strictly cross-player mechancis
+ */
 app.Player = Backbone.Model.extend({
 
     initialize: function(view) {
@@ -27,7 +31,7 @@ app.Player = Backbone.Model.extend({
 	 * gets varied context (nested
 	 * object in choosing services) (in constrast look at stop() 
 	 */
-	youtube : function(self,track_id, timestamp)
+	youtube : function(self, track_id, timestamp)
 	{
 	    /*load youtube player*/
 	    console.log(self)
@@ -38,11 +42,11 @@ app.Player = Backbone.Model.extend({
 		self.initialized_players['youtube'] = true
 	    }
 
-	    self.stop(self);
+	    self.stop();
 
 	    self.current_player = self.youtube_player;
 
-	    self.youtube_player.play(self.youtube_player, track_id, timestamp)
+	    self.current_player.play(self.youtube_player, track_id, timestamp)
 	},
 
 	soundcloud : function(self, track_id, timestamp)
@@ -57,7 +61,7 @@ app.Player = Backbone.Model.extend({
 	    }
 	    
 	    //stop any previous playing tracks
-	    self.stop(self);
+	    self.stop();
 
 	    //play new track
 	    self.current_player = self.soundmanager_player;
@@ -85,11 +89,7 @@ app.Player = Backbone.Model.extend({
     },
     resume : function(){
 	this.current_player.resume()
-    },
-    next : function(){},
-    prev : function(){}
-    
-
+    }
 
 });
 

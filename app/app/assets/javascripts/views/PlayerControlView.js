@@ -11,8 +11,6 @@ app.PlayerControlView = Backbone.View.extend({
 	this.btn = $('.handle')
 	this.meter = $('.meter')
 	this.slider = $('.progress')
-	this.handleWidth = this.btn.width()
-	this.sliderWidth = this.slider.width() - this.handleWidth;
 
 	this.posX_percent = 0;
 
@@ -42,6 +40,9 @@ app.PlayerControlView = Backbone.View.extend({
 	 * we handleWidth / 2 to prevent background bleed of meter
 	 * ex: posX_percent -> 47.12323 
 	 */
+
+	this.set_widths() //responsive, need to calc
+
 	var handlepos = (this.handleWidth /2) / this.sliderWidth * 100;
 	var posX_handlepos = parseFloat(posX_percent + handlepos)
 	
@@ -68,6 +69,8 @@ app.PlayerControlView = Backbone.View.extend({
 
     moveHandler : function(e) {
 	//calc base slide
+	this.set_widths()
+
         var posX = e.pageX - this.handleWidth  ; //center to handle
         posX = Math.min(Math.max(0, posX), this.sliderWidth)
 	this.posX_percent = parseFloat(posX / this.sliderWidth) * 100
@@ -86,7 +89,10 @@ app.PlayerControlView = Backbone.View.extend({
         $(document).off('mouseup.player touchend.player')
 
     },
-
+    set_widths: function() {
+	this.handleWidth = this.btn.width()
+	this.sliderWidth = this.slider.width() - this.handleWidth;
+    },
     render : function() {},
     is_busy : function() { return this.slider_busy }
 });
