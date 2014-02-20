@@ -70,7 +70,7 @@ app.YouTube_Player = Backbone.Model.extend({
 	console.log(event.data)
 	
     },
-
+    
     /* Create YT.Player */
     set_player : function() {
 	console.log("[YouTube_Player] set_player")
@@ -101,6 +101,11 @@ app.YouTube_Player = Backbone.Model.extend({
 	app.vent.trigger("YouTube_Player:hide");
     },
     //called by Player
+    seek : function(time) {
+	//secs
+	this._player.seekTo(time, true)
+    },
+
     play : function(self, track_id, timestamp) {
 	console.log("[YouTube_Player]")
 
@@ -154,6 +159,14 @@ app.YouTube_Player = Backbone.Model.extend({
 	this._player.pauseVideo();
 
 	this.hide();
+    },
+
+    getElapsed : function() {
+	//elapsed secs
+	if (!this._player || (typeof this._player.getCurrentTime === 'undefined') ) {
+	    return 0
+	}
+	return this._player.getCurrentTime();
     }
 	
 });

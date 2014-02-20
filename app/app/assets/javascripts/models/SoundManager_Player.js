@@ -50,6 +50,12 @@ app.SoundManager_Player = Backbone.Model.extend({
         })
 
     },
+    getElapsed : function() {
+	if (!this._sound || !this._sound.position) {
+	    return 0;
+	}
+	return this._sound.position
+    },
     play : function(track_id, timestamp) {
 	console.log("[SoundManager] play")
 	
@@ -62,6 +68,10 @@ app.SoundManager_Player = Backbone.Model.extend({
     },
     resume: function() {},
     pause: function() {},
+    seek : function(time) {
+	//msec offset
+	this._sound.setPosition(time)
+    },
     stop : function()
     {
 	console.log("[Soundmanager] stop")

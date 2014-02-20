@@ -12,7 +12,14 @@ app.Player = Backbone.Model.extend({
 	this.youtube_player = null;
 	this.view = view;
     },
+    getElapsed : function()
+    {
+	if (!this.current_player) {
+	    return 0;
+	}
 
+	return this.current_player.getElapsed();
+    },
     play :  
     {
 	/*
@@ -70,9 +77,8 @@ app.Player = Backbone.Model.extend({
 	}
 
     },
-    seek : {
-	soundcloud: function(time) {},
-	youtube : function(time) {}
+    seek : function(time) {
+	this.current_player.seek(time)
     },
     pause : function(){},
     resume : function(){},

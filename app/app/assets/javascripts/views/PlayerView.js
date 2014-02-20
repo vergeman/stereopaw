@@ -5,13 +5,20 @@ var app = app || {}
 
 app.PlayerView = Backbone.View.extend({
 
-
     el: '#player',
 
     initialize: function() {
 
 	console.log("[PlayerView] initialize")
+
+	this.playercontrols = new app.PlayerControlView({el : this.el});
 	this.player = new app.Player(this);
+
+	this._update_time_interval = null;
+	this.current_track = null;
+
+	/*seek*/
+	app.vent.on("Player:seek", this.seek, this)
 
 	/*triggered from YouTube_Player*/
 	app.vent.on("YouTube_Player:hide", this.hide_yt, this)
@@ -30,34 +37,61 @@ app.PlayerView = Backbone.View.extend({
     play : function(e, time) {
 	console.log("[PlayerView] trackplay")
 	console.log(e)
-	var track_info = this.getTrackInfo(e)
+	this.current_track = this.getTrackInfo(e)
 
-	this.player.play[track_info.service](this.player, track_info.track_id, time)
+	this.player.play[this.current_track.service](this.player, this.current_track.track_id, time)
 
-	this.updateTrackInfo(track_info)
+	this.updateTrackInfo(this.current_track)
+
+	this.refreshTime(this.current_track)
+
 	$('#play-play > .fi-play').attr('class', 'fi-pause')
 
     },
 
-    pause: function() {},
-    resume: function() {},
-    seek: function() {},
+    pause: function() {
+	clearInterval(this._update_time_interval)
+    },
+    resume: function() {
+	this.refreshTime()
+    },
+    seek: function(posX_percent) {
+	console.log("[PlayerView] seek " + posX_percent)
+	if (this.current_track) {
+	    this.player.seek(posX_percent/100 * this.current_track.duration)
+	}
+    },
     next: function() {},
     prev: function() {},
 
-    show_yt : function () {
-	$('#ytplayer').css('left', 'auto')
+    refreshTime : function() {
+	var self = this
+
+	this._update_time_interval = setInterval(function() {
+
+	    var elapsed =  self.player.getElapsed();
+	    var elapsed_format = app.Util.time_format(self.current_track.service, elapsed)
+
+	    //update elapsed on player
+	    self.update_time(elapsed_format)
+
+	    //update bar
+	    self.update_slider(elapsed, self.current_track.duration)
+
+	}, 350)
+    },
+    update_slider : function(elapsed, duration) {
+	if (!this.playercontrols.is_busy()) {
+	    this.playercontrols.moveSlider((elapsed / duration) * 100)
+	}
+    },
+    update_time : function(time) {
+	$("#track-time > #elapsed").html(time)
     },
 
-    hide_yt : function() {
-	$('#ytplayer').css('left', '-999rem')
-    },
-
-    /*Utility functions*/
     updateTrackInfo : function(track_info) {
 	$('#player > #player-track-meta > #track-info').html( track_info.title + " | " + track_info.artist)
 
-	console.log(track_info.duration_format);
 	$("#track-time > #duration").html( " / " + track_info.duration_format )
     },
     
@@ -72,6 +106,14 @@ app.PlayerView = Backbone.View.extend({
 	    duration: $(e).attr('duration'),
 	    duration_format: $(e).attr('duration_format')
 	}
+    },
+
+    show_yt : function () {
+	$('#ytplayer').css('left', 'auto')
+    },
+
+    hide_yt : function() {
+	$('#ytplayer').css('left', '-999rem')
     }
 
 });

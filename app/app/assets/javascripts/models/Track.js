@@ -12,7 +12,11 @@ app.Track = Backbone.Model.extend({
 	console.log("[Track] initalized")
     },
     gen_duration_format: function() {
-	this.set("duration_format", this._gen_duration_format());
+	var service = this.get("service")
+	var duration = this.get("duration")
+
+	this.set("duration_format", 
+		 app.Util.time_format(service, duration));
     },
     gen_age : function() {
 	var today = new Date();
@@ -56,57 +60,6 @@ app.Track = Backbone.Model.extend({
 	    default:
 	    this.set({attribution_url: ""})
 	}
-    },
-
-    /*UTIL */
-
-    _gen_duration_format : function() {
-	var _service = this.get("service")
-	var _duration = this.get("duration")
-
-	switch(_service) {
-
-	    case "youtube":
-	    return this.toTime(_duration, "secs");
-	    break;
-
-	    default:
-	    return this.toTime(_duration, "ms");
-
-	}
-	
-    },
-    prezero : function(num)
-    {
-	return (num.toFixed().length > 1 ? num.toFixed() : "0" + num.toFixed())
-    },
-
-    formatTime : function(hours, min, sec)
-    {
-	if (hours < 1)
-	{
-	    return min + ":" + this.prezero(sec)
-	}
-
-	return hours + ":" + this.prezero(min) + ":" + this.prezero(sec)
-    },
-    toTime : function(secs, scale)
-    {
-	var alpha = (scale == "secs") ? 1 : 1000;
-
-	var hours =  Math.floor(secs / (3600.0 * alpha) )
-
-	var min = Math.floor( (secs / (60.0 * alpha)) - 60 * hours )
-
-	var sec = (secs / (60 * alpha) - (60 * hours) -  min) * 60 
-
-	/*granularity: round vs floor*/
-	if (scale == "secs") 
-	{
-	    return this.formatTime(hours, min, Math.round(sec))
-	}
-
-	return this.formatTime(hours, min, Math.floor(sec))
     }
 
 });
