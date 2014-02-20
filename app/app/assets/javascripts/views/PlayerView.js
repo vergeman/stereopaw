@@ -20,17 +20,18 @@ app.PlayerView = Backbone.View.extend({
 	this.next_track = null;
 
 	/*seek*/
-	app.vent.on("Player:seek", this.seek, this)
+	this.listenTo(app.vent, "Player:seek", this.seek)
 
 	/* next, prev
 	 * events called when track is finished, auto move next
 	 */
-	app.vent.on("Player:next", this.next, this)
-	app.vent.on("Player:prev", this.prev, this)
+	this.listenTo(app.vent, "Player:next", this.next)
+	this.listenTo(app.vent, "Player:prev", this.prev)
 
 	/*triggered from YouTube_Player*/
-	app.vent.on("YouTube_Player:hide", this.hide_yt, this)
-	app.vent.on("YouTube_Player:show", this.show_yt, this)
+	this.listenTo(app.vent, "YouTube_Player:hide", this.hide_yt)
+	this.listenTo(app.vent, "YouTube_Player:show", this.show_yt)
+
     },
 
 

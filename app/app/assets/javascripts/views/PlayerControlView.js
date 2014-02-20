@@ -5,7 +5,6 @@ var app = app || {}
 app.PlayerControlView = Backbone.View.extend({
 
     events: function() {},
-
     initialize: function() {
 
 	this.btn = $('.handle')
@@ -20,19 +19,22 @@ app.PlayerControlView = Backbone.View.extend({
 
 	//slider one-off seek click
 	var self = this;
+
+	/* note: can only use listenTo on backbone events 
+	 * (i.e. not jquery slider DOM
+	 */
 	this.slider.on('click touchstart', function(e) {
-	    this.slider_busy = true;
+	    self.slider_busy = true;
 
 	    self.moveHandler(e)
 	    app.vent.trigger("Player:seek", self.posX_percent)
 
-	    this.slider_busy = false;
+	    self.slider_busy = false;
 	});
 
 	//button drag seek
 	this.btn.on('mousedown touchstart',
 		    _.bind(this.btnmoveHandler, this));
-		    
 
     },
     moveSlider : function(posX_percent) {

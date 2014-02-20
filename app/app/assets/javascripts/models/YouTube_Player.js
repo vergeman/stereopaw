@@ -15,7 +15,7 @@ app.YouTube_Player = Backbone.Model.extend({
 	
 	this._load_player(); //load player
 
-	app.vent.on("YouTube_Player:set_player", this.set_player, this)
+	this.listenTo(app.vent, "YouTube_Player:set_player", this.set_player)
     },
 
     _load_player : function() {
