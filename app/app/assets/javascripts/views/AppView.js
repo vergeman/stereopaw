@@ -16,9 +16,13 @@ app.AppView = Backbone.View.extend({
 
 	this.render() //render base layout
 
-	this.playerview = new app.PlayerView();
+	this.trackscollection = new app.Tracks();
 
-	this.tracksview = new app.TracksView();
+	console.log(this.trackscollection)
+
+	this.playerview = new app.PlayerView(this.trackscollection);
+
+	this.tracksview = new app.TracksView(this.trackscollection);
 
     },
 

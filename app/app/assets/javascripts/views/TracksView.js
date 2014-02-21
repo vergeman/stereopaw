@@ -9,12 +9,13 @@ app.TracksView = Backbone.View.extend({
     template: HandlebarsTemplates['tracks/index'],
 
 
-    initialize: function() {
+    initialize: function(tracks_collection) {
 	console.log("[TracksView] initialize")
 	this.parent = '#content';
 
-	this.collection = new app.Tracks();
+	this.collection = tracks_collection;//new app.Tracks();
 	//we set listener that calls render
+
 	this.listenTo( this.collection, 'reset', this.render );
 
 	this.collection.fetch({reset: true});

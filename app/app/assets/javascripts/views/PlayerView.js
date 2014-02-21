@@ -7,17 +7,20 @@ app.PlayerView = Backbone.View.extend({
 
     el: '#player',
 
-    initialize: function() {
+    initialize: function(tracks_collection) {
 
 	console.log("[PlayerView] initialize")
 
-	this.playercontrols = new app.PlayerControlView({el : this.el});
+	this.playercontrols = new app.PlayerControlView({el : this.el})
+
 	this.player = new app.Player(this);
 
 	this._update_time_interval = null;
-	this.current_track = null;
-	this.prev_track = null;
-	this.next_track = null;
+
+	this.track_queue = tracks_collection;
+
+	//Backbone Track obj
+	this.current_track = this.track_queue.at(0);
 
 	/*seek*/
 	this.listenTo(app.vent, "Player:seek", this.seek)
@@ -47,22 +50,47 @@ app.PlayerView = Backbone.View.extend({
 	console.log("[PlayerView] render")
 	return this;
     },
+    /*next/prev are set to loop*/
+    set_next_track : function() {
+	/* note: id could be slug or num */
+	var current_index = this.track_queue.indexOf(this.current_track)
+	var next_index  = (current_index + 1) % this.track_queue.length
 
+	this.next_track = this.track_queue.at(next_index)
+    },
+
+    set_prev_track : function() {
+	/* note: id could be slug or num */
+	var current_index = this.track_queue.indexOf(this.current_track)
+	var prev_index;
+	if (current_index <= 0) {
+	    prev_index = this.track_queue.length - 1
+	}
+	else { 
+	    prev_index = current_index - 1
+	}
+
+	this.prev_track = this.track_queue.at(prev_index)
+
+    },
     play : function(e, time) {
 	console.log("[PlayerView] trackplay")
 
-	this.current_track = this.getTrackInfo(e)
+	/*set current track if it was chosen via DOM*/
+	if (e != null) {
+	    this.current_track = this.track_queue.get($(e).attr("id")) 
+	}
 
-	this.prev_track = this.getTrackInfo($('#'+ this.current_track.id).parents(".track").prev().children()[0] )
-	this.next_track = this.getTrackInfo($('#'+ this.current_track.id).parents(".track").next().children()[0] )
+	this.set_prev_track()
+	this.set_next_track()
 
 	this.updateTrackInfo(this.current_track)
 	$('#player').show()
 
-	this.player.play[this.current_track.service](this.player, this.current_track.track_id, time)
-
+	this.player.play[this.current_track.get("service")](this.player, this.current_track.get("track_id"), time)
 
 	this.refreshTime(this.current_track)
+
 	this.toggle_play_controls()
     },
 
@@ -78,25 +106,22 @@ app.PlayerView = Backbone.View.extend({
 	this.player.resume()
 	this.toggle_play_controls()
     },
+
     seek: function(posX_percent) {
 	console.log("[PlayerView] seek " + posX_percent)
 	if (this.current_track) {
-	    this.player.seek(posX_percent/100 * this.current_track.duration)
+	    this.player.seek(posX_percent/100 * this.current_track.get("duration"))
 	}
     },
     next: function() {
 	console.log("[PlayerView] next")
-	if (!this.next_track || this.next_track.id !== undefined) {
-	    this.current_track = this.next_track
-	    this.play( $('#' + this.current_track.id), this.current_track.timestamp)
-	}
+	this.current_track = this.next_track
+	this.play(null, this.current_track.get("timestamp"))
     },
     prev: function() {
 	console.log("[PlayerView] prev")
-	if (!this.prev_track || this.prev_track.id !== undefined) {
-	    this.current_track = this.prev_track
-	    this.play( $('#' + this.current_track.id), this.current_track.timestamp)
-	}
+	this.current_track = this.prev_track
+	this.play(null, this.current_track.get("timestamp"))
     },
 
     refreshTime : function() {
@@ -105,13 +130,13 @@ app.PlayerView = Backbone.View.extend({
 	this._update_time_interval = setInterval(function() {
 
 	    var elapsed =  self.player.getElapsed();
-	    var elapsed_format = app.Util.time_format(self.current_track.service, elapsed)
+	    var elapsed_format = app.Util.time_format(self.current_track.get("service"), elapsed)
 
 	    //update elapsed on player
 	    self.update_time(elapsed_format)
 
 	    //update bar
-	    self.update_slider(elapsed, self.current_track.duration)
+	    self.update_slider(elapsed, self.current_track.get("duration") )
 
 	}, 350)
     },
@@ -131,10 +156,10 @@ app.PlayerView = Backbone.View.extend({
 	$('#play-pause > .fi-pause').attr('class', 'fi-play')
 	$('#play-pause').attr('id', 'play-play')
     },
-    updateTrackInfo : function(track_info) {
-	$('#player > #player-track-meta > #track-info').html( track_info.title + " | " + track_info.artist)
+    updateTrackInfo : function(track) {
+	$('#player > #player-track-meta > #track-info').html( track.get("title") + " | " + track.get("artist") )
 
-	$("#track-time > #duration").html( " / " + track_info.duration_format )
+	$("#track-time > #duration").html( " / " + track.get("duration_format") )
     },
     
     getTrackInfo : function(e) {
