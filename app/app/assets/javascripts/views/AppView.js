@@ -6,11 +6,6 @@ app.AppView = Backbone.View.extend({
 
     template: HandlebarsTemplates['main'],
 
-    events : {
-	'click .play' : 'play',
-	'click .stop' : 'stop'
-    },
-
     initialize: function() {
 	console.log("[AppView] initialize")
 
@@ -28,18 +23,6 @@ app.AppView = Backbone.View.extend({
 
     render: function() {},
 
-    play: function(e) {
-	console.log("[AppView] Play");
-	var time = $(e.currentTarget).attr('timestamp');
-
-	this.playerview.play($(e.currentTarget).parents('.track-meta'),
-			     time);
-    },
-
-    stop: function(e) {
-	console.log("[AppView] Stop");
-	this.playerview.stop()
-    },
 });
 
 

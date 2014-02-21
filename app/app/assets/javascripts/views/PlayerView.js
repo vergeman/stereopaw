@@ -7,6 +7,7 @@ app.PlayerView = Backbone.View.extend({
 
     el: '#player',
 
+    /*playerview - tracks_collection needed for internal queue*/
     initialize: function(tracks_collection) {
 
 	console.log("[PlayerView] initialize")
@@ -25,9 +26,11 @@ app.PlayerView = Backbone.View.extend({
 	/*seek*/
 	this.listenTo(app.vent, "Player:seek", this.seek)
 
-	/* next, prev
-	 * events called when track is finished, auto move next
+	/* next, prev, play
+	 * onclick, or when
+	 * events called on finished track, auto move next
 	 */
+	this.listenTo(app.vent, "Player:play", this.play)
 	this.listenTo(app.vent, "Player:next", this.next)
 	this.listenTo(app.vent, "Player:prev", this.prev)
 
@@ -73,12 +76,13 @@ app.PlayerView = Backbone.View.extend({
 	this.prev_track = this.track_queue.at(prev_index)
 
     },
+
     play : function(e, time) {
 	console.log("[PlayerView] trackplay")
 
 	/*set current track if it was chosen via DOM*/
 	if (e != null) {
-	    this.current_track = this.track_queue.get($(e).attr("id")) 
+	    this.current_track = this.track_queue.get($(e).attr("id"))
 	}
 
 	this.set_prev_track()
