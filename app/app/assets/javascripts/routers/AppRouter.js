@@ -28,7 +28,7 @@ app.AppRouter = Backbone.Router.extend({
 
 	this.view = (new app.AppView(this.trackscollection) )
 
-	$('#content-wrap').append(this.view.render().el)
+	$('#content-wrap').html(this.view.render().el)
 
 	this.navigate("/")
     }

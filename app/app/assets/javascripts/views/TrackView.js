@@ -17,7 +17,7 @@ app.TrackView = Backbone.View.extend({
     },
 
     render: function() {
-	console.log("[TrackView] Render")
+	//console.log("[TrackView] Render")
 	this.$el.html( this.template({track : this.model.toJSON()} ));
 	
 	return this;

@@ -68,6 +68,7 @@ app.PlayerView = Backbone.View.extend({
     set_prev_track : function() {
 	/* note: id could be slug or num */
 	var current_index = this.track_queue.indexOf(this.current_track)
+
 	var prev_index;
 	if (current_index <= 0) {
 	    prev_index = this.track_queue.length - 1
@@ -87,6 +88,12 @@ app.PlayerView = Backbone.View.extend({
 	/*set current track if it was chosen via DOM*/
 	if (e != null) {
 	    this.current_track = this.track_queue.get($(e).attr("id"))
+	}
+	/*else refresh current track 
+	 *make sure obj is from our (possibly) updated collection
+	 */
+	else {
+	    this.current_track = this.track_queue.get(this.current_track.get("id"))
 	}
 
 	this.set_prev_track()

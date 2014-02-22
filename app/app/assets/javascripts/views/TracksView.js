@@ -28,7 +28,7 @@ app.TracksView = Backbone.View.extend({
     },
 
     renderTrack: function(track) {
-	console.log("[TracksView] renderTrack")
+	//console.log("[TracksView] renderTrack")
 
 	var trackView = new app.TrackView( {
 	    model: track
