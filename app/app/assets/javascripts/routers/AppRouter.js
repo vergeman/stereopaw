@@ -5,7 +5,7 @@ app.AppRouter = Backbone.Router.extend({
 
     routes : 
     {
-	'' : 'appview',
+	'' : 'tracksindex',
 	'testpath' : 'test'
     },
     initialize : function() {
@@ -19,14 +19,14 @@ app.AppRouter = Backbone.Router.extend({
 	this.view.remove();
     },
 
-    appview : function() {
-	console.log("[AppRouter] appview")
+    tracksindex : function() {
+	console.log("[AppRouter] tracksindex view")
 
 	/* pass manipulation of tracks collection
 	   i.e. app.Tracks('popular') for type of view
 	*/
 
-	this.view = (new app.AppView(this.trackscollection) )
+	this.view = (new app.TracksIndexView(this.trackscollection) )
 
 	$('#content-wrap').html(this.view.render().el)
 

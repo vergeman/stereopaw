@@ -1,7 +1,7 @@
 var app = app || {};
 
 
-app.AppView = Backbone.View.extend({
+app.TracksIndexView = Backbone.View.extend({
     
     tagname: 'div',
 
@@ -10,7 +10,7 @@ app.AppView = Backbone.View.extend({
     template: HandlebarsTemplates['tracks/index'],
 
     initialize: function(trackscollection) {
-	console.log("[AppView] initialize")
+	console.log("[TracksIndexView] initialize")
 
 	this.tracksView = new app.TracksView(trackscollection);
 

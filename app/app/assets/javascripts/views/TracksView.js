@@ -35,7 +35,6 @@ app.TracksView = Backbone.View.extend({
 	});
 
 	this.$el.append( trackView.render().el );
-	//trackView.setElement(this.$el).render();
     }
 
 });
