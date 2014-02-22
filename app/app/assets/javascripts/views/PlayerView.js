@@ -18,6 +18,8 @@ app.PlayerView = Backbone.View.extend({
 
 	this._update_time_interval = null;
 
+	//tracks_collection.fetch({reset:true})
+
 	this.track_queue = tracks_collection;
 
 	//Backbone Track obj
@@ -53,7 +55,8 @@ app.PlayerView = Backbone.View.extend({
 	console.log("[PlayerView] render")
 	return this;
     },
-    /*next/prev are set to loop*/
+
+    /*next/prev are set to wrap around*/
     set_next_track : function() {
 	/* note: id could be slug or num */
 	var current_index = this.track_queue.indexOf(this.current_track)
@@ -79,7 +82,8 @@ app.PlayerView = Backbone.View.extend({
 
     play : function(e, time) {
 	console.log("[PlayerView] trackplay")
-
+	console.log(this)
+	console.log(this.track_queue)
 	/*set current track if it was chosen via DOM*/
 	if (e != null) {
 	    this.current_track = this.track_queue.get($(e).attr("id"))
@@ -166,20 +170,6 @@ app.PlayerView = Backbone.View.extend({
 	$("#track-time > #duration").html( " / " + track.get("duration_format") )
     },
     
-    getTrackInfo : function(e) {
-
-	return {
-	    id: $(e).attr('id'),
-	    track_id : $(e).attr('track_id'),
-	    service : $(e).attr('service'),
-	    timestamp : $(e).attr('timestamp'),
-	    artist: $(e).attr('artist'),
-	    title: $(e).attr('title'),
-	    duration: $(e).attr('duration'),
-	    duration_format: $(e).attr('duration_format')
-	}
-    },
-
     show_yt : function () {
 	$('#ytplayer').css('left', 'auto')
     },

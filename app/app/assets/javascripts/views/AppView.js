@@ -1,27 +1,31 @@
 var app = app || {};
 
+
 app.AppView = Backbone.View.extend({
     
-    el: '#content',
+    tagname: 'div',
 
-    template: HandlebarsTemplates['main'],
+    id: 'content',
 
-    initialize: function() {
+    template: HandlebarsTemplates['tracks/index'],
+
+    initialize: function(trackscollection) {
 	console.log("[AppView] initialize")
 
-	this.render() //render base layout
-
-	this.trackscollection = new app.Tracks();
-
-	console.log(this.trackscollection)
-
-	this.playerview = new app.PlayerView(this.trackscollection);
-
-	this.tracksview = new app.TracksView(this.trackscollection);
+	this.tracksView = new app.TracksView(trackscollection);
 
     },
 
-    render: function() {},
+    render: function() {
+	
+	//header
+	this.$el.append(this.template() );
+
+	//tracksView
+	this.$el.append(this.tracksView.el)
+
+	return this;
+    },
 
 });
 
