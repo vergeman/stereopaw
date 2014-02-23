@@ -12,7 +12,7 @@
   </head>
 
   <body>
-    <div id="soundcloud_key" data=<%= "#{ENV['SOUNDCLOUD_KEY']}" %> ></div>
+    
     <%= yield %>
 
 
@@ -25,7 +25,6 @@
        %>
 
     <% end %>
-
 
     <%= javascript_include_tag "application" %>
 

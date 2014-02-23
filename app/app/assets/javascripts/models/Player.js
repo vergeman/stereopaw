@@ -31,7 +31,7 @@ app.Player = Backbone.Model.extend({
 	 * gets varied context (nested
 	 * object in choosing services) (in constrast look at stop() 
 	 */
-	youtube : function(self, track_id, timestamp)
+	youtube : function(self, track, timestamp)
 	{
 	    /*load youtube player*/
 	    console.log(self)
@@ -46,10 +46,10 @@ app.Player = Backbone.Model.extend({
 
 	    self.current_player = self.youtube_player;
 
-	    self.current_player.play(self.youtube_player, track_id, timestamp)
+	    self.current_player.play(self.youtube_player, track.get("id"), timestamp)
 	},
 
-	soundcloud : function(self, track_id, timestamp)
+	soundcloud : function(self, track, timestamp)
 	{
 	    /* load SMplayer */
 	    console.log(self)
@@ -66,7 +66,7 @@ app.Player = Backbone.Model.extend({
 	    //play new track
 	    self.current_player = self.soundmanager_player;
 
-	    self.current_player.play(track_id, timestamp)
+	    self.current_player.play(track, timestamp)
 	}
 
     },

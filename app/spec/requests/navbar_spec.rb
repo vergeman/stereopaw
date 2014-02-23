@@ -10,42 +10,22 @@ describe "Root Page" do
 
     describe "[Navigation]" do
 
-      #--Sidebar --#
-      describe "Sidebar" do 
-        it "in sidebar element nav" do
-          page.should have_css("div#sidebar > nav")
-        end
-        
-        #requried for further tests
-        it "is an unordered list (ul)" do
-          page.should have_css("div#sidebar > nav > ul")
-        end
-      end
-
       #--Topbar--#
-      describe "Topbar" do
-        it "has a topbar nav" do
-          page.should have_css("div#topbar > nav")
+      describe "Menu" do
+        it "has a nav" do
+          page.should have_css("body > nav")
         end
 
         it "is an unordered list (ul)" do
-          page.should have_css("div#topbar > nav > ul")
+          page.should have_css("nav > ul")
         end
 
         it "has a title" do
-          page.should have_selector("div#topbar > nav > ul > li.name > h1 > a", text: "SpinClip")
+          page.should have_selector("nav > h6 > a", text: "SpinClip")
         end
 
         it "has a menu item" do
-          page.should have_selector("ul.title-area > li.toggle-topbar.menu-icon > a", text: "MENU")
-        end
-
-        it "has a top-bar-section" do
-          page.should have_css("section.top-bar-section")
-        end
-
-        it "with the class 'hidden for large up ' " do
-          page.should have_selector("section.top-bar-section > ul.hidden-for-large-up")
+          page.should have_selector("nav > a.menu-icon")
         end
 
       end
@@ -84,20 +64,14 @@ describe "Root Page" do
         #loop and test sidebar & navbar
         @navbar.each do | e |
 
-          it "sidebar w/ a list element with id #{e[:div]}" do
-            page.should have_css("div#sidebar > nav > ul > li" + e[:div])
+          it "navbar w/ a list element with id #{e[:div]}" do
+            page.should have_css("nav > ul > li" + e[:div])
           end
 
-          it "sidebar with content #{e[:content]}" do
-            page.should have_selector("div#sidebar > nav > ul > li" +e[:div], text: e[:content])
+          it "navbar with content #{e[:content]}" do
+            page.should have_selector("nav > ul > li" +e[:div], text: e[:content])
 
           end
-
-
-          it "topbar with content #{e[:content]}" do
-            page.should have_selector("section.top-bar-section > ul.hidden-for-large-up > li" +e[:div], text: e[:content])
-          end
-
 
         end
 

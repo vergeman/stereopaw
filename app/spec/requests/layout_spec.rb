@@ -9,31 +9,14 @@ describe "Root Page" do
     }
 
     describe 'Layout' do
-      
-      #--header--#
-      it "should have a header element" do
-        page.should have_css("body > header")
-      end
 
-      it "should have a div#topbar in header" do
-        page.should have_css("header > div#topbar")
+      it "should have a nav element in body" do
+        page.should have_css("body > nav")
       end
 
       #--main--#
-      it "should have a div#main" do
-        page.should have_css("div#main")
-      end
-
-      it "should have a div#sidebar in #main" do
-        page.should have_css("div#main > div#sidebar")
-      end
-
-      it "should have a nav element in #sidebar#main" do
-        page.should have_css("div#main > div#sidebar > nav")
-      end
-
-      it "should have a div#content in #main" do
-        page.should have_css("div#main > div#content")
+      it "should have a content#wrap" do
+        page.should have_css("div#content-wrap")
       end
 
       it "should have a footer" do
@@ -48,16 +31,6 @@ describe "Root Page" do
       end
 
     end
-
-
-    describe "should have a soundcloud key" do
-
-      it "has an api key" do
-        page.should have_css("div#soundcloud_key")
-      end
-
-    end
-
 
   end
 end

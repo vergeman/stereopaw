@@ -7,9 +7,22 @@ app.SoundManager_Player = Backbone.Model.extend({
 	this._player =  null;
 	this._sound=null;
 	this._ready = null;
-	this._track_id = null;
+	this._track = null;
 	this._timestamp=null;
 	this._init_player();
+	this.SOUNDCLOUD_KEY = "82d79419cef128093cfca50715c23cd7"
+    },
+
+    buildUrl : function(track) {
+	switch(track.get("service"))
+	{
+	    case "soundcloud" :
+	    return 'http://api.soundcloud.com/tracks/' + track.get("track_id") + '/stream?client_id=' + this.SOUNDCLOUD_KEY
+
+	    default:
+	    return "";
+	}
+
     },
 
     _init_player : function()
@@ -23,25 +36,26 @@ app.SoundManager_Player = Backbone.Model.extend({
 	    debugMode: true,
 	    onready: function() {
 		self._ready = true;
-		if (self._track_id || self.timestamp) {
+		if (self._track || self.timestamp) {
 		    /*
 		      track_id/timetstamp is null, we haven't called play yet,
 		      so don't load. If populated, we've called play, but sm
 		      wasn't ready at the time -- now it is so load.
 		    */
-		    self._load(self._track_id, self._timestamp)
+		    self._load(self._track, self._timestamp)
 		}
 	    },
 	});
 	console.log("init_player")
     },
-    _load : function(track_id, timestamp)
+
+    _load : function(track, timestamp)
     {
-	var soundcloud_key = $('#soundcloud_key').attr('data');
 	var self = this;
+
 	this._sound = soundManager.createSound({
 	    id: '_sound',
-	    url: 'http://api.soundcloud.com/tracks/' + track_id + '/stream?client_id=' + soundcloud_key,
+	    url: self.buildUrl(track),
 	    stream: true,
 	    onload: function(is_ok) {
 
@@ -71,13 +85,13 @@ app.SoundManager_Player = Backbone.Model.extend({
 	}
 	return this._sound.position
     },
-    play : function(track_id, timestamp) {
+    play : function(track, timestamp) {
 	console.log("[SoundManager] play")
 
 	if (this._ready) {
-	    this._load(track_id, timestamp)
+	    this._load(track, timestamp)
 	}
-	this._track_id = track_id
+	this._track = track
 	this._timestamp = timestamp
 
     },

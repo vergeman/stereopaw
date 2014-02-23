@@ -83,8 +83,7 @@ app.PlayerView = Backbone.View.extend({
 
     play : function(e, time) {
 	console.log("[PlayerView] trackplay")
-	console.log(this)
-	console.log(this.track_queue)
+
 	/*set current track if it was chosen via DOM*/
 	if (e != null) {
 	    this.current_track = this.track_queue.get($(e).attr("id"))
@@ -102,7 +101,7 @@ app.PlayerView = Backbone.View.extend({
 	this.updateTrackInfo(this.current_track)
 	$('#player').show()
 
-	this.player.play[this.current_track.get("service")](this.player, this.current_track.get("track_id"), time)
+	this.player.play[this.current_track.get("service")](this.player, this.current_track, time)
 
 	this.refreshTime(this.current_track)
 
