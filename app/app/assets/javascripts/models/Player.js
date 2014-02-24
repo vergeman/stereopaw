@@ -46,7 +46,7 @@ app.Player = Backbone.Model.extend({
 
 	    self.current_player = self.youtube_player;
 
-	    self.current_player.play(self.youtube_player, track.get("id"), timestamp)
+	    self.current_player.play(self.youtube_player, track.get("track_id"), timestamp)
 	},
 
 	soundcloud : function(self, track, timestamp)
