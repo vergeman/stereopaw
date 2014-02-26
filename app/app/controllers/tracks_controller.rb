@@ -1,6 +1,7 @@
 require 'net/http'
 
 class TracksController < ApplicationController
+  before_filter :authenticate_user!, only: [:create]
 
   def index
     @tracks = Track.all
