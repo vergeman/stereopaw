@@ -21,7 +21,6 @@ app.AppRouter = Backbone.Router.extend({
 	this.loginView = new app.LoginView();
 	$('#content-wrap').html(this.loginView.render().el)
 
-	//this.view.remove();
 	if (this.TracksIndexView) {
 	    this.TracksIndexView.remove()
 	}

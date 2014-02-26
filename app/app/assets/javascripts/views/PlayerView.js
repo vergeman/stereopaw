@@ -12,7 +12,7 @@ app.PlayerView = Backbone.View.extend({
 
 	console.log("[PlayerView] initialize")
 
-	this.playercontrols = new app.PlayerControlView({el : this.el})
+	this.playerslider = new app.PlayerSliderView()
 
 	this.player = new app.Player(this);
 
@@ -155,8 +155,8 @@ app.PlayerView = Backbone.View.extend({
 	}, 350)
     },
     update_slider : function(elapsed, duration) {
-	if (!this.playercontrols.is_busy()) {
-	    this.playercontrols.moveSlider((elapsed / duration) * 100)
+	if (!this.playerslider.is_busy()) {
+	    this.playerslider.moveSlider((elapsed / duration) * 100)
 	}
     },
     update_time : function(time) {

@@ -2,7 +2,9 @@ var app = app || {}
 
 
 
-app.PlayerControlView = Backbone.View.extend({
+app.PlayerSliderView = Backbone.View.extend({
+
+    el: '.progress',
 
     events: function() {},
     initialize: function() {
