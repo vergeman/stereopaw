@@ -1,5 +1,10 @@
 var app = app || {};
 
+/* 
+ * TracksIndexView:
+ * Container for TracksView
+ * header and planned options for that area
+ */
 
 app.TracksIndexView = Backbone.View.extend({
     
@@ -15,7 +20,13 @@ app.TracksIndexView = Backbone.View.extend({
 	this.tracksView = new app.TracksView(trackscollection);
 
     },
+    close : function() {
 
+	this.tracksView.close()
+	this.remove()
+	this.unbind()
+
+    },
     render: function() {
 	
 	//header

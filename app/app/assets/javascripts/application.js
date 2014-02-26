@@ -25,6 +25,7 @@
 //= require_tree ./collections
 //= require_tree ./routers
 //= require_tree ./views
+//= stub ./backbone.debug.js
 //= require_tree .
 //= stub SoundByte-min.js
 

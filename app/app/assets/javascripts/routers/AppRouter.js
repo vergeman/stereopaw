@@ -13,6 +13,8 @@ app.AppRouter = Backbone.Router.extend({
 	this.trackscollection = new app.Tracks();
 	this.playerview = new app.PlayerView(this.trackscollection);
 	this.session = new app.Session()
+
+	this.currentView;
     },
 
     test : function() {
@@ -22,7 +24,7 @@ app.AppRouter = Backbone.Router.extend({
 	$('#content-wrap').html(this.loginView.render().el)
 
 	if (this.TracksIndexView) {
-	    this.TracksIndexView.remove()
+	    this.TracksIndexView.close()
 	}
 	this.navigate('/testpath')
     },
@@ -31,7 +33,7 @@ app.AppRouter = Backbone.Router.extend({
 	console.log("[AppRouter] tracksindex view")
 
 	if (this.loginView) {
-	    this.loginView.remove()
+	    this.loginView.close()
 	}
 
 	/* pass manipulation of tracks collection
@@ -40,6 +42,7 @@ app.AppRouter = Backbone.Router.extend({
 
 	this.TracksIndexView = (new app.TracksIndexView(this.trackscollection) )
 
+	console.log(this.trackscollection)
 	$('#content-wrap').html(this.TracksIndexView.render().el)
 
 	this.navigate("/")

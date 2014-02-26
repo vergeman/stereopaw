@@ -10,6 +10,10 @@ app.TrackView = Backbone.View.extend({
 
     template: HandlebarsTemplates['tracks/show'],    
 
+    initialize: function() {
+	this.listenTo(this.model, "change", this.render)
+    },
+
     events : 
     {
 	'click .play' : 'play',
@@ -33,6 +37,12 @@ app.TrackView = Backbone.View.extend({
     },
     stop : function() {
 	console.log("[TrackView] stop")
+    },
+
+    close : function() {
+	console.log("[TrackView] close")
+	this.remove()
+	this.unbind()
     }
 })
 

@@ -14,6 +14,9 @@ app.LoginView = Backbone.View.extend({
 
     initialize: function() {
 	console.log("[LoginView] initialize")
+
+	_(this).bindAll('close')
+
 	this.authenticity_token = $("meta[name=csrf-token]").attr("content")
     },
 
@@ -41,6 +44,13 @@ app.LoginView = Backbone.View.extend({
     logout: function(e) {
 	e.preventDefault();
 	app.vent.trigger("Session:sign-out")
+    },
+
+    close: function() {
+	console.log("[LoginView] close")
+	this.remove()
+	this.unbind()
     }
+
 
 });
