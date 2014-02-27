@@ -6,46 +6,51 @@ app.AppRouter = Backbone.Router.extend({
     routes : 
     {
 	'' : 'tracksindex',
-	'testpath' : 'test'
+	'login' : 'login'
     },
     initialize : function() {
 	console.log("[AppRouter] initialize")
+
 	this.trackscollection = new app.Tracks();
 	this.playerview = new app.PlayerView(this.trackscollection);
 	this.session = new app.Session()
 
-	this.currentView;
+	this.currentView = null;
     },
 
-    test : function() {
+    login : function() {
 	console.log("[AppRouter] test")
 
+	if (this.currentView) {
+	    this.currentView.close()
+	}
+
 	this.loginView = new app.LoginView();
+	this.currentView = this.loginView
+
 	$('#content-wrap').html(this.loginView.render().el)
 
-	if (this.TracksIndexView) {
-	    this.TracksIndexView.close()
-	}
-	this.navigate('/testpath')
+	this.navigate('/login')
     },
 
     tracksindex : function() {
 	console.log("[AppRouter] tracksindex view")
 
-	if (this.loginView) {
-	    this.loginView.close()
+	if (this.currentView) {
+	    this.currentView.close()
 	}
 
 	/* pass manipulation of tracks collection
 	   i.e. app.Tracks('popular') for type of view
 	*/
-
 	this.TracksIndexView = (new app.TracksIndexView(this.trackscollection) )
+	this.currentView = this.TracksIndexView;
 
 	console.log(this.trackscollection)
 	$('#content-wrap').html(this.TracksIndexView.render().el)
 
 	this.navigate("/")
+
     }
 
 

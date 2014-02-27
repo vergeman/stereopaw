@@ -5,11 +5,17 @@ app.Session = Backbone.Model.extend({
     initialize: function() {
 	console.log("[Sesssion] initialize")
 
+	this.current_user = null;
 	this.csrf_token = $("meta[name=csrf-token]").attr("content")
 
+	/* 
+	 * sucessful sign_in - the POST request
+	 * called from views/LoginView
+	 */
 	this.listenTo(app.vent, "Session:sign-in", this.sign_in)
 	this.listenTo(app.vent, "Session:sign-out", this.sign_out)
 
+	/*post-authentication success; ie state of session*/
 	this.listenTo(app.vent, "Session:logged-in", this.logged_in)
 	this.listenTo(app.vent, "Session:logged-out", this.logged_out)
 
@@ -27,6 +33,7 @@ app.Session = Backbone.Model.extend({
 
     logged_out: function(data) {
 	console.log("[Session] logged_out")
+	this.current_user = null;
 	console.log(data)
 	console.log(this)
     },
@@ -44,6 +51,7 @@ app.Session = Backbone.Model.extend({
 	)
 
     },
+
     sign_in: function(login_data) {
 
 	login_data.authenticity_token = this.csrf_token;
