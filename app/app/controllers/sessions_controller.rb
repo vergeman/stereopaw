@@ -21,11 +21,13 @@ class SessionsController < Devise::SessionsController
     signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
 
     set_flash_message :notice, :signed_out if signed_out && is_flashing_format?
-    
+
     yield resource if block_given?
 
     response.headers['X-CSRF-Token'] = form_authenticity_token
     render :json => { 'logout' => true }.to_json
 
   end
+
+
 end

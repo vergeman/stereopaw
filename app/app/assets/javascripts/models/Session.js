@@ -19,6 +19,8 @@ app.Session = Backbone.Model.extend({
 	this.listenTo(app.vent, "Session:logged-in", this.logged_in)
 	this.listenTo(app.vent, "Session:logged-out", this.logged_out)
 
+	/*initial authentitication */
+	this.auth()
     },
     
     logged_in : function(data) {
@@ -50,6 +52,10 @@ app.Session = Backbone.Model.extend({
 	    }
 	)
 
+    },
+
+    auth : function() {
+	this.sign_in({})
     },
 
     sign_in: function(login_data) {
@@ -87,6 +93,7 @@ app.Session = Backbone.Model.extend({
 
 	    error: function(jqXHR, textStatus, errorThrown) {
 		console.log("[LoginView] Error")
+		//TODO: return invalid login message
 		//returns...
 		console.log(textStatus) //error
 		console.log(errorThrown) //unauthorized		

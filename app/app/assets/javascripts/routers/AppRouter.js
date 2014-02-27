@@ -15,6 +15,8 @@ app.AppRouter = Backbone.Router.extend({
 	this.playerview = new app.PlayerView(this.trackscollection);
 	this.session = new app.Session()
 
+	this.profileview = new app.ProfileView()
+
 	this.currentView = null;
     },
 
