@@ -27,7 +27,6 @@
 //= require_tree ./views
 //= stub ./backbone.debug.js
 //= require_tree .
-//= stub SoundByte-min.js
 
 
 $(document).foundation();

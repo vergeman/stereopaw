@@ -7,13 +7,6 @@ class SessionsController < Devise::SessionsController
     render :json => resource
   end
 
-  # GET /resource/sign_in
-  def new
-    self.resource = resource_class.new(sign_in_params)
-    clean_up_passwords(resource)
-    respond_with(resource, serialize_options(resource))
-  end
-
 
   #override for json response
   # POST /resource/sign_in
@@ -39,14 +32,11 @@ class SessionsController < Devise::SessionsController
 
   end
 
-
   #POST /resource/sign_out
   def destroy
     #redirect_path = after_sign_out_path_for(resource_name)
     signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
-
     set_flash_message :notice, :signed_out if signed_out && is_flashing_format?
-
     yield resource if block_given?
 
     render :json => { 'logout' => true }.to_json
