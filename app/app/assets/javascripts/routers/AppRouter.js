@@ -8,6 +8,7 @@ app.AppRouter = Backbone.Router.extend({
 	'' : 'tracksindex',
 	'login' : 'login'
     },
+
     initialize : function() {
 	console.log("[AppRouter] initialize")
 
@@ -15,7 +16,7 @@ app.AppRouter = Backbone.Router.extend({
 	this.playerview = new app.PlayerView(this.trackscollection);
 	this.session = new app.Session()
 
-	this.profileview = new app.ProfileView()
+	this.profileview = new app.ProfileView(this.session)
 
 	this.currentView = null;
     },

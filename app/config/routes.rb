@@ -1,11 +1,13 @@
 App::Application.routes.draw do
   devise_for :users, controllers: { sessions: "sessions" }
+
+  #custom devise route example
+  devise_scope :user do
+    post '/users/auth' => "sessions#auth", :as => 'auth_user_session'
+  end
+
   resources :tracks
 
-#custom route example
-#  devise_scope :user do
-#   post '/users/auth' => "sessions#auth", :as => 'auth_user_session'
-#  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

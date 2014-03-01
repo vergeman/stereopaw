@@ -1,7 +1,7 @@
 require 'net/http'
 
 class TracksController < ApplicationController
-  before_filter :authenticate_user!, only: [:create]
+  before_filter :authenticate_user!, only: [:new, :create]
 
   def index
     @tracks = Track.all
@@ -10,7 +10,6 @@ class TracksController < ApplicationController
       format.html {}
       format.json { render :json => @tracks.order("created_at DESC") }
     end
-
     
   end
 
@@ -27,6 +26,7 @@ class TracksController < ApplicationController
     else
       render 'new'
     end
+
   end
 
 
@@ -34,8 +34,13 @@ class TracksController < ApplicationController
     @track = Track.find_by_id(params[:id])
   end
 
+
+
+
+
 #strong params
 private
+
   def new_params
     params.require(:track).permit(:track_id, 
                                   :artist, 
