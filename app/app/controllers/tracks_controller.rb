@@ -2,16 +2,17 @@ require 'net/http'
 
 class TracksController < ApplicationController
   before_filter :authenticate_user!, only: [:new, :create]
+  respond_to :html, :json
 
   def index
     @tracks = Track.all
 
-    respond_to do |format|
-      format.html {}
-      format.json { render :json => @tracks.order("created_at DESC") }
+    respond_with(@tracks.order("created_at DESC")) do |format|
+      format.json { render }
     end
     
   end
+
 
   def new
     @track = Track.new(new_params)
@@ -20,13 +21,8 @@ class TracksController < ApplicationController
 
   def create
     @track = Track.new(new_params)
-    if @track.save
-      flash[:success] = "Success"
-      redirect_to @track
-    else
-      render 'new'
-    end
-
+    flash[:success] = "Success" if @track.save
+    respond_with(@track)
   end
 
 
