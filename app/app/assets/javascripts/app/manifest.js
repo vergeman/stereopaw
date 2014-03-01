@@ -10,10 +10,20 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require jquery_ujs
-//= require foundation
-//= require turbolinks
+
+//= require ./lib/underscore-min.js
+//= require_tree ./lib
+//= stub ./lib/backbone.debug.js
+
+//= require handlebars.runtime
+//= require_tree ../../templates
+
+//= require_tree ./models
+//= require_tree ./collections
+//= require_tree ./routers
+//= require_tree ./views
+
+//= require ./app.js
 
 
 $(document).foundation();
