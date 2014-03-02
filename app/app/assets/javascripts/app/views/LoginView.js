@@ -22,7 +22,7 @@ app.LoginView = Backbone.View.extend({
     },
 
     render: function() {
-	this.$el.html(this.template({authenticity_token : this.authenticity_token}) );
+	this.$el.html(this.template({authenticity_token : this.authenticity_token, sidebar : ""}) );
 	return this;
     },
 

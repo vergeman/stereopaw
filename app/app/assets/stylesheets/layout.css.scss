@@ -17,7 +17,6 @@ nav {
     position:fixed !important;
     top:0;
     left:0;
-
     display:inline;
     z-index:100;
 
@@ -94,7 +93,6 @@ nav {
 
 
 #content {
-
     padding-left: 1.25rem;
     padding-right: 1.25rem;
     padding-bottom: 18rem;
@@ -105,7 +103,10 @@ nav {
 	margin-top: 0;
 	margin-left: $sidebar-width;
     }
+}
 
+#content.noside {
+    margin-left: 0
 }
 
 hr { margin: 0}

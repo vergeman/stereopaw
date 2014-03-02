@@ -8,9 +8,11 @@ var app = app || {};
 
 app.TracksIndexView = Backbone.View.extend({
     
-    tagname: 'div',
+    tagName: 'div',
 
     id: 'content',
+
+    className: 'main',
 
     template: JST['tracks/index'],
 
