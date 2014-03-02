@@ -1,10 +1,11 @@
+
 var app = app || {};
 
 app.ProfileView = Backbone.View.extend({
 
     el: '#profile',
 
-    template: HandlebarsTemplates['users/profile'],
+    template: JST['users/profile'],
 
     events : {},
 
@@ -20,7 +21,7 @@ app.ProfileView = Backbone.View.extend({
 	console.log(this.session)
 	console.log(this.session.get("current_user").toJSON() )
 
-	this.$el.html(this.template(this.session.get("current_user").toJSON() ))
+	this.$el.html(this.template({user: this.session.get("current_user").toJSON()} ))
     },
 
     close : function() {

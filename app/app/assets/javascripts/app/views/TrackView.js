@@ -1,3 +1,4 @@
+
 var app = app || {};
 
 /* Track View */
@@ -8,7 +9,7 @@ app.TrackView = Backbone.View.extend({
 
     className: 'track',
 
-    template: HandlebarsTemplates['tracks/show'],    
+    template: JST['tracks/show'],    
 
     initialize: function() {
 	this.listenTo(this.model, "change", this.render)
@@ -22,7 +23,8 @@ app.TrackView = Backbone.View.extend({
 
     render: function() {
 	//console.log("[TrackView] Render")
-	this.$el.html( this.template({track : this.model.toJSON()} ));
+
+	this.$el.html( this.template({track: this.model.toJSON()}) );
 	
 	return this;
     },

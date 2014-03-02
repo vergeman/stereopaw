@@ -12,7 +12,7 @@
              value: "✓"}
       %input{name: "authenticity_token",
              type: "hidden",
-             value: "{{authenticity_token}}"}
+             value: "#{@authenticity_token}"
         
     %div
       %label{for: "user_email"} Email

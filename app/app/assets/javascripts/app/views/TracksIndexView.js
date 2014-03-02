@@ -12,7 +12,7 @@ app.TracksIndexView = Backbone.View.extend({
 
     id: 'content',
 
-    template: HandlebarsTemplates['tracks/index'],
+    template: JST['tracks/index'],
 
     initialize: function(trackscollection) {
 	console.log("[TracksIndexView] initialize")

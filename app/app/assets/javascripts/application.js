@@ -16,4 +16,5 @@
 //= require turbolinks
 
 
+
 $(document).foundation();

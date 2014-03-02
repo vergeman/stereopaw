@@ -1,3 +1,4 @@
+
 var app = app || {};
 
 app.LoginView = Backbone.View.extend({
@@ -5,7 +6,7 @@ app.LoginView = Backbone.View.extend({
     tagname: 'div',
     id: 'login',
 
-    template: HandlebarsTemplates['users/login'],
+    template: JST['users/login'],
 
     events : {
 	'click input[type=submit]' : 'submit',
