@@ -7,7 +7,9 @@ app.ProfileView = Backbone.View.extend({
 
     template: JST['users/profile'],
 
-    events : {},
+    events : {
+	'click #logout' : 'logout'
+    },
 
     initialize : function(session) {
 	console.log("[ProfileView] initialize")
@@ -22,6 +24,11 @@ app.ProfileView = Backbone.View.extend({
 	console.log(this.session.get("current_user").toJSON() )
 
 	this.$el.html(this.template({user: this.session.get("current_user").toJSON()} ))
+    },
+
+    logout: function(e) {
+	e.preventDefault();
+	app.vent.trigger("Session:sign-out")
     },
 
     close : function() {

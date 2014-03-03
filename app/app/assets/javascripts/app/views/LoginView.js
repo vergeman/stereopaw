@@ -10,7 +10,6 @@ app.LoginView = Backbone.View.extend({
 
     events : {
 	'click input[type=submit]' : 'submit',
-	'click #logout' : 'logout'
     },
 
     initialize: function() {
@@ -40,11 +39,6 @@ app.LoginView = Backbone.View.extend({
 
 	app.vent.trigger("Session:sign-in", data)
 			 
-    },
-
-    logout: function(e) {
-	e.preventDefault();
-	app.vent.trigger("Session:sign-out")
     },
 
     close: function() {
