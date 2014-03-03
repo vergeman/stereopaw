@@ -6,7 +6,8 @@ app.AppRouter = Backbone.Router.extend({
     routes : 
     {
 	'' : 'tracksindex',
-	'login' : 'login'
+	'login' : 'login',
+	'signup' : 'signup'
     },
 
     initialize : function() {
@@ -20,9 +21,23 @@ app.AppRouter = Backbone.Router.extend({
 
 	this.currentView = null;
     },
+    signup : function() {
+	console.log("[AppRouter] login")
 
+	if (this.currentView) {
+	    this.currentView.close()
+	}
+
+	this.signupView = new app.SignupView();
+	this.currentView = this.signupView
+
+	$('#content-wrap').html(this.signupView.render().el)
+
+	this.navigate('/signup')
+
+    },
     login : function() {
-	console.log("[AppRouter] test")
+	console.log("[AppRouter] login")
 
 	if (this.currentView) {
 	    this.currentView.close()

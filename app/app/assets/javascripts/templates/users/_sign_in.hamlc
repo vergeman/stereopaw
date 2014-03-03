@@ -1,6 +1,5 @@
-
 %header
-  %h1 Sign In
+  %h1 Login
 %hr
 
 #sign-in
@@ -48,4 +47,4 @@
       Need an account?
       
     %div
-      %a#sign-up-link.button.expand{href: "/users/sign_up"} SIGN UP
+      %a#sign-up-link.button.expand{href: "/#signup"} SIGN UP

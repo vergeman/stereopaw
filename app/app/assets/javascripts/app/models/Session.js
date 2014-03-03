@@ -17,6 +17,9 @@ app.Session = Backbone.Model.extend({
 	this.listenTo(app.vent, "Session:logged-in", this.logged_in)
 	this.listenTo(app.vent, "Session:logged-out", this.logged_out)
 
+	/*general request event*/
+	this.listenTo(app.vent, "Request", this.request)
+
 	/*initial authentitication */
 	this.auth()
     },
@@ -66,7 +69,8 @@ app.Session = Backbone.Model.extend({
 		if (data) {
 		    app.vent.trigger("Session:logged-in", data) 
 		}
-	    }
+	    },
+	    function() {}
 	)
     },
     sign_out: function() {
@@ -77,7 +81,8 @@ app.Session = Backbone.Model.extend({
 	    null,
 	    function(data) { 
 		app.vent.trigger("Session:logged-out", data) 
-	    }
+	    },
+	    function() {}
 	)
 
     },
@@ -91,12 +96,13 @@ app.Session = Backbone.Model.extend({
 	    login_data,
 	    function(data) { 
 		app.vent.trigger("Session:logged-in", data) 
-	    }
+	    },
+	    function() {}
 	)
 
     },
 
-    request: function(type, url, post_data, cb) {
+    request: function(type, url, post_data, cb, cberror) {
 	var self = this;
 
 	$.ajax({
@@ -107,17 +113,18 @@ app.Session = Backbone.Model.extend({
 		request.setRequestHeader("X-CSRF-Token", $.cookie('csrf_token'));
 	    },
 	    success: function(data, textStatus, jqXHR) {
-		console.log("[LoginView] Success")
-		cb(data)
+		console.log("[Request] Success")
+		cb(data, textStatus, jqXHR)
 
 	    },
 
 	    error: function(jqXHR, textStatus, errorThrown) {
-		console.log("[LoginView] Error")
+		console.log("[Request] Error")
 		//TODO: return invalid login message
 		//returns...
 		console.log(textStatus) //error
-		console.log(errorThrown) //unauthorized		
+		console.log(errorThrown) //unauthorized
+		cberror()
 	    }
 	});
 

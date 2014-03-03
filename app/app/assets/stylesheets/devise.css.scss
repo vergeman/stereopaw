@@ -1,10 +1,9 @@
-/*@import devise/*/
 $form-input-width: 200px;
 $label-prefix-width: 42px;
 $sign-in-width: $form-input-width + $label-prefix-width;
 $medium-up-addition: 100px;
 
-#sign-in {
+#sign-in, #sign-up {
     font-family: 'lato', 'open sans', 'helvetica neue', 'georgia';
 
     margin: 4rem auto;
@@ -20,7 +19,7 @@ $medium-up-addition: 100px;
 	padding: 0 5px;
     }
 
-    .forgotpassword {
+    .forgotpassword, .haveaccount {
 	font-size: 14px;
 	float:right;
 	margin-bottom: 2rem;
