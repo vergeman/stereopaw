@@ -3,10 +3,10 @@ var app = app || {};
 
 app.LoginView = Backbone.View.extend({
 
-    tagname: 'div',
-    id: 'login',
+    tagName: 'div',
+    id: 'content',
 
-    template: JST['users/login'],
+    template: JST['users/sign_in'],
 
     events : {
 	'click input[type=submit]' : 'submit',

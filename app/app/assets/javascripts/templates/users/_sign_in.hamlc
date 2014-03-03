@@ -1,0 +1,51 @@
+
+%header
+  %h1 Sign In
+%hr
+
+#sign-in
+
+  %form#new_user.new_user{"accept-charset" => "UTF-8",
+                          action: "/users/sign_in",
+                          method: "post"}
+    
+    %div{style: "margin:0;padding:0;display:inline"}
+      %input{name: "utf8",
+             type: "hidden",
+             value: "✓"}
+      %input{name: "authenticity_token",
+             type: "hidden",
+             value: "#{@authenticity_token}"
+        
+    %div
+      %div.input-label-prefix
+        %span.prefix
+          %i.fi-torso.medium
+      %div.input-text-post
+        %input#user_email{autofocus: "autofocus",
+                          name: "user[email]",
+                          type: "email",
+                          value: "",
+                          placeholder: "Email"}
+    %div
+      %div.input-label-prefix
+        %span.prefix
+          %i.fi-lock.medium
+      %div.input-text-post
+        %input#user_password{name: "user[password]",
+                             type: "password",
+                             placeholder: "Password"}
+      
+    %div
+      %input.input-submit.button.expand{name: "commit", type: "submit", value: "LOGIN"}
+
+    %p.forgotpassword
+      %a{href: "/users/password/new"} Forgot your password?
+
+    %hr
+      
+    %p.needaccount
+      Need an account?
+      
+    %div
+      %a#sign-up-link.button.expand{href: "/users/sign_up"} SIGN UP

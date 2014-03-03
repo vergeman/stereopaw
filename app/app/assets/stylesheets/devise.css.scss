@@ -1,2 +1,65 @@
 /*@import devise/*/
+$form-input-width: 200px;
+$label-prefix-width: 42px;
+$sign-in-width: $form-input-width + $label-prefix-width;
+$medium-up-addition: 100px;
+
+#sign-in {
+    font-family: 'lato', 'open sans', 'helvetica neue', 'georgia';
+
+    margin: 4rem auto;
+    display: block;
+    width: $sign-in-width;
+
+    @media #{$medium-up} {
+	width: $sign-in-width + $medium-up-addition;
+    }
+
+    .medium {
+	font-size: 26px;
+	padding: 0 5px;
+    }
+
+    .forgotpassword {
+	font-size: 14px;
+	float:right;
+	margin-bottom: 2rem;
+    }
+
+    .needaccount { 
+	margin-top: 2rem;
+	text-align:center; 
+    }
+}
+
+#sign-up-link {
+    padding: 8px 0 8px 0;
+    background: #f2f2f2;
+    color: #222;
+    border: 1px solid #d8d8d8;
+
+    &:hover {
+	background: darken(#f2f2f2, 10%);
+    }
+}
+.input-submit {
+    margin-top: 1rem;
+    padding: 8px 0 8px 0;
+}
+
+.input-label-prefix {
+    position:relative;
+    float:left;
+    width: $label-prefix-width;
+}
+
+.input-text-post {
+    position:relative;
+    float:left;
+    width: $form-input-width;
+
+    @media #{$medium-up} {
+	width: $form-input-width + $medium-up-addition;
+    }
+}
 
