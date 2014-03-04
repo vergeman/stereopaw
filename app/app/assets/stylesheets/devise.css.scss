@@ -3,6 +3,8 @@ $label-prefix-width: 42px;
 $sign-in-width: $form-input-width + $label-prefix-width;
 $medium-up-addition: 100px;
 
+$input-height: 2.3125rem;
+
 #sign-in, #sign-up {
     font-family: 'lato', 'open sans', 'helvetica neue', 'georgia';
 
@@ -29,7 +31,33 @@ $medium-up-addition: 100px;
 	margin-top: 2rem;
 	text-align:center; 
     }
+
+    /*error form*/
+    small {
+	padding: .3625rem 0.5625rem .3625rem 0.5625rem;
+	margin-top: -1rem;
+    }
 }
+
+small.error {
+    background: none;
+    color:orangered;
+    font-size: .85rem;
+}
+
+.error_email, .error_password, .error_password_confirmation {
+    color:orangered;
+    display:none;
+}
+
+/*error*/
+.errormessage {
+    display:none;
+    text-align:center;
+    font-size: 16px;
+    color:orangered;
+}
+
 
 #sign-up-link {
     padding: 8px 0 8px 0;
@@ -41,6 +69,8 @@ $medium-up-addition: 100px;
 	background: darken(#f2f2f2, 10%);
     }
 }
+
+/*form input widths*/
 .input-submit {
     margin-top: 1rem;
     padding: 8px 0 8px 0;

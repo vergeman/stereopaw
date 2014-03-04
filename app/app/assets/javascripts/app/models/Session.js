@@ -84,7 +84,6 @@ app.Session = Backbone.Model.extend({
 	    },
 	    function() {}
 	)
-
     },
 
     sign_in: function(login_data) {
@@ -97,7 +96,10 @@ app.Session = Backbone.Model.extend({
 	    function(data) { 
 		app.vent.trigger("Session:logged-in", data) 
 	    },
-	    function() {}
+	    function(jqXHR) {
+		console.log("[Sign In] error")
+		app.vent.trigger("LoginView:signin:error", jqXHR)
+	    }
 	)
 
     },
@@ -111,10 +113,19 @@ app.Session = Backbone.Model.extend({
 	    data: post_data,
 	    beforeSend: function(request) {
 		request.setRequestHeader("X-CSRF-Token", $.cookie('csrf_token'));
+		document.body.style.cursor='wait'
 	    },
 	    success: function(data, textStatus, jqXHR) {
 		console.log("[Request] Success")
+
+		/*lazy but if instructed to redirect, just do so*/
+		if (jqXHR.getResponseHeader('AJAX-STATUS') == 302) {
+		    window.location.replace(data.location)
+		}
+
+		/*otherwise callback func()*/
 		cb(data, textStatus, jqXHR)
+
 
 	    },
 
@@ -122,9 +133,15 @@ app.Session = Backbone.Model.extend({
 		console.log("[Request] Error")
 		//TODO: return invalid login message
 		//returns...
+		console.log(jqXHR)
 		console.log(textStatus) //error
 		console.log(errorThrown) //unauthorized
-		cberror()
+
+		cberror(jqXHR, textStatus, errorThrown)
+	    },
+	    complete : function(jqXHR, textStatus) {
+		console.log("[Request] Complete")
+		document.body.style.cursor='default'
 	    }
 	});
 

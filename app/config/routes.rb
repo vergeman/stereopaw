@@ -1,7 +1,7 @@
 App::Application.routes.draw do
-  devise_for :users, controllers: { sessions: "sessions" }
+  devise_for :users, controllers: { sessions: "sessions", registrations: "registrations"}
 
-  #custom devise route example
+  #custom devise route
   devise_scope :user do
     post '/users/auth' => "sessions#auth", :as => 'auth_user_session'
   end

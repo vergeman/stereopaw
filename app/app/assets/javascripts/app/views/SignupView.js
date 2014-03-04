@@ -16,6 +16,8 @@ app.SignupView = Backbone.View.extend({
 
 	_(this).bindAll('close')
 
+	this.listenTo(app.vent, "SignupView:signup:error", this.show_error)
+
 	this.authenticity_token = $("meta[name=csrf-token]").attr("content")
     },
 
@@ -24,9 +26,27 @@ app.SignupView = Backbone.View.extend({
 	return this;
     },
 
+    show_error: function(errors) {
+	//clear all errors
+	$('small').removeClass('error')
+	$('small').html('')
+	$('.input-label-prefix > span').css("color", "#333333")
+
+	//add any errors
+	_.each(errors, function(val, key) {
+
+	    $('.error_' + key).html(val)
+	    $('.error_' + key).addClass('error')
+	    $('.error_' + key).parent().prev().children().css("color", "orangered")
+	    $('.error_' + key).show()
+	});
+
+    },
+
     submit : function(e) {
 	e.preventDefault();
 	console.log("Submit")
+
 
 	var data = {
 	    user : {
@@ -49,11 +69,16 @@ app.SignupView = Backbone.View.extend({
 			 "/users",
 			 data,
 			 function(data, textStatus, jqXHR) {
+			     console.log("[SignupView] Request")
+			     if ('errors' in data) {
+				 app.vent.trigger("SignupView:signup:error", data.errors)
+			     }
+
 			     console.log(data)
 			     console.log(textStatus)
 			     console.log(jqXHR)
 			 },
-			 function() {}
+			 function(jqXHR, textStatus, errorThrown) {}
 			)
 			 
     },

@@ -17,12 +17,21 @@ app.LoginView = Backbone.View.extend({
 
 	_(this).bindAll('close')
 
+	this.listenTo(app.vent, "LoginView:signin:error", this.show_error)
 	this.authenticity_token = $("meta[name=csrf-token]").attr("content")
     },
 
     render: function() {
 	this.$el.html(this.template({authenticity_token : this.authenticity_token}) );
 	return this;
+    },
+
+    show_error: function(jqXHR) {
+	console.log("[LoginView] showerror")
+	var msg = jqXHR.responseJSON.error
+	$('.errormessage').html(msg)
+	$('.errormessage').show()
+	$('.input-label-prefix > span').css("color", "orangered")
     },
 
     submit : function(e) {

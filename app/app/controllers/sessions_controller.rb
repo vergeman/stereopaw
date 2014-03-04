@@ -16,7 +16,6 @@ class SessionsController < Devise::SessionsController
     sign_in(resource_name, resource)
     yield resource if block_given?
 
-
     respond_with(resource) do |format|
 
       format.html {        
