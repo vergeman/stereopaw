@@ -107,6 +107,7 @@ app.LoginView = Backbone.View.extend({
 		    self.session.set("state", 
 			     app.Session.SessionState.LOGGEDOUT)
 		}
+		console.log("state: " + self.session.get("state"))
 
 		app.vent.trigger("Session:logged-in", data) 
 	    },

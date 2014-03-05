@@ -113,7 +113,7 @@ app.SignupView = Backbone.View.extend({
 			     console.log(data)
 			     console.log(textStatus)
 			     console.log(jqXHR)
-			     
+			     console.log("state: " + self.session.get("state"))			     
 			 },
 			 function(jqXHR, textStatus, errorThrown) {}
 			)

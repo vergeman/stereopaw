@@ -155,12 +155,12 @@ app.Session = Backbone.Model.extend({
 
 
 		/*not a 401 unauthorized error, who knows*/
-		if (errorThrown.toLowerCase() != "unauthorized") {
+		if (errorThrown.trim().toLowerCase() != "unauthorized") {
 		    self.set("state", app.Session.SessionState.ERROR)
 		}else {
 		    self.set("state", app.Session.SessionState.LOGGEDOUT)
 		}
-
+		console.log("state: " + self.get("state"))
 		cberror(jqXHR, textStatus, errorThrown)
 	    },
 
