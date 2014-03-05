@@ -100,10 +100,10 @@ app.SignupView = Backbone.View.extend({
 				  data.user.email) {
 
 				 self.session.set("state", 
-					  app.Session.SessionState.LOGGEDIN)
+						  app.Session.SessionState.LOGGEDIN)
 			     } else {
 				 self.session.set("state", 
-					  app.Session.SessionState.LOGGEDOUT)
+						  app.Session.SessionState.LOGGEDOUT)
 			     }
 
 			     if ('errors' in data) {
@@ -119,7 +119,7 @@ app.SignupView = Backbone.View.extend({
 			)
 			 
     },
-
+    
     close: function() {
 	console.log("[SignupView] close")
 	this.remove()

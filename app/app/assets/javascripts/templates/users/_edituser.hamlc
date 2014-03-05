@@ -1,48 +1,82 @@
 %header
-  %h1 Edit User
+  %h1 Settings
 %hr
 
 #edit-user
-  %form#edit_user.edit_user{"accept-charset" => "UTF-8", action: "/users", method: "post"}
+
+  %h4 Account Settings
+  %form#edit_user.edit_user{"accept-charset" => "UTF-8",
+                            action: "/users",
+                            method: "post"}
 
     %div{style: "margin:0;padding:0;display:inline"}
-      %input{name: "utf8", type: "hidden", value: "✓"}
-      %input{name: "_method", type: "hidden", value: "put"}
-      %input{name: "authenticity_token", type: "hidden", value: "#{@authenticity_token}"}
+      %input{name: "utf8",
+             type: "hidden",
+             value: "✓"}
+      %input{name: "_method",
+             type: "hidden",
+             value: "put"}
+      %input{name: "authenticity_token",
+             type: "hidden",
+             value: "#{@authenticity_token}"}
 
     %div
-      %label{for: "user_email"} Email
-      %br
-      %input#user_email{autofocus: "autofocus", name: "user[email]", type: "email", value: "#{@user.get("email")}"}
+      %label{for: "user_email"}Email
+      %div.input-label-prefix
+        %span.prefix
+          %i.fi-at-sign.medium
+      %div.input-text-post
+        %input#user_email{autofocus: "autofocus",
+                        name: "user[email]",
+                        type: "email",
+                        value: "#{@user.get("email")}",
+                        placeholder: "Email"}
+        %small{class: "error_email"}
+
+          
+    %div
+      %label{for: "user_password"} Password (leave blank if you don't want to change it)
+      %div.input-label-prefix
+        %span.prefix
+          %i.fi-lock.medium
+      %div.input-text-post
+        %input#user_password{autocomplete: "off",
+                             name: "user[password]",
+                             type: "password"}
+        %small{class: "error_password"}
 
     %div
-      %label{for: "user_password"} Password
-      %i (leave blank if you don't want to change it)
-      %br
-      %input#user_password{autocomplete: "off", name: "user[password]", type: "password"}
-
+      %label{for: "user_password_confirmation"} Confirm new password
+      %div.input-label-prefix
+        %span.prefix
+          %i.fi-lock.medium
+      %div.input-text-post
+        %input#user_password_confirmation{name: "user[password_confirmation]", type: "password"}
+        %small{class: "error_password_confirmation"}
+          
+    %br
     %div
-      %label{for: "user_password_confirmation"} Password confirmation
-      %br
-      %input#user_password_confirmation{name: "user[password_confirmation]", type: "password"}
-
+      %label{for: "user_current_password"} Current password (required to confirm your changes)
+      %div.input-label-prefix
+        %span.prefix
+          %i.fi-lock.medium
+      %div.input-text-post
+        %input#user_current_password{name: "user[current_password]", type: "password"}
+        %small{class: "error_current_password"}
+          
     %div
-      %label{for: "user_current_password"} Current password
-      %i (we need your current password to confirm your changes)
-      %br
-      %input#user_current_password{name: "user[current_password]", type: "password"}
+      %input#edit-user-button.input-submit.button.expand{name: "commit",
+                                       type: "submit",
+                                       value: "Update"}
+  %br
+  %hr
 
-    %div
-      %input{name: "commit", type: "submit", value: "Update"}
-
-
-  %h3 Cancel my account
-  %p Unhappy?
+  %p.cancel Not a fan?
 
   %form.button_to{action: "/users", method: "post"}
     %div
       %input{name: "_method", type: "hidden", value: "delete"}
-      %input{"data-confirm" => "Are you sure?", type: "submit", value: "Cancel my account"}
-      %input{name: "authenticity_token", type: "hidden", value: "#{@authenticity_token}"}
-
-  %a{href: "javascript:history.back()"} Back
+      %input{name: "authenticity_token",
+             type: "hidden",
+             value: "#{@authenticity_token}"}
+      %input#cancel-account-button.input-submit.button.expand{"data-confirm" => "Are you sure?", type: "submit", value: "Cancel my account"}

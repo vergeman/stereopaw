@@ -5,7 +5,7 @@ $medium-up-addition: 100px;
 
 $input-height: 2.3125rem;
 
-#sign-in, #sign-up {
+#sign-in, #sign-up, #edit-user {
     font-family: 'lato', 'open sans', 'helvetica neue', 'georgia';
 
     margin: 4rem auto;
@@ -27,7 +27,7 @@ $input-height: 2.3125rem;
 	margin-bottom: 2rem;
     }
 
-    .needaccount { 
+    .needaccount, .cancel {
 	margin-top: 2rem;
 	text-align:center; 
     }
@@ -59,7 +59,7 @@ small.error {
 }
 
 
-#sign-up-link {
+#sign-up-link, #cancel-account-button {
     padding: 8px 0 8px 0;
     background: #f2f2f2;
     color: #222;

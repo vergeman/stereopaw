@@ -29,7 +29,7 @@ app.AppRouter = Backbone.Router.extend({
 
 	//if we haven't checked login, wait?
 	//if we're not logged in, goto #login
-	if (this.session.get("state") != app.Session.SessionState.LOGGEDIN) {
+	if (this.session.get("state") == app.Session.SessionState.LOGGEDOUT) {
 	    Backbone.history.navigate("/#", {trigger:true})
 	    return;
 	}
