@@ -7,7 +7,8 @@ app.AppRouter = Backbone.Router.extend({
     {
 	'' : 'tracksindex',
 	'login' : 'login',
-	'signup' : 'signup'
+	'signup' : 'signup',
+	'edituser' : 'edituser'
     },
 
     initialize : function() {
@@ -20,15 +21,48 @@ app.AppRouter = Backbone.Router.extend({
 	this.profileview = new app.ProfileView(this.session)
 
 	this.currentView = null;
+
     },
-    signup : function() {
-	console.log("[AppRouter] login")
+
+    edituser : function() {
+	console.log("[AppRouter] edituser")
+
+	//if we haven't checked login, wait?
+	//if we're not logged in, goto #login
+	if (this.session.get("state") != app.Session.SessionState.LOGGEDIN) {
+	    Backbone.history.navigate("/#", {trigger:true})
+	    return;
+	}
+
+
 
 	if (this.currentView) {
 	    this.currentView.close()
 	}
 
-	this.signupView = new app.SignupView();
+	this.edituserView = new app.EdituserView(this.session);
+	this.currentView = this.edituserView
+
+
+	$('#content-wrap').html(this.edituserView.render().el)
+	this.navigate('/edituser')
+
+
+    },
+
+    signup : function() {
+	console.log("[AppRouter] login")
+
+	if (this.session.get("state") == app.Session.SessionState.LOGGEDIN) {
+	    Backbone.history.navigate("/", {trigger:true})
+	    return
+	}
+
+	if (this.currentView) {
+	    this.currentView.close()
+	}
+
+	this.signupView = new app.SignupView(this.session);
 	this.currentView = this.signupView
 
 	$('#content-wrap').html(this.signupView.render().el)
@@ -36,21 +70,29 @@ app.AppRouter = Backbone.Router.extend({
 	this.navigate('/signup')
 
     },
+
     login : function() {
 	console.log("[AppRouter] login")
+
+
+	if (this.session.get("state") == app.Session.SessionState.LOGGEDIN) {
+	    Backbone.history.navigate("/", {trigger:true})
+	    return
+	}
+
 
 	if (this.currentView) {
 	    this.currentView.close()
 	}
 
-	this.loginView = new app.LoginView();
+	this.loginView = new app.LoginView(this.session);
 	this.currentView = this.loginView
 
 	$('#content-wrap').html(this.loginView.render().el)
 
 	this.navigate('/login')
     },
-
+    
     tracksindex : function() {
 	console.log("[AppRouter] tracksindex view")
 

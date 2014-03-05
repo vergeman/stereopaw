@@ -28,7 +28,21 @@ app.ProfileView = Backbone.View.extend({
 
     logout: function(e) {
 	e.preventDefault();
-	app.vent.trigger("Session:sign-out")
+	//app.vent.trigger("Session:sign-out")
+	this.sign_out()
+    },
+
+    sign_out: function() {
+	console.log("[LoginView] sign_out")
+	this.session.request(
+	    'DELETE',
+	    '/users/sign_out.json', 
+	    null,
+	    function(data) { 
+		app.vent.trigger("Session:logged-out", data) 
+	    },
+	    function(jqXHR, textStatus, errorThrown) {}
+	)
     },
 
     close : function() {

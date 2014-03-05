@@ -1,0 +1,48 @@
+%header
+  %h1 Edit User
+%hr
+
+#edit-user
+  %form#edit_user.edit_user{"accept-charset" => "UTF-8", action: "/users", method: "post"}
+
+    %div{style: "margin:0;padding:0;display:inline"}
+      %input{name: "utf8", type: "hidden", value: "✓"}
+      %input{name: "_method", type: "hidden", value: "put"}
+      %input{name: "authenticity_token", type: "hidden", value: "#{@authenticity_token}"}
+
+    %div
+      %label{for: "user_email"} Email
+      %br
+      %input#user_email{autofocus: "autofocus", name: "user[email]", type: "email", value: "#{@user.get("email")}"}
+
+    %div
+      %label{for: "user_password"} Password
+      %i (leave blank if you don't want to change it)
+      %br
+      %input#user_password{autocomplete: "off", name: "user[password]", type: "password"}
+
+    %div
+      %label{for: "user_password_confirmation"} Password confirmation
+      %br
+      %input#user_password_confirmation{name: "user[password_confirmation]", type: "password"}
+
+    %div
+      %label{for: "user_current_password"} Current password
+      %i (we need your current password to confirm your changes)
+      %br
+      %input#user_current_password{name: "user[current_password]", type: "password"}
+
+    %div
+      %input{name: "commit", type: "submit", value: "Update"}
+
+
+  %h3 Cancel my account
+  %p Unhappy?
+
+  %form.button_to{action: "/users", method: "post"}
+    %div
+      %input{name: "_method", type: "hidden", value: "delete"}
+      %input{"data-confirm" => "Are you sure?", type: "submit", value: "Cancel my account"}
+      %input{name: "authenticity_token", type: "hidden", value: "#{@authenticity_token}"}
+
+  %a{href: "javascript:history.back()"} Back

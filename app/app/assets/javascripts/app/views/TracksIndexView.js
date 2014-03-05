@@ -21,6 +21,7 @@ app.TracksIndexView = Backbone.View.extend({
 
 	this.tracksView = new app.TracksView(trackscollection);
 
+	_(this).bindAll('close')
     },
     close : function() {
 
@@ -30,11 +31,12 @@ app.TracksIndexView = Backbone.View.extend({
 
     },
     render: function() {
-	
+	console.log("[TracksIndexView] render")
 	//header
 	this.$el.append(this.template() );
 
 	//tracksView
+
 	this.$el.append(this.tracksView.el)
 
 	return this;

@@ -11,17 +11,46 @@ app.SignupView = Backbone.View.extend({
 	'click input[type=submit]' : 'submit',
     },
 
-    initialize: function() {
+    initialize: function(session) {
 	console.log("[SignupView] initialize")
+	var self = this;
+	this.session = session;
 
+	//Signup:siginup:error - display form errors
+	self.listenTo(app.vent,
+		      "SignupView:signup:error",
+		      self.show_error)
+	
+	//redirect off signup page after successful signup
+	app.vent.once("Session:logged-in", 
+		      self.redirect, 
+		      self)
+
+	
+	/*view inits*/
 	_(this).bindAll('close')
 
-	this.listenTo(app.vent, "SignupView:signup:error", this.show_error)
-
 	this.authenticity_token = $("meta[name=csrf-token]").attr("content")
+	
     },
 
-    render: function() {
+    redirect: function() {
+	Backbone.history.navigate("/#", {trigger:true})
+    },
+
+    render : function() {
+	console.log("[SignupView] render")
+	if (this.session.get("state") == app.Session.SessionState.LOGGEDOUT) {
+	    return this._render()
+	}
+	this.session.once('change', this.render, this)
+	this.$el.html("")
+	return this;
+
+    },
+
+    _render: function() {
+	console.log("[SignupView] __render")
 	this.$el.html(this.template({authenticity_token : this.authenticity_token}) );
 	return this;
     },
@@ -46,7 +75,7 @@ app.SignupView = Backbone.View.extend({
     submit : function(e) {
 	e.preventDefault();
 	console.log("Submit")
-
+	var self = this;
 
 	var data = {
 	    user : {
@@ -56,20 +85,27 @@ app.SignupView = Backbone.View.extend({
 	    }
 	};
 
-	/*WORKING HERE
-	  * Need to handle redirects on creating user
-	  * liekly need to inherit registartions contoller
-	  * and pass a json response to either redirect
-	  * or render errors
-	  */
-
-	//request: function(type, url, post_data, cb, cberror)
 	app.vent.trigger("Request",
 			 "POST",
 			 "/users",
 			 data,
 			 function(data, textStatus, jqXHR) {
 			     console.log("[SignupView] Request")
+			     /*Signup Errors are a 200 
+			      *'successful ajaxresponse
+			      */
+
+			     if ( ('user' in data) && 
+				  data.user.id && 
+				  data.user.email) {
+
+				 self.session.set("state", 
+					  app.Session.SessionState.LOGGEDIN)
+			     } else {
+				 self.session.set("state", 
+					  app.Session.SessionState.LOGGEDOUT)
+			     }
+
 			     if ('errors' in data) {
 				 app.vent.trigger("SignupView:signup:error", data.errors)
 			     }
@@ -77,6 +113,7 @@ app.SignupView = Backbone.View.extend({
 			     console.log(data)
 			     console.log(textStatus)
 			     console.log(jqXHR)
+			     
 			 },
 			 function(jqXHR, textStatus, errorThrown) {}
 			)
