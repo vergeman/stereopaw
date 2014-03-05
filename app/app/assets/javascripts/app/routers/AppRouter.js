@@ -34,15 +34,12 @@ app.AppRouter = Backbone.Router.extend({
 	    return;
 	}
 
-
-
 	if (this.currentView) {
 	    this.currentView.close()
 	}
 
 	this.edituserView = new app.EdituserView(this.session);
 	this.currentView = this.edituserView
-
 
 	$('#content-wrap').html(this.edituserView.render().el)
 	this.navigate('/edituser')
