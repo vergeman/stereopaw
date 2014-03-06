@@ -18,7 +18,7 @@ app.AppRouter = Backbone.Router.extend({
 	this.playerview = new app.PlayerView(this.trackscollection);
 	this.session = new app.Session()
 
-	this.profileview = new app.ProfileView(this.session)
+	this.navigationview = new app.NavigationView(this.session)
 
 	this.currentView = null;
 
@@ -48,7 +48,7 @@ app.AppRouter = Backbone.Router.extend({
     },
 
     signup : function() {
-	console.log("[AppRouter] login")
+	console.log("[AppRouter] signup")
 
 	if (this.session.get("state") == app.Session.SessionState.LOGGEDIN) {
 	    Backbone.history.navigate("/", {trigger:true})

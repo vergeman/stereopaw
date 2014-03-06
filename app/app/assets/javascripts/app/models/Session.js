@@ -50,8 +50,6 @@ app.Session = Backbone.Model.extend({
 	this.set("state", app.Session.SessionState.LOGGEDOUT)
 	/*clear User information for session*/
 	this.set("current_user", null)
-
-	//Backbone.history.navigate("/#", {trigger:true})
     },
 
     /*Auth State

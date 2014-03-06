@@ -1,3 +1,0 @@
-.email
-  #{@user.email}
-%a#logout{href: "#logout"} Logout  
