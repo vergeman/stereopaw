@@ -41,7 +41,7 @@ app.AppRouter = Backbone.Router.extend({
 	console.log("[AppRouter] edituser")
 
 	if (this.checkauth(
-	    app.Session.SessionState.LOGGEDOUT, 
+	    app.Session.SessionState.LOGGEDIN, 
 	    "/"))
 	{
 	    this.view(new app.EdituserView(this.session), 
@@ -54,7 +54,7 @@ app.AppRouter = Backbone.Router.extend({
 	console.log("[AppRouter] signup")
 
 	if (this.checkauth(
-	    app.Session.SessionState.LOGGEDIN, 
+	    app.Session.SessionState.LOGGEDOUT, 
 	    "/") ) 
 	{
 	    this.view(new app.SignupView(this.session),
@@ -66,7 +66,7 @@ app.AppRouter = Backbone.Router.extend({
 	console.log("[AppRouter] login")
 
 	if (this.checkauth(
-		app.Session.SessionState.LOGGEDIN,
+		app.Session.SessionState.LOGGEDOUT,
 		"/") )
 	{
 	    this.view(new app.LoginView(this.session),
@@ -79,7 +79,7 @@ app.AppRouter = Backbone.Router.extend({
     my_tracks : function() {
 	console.log("[AppRouter] my_tracks")
 	if (this.checkauth(
-		app.Session.SessionState.LOGGEDOUT,
+		app.Session.SessionState.LOGGEDIN,
 		"/login") )
 	{
 	    this.generate_trackview("/tracks", "tracks")
@@ -102,8 +102,8 @@ app.AppRouter = Backbone.Router.extend({
     root : function() {
 	console.log("[AppRouter] root")
 	if (this.checkauth(
-		app.Session.SessionState.LOGGEDOUT,
-		"/login") )
+		app.Session.SessionState.LOGGEDIN,
+		"/popular") )
 	{
 	    this.generate_trackview("/tracks", "tracks")
 	}
@@ -126,10 +126,10 @@ app.AppRouter = Backbone.Router.extend({
     /*true if session state matches given state, false otherwise*/
     checkauth : function(state, redirect_path) {
 	if (this.session.get("state") == state) {
-	    Backbone.history.navigate(redirect_path, {trigger:true})
-	    return false
+	    return true
 	}
-	return true
+	Backbone.history.navigate(redirect_path, {trigger:true})
+	return false
     },
 
     /*render and garbage collect discarded views*/
