@@ -17,12 +17,15 @@
 #  shareable   :boolean
 #  service     :string(255)
 #  artwork_url :string(255)
+#  user_id     :integer
 #
 
 class Track < ActiveRecord::Base
+  belongs_to :user
+
   attr_accessor :timeformat_optional
 
-  validates :artist, :title, :page_url, :profile_url, :shareable, :service, :artwork_url, presence: true
+  validates :artist, :title, :page_url, :profile_url, :shareable, :service, :artwork_url, :user_id, presence: true
 
   validates :profile_url, :page_url, :artwork_url, url: true #/validators/UrlValidator
 

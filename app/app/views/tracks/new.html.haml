@@ -1,6 +1,6 @@
 %h1 Tracks#new
 
-= form_for @track do |f|
+= form_for [@user, @track] do |f|
   
   = f.label :artist
   = f.text_field :artist

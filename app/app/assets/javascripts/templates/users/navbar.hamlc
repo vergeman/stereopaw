@@ -5,7 +5,7 @@
     
 %ul.navigation
   - if @user
-    %li#links
+    %li#mytracks
       %i.fi-music
       Tracks
     %li#playlist

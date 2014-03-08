@@ -5,110 +5,143 @@ app.AppRouter = Backbone.Router.extend({
 
     routes : 
     {
-	'' : 'tracksindex',
+	'' : 'root',
+	'tracks' : 'my_tracks',
+	'popular' : 'popular_tracks',
+	'new' : 'new_tracks',
+
+	/*devise*/
 	'login' : 'login',
 	'signup' : 'signup',
-	'edituser' : 'edituser'
+	'edituser' : 'edituser',
     },
+
 
     initialize : function() {
 	console.log("[AppRouter] initialize")
 
-	this.trackscollection = new app.Tracks();
-	this.playerview = new app.PlayerView(this.trackscollection);
+	this.trackscollection = new app.Tracks()
+	console.log(this.trackscollection )
+
+	this.player = new app.Player();
+	this.playerqueue = new app.PlayerQueue("/tracks", this.trackscollection);
+
+	this.playerview = new app.PlayerView(this.player,
+					     this.playerqueue,
+					     this.trackscollection);
 	this.session = new app.Session()
 
 	this.navigationview = new app.NavigationView(this.session)
 
 	this.currentView = null;
-
     },
 
+/*Devise Routes*/
     edituser : function() {
 	console.log("[AppRouter] edituser")
 
-	//if we haven't checked login, wait?
-	//if we're not logged in, goto #login
-	if (this.session.get("state") == app.Session.SessionState.LOGGEDOUT) {
-	    Backbone.history.navigate("/#", {trigger:true})
-	    return;
+	if (this.checkauth(
+	    app.Session.SessionState.LOGGEDOUT, 
+	    "/"))
+	{
+	    this.view(new app.EdituserView(this.session), 
+		      "/edituser" )
 	}
-
-	if (this.currentView) {
-	    this.currentView.close()
-	}
-
-	this.edituserView = new app.EdituserView(this.session);
-	this.currentView = this.edituserView
-
-	$('#content-wrap').html(this.edituserView.render().el)
-	this.navigate('/edituser')
-
 
     },
 
     signup : function() {
 	console.log("[AppRouter] signup")
 
-	if (this.session.get("state") == app.Session.SessionState.LOGGEDIN) {
-	    Backbone.history.navigate("/", {trigger:true})
-	    return
+	if (this.checkauth(
+	    app.Session.SessionState.LOGGEDIN, 
+	    "/") ) 
+	{
+	    this.view(new app.SignupView(this.session),
+		      "/signup" )
 	}
-
-	if (this.currentView) {
-	    this.currentView.close()
-	}
-
-	this.signupView = new app.SignupView(this.session);
-	this.currentView = this.signupView
-
-	$('#content-wrap').html(this.signupView.render().el)
-
-	this.navigate('/signup')
-
     },
 
     login : function() {
 	console.log("[AppRouter] login")
 
+	if (this.checkauth(
+		app.Session.SessionState.LOGGEDIN,
+		"/") )
+	{
+	    this.view(new app.LoginView(this.session),
+		      "/login" )
+	}
 
-	if (this.session.get("state") == app.Session.SessionState.LOGGEDIN) {
-	    Backbone.history.navigate("/", {trigger:true})
-	    return
+    },
+
+/*Track Routes*/
+    my_tracks : function() {
+	console.log("[AppRouter] my_tracks")
+	if (this.checkauth(
+		app.Session.SessionState.LOGGEDOUT,
+		"/login") )
+	{
+	    this.generate_trackview("/tracks", "tracks")
 	}
 
 
-	if (this.currentView) {
-	    this.currentView.close()
-	}
+    },
 
-	this.loginView = new app.LoginView(this.session);
-	this.currentView = this.loginView
+    new_tracks : function() {
+	console.log("[AppRouter] new_tracks")
+	this.generate_trackview("/new", "new")
+    },
 
-	$('#content-wrap').html(this.loginView.render().el)
 
-	this.navigate('/login')
+    popular_tracks : function() {
+	console.log("[AppRouter] popular")
+	this.generate_trackview("/popular", "popular")
     },
     
-    tracksindex : function() {
-	console.log("[AppRouter] tracksindex view")
+    root : function() {
+	console.log("[AppRouter] root")
+	if (this.checkauth(
+		app.Session.SessionState.LOGGEDOUT,
+		"/login") )
+	{
+	    this.generate_trackview("/tracks", "tracks")
+	}
+	else {
+	    this.generate_trackview("/popular", "/")
+	}
+
+    },
+
+/*private*/
+    generate_trackview : function(route, displayroute) {
+
+	this.trackscollection.url = route
+	this.playerqueue.update(route, this.trackscollection)
+	this.view(new app.TracksIndexView
+		  (this.trackscollection), displayroute )
+
+    },
+
+    /*true if session state matches given state, false otherwise*/
+    checkauth : function(state, redirect_path) {
+	if (this.session.get("state") == state) {
+	    Backbone.history.navigate(redirect_path, {trigger:true})
+	    return false
+	}
+	return true
+    },
+
+    /*render and garbage collect discarded views*/
+    view : function(view, updateroute) {
 
 	if (this.currentView) {
 	    this.currentView.close()
 	}
 
-	/* pass manipulation of tracks collection
-	   i.e. app.Tracks('popular') for type of view
-	*/
-	this.TracksIndexView = (new app.TracksIndexView(this.trackscollection) )
-	this.currentView = this.TracksIndexView;
+	this.currentView = view	
+	$('#content-wrap').html(this.currentView.render().el)
 
-	console.log(this.trackscollection)
-	$('#content-wrap').html(this.TracksIndexView.render().el)
-
-	this.navigate("/")
-
+	this.navigate(updateroute)
     }
-
-
 });

@@ -6,8 +6,15 @@ App::Application.routes.draw do
     post '/users/auth' => "sessions#auth", :as => 'auth_user_session'
   end
 
-  resources :tracks
-
+  resources :users, only: ['show'] do
+    resources :tracks, except: ['new']
+  end
+  #for marklet submission
+  get '/tracks/new' => "tracks#new"
+  
+  get '/new' => "tracks#latest"
+  get '/popular' => "tracks#popular"
+  get '/tracks' => "tracks#mytracks"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

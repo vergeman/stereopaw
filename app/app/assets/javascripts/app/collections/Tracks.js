@@ -5,6 +5,7 @@ var app = app || {};
 app.Tracks  = Backbone.Collection.extend({
 
     url: '/tracks',
-    model: app.Track
+    model: app.Track,
+
 })
 

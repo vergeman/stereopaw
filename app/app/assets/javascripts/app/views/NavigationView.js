@@ -10,7 +10,10 @@ app.NavigationView = Backbone.View.extend({
     events : {
 	'click #logout' : 'logout',
 	'click #login_nav' : 'login',
-	'click #settings' : 'settings'
+	'click ul.navigation #new' : 'new_tracks',
+	'click ul.navigation #popular' : 'popular',
+	'click ul.navigation #mytracks' : 'mytracks',
+	'click #settings' : 'settings',
     },
 
     initialize : function(session) {
@@ -19,7 +22,9 @@ app.NavigationView = Backbone.View.extend({
 	this.listenTo(app.vent, "Session:logged-in", this.render_loggedin)
 	this.listenTo(app.vent, "Session:logged-out", this.render_loggedout)
 	
-	/*this is out of navbar scope*/
+	/* Root Link: this is out of navbar scope 
+	 * so we manually attach
+	 */
 	$('#home').click(function(e) {
 	    console.log("[NavigationView] home")
 	    e.preventDefault()
@@ -29,21 +34,34 @@ app.NavigationView = Backbone.View.extend({
 
     render_loggedin: function() {
 	console.log("[NavigationView] render_loggedin")
+
 	this.$el.html(this.template({user: this.session.get("current_user").toJSON()} ))
-//	$(document).foundation()
+
+	this.close_menu_listener()
+
     },
 
     render_loggedout : function() {
 	console.log("[NavigationView] render_loggedout")
+
 	this.$el.html(this.template({user: null} ))
+
+	this.close_menu_listener()
     },
+
+    close_menu_listener : function(e) {
+	$('ul.navigation li').click(function() {
+	    $('.menu-icon').click()
+	});
+    },
+
     home : function(e) {
 
     },
+
     logout: function(e) {
 	console.log("[NavigationView] logout")
 	e.preventDefault();
-	//app.vent.trigger("Session:sign-out")
 	this.sign_out()
     },
 
@@ -59,6 +77,25 @@ app.NavigationView = Backbone.View.extend({
 	Backbone.history.navigate("/edituser", {trigger:true})	
     },
 
+
+    mytracks : function(e) {
+	console.log("[NavigationView] mytracks")
+	e.preventDefault();
+	Backbone.history.navigate("/tracks", {trigger:true})	
+    },
+
+    popular : function(e) {
+	console.log("[NavigationView] popular")
+	e.preventDefault();
+	Backbone.history.navigate("/popular", {trigger:true})	
+    },
+
+    new_tracks : function(e) {
+	console.log("[NavigationView] new_tracks")
+	e.preventDefault();
+	Backbone.history.navigate("/new", {trigger:true})	
+    },
+
     sign_out: function() {
 	console.log("[NavigationView] sign_out")
 	this.session.request(
@@ -66,7 +103,8 @@ app.NavigationView = Backbone.View.extend({
 	    '/users/sign_out.json', 
 	    null,
 	    function(data) { 
-		app.vent.trigger("Session:logged-out", data) 
+		app.vent.trigger("Session:logged-out", data)
+		Backbone.history.navigate("/", {trigger:true})
 	    },
 	    function(jqXHR, textStatus, errorThrown) {}
 	)

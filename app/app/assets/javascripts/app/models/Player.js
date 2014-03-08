@@ -7,14 +7,14 @@ var app = app || {};
  */
 app.Player = Backbone.Model.extend({
 
-    initialize: function(view) {
+    initialize: function() {
 	console.log("[Player] initialize")
 
 	this.initialized_players = {};
 	this.current_player = null;
 	this.soundmanager_player = null;
 	this.youtube_player = null;
-	this.view = view;
+
     },
     getElapsed : function()
     {

@@ -7,6 +7,7 @@ app.PlayerSliderView = Backbone.View.extend({
     el: '.progress',
 
     events: function() {},
+    
     initialize: function() {
 
 	this.btn = $('.handle')

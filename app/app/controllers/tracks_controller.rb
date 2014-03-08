@@ -4,25 +4,36 @@ class TracksController < ApplicationController
   before_filter :authenticate_user!, only: [:new, :create]
   respond_to :html, :json
 
-  def index
-    @tracks = Track.all
+  #TODO: separate route for 
+  #other users v. current_user, privacy issues?
+  #also need to display something when not logged in
 
-    respond_with(@tracks.order("created_at DESC")) do |format|
+  #all tracks of a user
+  def index
+    @user = User.find(params[:user])
+    @tracks = @user.tracks
+    respond_with(@tracks) do |format|
       format.json { render }
     end
-    
+
   end
 
 
-  def new
-    @track = Track.new(new_params)
+  #latest tracks
+  def latest
+    @tracks = Track.all.order("created_at DESC").limit(20)
+    respond_with(@tracks) do |format|
+      format.json { render }
+    end
   end
 
-
-  def create
-    @track = Track.new(new_params)
-    flash[:success] = "Success" if @track.save
-    respond_with(@track)
+  #most popular tracks - need metric
+  def popular
+    @tracks = Track.all.order("created_at ASC").limit(20)
+    respond_with(@tracks) do |format|
+      format.json { render }
+      #format.html { render :json => @tracks}
+    end
   end
 
 
@@ -30,6 +41,32 @@ class TracksController < ApplicationController
     @track = Track.find_by_id(params[:id])
   end
 
+
+#REQUIRES AUTH
+  def mytracks
+    if user_signed_in?
+      respond_with(current_user.tracks.order("created_at DESC") ) do |format|
+        format.json { render }
+        format.html { redirect_to :root }
+      end
+    else
+      redirect_to :root
+    end
+  end
+
+  def new
+    #our route is tracks/new - we won't know what user we
+    #are on initial submitx
+    @user = current_user
+    @track = current_user.tracks.build(new_params)
+  end
+
+
+  def create
+    @track = current_user.tracks.build(new_params)
+    flash[:success] = "Success" if @track.save
+    respond_with(current_user, @track)
+  end
 
 
 
