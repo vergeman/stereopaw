@@ -1,8 +1,19 @@
 var app = app || {}
 
-/*In charge of maintaining correct queueing behavior
-* from changing trackscollections
-*/
+/*PlayerQueue
+ *Maintains correct queueing prev/next track behavior
+ *across changing trackscollections
+ *
+ * we can tell a trackcollection is different by checking if
+ * our route we passed in during intiialization is different
+ * from what is updated, and in that case, play from beginning.
+ *
+ * general behavior: we have two stacks, history_back, history_fwd
+ * we give priroity to cycle between these (they are user actions)
+ * then if no other tracks in stacks, we resort to sequentially
+ * going through the collection
+ */
+
 app.PlayerQueue = Backbone.Model.extend({
 
 
@@ -17,6 +28,9 @@ app.PlayerQueue = Backbone.Model.extend({
 	this.updated = false
     },
 
+    /* a new route, we flag the collection as updated
+     * to adjust our track selection in next()
+     */
     update : function(route, trackscollection) {
 	console.log("[PlayerQueue] update")
 	if (this.route != route) {
@@ -26,6 +40,10 @@ app.PlayerQueue = Backbone.Model.extend({
 	this.queue = trackscollection
     },
 
+    /* selects next track, updates history accordingly
+     * preference to history_fwd, first of a new collection, 
+     * then sequentially 
+     */
     next : function() {
 	console.log("[PlayerQueue] next")
 	//populate history_back w/ current track
@@ -46,7 +64,7 @@ app.PlayerQueue = Backbone.Model.extend({
 	    return this.current_track
 	}
 
-	//move sequeentially
+	//move sequentially
 	console.log("[PlayerQueue] next:sequential")
 
 	var current_index = this.queue.indexOf(this.current_track)
@@ -61,6 +79,7 @@ app.PlayerQueue = Backbone.Model.extend({
 	return this.history_fwd.length > 0
     },
 
+    /*take from history_stack, otherwise null - nothing previous*/
     prev : function() {
 	console.log("[PlayerQueue] prev")
 
@@ -80,7 +99,10 @@ app.PlayerQueue = Backbone.Model.extend({
     },
 
 
-    //a DOM selected track - update queue accordingly
+    /*a DOM user-selected track - 
+      * make sure to mute updated flag if playing
+      * somewhere from DOM
+     */
     find : function(id) {
 	console.log("[PlayerQueue] find")
 	if (this.current_track != null) {

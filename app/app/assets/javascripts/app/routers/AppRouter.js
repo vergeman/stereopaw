@@ -24,6 +24,7 @@ app.AppRouter = Backbone.Router.extend({
 	console.log(this.trackscollection )
 
 	this.player = new app.Player();
+
 	this.playerqueue = new app.PlayerQueue("/tracks", this.trackscollection);
 
 	this.playerview = new app.PlayerView(this.player,
@@ -108,7 +109,7 @@ app.AppRouter = Backbone.Router.extend({
 	    this.generate_trackview("/tracks", "tracks")
 	}
 	else {
-	    this.generate_trackview("/popular", "/")
+	    this.generate_trackview("/popular", "popular")
 	}
 
     },
@@ -119,7 +120,7 @@ app.AppRouter = Backbone.Router.extend({
 	this.trackscollection.url = route
 	this.playerqueue.update(route, this.trackscollection)
 	this.view(new app.TracksIndexView
-		  (this.trackscollection), displayroute )
+		  (this.trackscollection, displayroute), displayroute )
 
     },
 

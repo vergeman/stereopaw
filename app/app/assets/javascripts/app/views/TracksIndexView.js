@@ -16,13 +16,16 @@ app.TracksIndexView = Backbone.View.extend({
 
     template: JST['tracks/index'],
 
-    initialize: function(trackscollection) {
+    initialize: function(trackscollection, displayroute) {
 	console.log("[TracksIndexView] initialize")
 
 	this.tracksView = new app.TracksView(trackscollection);
 
+	this.displayroute = displayroute.charAt(0).toUpperCase() + displayroute.slice(1)
+
 	_(this).bindAll('close')
     },
+
     close : function() {
 
 	this.tracksView.close()
@@ -30,10 +33,11 @@ app.TracksIndexView = Backbone.View.extend({
 	this.unbind()
 
     },
+
     render: function() {
 	console.log("[TracksIndexView] render")
 	//header
-	this.$el.append(this.template() );
+	this.$el.append(this.template({header: this.displayroute}) );
 
 	//tracksView
 
