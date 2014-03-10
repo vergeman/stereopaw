@@ -28,8 +28,9 @@ describe Track do
 
   context "the Track attributes" do
 
-    before(:each) do
-      @track = Track.new()
+    before(:each) do      
+      @user = User.new(:email => "test@test.com")
+      @track = @user.tracks.build()
     end
 
     it "has the track_id attr" do
@@ -79,11 +80,16 @@ describe Track do
       @track.attributes.has_key?("artwork_url").should eq true
     end
 
+    it "has an user_id attr" do
+      @track.attributes.has_key?("user_id").should eq true
+    end
+
   end
 
   describe "Track Validations" do
+
     before(:each) do 
-      @track = FactoryGirl.create(:track)
+      @track = FactoryGirl.build(:track)
     end
 
     context "Factory Test" do

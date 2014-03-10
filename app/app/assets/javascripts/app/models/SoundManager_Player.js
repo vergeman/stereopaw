@@ -32,6 +32,7 @@ app.SoundManager_Player = Backbone.Model.extend({
 	soundManager.setup({
 	    url: '/swf',
 	    flashVersion: 9,
+	    useHTML5Audio : true,
 	    preferFlash: false,
 	    debugMode: true,
 	    onready: function() {
@@ -57,21 +58,18 @@ app.SoundManager_Player = Backbone.Model.extend({
 	    id: '_sound',
 	    url: self.buildUrl(track),
 	    stream: true,
+
 	    onload: function(is_ok) {
 
-		self._sound.play(
-		    {
-			position: timestamp,
-			onfinish: function() {
-			    app.vent.trigger("Player:next")
-			}
-		    }
-		)
+		self._sound.setPosition(timestamp)
 
 		if (!is_ok) {
 		    /*sound didn't load properly*/
 		    console.log("[SoundManager_Player] fail load")
 		    app.vent.trigger("Player:next")
+		}
+		else {
+		    self._play()
 		}
 
 
@@ -79,6 +77,20 @@ app.SoundManager_Player = Backbone.Model.extend({
 	}).load()
 
     },
+
+    _play : function() {
+
+	this._sound.play(
+	    {
+		//position: timestamp,
+		onfinish: function() {
+		    app.vent.trigger("Player:next")
+		}
+	    }
+	)
+
+    },
+
     getElapsed : function() {
 	if (!this._sound || !this._sound.position) {
 	    return 0;

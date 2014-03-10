@@ -1,8 +1,16 @@
 require 'spec_helper'
+include Warden::Test::Helpers
+Warden.test_mode!
+Warden.test_reset!
 
 describe "TrackCreate" do
 
-  before { visit new_track_path }
+  before { 
+    Warden.test_reset!
+    @user = FactoryGirl.create(:user)
+    login_as(@user, :scope => :user)
+    visit tracks_new_path
+  }
 
   let (:submit) { "Create Track" }
   
@@ -18,7 +26,6 @@ describe "TrackCreate" do
 
 
   describe "valid info test" do
-
     before do
       fill_in "track_artist",         with: "DJ User"
       fill_in "track_title",        with: "iamamtitle"
@@ -43,7 +50,7 @@ describe "TrackCreate" do
     it "should redirect to the Track/:id" do
       click_button submit
       t = Track.all.sort_by(&:created_at).last
-      current_path.should eq track_path(t)
+      current_path.should eq user_track_path(@user, t)
     end
 
     it "should have the fields that were submitted" do

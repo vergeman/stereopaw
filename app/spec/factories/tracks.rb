@@ -35,5 +35,7 @@ FactoryGirl.define do
     shareable "true"
     service "youtube"
     artwork_url "http://www.youtube.com/0.jpg"
+
+    association :user, factory: :user
   end
 end

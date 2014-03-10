@@ -7,8 +7,9 @@ describe "TrackShow" do
     subject { page }
 
     let(:track) { FactoryGirl.create(:track) }
+    let (:user) { FactoryGirl.create(:user) }
 
-    before { visit track_path(track) }
+    before { visit user_track_path(user, track) }
 
     describe "to verify values" do
 
