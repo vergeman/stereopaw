@@ -35,7 +35,7 @@ FactoryGirl.define do
     shareable "true"
     service "youtube"
     artwork_url "http://www.youtube.com/0.jpg"
-
+    track_id "123456789"
     association :user, factory: :user
   end
 end
