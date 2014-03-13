@@ -18,10 +18,6 @@ class SessionsController < Devise::SessionsController
 
     respond_with(resource) do |format|
 
-      format.html {        
-        redirect_to after_sign_in_path_for(resource)
-      }
-
       format.json {
         #see application_controller for setting csrf
         render :json => resource
