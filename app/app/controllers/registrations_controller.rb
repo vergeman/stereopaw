@@ -16,12 +16,12 @@ class RegistrationsController < Devise::RegistrationsController
       if resource.active_for_authentication?
         #set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
-        render_json_redirect("/")
+        render_json_redirect("/meow")
         #respond_with resource, location: after_sign_up_path_for(resource)
       else
         #set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!
-        render_json_redirect("/")
+        render_json_redirect("/meow")
         #respond_with resource, location: after_inactive_sign_up_path_for(resource)
 
       end
@@ -54,7 +54,7 @@ class RegistrationsController < Devise::RegistrationsController
       end
 
       sign_in resource_name, resource, bypass: true      
-      render_json_redirect("/")
+      render_json_redirect("/meow")
       #respond_with resource, location: after_update_path_for(resource)
     else
       clean_up_passwords resource
@@ -70,7 +70,7 @@ class RegistrationsController < Devise::RegistrationsController
     #set_flash_message :notice, :destroyed if is_flashing_format?
     yield resource if block_given?
 
-    render_json_redirect("/")
+    render_json_redirect("/meow")
     #respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name) }
   end
 

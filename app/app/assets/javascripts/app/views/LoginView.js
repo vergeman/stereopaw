@@ -10,6 +10,7 @@ app.LoginView = Backbone.View.extend({
 
     events : {
 	'click input[type=submit]' : 'submit',
+	'click #sign-up-link' : 'signup'
     },
 
     initialize: function(session) {
@@ -33,9 +34,15 @@ app.LoginView = Backbone.View.extend({
 
     },
 
+    signup : function(e) {
+	console.log("[LoginView] signup")
+	e.preventDefault()
+	Backbone.history.navigate("/signup", {trigger:true})
+    },
+
     redirect: function() {
 	console.log("[LoginView] redirect")
-	Backbone.history.navigate("/#", {trigger:true})
+	Backbone.history.navigate("/", {trigger:true})
 	return
     },
 

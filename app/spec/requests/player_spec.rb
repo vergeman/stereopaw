@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Player" do
 
   before {
-    visit root_path()
+    visit meow_path()
   }
   
   describe "with controls:" do

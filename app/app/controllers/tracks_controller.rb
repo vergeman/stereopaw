@@ -47,10 +47,10 @@ class TracksController < ApplicationController
     if user_signed_in?
       respond_with(current_user.tracks.order("created_at DESC") ) do |format|
         format.json { render }
-        format.html { redirect_to :root }
+        format.html { redirect_to meow_path() }
       end
     else
-      redirect_to :root
+      redirect_to meow_path()
     end
   end
 

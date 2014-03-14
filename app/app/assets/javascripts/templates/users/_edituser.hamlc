@@ -35,7 +35,7 @@
 
           
     %div
-      %label{for: "user_password"} Password (leave blank if you don't want to change it)
+      %label{for: "user_password"} New password (leave blank if you don't want to change it)
       %div.input-label-prefix
         %span.prefix
           %i.fi-lock.medium

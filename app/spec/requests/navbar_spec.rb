@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe "Root Page" do
 
-  describe "Visits '/' page"  do
+  describe "Visits '/meow' page"  do
 
     before {
-      visit root_path()
+      visit meow_path()
     }
 
     #we'll have to move our logged in tests (uses ajax

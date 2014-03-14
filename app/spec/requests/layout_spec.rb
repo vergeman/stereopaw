@@ -5,7 +5,7 @@ describe "Root Page" do
   describe "Visits '/' page" do
 
     before {
-      visit root_path()
+      visit meow_path()
     }
 
     describe 'Layout' do

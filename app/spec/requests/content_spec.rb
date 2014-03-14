@@ -6,12 +6,12 @@ Warden.test_reset!
 
 describe "Root Page" do
 
-  describe "Visits '/' page" do
+  describe "Visits '/meow' page" do
 
     describe "Popular", :js => true do
 
       before {
-        visit root_path()
+        visit meow_path()
       }
 
       it "should have display of all the popular tracks" do        
@@ -32,7 +32,7 @@ describe "Root Page" do
 
     describe "New", :js => true do
       before {
-        visit '/#new'
+        visit '/meow/#new'
       }
 
       it "should display new tracks" do
@@ -80,7 +80,7 @@ describe "Root Page" do
       it "should redirect" do
         Warden.test_reset!
         get "tracks.json"
-        response.should redirect_to root_path
+        response.should redirect_to meow_path
       end
 
     end
