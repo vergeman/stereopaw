@@ -65,7 +65,13 @@ app.LoginView = Backbone.View.extend({
 
     _render: function() {
 	console.log("[LoginView] __render")
-	this.$el.html(this.template({authenticity_token : this.authenticity_token}) );
+	this.$el.html(this.template(
+	    {
+		authenticity_token : this.authenticity_token, 
+		forgotpassword_link: "/meow#forgot", 
+		signup_link: "/meow/#signup"
+	    }
+	) );
 	return this;
     },
 

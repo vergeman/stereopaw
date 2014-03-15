@@ -42,7 +42,7 @@
       %input.input-submit.button.expand{name: "commit", type: "submit", value: "LOGIN"}
       
     %p.forgotpassword
-      %a{href: "/users/password/new"} Forgot your password?
+      %a{href: "#{@forgotpassword_link}"} Forgot your password?
 
     %hr
       
@@ -50,4 +50,4 @@
       Need an account?
       
     %div
-      %a#sign-up-link.button.expand{href: "/#signup"} SIGN UP
+      %a#sign-up-link.button.expand{href: "#{@signup_link}"} SIGN UP

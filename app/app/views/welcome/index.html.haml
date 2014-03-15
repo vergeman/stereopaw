@@ -1,2 +1,56 @@
-%h1
-  hi
+#splash-wrap
+  #splash-nav
+    %div{:'data-magellan-expedition'=>"fixed"}
+      %dl{class: "sub-nav"}
+        %dd{:'data-magellan-arrival'=>"welcome"}
+          %a{href: "#welcome"}
+            Welcome
+        %dd{:'data-magellan-arrival'=>"what"}
+          %a{href: "#what"}
+            What is this?
+        %dd{:'data-magellan-arrival'=>"explore"}
+          %a{href: "/meow"}
+            Music
+
+  #splash.page
+    %a{name: "welcome",
+       :'data-magellan-destination' => "welcome"}
+
+
+    #logo
+      %img{:src => '/assets/stereopaw-logo-main.png',
+           width: "76px",
+           height: "125px",
+           alt: "stereo paw"}
+        
+    %h2#title stereo paw
+
+    #tag
+      %h3.subheader
+        Bookmark and listen to your favorite streaming moments 
+
+    #signage
+      %button#signup
+        SIGNUP
+      %p.haveaccount
+        Have an account?
+        %a{:href => "users/sign_in"} Log in.
+        
+      %p.tothemusic
+        Or, just take me to the
+        %a{:href => "/meow"} Music.
+        
+        
+  #how.page
+    %a{name: "what",
+       :'data-magellan-destination' =>"what"}
+    #marklet
+      %h2 Marklet
+    #extension
+      %h2 Extension
+    #services
+      
+
+%footer
+    
+  

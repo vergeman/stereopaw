@@ -58,7 +58,12 @@ app.SignupView = Backbone.View.extend({
 
     _render: function() {
 	console.log("[SignupView] __render")
-	this.$el.html(this.template({authenticity_token : this.authenticity_token}) );
+	this.$el.html(this.template(
+	    {
+		authenticity_token : this.authenticity_token,
+		login_link : "/meow#login"
+	    }
+	) );
 	return this;
     },
 

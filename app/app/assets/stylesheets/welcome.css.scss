@@ -1,0 +1,48 @@
+#splash-wrap {
+    width: 100%;    
+}
+.page {
+    min-height: 720px;
+}
+
+#splash-nav {
+    dd { 
+	font-size: 12px;
+    }
+    dd.active a {
+	border-radius: 0px;	
+    }
+    a { 
+	padding: 4px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+    }    
+}
+
+#logo {
+    width: 76px;
+    margin: 0 auto;
+    padding-top: 4rem;
+}
+#title {
+    text-align:center;
+    padding-top:2rem;
+    padding-bottom: 1rem;
+}
+
+#tag {
+    text-align:center;
+}
+
+#signage {
+    margin-top: 4rem;
+    text-align:center;
+
+    button { margin-bottom: 2rem;}
+
+    .haveaccount, .tothemusic {
+	font-family: 'lato';
+	font-size: 16px;
+    }
+
+}

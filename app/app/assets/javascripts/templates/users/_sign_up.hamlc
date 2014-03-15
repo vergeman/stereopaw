@@ -46,5 +46,5 @@
       %input.input-submit.button.expand{name: "commit", type: "submit", value: "SIGN UP"}
 
     %p.haveaccount
-      %a{href: "/#login"} Have an account?
+      %a{href: "#{@login_link}"} Have an account?
 
