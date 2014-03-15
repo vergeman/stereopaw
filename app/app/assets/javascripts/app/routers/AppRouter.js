@@ -37,13 +37,17 @@ app.AppRouter = Backbone.Router.extend({
 	this.currentView = null;
     },
 
+
 /*Devise Routes*/
     edituser : function() {
 	console.log("[AppRouter] edituser")
 
-	if (this.checkauth(
-	    app.Session.SessionState.LOGGEDIN, 
-	    "/"))
+	var redirect = function() { 
+	    Backbone.history.navigate("/", {trigger:true})
+	}
+
+	if (this.checkauth(app.Session.SessionState.LOGGEDIN,
+			   redirect))
 	{
 	    this.view(new app.EdituserView(this.session), 
 		      "/edituser" )
@@ -54,24 +58,38 @@ app.AppRouter = Backbone.Router.extend({
     signup : function() {
 	console.log("[AppRouter] signup")
 
-	if (this.checkauth(
-	    app.Session.SessionState.LOGGEDOUT, 
-	    "/") ) 
+	var redirect = function() { 
+	    Backbone.history.navigate("/", {trigger:true})
+	}
+
+	/*if not logged in, we render signup view, otherwise
+	 *redirect to root*/
+	if (!this.checkauth(app.Session.SessionState.LOGGEDIN, 
+			   function(){}))
 	{
 	    this.view(new app.SignupView(this.session),
 		      "/signup" )
 	}
+	else {
+	    redirect()
+	}
+	
     },
 
     login : function() {
 	console.log("[AppRouter] login")
 
-	if (this.checkauth(
-		app.Session.SessionState.LOGGEDOUT,
-		"/") )
+	/*if not logged in, we render signin view, otherwise
+	 *we're logged in so redirect to root*/
+
+	if (!this.checkauth(app.Session.SessionState.LOGGEDIN,
+			    function(){} ))
 	{
 	    this.view(new app.LoginView(this.session),
 		      "/login" )
+	}
+	else {
+	    Backbone.history.navigate("/", { trigger:true})
 	}
 
     },
@@ -79,9 +97,13 @@ app.AppRouter = Backbone.Router.extend({
 /*Track Routes*/
     my_tracks : function() {
 	console.log("[AppRouter] my_tracks")
-	if (this.checkauth(
-		app.Session.SessionState.LOGGEDIN,
-		"/login") )
+
+	var redirect = function() { 
+	    Backbone.history.navigate("/login", {trigger:true})
+	}
+
+	if (this.checkauth(app.Session.SessionState.LOGGEDIN,
+			   redirect))
 	{
 	    this.generate_trackview("/tracks", "tracks")
 	}
@@ -102,16 +124,20 @@ app.AppRouter = Backbone.Router.extend({
     
     root : function() {
 	console.log("[AppRouter] root")
+
+	/*default view logged in -> /tracks
+	 *otherwise -> /popular
+	 */
+	var redirect = function() { 
+	    Backbone.history.navigate("/popular", {trigger:true})
+	}
+
 	if (this.checkauth(
 		app.Session.SessionState.LOGGEDIN,
-		"/popular") )
+		redirect) )
 	{
 	    this.generate_trackview("/tracks", "tracks")
 	}
-	else {
-	    this.generate_trackview("/popular", "popular")
-	}
-
     },
 
 /*private*/
@@ -124,12 +150,18 @@ app.AppRouter = Backbone.Router.extend({
 
     },
 
-    /*true if session state matches given state, false otherwise*/
-    checkauth : function(state, redirect_path) {
+    /*true if session state matches given state, executes
+     *'otherwise' callback and returns false
+     * we structure it with a callback because we want to
+     * control our Backbone.history.navigate calls when
+     * checking against the session state. It may be the
+     * case the otherwise is a no-op.
+     */
+    checkauth : function(state, otherwise) {
 	if (this.session.get("state") == state) {
 	    return true
 	}
-	Backbone.history.navigate(redirect_path, {trigger:true})
+	otherwise()
 	return false
     },
 

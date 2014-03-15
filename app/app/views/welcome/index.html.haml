@@ -30,11 +30,12 @@
         Bookmark and listen to your favorite streaming moments 
 
     #signage
-      %button#signup
-        SIGNUP
+      %a{:href => "/meow#signup"}
+        %button#signup
+          SIGNUP
       %p.haveaccount
         Have an account?
-        %a{:href => "users/sign_in"} Log in.
+        %a{:href => "/meow#login"} Log in.
         
       %p.tothemusic
         Or, just take me to the
