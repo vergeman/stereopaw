@@ -5,12 +5,15 @@
         %dd{:'data-magellan-arrival'=>"welcome"}
           %a{href: "#welcome"}
             Welcome
-        %dd{:'data-magellan-arrival'=>"what"}
-          %a{href: "#what"}
-            What is this?
+        %dd{:'data-magellan-arrival'=>"gettingstarted"}
+          %a{href: "#gettingstarted"}
+            Getting Started
         %dd{:'data-magellan-arrival'=>"explore"}
-          %a{href: "/meow"}
+          %a{href: "/meow/#popular"}
             Music
+        %dd{:'data-magellan-arrival'=>"explore"}
+          %a{href: "/meow/#login"}
+            Login
 
   #splash.page
     %a{name: "welcome",
@@ -27,30 +30,129 @@
 
     #tag
       %h3.subheader
-        Bookmark and listen to your favorite streaming moments 
+        Hear the best of the mix.
 
     #signage
+
       %a{:href => "/meow#signup"}
         %button#signup
-          SIGNUP
+          Sign Up
+          
       %p.haveaccount
         Have an account?
         %a{:href => "/meow#login"} Log in.
         
       %p.tothemusic
-        Or, just take me to the
+        Just take me to the
         %a{:href => "/meow"} Music.
         
         
-  #how.page
-    %a{name: "what",
-       :'data-magellan-destination' =>"what"}
-    #marklet
-      %h2 Marklet
-    #extension
-      %h2 Extension
-    #services
+  %a{name: "gettingstarted",
+     class: "topspacer",
+     :'data-magellan-destination' =>"gettingstarted"}
+  #gettingstarted.page.destination.row
+    .small-12.large-12.columns      
+      %h2
+        %img.cat{src: "assets/stereopaw-logo-main.png"}
+        Getting Started
+      %hr
+      #description
+        %br
+        %h4
+          %img{class: 'paw',
+               src: "/assets/paw28.png"}
+          Stereo paw saves timestamps of your streaming music.
+        %br
+        %br
+        %ul.problems
+          %li
+            Don't remember where that sweet groove is in a two-hour dj set?
+          %li
+            Tired of favorites scattered across multiple music services?
+          %li
+            Want to share a snippet of a mix?
+            
+
+        %h4
+          %img{class: 'paw',
+               src: "/assets/paw28.png"}
+          Get your paws on the browser extension or bookmarklet.
+          
+        .installbuttons
+          %a{:href => "#",
+             :'data-reveal-id' => "BookmarkletModal",
+             'data-reveal' => ''}
+            %button.small
+              Add Bookmarklet
+
+          %a{:onclick => 'return false;',
+             :href => "/meow#signup"}
+            %button.small
+              Install Chrome Extension
+
+
+        #how-to
+          %h4
+            %img{class: 'paw',
+                 src: "/assets/paw28.png"}
+            When you hear a track you'd like to add to your collection , click the bookmarklet / extension on your streaming music page.
+          %p
+            %h4
+              Image here
+            
+          %p
+            %h4
+              Submit your track at the time you want to save. Visit
+              %a{href: "/meow"} stereo paw
+              to hear more of the best.
+      #services
+        %hr
+        %br
+        %h4
+          For ideal audio streaming, please consider using the following browsers with stereo paw:
+        %ul.services
+          %li Windows: IE 9+, Firefox
+          %li Linux: :(
+          %li Mac: ?
+            
+        %h4
+          We are slowly adding services to paw. The following streaming services are currently supported:
+        %ul.services
+          %li
+            Soundcloud
+          %li
+            YouTube
+
       
+#BookmarkletModal.reveal-modal{:'data-reveal' =>''}
+  %h2
+    Add The Bookmarklet
+  %hr
+    
+  #markletdrag
+    %h3{:style=>"text-align:center;"}
+      Save the best of the mix.
+    %p.marklet
+      %a{:onclick => 'return false;', :href => 'javascript:(function(){document.getElementById("sb-app") ? false : (function() {var e = document.createElement("script");e.setAttribute("id", "sb-script");e.setAttribute("src","http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/SoundByte-min.js?r="+Math.random()*99999999);document.body.appendChild(e)})() }())'}        
+        %button
+          stereo paw
+      .caption
+        Drag this button to your bookmark bar
+
+  #markletcode
+    %h6
+      If your device can't drag and drop, just paste the code below in the
+      %strong url
+      or
+      %strong location
+      field of a new bookmark.
+
+    #code
+      %textarea{:readonly => ''}
+        javascript:(function(){document.getElementById("sb-app") ? false : (function() {var e = document.createElement("script");e.setAttribute("id", "sb-script");e.setAttribute("src","http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/SoundByte-min.js?r="+Math.random()*99999999);document.body.appendChild(e)})() }())
+        
+  %a.close-reveal-modal
+    &#215;
 
 %footer
     

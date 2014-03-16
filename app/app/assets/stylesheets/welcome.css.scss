@@ -1,8 +1,13 @@
 #splash-wrap {
     width: 100%;    
 }
+
+/*magellan nav stuff*/
 .page {
     min-height: 720px;
+}
+.destination {
+    padding-top: 40px;// height of magellan
 }
 
 #splash-nav {
@@ -19,6 +24,7 @@
     }    
 }
 
+/*landing splash top*/
 #logo {
     width: 76px;
     margin: 0 auto;
@@ -34,15 +40,102 @@
     text-align:center;
 }
 
+/*images*/
+.paw {
+    margin-top: -5px;
+    margin-right: 1rem;
+    width: 18px;
+}
+.cat {
+    float:right;
+    height: 36px;
+    @media #{$medium-up} {
+	height:48px;
+    }
+}
+/*SIGNUP*/
 #signage {
     margin-top: 4rem;
     text-align:center;
 
-    button { margin-bottom: 2rem;}
+    button { 
+	margin-bottom: 2rem;
+	margin-left: 1rem;
+	margin-right: 1rem;
+    }
 
     .haveaccount, .tothemusic {
 	font-family: 'lato';
 	font-size: 16px;
     }
 
+}
+
+/*lists*/
+.problems, .services {
+    font-family:'lato';
+
+    @media #{$medium-up} {
+	margin-left: 4rem;
+	font-size: 1.2rem;
+    }
+    
+}
+.problems li {
+    list-style-type: none;
+}
+
+/*GETTING STARTED*/
+#gettingstarted {
+    #marklet {
+	margin-top: 2rem;
+    }
+
+    .installbuttons {
+	padding: 1rem;
+	text-align: center;
+	margin-top: 1rem;
+	a{ margin: 0.5rem;}
+
+	@media #{$medium-up} {
+	    a { margin: 2rem; }
+	}
+    }
+}
+
+
+/*MODAL*/
+#BookmarkletModal {
+
+    #markletdrag { 
+	padding-top: 1rem;
+
+	button { 
+	    margin-top: 1rem;
+	    margin-bottom: 0;
+	}
+    }
+
+    #markletcode { 
+	margin-top: 4rem;
+	#code { margin-top:1rem;}
+    }
+
+    textarea {
+	height: 100px;
+    }
+    .marklet {
+	text-align:center;
+    }
+    .description {
+	font-family: 'lato';
+	font-size: 16px;
+	font-style:normal;
+    }
+
+    .caption {
+	font-size:16px;
+	line-height:1.2rem;
+	text-align:center;
+    }
 }
