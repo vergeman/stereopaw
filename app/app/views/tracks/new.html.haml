@@ -1,34 +1,97 @@
-%h1 Tracks#new
 
-= form_for [@user, @track] do |f|
-  
-  = f.label :artist
-  = f.text_field :artist
+#track-new
+  %header
+    %h1 Submit Track
+  %hr
 
-  = f.label :title
-  = f.text_field :title
+  %form#new_track.new_track{"accept-charset" => "UTF-8",
+                            action: "/users/#{@user.id}/tracks",
+                            method: "post"}
 
-  = f.label :page_url
-  = f.text_field :page_url
+    %div{style: "margin:0;padding:0;display:inline"}
+      %input{name: "utf8", type: "hidden", value: "✓"}
+      %input{name: "authenticity_token", type: "hidden", value: ""}
 
-  = f.label :profile_url
-  = f.text_field :profile_url
+    .track-meta  
+      .track-artwork-wrap
+        
+        .track-artwork-url{:style => "background-image:url(\"#{@track.artwork_url}\")"}
+          
+        %div#track_timeformat_wrap
+          %label{for: "track_timeformat"} Timestamp
+          %div.input-label-prefix
+            %span.prefix
+              %i.fi-clock.medium
+          %div
+            %input#track_timeformat{name: "track[timeformat]",
+                                    type: "text",
+                                    placeholder: "timeformat",
+                                    value: @track.timeformat}
+          %small{class: "error timeformat"}
+            = @track.errors.messages.has_key?(:timeformat) ? @track.errors.messages[:timeformat].first.capitalize : ""
 
-  = f.label :timeformat
-  = f.text_field :timeformat
 
-  = f.label :timeformat_optional
-  = f.check_box :timeformat_optional
+      .track-info-wrap
 
-  = f.label :comment
-  = f.text_area :comment, :size => "40x10", :maxlength => "1000"
+        %label{for: "track_title"} Title
+        %input#track_artist{name: "track[title]",
+                            type: "text",
+                            placeholder: "Title",
+                            value: @track.title}
+        %small{class: "error title"}
+          = @track.errors.messages.has_key?(:title) ? @track.errors.messages[:title].first.capitalize : ""
+            
 
-  
-  = f.hidden_field :track_id
-  = f.hidden_field :shareable
-  = f.hidden_field :timestamp
-  = f.hidden_field :duration
-  = f.hidden_field :artwork_url
-  = f.hidden_field :service
-  
-  = f.submit :id => 'track_submit'
+        %label{for: "track_artist"} Artist
+        %input#track_title{name: "track[artist]",
+                           type: "text",
+                           placeholder: "Artist",
+                           value: @track.artist}
+        %small{class: "error artist"}
+          = @track.errors.messages.has_key?(:artist) ? @track.errors.messages[:artist].first.capitalize : ""
+
+        %div#track_comment_wrap
+          %label{for: "track_comment"} Comment
+          %textarea#track_comment{cols: "40", maxlength: "1000", name: "track[comment]", rows: "10"}
+          %small{class: "error track_comment"}
+            = @track.errors.messages.has_key?(:comment) ? @tracks.errors.messages[:comment].first.capitalize : ""
+
+        %input#track_submit.input-submit.button.expand{name: "commit",
+                                                       type: "submit",
+                                                       value: "Submit Track"}          
+
+
+    %input#track_page_url{name: "track[page_url]",
+                          type: "hidden",
+                          placeholder: "page url",
+                          value: @track.page_url}
+
+    %input#track_profile_url{name: "track[profile_url]",
+                             type: "hidden",
+                             placeholder: "profile url",
+                             value: @track.profile_url}
+
+    %input#track_track_id{name: "track[track_id]",
+                          type: "hidden",
+                          value: @track.track_id}
+      
+    %input#track_shareable{name: "track[shareable]",
+                           type: "hidden",
+                           value: "#{@track.shareable}"}
+      
+    %input#track_timestamp{name: "track[timestamp]",
+                           type: "hidden",
+                           value: @track.timestamp}
+      
+    %input#track_duration{name: "track[duration]",
+                          type: "hidden",
+                          value: @track.duration}
+      
+    %input#track_artwork_url{name: "track[artwork_url]",
+                             type: "hidden",
+                             value: @track.artwork_url}
+      
+    %input#track_service{name: "track[service]",
+                         type: "hidden",
+                         value: @track.service}
+      

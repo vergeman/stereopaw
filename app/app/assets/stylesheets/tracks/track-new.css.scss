@@ -1,0 +1,44 @@
+
+$track-input-width: 350px;
+
+#track-new {
+    font-family: 'lato', 'open sans', 'helvetica neue', 'georgia';
+    margin: 1rem auto;
+    display: block;
+    width: 90%;
+
+    .track-artwork-wrap {
+	margin-right: 2rem;
+    }
+    .track-info-wrap {
+	float: left;
+	margin-left: 0rem;
+	@media #{$medium-up} {
+	    margin-left: .5rem;
+	}
+    }
+    .track-artwork-url {
+	width: 125px;
+	height: 125px;
+    }
+
+    #track_artist, #track_title { 
+	max-width: $track-input-width; 
+    }
+
+    #track_timeformat { 
+	width: 83px; 
+    }
+    #track_timeformat_wrap { 
+	margin-top: 1.55rem;
+    }
+    #track_comment_wrap { 
+	max-width: $track-input-width;
+    }
+	
+    #track_submit {
+	padding: 8px;
+	margin-top: 1rem;
+    }
+    .error { padding: 0 };
+}

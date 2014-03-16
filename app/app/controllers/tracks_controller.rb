@@ -57,14 +57,23 @@ class TracksController < ApplicationController
   def new
     #our route is tracks/new - we won't know what user we
     #are on initial submitx
+
+    unless new_params
+      redirect_to root_path
+    end
+
     @user = current_user
     @track = current_user.tracks.build(new_params)
   end
 
 
   def create
+    @user = current_user
     @track = current_user.tracks.build(new_params)
     flash[:success] = "Success" if @track.save
+    puts @track.errors.messages.inspect
+    puts @track.errors.messages.has_key?(:title)
+
     respond_with(current_user, @track)
   end
 
