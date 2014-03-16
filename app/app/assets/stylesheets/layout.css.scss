@@ -1,11 +1,18 @@
 /*Layout --mobile first*/
-$sidebar-bg-color: #191818; //#11171c;
-$sidebar-color: #666666 ;//#fff;//#666666;
+$sidebar-bg-color: #0066cc;//#191818; //#11171c;
+$sidebar-color: #fff;//#666666;
 
 $sidebar-width: 140px;
 
 $logo-bg-color: $sidebar-bg-color;
 $logo-size: 50px;
+
+/*overwrite default button colors*/
+.sub-nav dd.active a, button, .button {
+    background: $sidebar-bg-color;
+    &:hover { background: lighten($sidebar-bg-color, 10%); }
+    &:focus { background: lighten($sidebar-bg-color, 10%); }
+}
 
 header {
     @media #{$medium-up} {
@@ -66,9 +73,10 @@ nav {
 
 	a#home h4 {
 	    margin-left: 1rem;
-	    color:darken(white, 40%);   
+	    color:$sidebar-color;
+	    padding-top: .25rem;
 	    &:hover {
-		color: white;
+		color: $sidebar-color;
 	    }
 	}
 
@@ -125,7 +133,7 @@ nav {
 		float:left;
 		margin-top: -2.5rem;
 		margin-left: 1rem;
-		color:darken(white, 40%);   
+		color:$sidebar-color;
 	    }
 
 	}
@@ -141,6 +149,7 @@ nav {
 	#email {
 	    margin-top: 6rem;
 	    margin-bottom:1rem;
+	    padding-bottom: .5rem;
 	}
 
 	/*menu*/

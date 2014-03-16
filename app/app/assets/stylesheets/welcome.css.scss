@@ -65,7 +65,7 @@
     }
 
     .haveaccount, .tothemusic {
-	font-family: 'lato';
+	font-family: 'lato', 'helvetica neue', 'georgia';
 	font-size: 16px;
     }
 
@@ -73,7 +73,7 @@
 
 /*lists*/
 .problems, .services {
-    font-family:'lato';
+    font-family: 'lato', 'helvetica neue', 'georgia';
 
     @media #{$medium-up} {
 	margin-left: 4rem;
@@ -128,7 +128,7 @@
 	text-align:center;
     }
     .description {
-	font-family: 'lato';
+	font-family: 'lato', 'helvetica neue', 'georgia';
 	font-size: 16px;
 	font-style:normal;
     }
