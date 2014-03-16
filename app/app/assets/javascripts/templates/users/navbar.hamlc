@@ -26,9 +26,10 @@
   %li#submit
     %i.fi-plus
     Submit
-  %br
+
     
   - if @user
+    %br
     %li#settings
       %i.fi-wrench
       Settings
