@@ -16,12 +16,16 @@ describe "TrackShow" do
       #partial data
       it { should have_content(track.artist) }
       it { should have_content(track.title) }
-      it { should have_content(track.profile_url) }
-      it { should have_content(track.page_url) }
-      it { should have_content(track.timeformat) }
-      it { should have_content(track.duration.to_s) }
-      it { should have_content(track.timestamp.to_s) }
-      it { should have_content(track.comment) }
+      it {
+        find_link("#{track.title}")[:href].should == "#{track.page_url}"
+      }
+      it {
+      find_link("#{track.artist}")[:href].should == "#{track.profile_url}"
+      }
+      #it { should have_content(track.timeformat) }
+      #it { should have_content(track.duration.to_s) }
+      #it { should have_content(track.timestamp.to_s) }
+      #it { should have_content(track.comment) }
 
     end
 

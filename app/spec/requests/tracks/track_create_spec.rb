@@ -9,14 +9,24 @@ describe "TrackCreate" do
     Warden.test_reset!
     @user = FactoryGirl.create(:user)
     login_as(@user, :scope => :user)
-    visit tracks_new_path
+    visit tracks_new_path(:track => 
+                          {
+                            :artist => "Artist",
+                            :title => "Title",
+                            :profile_url => "http://www.google.com",
+                            :timeformat => "1:23",
+                            :shareable => "true",
+                            :service => "youtube",
+                            :artwork_url => "http://www.youtube.com/vi/images/0.jpg"
+                          }
+                          )
   }
 
-  let (:submit) { "Create Track" }
+  let (:submit) { "input#track_submit" }
   
   describe  "with invalid info" do
     it "should not create a track" do
-      expect { click_button submit }.not_to change(Track, :count)
+      expect { find(submit).click }.not_to change(Track, :count)
     end
 
     it "should re-render new" do
@@ -27,39 +37,30 @@ describe "TrackCreate" do
 
   describe "valid info test" do
     before do
-      fill_in "track_artist",         with: "DJ User"
-      fill_in "track_title",        with: "iamamtitle"
-      fill_in "track_profile_url",     with: "http://www.google.com"
-      fill_in "track_page_url", with: "http://www.google.com"
-      fill_in "track_timeformat", with: "9:42"      
+
       fill_in "track_comment", with: "I am a Test comment"
 
-      #hidden, but requried for validation
-      find(:xpath, "//input[@id='track_shareable']").set "true"
-      find(:xpath, "//input[@id='track_service']").set "youtube"
-      find(:xpath, "//input[@id='track_artwork_url']").set "http://www.youtube.com/vi/123123123/0.jpg"
+      #now track is valid
+      find(:xpath, "//input[@id='track_page_url']").set "http://www.google.com"
 
-      check "track_timeformat_optional"
     end
 
 
     it "should create a Track" do
-      expect { click_button submit }.to change(Track, :count).by(1)
+      expect { find(submit).click }.to change(Track, :count).by(1)
     end
 
-    it "should redirect to the Track/:id" do
-      click_button submit
+    it "should redirect to the track/submit/:id" do
+      find( submit ).click
       t = Track.all.sort_by(&:created_at).last
-      current_path.should eq user_track_path(@user, t)
+      current_path.should eq tracks_submit_path(t)
     end
 
     it "should have the fields that were submitted" do
-      click_button submit
-      page.should have_content("DJ User")
-      page.should have_content("iamamtitle")
-      page.should have_content("http://www.google.com")
-      page.should have_content("http://www.google.com")
-      page.should have_content("9:42")
+      find(submit).click
+      page.should have_content("Artist")
+      page.should have_content("Title")
+      page.should have_content("1:23")
       page.should have_content("I am a Test comment")
     end    
 

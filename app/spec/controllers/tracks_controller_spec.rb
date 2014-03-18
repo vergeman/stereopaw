@@ -48,14 +48,20 @@ describe TracksController do
       #post login
       it "responds successfully with an HTTP 200 status code" do
         login_as(@user, :scope => :user)
-        get :new
+        get :new, :track => {:testparam => "Hello"}
         expect(response.status).to eq(200)
       end
 
       it "renders the new template" do
-        get :new
+        get :new, :track => {:testparam => "Hello"}
         expect(response).to render_template("new")
       end
+
+      it "redirects if there are no parameters" do
+        get :new
+        expect(response.status).to eq(302)
+      end
+
     end
 
 

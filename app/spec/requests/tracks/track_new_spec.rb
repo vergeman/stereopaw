@@ -36,13 +36,11 @@ describe "TrackNew" do
 
       it { should have_field("track_artist") }
       it { should have_field("track_title") }
-      it { should have_field("track_page_url") }
-      it { should have_field("track_profile_url") }
-      it { should have_field("track_timeformat") }
-      it { should have_field("track_timeformat_optional") }
       it { should have_field("track_comment") }
 
       #user testing, so should be inaccesbile to user --hacky
+      it { should have_selector("input#track_page_url") }
+      it { should have_selector("input#track_profile_url") }
       it { should have_selector("input#track_shareable") }
       it { should have_selector("input#track_timestamp") }
       it { should have_selector("input#track_duration" ) }
@@ -55,17 +53,16 @@ describe "TrackNew" do
 
 
     describe "with form_fields populated by new_params" do
+      #not hidden
+      it { find_field('track[artist]').value.should eq 'Artist' }
+      it { find_field('track[title]').value.should eq 'Title' }
+      it { find_field('track[timeformat]').value.should eq '1:23' }
 
       it { should have_selector("input#track_shareable[value=\"true\"]") }
-      it { should have_selector("input#track_track_id[value=\"123\"]") }
-
-      it { should have_selector("input#track_artist[value=\"Artist\"]") }
-      it { should have_selector("input#track_title[value=\"Title\"]") }
-
+      it { should have_selector("input#track_track_id[value=\"123\"]") }     
       it { should have_selector("input#track_page_url[value=\"mypageurl\"]") }
       it { should have_selector("input#track_profile_url[value=\"profileurl\"]") }
       it { should have_selector("input#track_timeformat[value=\"1:23\"]") }
-      it { should have_selector("input#track_timeformat_optional[value=\"1\"]") }
       it { should have_selector("input#track_service[value=\"youtube\"]") }
       it { should have_selector("input#track_artwork_url[value=\"http://www.youtube.com/vi/images/0.jpg\"]") }      
 

@@ -24,8 +24,8 @@
 
 FactoryGirl.define do
   factory :track do
-    artist "MyString"
-    title "MyString"
+    artist "MyArtist"
+    title "MyTitle"
     profile_url "http://www.mixcloud.com/satoshifumi/"
     duration "9.99"
     timestamp "1232123"

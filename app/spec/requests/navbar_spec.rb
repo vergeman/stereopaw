@@ -25,8 +25,8 @@ describe "Root Page" do
         end
 
         it "has a title" do
-          page.should have_selector("nav > .logo > h6 > a", 
-                                    text: "Stupid Title Here")
+          page.should have_selector("nav > .logo > a", 
+                                    text: "stereo paw")
         end
 
         it "is has a navigation wrap" do
