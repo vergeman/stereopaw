@@ -75,10 +75,13 @@ class TracksController < ApplicationController
   def create
     @user = current_user
     @track = current_user.tracks.build(new_params)
-    flash[:success] = "Success" if @track.save
 
-    respond_with(@track, :location => tracks_submit_path(@track))
-    #respond_with(current_user, @track)
+    if @track.save
+      flash[:success] = "Success"
+      respond_with(@track, :location => tracks_submit_path(@track))
+    else
+      respond_with(current_user, @track) #for error submit
+    end
   end
 
 
