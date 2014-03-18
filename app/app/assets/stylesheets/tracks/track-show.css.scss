@@ -1,0 +1,32 @@
+#track-show {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+
+    img {
+	margin-top:-10px;
+	padding-right: .2rem;
+    }
+    #message  {
+	margin: 1rem 0;
+	text-align:center;
+	padding: .25rem;
+
+	h5 { font-size: .9rem;}
+    }
+    .track-meta {
+	padding-top:2rem;
+	padding-bottom:1rem;
+    }
+    .track-info-wrap {
+	margin-bottom: 2rem;
+    }
+
+    .track-artwork-mask, .track-controls-wrap {
+	display:none;
+    }
+
+    #musicbutton {
+	margin-top: 1rem;
+	text-align:center;
+    }
+}

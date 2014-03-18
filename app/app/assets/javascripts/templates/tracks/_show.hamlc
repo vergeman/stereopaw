@@ -12,7 +12,7 @@
 
   .track-info-wrap
     .track-date
-      #{@track.age}
+      #{@track_age}
 
     .track-title
       %h4.text

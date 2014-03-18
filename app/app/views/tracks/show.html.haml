@@ -1,6 +1,2 @@
-%H1 Track#Show
-
-#player
-  
-.tracks
-  = render :partial => "data", :locals => {:track => @track}
+#track-show
+  = render "tracks/show", :track => @track, :track_age => @track.calculate_age

@@ -40,4 +40,19 @@ class Track < ActiveRecord::Base
     self.timestamp ||= 0
     self.duration ||= 0
   end
+
+
+  def calculate_age
+    diff = (Time.now - self.created_at)
+
+    if (diff / 1.minutes) < 60
+      return (diff / 1.minutes).round.to_s + "m"
+    elsif (diff / 1.hours) <= 24
+      return (diff / 1.hours).round.to_s + "h"
+    else
+      return self.created_at.strftime("%b %-d")
+    end
+
+  end
+
 end

@@ -22,9 +22,12 @@ app.TrackView = Backbone.View.extend({
     },
 
     render: function() {
-	//console.log("[TrackView] Render")
-
-	this.$el.html( this.template({track: this.model.toJSON()}) );
+	/* we pass track_age separately, as rails seems 
+	 * to have trouble rendering template if we generate
+	 * an attribute outside of what's persisted
+	 */
+	this.$el.html( this.template({track: this.model.toJSON(),
+				      track_age: this.model.get("age")}) );
 	
 	return this;
     },

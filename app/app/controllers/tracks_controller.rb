@@ -1,7 +1,7 @@
 require 'net/http'
 
 class TracksController < ApplicationController
-  before_filter :authenticate_user!, only: [:new, :create]
+  before_filter :authenticate_user!, only: [:new, :create, :submit]
   respond_to :html, :json
 
   #TODO: separate route for 
@@ -34,6 +34,7 @@ class TracksController < ApplicationController
       format.json { render }
       #format.html { render :json => @tracks}
     end
+
   end
 
 
@@ -43,6 +44,10 @@ class TracksController < ApplicationController
 
 
 #REQUIRES AUTH
+  def submit
+    @track = Track.find_by_id(params[:id])    
+  end
+
   def mytracks
     if user_signed_in?
       respond_with(current_user.tracks.order("created_at DESC") ) do |format|
@@ -54,10 +59,10 @@ class TracksController < ApplicationController
     end
   end
 
+
   def new
     #our route is tracks/new - we won't know what user we
     #are on initial submitx
-
     unless new_params
       redirect_to root_path
     end
@@ -71,10 +76,9 @@ class TracksController < ApplicationController
     @user = current_user
     @track = current_user.tracks.build(new_params)
     flash[:success] = "Success" if @track.save
-    puts @track.errors.messages.inspect
-    puts @track.errors.messages.has_key?(:title)
 
-    respond_with(current_user, @track)
+    respond_with(@track, :location => tracks_submit_path(@track))
+    #respond_with(current_user, @track)
   end
 
 

@@ -1,0 +1,18 @@
+#track-show
+  %header
+    %h2
+      %img{src: "/assets/stereopaw-logo-main.png", width: "21px"}
+      stereo paw
+    
+  - if flash[:success]
+    %div#message.alert-box.info    
+      %h5 We've successfully added your track
+    
+  %hr
+
+  = render "tracks/show", :track => @track, :track_age => @track.calculate_age
+    
+  #musicbutton
+    %a{href: "/#", target: "_blank"}
+      .button{name: "music"}
+        Take me to the music        
