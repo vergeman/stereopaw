@@ -16,6 +16,8 @@ app.TracksIndexView = Backbone.View.extend({
 
     template: JST['tracks/index'],
 
+    templatefooter : JST['tracks/footer'],
+
     initialize: function(trackscollection, displayroute) {
 	console.log("[TracksIndexView] initialize")
 
@@ -24,6 +26,8 @@ app.TracksIndexView = Backbone.View.extend({
 	this.displayroute = displayroute.charAt(0).toUpperCase() + displayroute.slice(1)
 
 	_(this).bindAll('close')
+
+	this.listenToOnce(trackscollection, 'add', this.renderfooter)
     },
 
     close : function() {
@@ -40,11 +44,18 @@ app.TracksIndexView = Backbone.View.extend({
 	this.$el.append(this.template({header: this.displayroute}) );
 
 	//tracksView
-
 	this.$el.append(this.tracksView.el)
+
 
 	return this;
     },
+
+    renderfooter: function() {
+	console.log("[TracksIndexView] renderfooter")
+	//footer add tracks
+	this.$el.append(this.templatefooter() );
+	return this;
+    }
 
 });
 

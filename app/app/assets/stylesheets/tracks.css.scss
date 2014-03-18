@@ -52,3 +52,16 @@ $image-size-default: 75px;
     margin-bottom: 2.25rem;
 }
 
+
+.addfooter {
+    margin-top: 8rem;
+    text-align:center;
+
+
+    .installbuttons {
+	margin-top: 2rem;
+	a {
+	    padding: 1rem;
+	}
+    }
+}

@@ -1,0 +1,15 @@
+.addfooter
+  %h3
+    Add Tracks
+  %h5
+    Install the bookmarklet or chrome extension to add more tracks
+    
+  .installbuttons
+    %a{:href => "/#gettingstarted", :'data-reveal-id' => "BookmarkletModal", 'data-reveal' => ''}
+      %button.small
+        Add Bookmarklet
+
+    %a{:onclick => 'return false;', :href => "/meow#signup"}
+      %button.small
+        Install Chrome Extension
+
