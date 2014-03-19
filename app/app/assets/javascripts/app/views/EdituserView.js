@@ -9,11 +9,8 @@ app.EdituserView = Backbone.View.extend({
     template: JST['users/edituser'],
 
     events : {
-	'click input[type=submit]#edit-user-button' : 'submit_edit_user',
-	'click input[type=submit]#cancel-account-button' : 'submit_cancel_account'
+	'click input[type=submit]#edit-user-button' : 'submit_edit_user'
     },
-
-    //WORKING HERE - need delete
 
     initialize: function(session) {
 	console.log("[Edituser] initialize")
@@ -81,36 +78,6 @@ app.EdituserView = Backbone.View.extend({
 	    $('.error_' + key).show()
 	});
     },
-
-    submit_cancel_account : function(e) {
-
-	console.log("[EdituserView] submit_cancel_account")
-	e.preventDefault();
-	var self = this;
-
-	var data = {};
-
-	app.vent.trigger("Request",
-			 "DELETE",
-			 "/users",
-			 data,
-			 function(data, textStatus, jqXHR) {
-			     console.log("[SignupView] Request")
-
-			     if ('errors' in data) {
-				 app.vent.trigger("EdituserView:signup:error", data.errors)
-			     }
-
-			     //by default we are logged OUT
-			     self.session.set("state", 
-					      app.Session.SessionState.LOGGEDOUT);
-			 },
-			 function(jqXHR, textStatus, errorThrown) {}
-			)
-
-
-    },
-
 
     submit_edit_user : function(e) {
 	console.log("[EdituserView] submit_edit_user")
