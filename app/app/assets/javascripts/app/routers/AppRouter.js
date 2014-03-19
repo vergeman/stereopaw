@@ -12,6 +12,7 @@ app.AppRouter = Backbone.Router.extend({
 
 	/*devise*/
 	'login' : 'login',
+	'forgot' : 'forgot',
 	'signup' : 'signup',
 	'edituser' : 'edituser',
     },
@@ -54,7 +55,26 @@ app.AppRouter = Backbone.Router.extend({
 	}
 
     },
+    forgot : function() {
+	console.log("[AppRouter] forgot")
 
+	var redirect = function() { 
+	    Backbone.history.navigate("/", {trigger:true})
+	}
+
+	/*if not logged in, we render forgot view, otherwise
+	 *redirect to root*/
+	if (!this.checkauth(app.Session.SessionState.LOGGEDIN, 
+			   function(){}))
+	{
+	    this.view(new app.ForgotpasswordView(this.session),
+		      "/forgot" )
+	}
+	else {
+	    redirect()
+	}
+
+    },
     signup : function() {
 	console.log("[AppRouter] signup")
 

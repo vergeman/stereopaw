@@ -1,5 +1,5 @@
 App::Application.routes.draw do
-  devise_for :users, controllers: { sessions: "sessions", registrations: "registrations"}
+  devise_for :users, controllers: { sessions: "sessions", registrations: "registrations", passwords: "passwords"}
 
   #custom devise route
   devise_scope :user do

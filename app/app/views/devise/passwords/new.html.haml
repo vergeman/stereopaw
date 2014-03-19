@@ -1,0 +1,2 @@
+#content.noside
+  = render "users/forgot", :signup_link => "/users/sign_up", :error => resource.errors.empty? ? nil : resource.errors.messages[:email][0]

@@ -1,0 +1,41 @@
+%header
+  %h1 Forgot Password?
+%hr
+
+#forgot-user
+
+  %h5 Enter your email to receive reset instructions
+  %form#new_user.new_user{"accept-charset" => "UTF-8",
+                          action: "/users/password",
+                          method: "post"}
+    
+    %div{style: "margin:0;padding:0;display:inline"}
+      %input{name: "utf8", type: "hidden", value: "✓"}
+      %input{name: "authenticity_token",
+             type: "hidden",
+             value: "#{@authenticity_token}"}
+        
+    %div
+      %div.input-label-prefix
+        %span.prefix
+          %i.fi-at-sign.medium
+      %div.input-text-post
+        %input#user_email{autofocus: "autofocus",
+                          name: "user[email]",
+                          type: "email",
+                          placeholder: "Email",
+                          value: ""}
+        %small{class: "error_email"}
+        -if @error
+          %small{class: "error_email", style:"display:block;"}
+            = @error
+    %div
+      %input#forgot-user-button.input-submit.button.expand{name: "commit", type: "submit", value: "Send me reset instructions"}
+        
+    %hr
+      
+    %p.needaccount
+      Need an account?
+      
+    %div
+      %a#sign-up-link.button.expand{href: "#{@signup_link}"} SIGN UP

@@ -1,4 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
+  include ApplicationHelper
 
   # GET /resource/sign_up
   def new
@@ -72,10 +73,6 @@ class RegistrationsController < Devise::RegistrationsController
     respond_with_navigational(resource){ redirect_to meow_path }
   end
 
-  def render_json_redirect(path)
-    response.headers["AJAX-STATUS"] = "302"
-    render :json => {'location' => path}.to_json
-  end
 
 
 end

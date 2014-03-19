@@ -14,4 +14,10 @@ module ApplicationHelper
   end
 
 
+  def render_json_redirect(path)
+    response.headers["AJAX-STATUS"] = "302"
+    render :json => {'location' => path}.to_json
+  end
+
+
 end
