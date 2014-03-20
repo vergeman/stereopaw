@@ -22,6 +22,10 @@ app.Session = Backbone.Model.extend({
 	this.listenTo(app.vent, "Session:logged-in", this.logged_in)
 	this.listenTo(app.vent, "Session:logged-out", this.logged_out)
 
+	/*storage flag & listener to detect state*/
+	this.notifiable = true
+	this.auth_notify_listener()
+
 	/*general request event*/
 	this.listenTo(app.vent, "Request", this.request)
 
@@ -42,6 +46,8 @@ app.Session = Backbone.Model.extend({
 	this.set("state", app.Session.SessionState.LOGGEDIN)
 
 	this.set("current_user", new app.User(data) )
+
+	this.check_crosstab_reload()
     },
 
     logged_out: function(data) {
@@ -50,8 +56,47 @@ app.Session = Backbone.Model.extend({
 	this.set("state", app.Session.SessionState.LOGGEDOUT)
 	/*clear User information for session*/
 	this.set("current_user", null)
+
+	this.check_crosstab_reload()
     },
 
+    /*init_reload_listener: poor man's cross-tab communication.
+     * bind a listener to local storage event; we tie it to a 
+     * session state change (auth()): login/logout
+     * doesn't listen to own tab, only cross tab
+     */
+
+    auth_notify_listener : function() {
+	var self = this;
+
+	$(window).bind('storage', function (e) {
+	    console.log("[Session] reload heard")
+	    this.notifiable = false
+	    self.auth()
+	});
+    },
+
+    /*on every login/logout event, we fire a localstorage event
+     *to browser ping other tabs to re-auth
+     *
+     *if this.notifiable is false, it was set to false
+     *via auth_notify_listener, so we are "in media" fired auth()
+     *(consequently will or are firing Session:logged-in/logged-out
+     *events)
+     *on this auth() run, notifiable is false, so we do not fire 
+     *another storage event [prevent infinite loop]
+     */
+
+    check_crosstab_reload : function() {
+	if (this.notifiable) {
+	    /*fire 'notify event'*/
+	    localStorage.setItem('authtime', new Date())
+	}
+	else {
+	    this.notifiable = true
+	}
+    },
+    
     /*Auth State
      * auth() 
      * is an initial authentication - someone may page load
