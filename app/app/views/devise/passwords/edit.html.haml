@@ -1,0 +1,43 @@
+#content.noside
+  %header
+    %h1 Change password
+  %hr
+
+  #password-reset
+    %form#new_user.new_user{"accept-charset" => "UTF-8", action: "/users/password", method: "post"}
+      %div{style: "margin:0;padding:0;display:inline"}
+        %input{name: "utf8", type: "hidden", value: "✓"}
+        %input{name: "_method", type: "hidden", value: "put"}
+        %input{name: "authenticity_token", type: "hidden", value: "#{@authenticity_token}"}
+        %input#user_reset_password_token{name: "user[reset_password_token]", type: "hidden", value: "#{resource.reset_password_token}"}
+
+      %div
+        %label{for: "user_password"} New password
+        %div.input-label-prefix
+          %span.prefix
+            %i.fi-lock.medium
+        %div.input-text-post
+          %input#user_password{autofocus: "autofocus", name: "user[password]", type: "password"}
+          %small{class:"error"}
+            - if !resource.errors.messages.empty? && resource.errors.messages.has_key?(:password)
+              = "Password #{resource.errors.messages[:password][0]}"
+
+
+      %div
+        %label{for: "user_password_confirmation"} Confirm password
+        %div.input-label-prefix
+          %span.prefix
+            %i.fi-lock.medium
+        %div.input-text-post
+          %input#user_password_confirmation{name: "user[password_confirmation]", type: "password"}
+          %small{class:"error"}
+            - if !resource.errors.messages.empty? && resource.errors.messages.has_key?(:password_confirmation)
+              = "New password #{resource.errors.messages[:password_confirmation][0]}"
+
+      %div
+        %small{class:"error"}
+          - if !resource.errors.messages.empty? && resource.errors.messages.has_key?(:reset_password_token)
+            = "Email token is #{resource.errors.messages[:reset_password_token][0]}. Please Submit another password reset email."
+
+      %div
+        %input#edit-user-button.input-submit.button.expand{name: "commit", type: "submit", value: "Change my password"}
