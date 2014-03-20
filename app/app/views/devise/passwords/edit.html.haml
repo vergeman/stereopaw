@@ -1,9 +1,16 @@
 #content.noside
   %header
-    %h1 Change password
+    %a{:href => "/meow"}
+      %h2 stereo paw
+      
   %hr
 
+  
   #password-reset
+    %p
+      %h4
+        Change your password
+    
     %form#new_user.new_user{"accept-charset" => "UTF-8", action: "/users/password", method: "post"}
       %div{style: "margin:0;padding:0;display:inline"}
         %input{name: "utf8", type: "hidden", value: "✓"}
