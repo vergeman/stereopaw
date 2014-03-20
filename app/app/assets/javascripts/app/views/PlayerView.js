@@ -39,7 +39,8 @@ app.PlayerView = Backbone.View.extend({
 	'click #play-play' : 'resume',
 	'click #play-pause' : 'pause',
 	'click #play-next' : 'next',
-	'click #play-prev' : 'prev'
+	'click #play-prev' : 'prev',
+	'click #ytquit' : 'hide_yt'
     },
 
     render: function() {
@@ -150,10 +151,12 @@ app.PlayerView = Backbone.View.extend({
     },
 
     show_yt : function () {
+	$('#ytquit').css('display', 'block');
 	$('#ytplayer').css('left', 'auto')
     },
 
     hide_yt : function() {
+	$('#ytquit').css('display', 'none');
 	$('#ytplayer').css('left', '-999rem')
     }
 

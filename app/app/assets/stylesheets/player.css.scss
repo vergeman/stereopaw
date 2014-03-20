@@ -158,6 +158,25 @@ $ytplayer-height: 200px;
 
 
 /*ytplayer*/
+
+#ytquit {
+    $buffer: 20px;
+
+    position: absolute;
+    bottom: 4rem;
+    width: $ytplayer-width + $buffer;
+    height: $ytplayer-height;
+    color: #a2a2a2;
+    background: black;
+    padding: 6px;
+    right: 0;
+    display:none;
+
+    i {
+	cursor:pointer;
+    }
+}
+
 #ytplayer {
     width: $ytplayer-width;
     height: $ytplayer-height;
