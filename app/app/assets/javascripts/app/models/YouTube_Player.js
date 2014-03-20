@@ -47,6 +47,8 @@ app.YouTube_Player = Backbone.Model.extend({
 	console.log(this)
 
 	if ( this.state === YT.PlayerState.ENDED ) {
+	    this.hide()
+	    this._player.clearVideo()
 	    app.vent.trigger("Player:next")
 	}
 

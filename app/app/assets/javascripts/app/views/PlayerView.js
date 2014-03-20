@@ -148,7 +148,7 @@ app.PlayerView = Backbone.View.extend({
 
 	$("#track-time > #duration").html( " / " + track.get("duration_format") )
     },
-    
+
     show_yt : function () {
 	$('#ytplayer').css('left', 'auto')
     },

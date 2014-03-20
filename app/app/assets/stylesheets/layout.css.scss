@@ -28,7 +28,11 @@ nav {
     top:0;
     left:0;
     display:inline;
-    z-index:100;
+
+    z-index:101; /*over #ytplayer/#player in mobile*/
+    @media #{$medium-up} {
+	z-index: 99; /*under player as sidebar*/
+    }
 
     background: $sidebar-bg-color;
     color: $sidebar-color;
