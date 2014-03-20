@@ -28,6 +28,7 @@ app.TracksIndexView = Backbone.View.extend({
 	_(this).bindAll('close')
 
 	this.listenToOnce(trackscollection, 'render', this.renderfooter)
+
     },
 
     close : function() {

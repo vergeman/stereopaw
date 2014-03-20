@@ -4,14 +4,11 @@ class TracksController < ApplicationController
   before_filter :authenticate_user!, only: [:new, :create, :submit]
   respond_to :html, :json
 
-  #TODO: separate route for 
-  #other users v. current_user, privacy issues?
-  #also need to display something when not logged in
-
   #all tracks of a user
   def index
+    page = params[:page].to_i
     @user = User.find(params[:user])
-    @tracks = @user.tracks
+    @tracks = @user.tracks.limit(10).offset(page * 10)
     respond_with(@tracks) do |format|
       format.json { render }
     end
@@ -21,7 +18,8 @@ class TracksController < ApplicationController
 
   #latest tracks
   def latest
-    @tracks = Track.all.order("created_at DESC").limit(20)
+    page = params[:page].to_i
+    @tracks = Track.all.order("created_at DESC").limit(10).offset(page * 10)
     respond_with(@tracks) do |format|
       format.json { render }
     end
@@ -29,10 +27,10 @@ class TracksController < ApplicationController
 
   #most popular tracks - need metric
   def popular
-    @tracks = Track.all.order("created_at ASC").limit(20)
+    page = params[:page].to_i
+    @tracks = Track.all.order("created_at ASC").limit(10).offset(page * 10)
     respond_with(@tracks) do |format|
       format.json { render }
-      #format.html { render :json => @tracks}
     end
 
   end
