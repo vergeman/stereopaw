@@ -17,6 +17,7 @@ describe "TrackCreate" do
                             :timeformat => "1:23",
                             :shareable => "true",
                             :service => "youtube",
+                            :genres => "alternative",
                             :artwork_url => "http://www.youtube.com/vi/images/0.jpg"
                           }
                           )
@@ -61,6 +62,7 @@ describe "TrackCreate" do
       page.should have_content("Artist")
       page.should have_content("Title")
       page.should have_content("1:23")
+      page.should have_content("\"alternative\"")
       page.should have_content("I am a Test comment")
     end    
 

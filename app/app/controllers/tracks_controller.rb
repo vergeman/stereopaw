@@ -63,16 +63,19 @@ class TracksController < ApplicationController
     #are on initial submitx
     unless new_params
       redirect_to root_path
+      return
     end
 
     @user = current_user
     @track = current_user.tracks.build(new_params)
+    @track.genres = new_params[:genres].to_s.split(',').map(&:strip)
   end
 
 
   def create
     @user = current_user
     @track = current_user.tracks.build(new_params)
+    @track.genres = new_params[:genres].to_s.split(',').map(&:strip)
 
     if @track.save
       flash[:success] = "Success"
@@ -100,6 +103,7 @@ private
                                   :comment, 
                                   :shareable,
                                   :artwork_url,
+                                  :genres,
                                   :service) if params[:track]
   end
 

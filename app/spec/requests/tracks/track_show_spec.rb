@@ -16,6 +16,7 @@ describe "TrackShow" do
       #partial data
       it { should have_content(track.artist) }
       it { should have_content(track.title) }
+
       it {
         find_link("#{track.title}")[:href].should == "#{track.page_url}"
       }

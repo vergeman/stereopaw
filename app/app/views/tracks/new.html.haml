@@ -50,6 +50,14 @@
         %small{class: "error artist"}
           = @track.errors.messages.has_key?(:artist) ? @track.errors.messages[:artist].first.capitalize : ""
 
+        %label{for: "track_genres"} Genres
+        %input#track_genres{name: "track[genres]",
+                           type: "text",
+                           placeholder: "Rock, Pop, House",
+                           value: @track.genres.map(&:inspect).join(', ')}
+        %small{class: "error genres"}
+          = @track.errors.messages.has_key?(:genres) ? @track.errors.messages[:genres].first.capitalize : ""
+
         %div#track_comment_wrap
           %label{for: "track_comment"} Comment
           %textarea#track_comment{cols: "40", maxlength: "1000", name: "track[comment]", rows: "10"}
