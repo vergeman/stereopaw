@@ -27,11 +27,10 @@
           #{@track.artist}
 
     .track-genres
-      %h6.subheader.text
-        - if @track.genres
-          - for g in @track.genres
-            .genre
-              = g
+      - if @track.genres
+        - for g in @track.genres
+          .genre
+            = g
 
 			
     - if @track['comment']

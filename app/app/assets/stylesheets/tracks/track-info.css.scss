@@ -1,8 +1,6 @@
 /* Track info/data*/
 h4, h6 { display:inline-block;}
-.track-title, .track-artist, .track-notes{
-    width: 90%;
-}
+
 .track-title, .track-artist {
 
     .text {
@@ -25,10 +23,40 @@ h4, h6 { display:inline-block;}
 	     &:hover { color: $anchor-font-color-hover;}}
     h6 > a { color: $subheader-font-color;
 	     &:hover { color: $anchor-font-color-hover;}}
+
+}
+.track-title {
+    @media #{$medium-only} {
+	margin-top: -0.5rem;
+    }
 }
 /*track genre*/
-.genre { 
+.track-genres {
+    height: 1.5rem;
+    width: 100%;
+    overflow: hidden;
+
+    @media #{$large-up} {
+	height: 2.75rem;
+    }
+}
+
+.genre {
+    float: left;
     display:inline;
+    /*we margin individual genres so overflow hides*/
+    margin-top: 0.35rem;
+    margin-right: 1rem;
+    padding: 2px;
+    font-family: 'lato', 'helvetica neue', 'georgia';
+    font-size: .8rem;
+    background: #f7f7f7;    
+    border: 1px solid #ebebeb;
+    color: #a2a2a2;
+
+    @media #{$large-up} {
+	margin-top: 1.5rem;
+    }
 }
 
 /*track date*/
@@ -49,7 +77,10 @@ h4, h6 { display:inline-block;}
 .track-notes {
 
     font-size: .75rem;
-    
+
+    clear:both;
+    margin-left: -6rem;
+
     i { 
 	font-size: 1.25rem; 
 	padding-top: .25rem;
@@ -69,10 +100,10 @@ h4, h6 { display:inline-block;}
     padding-top:.5rem;
 
     @media #{$medium-up} {
-	padding-top: 0rem;
+	margin-left: -6.5rem;
     }
 
     @media #{$large-up} {
-	padding-top: 1.5rem;
+	margin-left: -8.5rem;
     }
 }
