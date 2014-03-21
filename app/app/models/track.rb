@@ -18,6 +18,11 @@
 #  service     :string(255)
 #  artwork_url :string(255)
 #  user_id     :integer
+#  genres      :string(255)
+#
+# Indexes
+#
+#  index_tracks_on_genres  (genres)
 #
 
 class Track < ActiveRecord::Base

@@ -18,6 +18,11 @@
 #  service     :string(255)
 #  artwork_url :string(255)
 #  user_id     :integer
+#  genres      :string(255)
+#
+# Indexes
+#
+#  index_tracks_on_genres  (genres)
 #
 
 require 'spec_helper'
@@ -82,6 +87,10 @@ describe Track do
 
     it "has an user_id attr" do
       @track.attributes.has_key?("user_id").should eq true
+    end
+
+    it "has a genres attr" do
+      @track.attributes.has_key?("genres").should eq true
     end
 
   end
