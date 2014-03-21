@@ -19,6 +19,7 @@
 #  artwork_url :string(255)
 #  user_id     :integer
 #  genres      :string(255)      default([])
+#  plays       :integer
 #
 # Indexes
 #
@@ -41,6 +42,7 @@ FactoryGirl.define do
     service "youtube"
     artwork_url "http://www.youtube.com/0.jpg"
     track_id "123456789"
+    plays "1"
     association :user, factory: :user
   end
 end

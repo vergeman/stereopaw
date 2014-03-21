@@ -19,6 +19,7 @@
 #  artwork_url :string(255)
 #  user_id     :integer
 #  genres      :string(255)      default([])
+#  plays       :integer
 #
 # Indexes
 #
@@ -90,7 +91,12 @@ describe Track do
     end
 
     it "has a genres attr" do
+      #ps: this is an array
       @track.attributes.has_key?("genres").should eq true
+    end
+
+    it "has a plays attr" do
+      @track.attributes.has_key?("plays").should eq true
     end
 
   end
@@ -190,6 +196,29 @@ describe Track do
         @track.artwork_url = "aalkenfek"
         @track.should_not be_valid
       end
+    end
+
+    context "plays" do
+      it "can only be an integer count value" do
+        @track.plays = "hello"
+        @track.should_not be_valid
+      end
+
+      it "can only be a positive integer count value" do
+        @track.plays = 1001
+        @track.should be_valid
+      end
+
+      it "cannot be a negative value" do
+        @track.plays = -1
+        @track.should_not be_valid
+      end
+
+      it "can only be an integer value" do
+        @track.plays = 1.123
+        @track.should_not be_valid
+      end
+
     end
 
     #  duration    :decimal(, )

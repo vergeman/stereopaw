@@ -18,8 +18,13 @@ describe "TrackShow" do
       it { should have_content(track.title) }
 
       it {
+        find('#track-plays').should have_content(1)
+      }
+
+      it {
         find_link("#{track.title}")[:href].should == "#{track.page_url}"
       }
+
       it {
       find_link("#{track.artist}")[:href].should == "#{track.profile_url}"
       }

@@ -19,6 +19,7 @@
 #  artwork_url :string(255)
 #  user_id     :integer
 #  genres      :string(255)      default([])
+#  plays       :integer
 #
 # Indexes
 #
@@ -35,6 +36,7 @@ class Track < ActiveRecord::Base
   validates :profile_url, :page_url, :artwork_url, url: true #/validators/UrlValidator
 
   validates :duration, :timestamp, numericality: true
+  validates :plays, numericality: { only_integer: true, :greater_than_or_equal_to => 0 }
 
   validates_format_of :timeformat, :with => /\A([^0:\D][0-9]*:)?([1-5]?[0-9]:)([0-5][0-9])\Z/
 

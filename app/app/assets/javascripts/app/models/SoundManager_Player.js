@@ -97,6 +97,7 @@ app.SoundManager_Player = Backbone.Model.extend({
 	}
 	return this._sound.position
     },
+
     play : function(track, timestamp) {
 	console.log("[SoundManager] play")
 
