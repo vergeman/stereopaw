@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140321024752) do
+ActiveRecord::Schema.define(version: 20140321030229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20140321024752) do
     t.string   "service"
     t.string   "artwork_url"
     t.integer  "user_id"
-    t.string   "genres",      array: true
+    t.string   "genres",      default: [], array: true
   end
 
   add_index "tracks", ["genres"], name: "index_tracks_on_genres", using: :gin
