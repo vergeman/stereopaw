@@ -27,7 +27,7 @@ class TracksController < ApplicationController
   #most popular tracks - need metric
   def popular
     page = params[:page].to_i
-    @tracks = Track.all.order("created_at ASC").limit(10).offset(page * 10)
+    @tracks = Track.all.order("plays DESC").limit(10).offset(page * 10)
     respond_with(@tracks) do |format|
       format.json { render }
     end
