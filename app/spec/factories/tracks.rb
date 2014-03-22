@@ -33,15 +33,16 @@ FactoryGirl.define do
     artist "MyArtist"
     title "MyTitle"
     profile_url "http://www.mixcloud.com/satoshifumi/"
+    page_url "http://www.mixcloud.com/satoshifumi/satoshi-fumi-mixtape-in-nov-2013/"
     duration "9.99"
     timestamp "1232123"
     timeformat "0:30"
-    page_url "http://www.mixcloud.com/satoshifumi/satoshi-fumi-mixtape-in-nov-2013/"
     comment "I am a test comment"
     shareable "true"
     service "youtube"
     artwork_url "http://www.youtube.com/0.jpg"
     track_id "123456789"
+    genres ["rock"]
     plays "1"
     association :user, factory: :user
   end

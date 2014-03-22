@@ -67,8 +67,9 @@
       .track-attribution
         #track-plays
           %i.fi-play
-          = @track.plays
-          
+          .num-plays
+            = @track.plays
+            
         %a{:href => "#{@track.page_url}", :target => "_blank"}
           %img{:src => "#{@track.attribution_url}", :width => "#{@track.attribution_width}",:height => "#{@track.attribution_height}" }
 %hr

@@ -73,7 +73,6 @@ describe TracksController do
     #API
     describe "GET user_tracks as json" do
 
-
       before do
         @user = FactoryGirl.create(:user)
         login_as(@user, :scope => :user)
@@ -99,7 +98,6 @@ describe TracksController do
 
   end
 
-
   describe "GET #show" do
 
     before do
@@ -119,6 +117,40 @@ describe TracksController do
 
   end
 
+  describe "POST #play" do
+
+    before do
+      @track = FactoryGirl.create(:track)
+    end
+
+    it "responds successfully with 200 request" do
+      post :play, :track => {:id => @track.id }
+      expect(response.status).to eq(200)
+    end
+
+    describe "handles track plays and" do
+
+      it "responds with 'invalid track' in case of invalid track" do
+        post :play, :track => {:id => "adlkfajd" }
+        @parsed_json = JSON.parse(response.body)
+        expect(@parsed_json.to_json).to eq ({:errors => "invalid track"}.to_json)
+      end
+
+
+      it "valid track should increment track models plays count" do
+        post :play, :track => {:id => @track.id}
+        (@track.plays + 1).should eq Track.find(@track).plays
+      end
+
+      it "valid track response should be an incremented plays count" do
+        post :play, :track => {:id => @track.id}
+        JSON.parse(response.body)['track']['plays'].should eq (@track.plays + 1)
+      end      
+
+    end
+
+  end
 
 
 end
+

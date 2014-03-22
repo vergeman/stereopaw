@@ -48,6 +48,9 @@ class Track < ActiveRecord::Base
     self.duration ||= 0
   end
 
+  def played
+    self.update_attributes(:plays => self.plays + 1)
+  end
 
   def calculate_age
     diff = (Time.now - self.created_at)

@@ -9,22 +9,31 @@ describe Track do
       @track = @user.tracks.build
     end
 
-    it "can calculate_age in minutes" do
-      @track.created_at = Time.now - 10.minutes
-      @track.calculate_age.should eq "10m"
+    describe "calculate_age method" do
+      it "can calculate_age in minutes" do
+        @track.created_at = Time.now - 10.minutes
+        @track.calculate_age.should eq "10m"
+      end
+
+      it "can calculate_age in hours" do
+        @track.created_at = Time.now - 61.minutes
+        @track.calculate_age.should eq "1h"
+      end
+
+      it "can calculate_age display months" do
+        time = Time.new(2014, 1, 31) - 1.months
+        @track.created_at = time
+        @track.calculate_age.should eq (time).strftime("%b %-d")
+      end
     end
 
-    it "can calculate_age in hours" do
-      @track.created_at = Time.now - 61.minutes
-      @track.calculate_age.should eq "1h"
+    describe "played" do
+      it "increments plays attribute" do
+        count = @track.plays
+        @track.played
+        (count + 1).should eq @track.plays
+      end
     end
-
-    it "can calculate_age display months" do
-      time = Time.new(2014, 1, 31) - 1.months
-      @track.created_at = time
-      @track.calculate_age.should eq (time).strftime("%b %-d")
-    end
-
 
   end
 

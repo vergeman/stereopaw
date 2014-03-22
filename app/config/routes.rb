@@ -11,8 +11,11 @@ App::Application.routes.draw do
   end
   #for marklet submission
   get '/tracks/new' => "tracks#new"
-  #marklet succesfull submissionr redirect page
+
+  #marklet succesfull submission redirect page
   get '/tracks/submit/:id', to: "tracks#submit", :as => "tracks_submit"
+
+  post '/tracks/play', to: 'tracks#play'
 
   get '/new' => "tracks#latest"
   get '/popular' => "tracks#popular"

@@ -15,7 +15,6 @@ class TracksController < ApplicationController
 
   end
 
-
   #latest tracks
   def latest
     page = params[:page].to_i
@@ -35,11 +34,31 @@ class TracksController < ApplicationController
 
   end
 
-
   def show
     @track = Track.find_by_id(params[:id])
   end
 
+
+  #POST/plays
+  def play
+    begin
+      @track = Track.find(params[:track][:id])
+    rescue ActiveRecord::RecordNotFound
+      render :json => {:errors => "invalid track"}
+      return
+    end
+
+    @track.played
+    render :json =>
+      {
+      :track => 
+      {
+        :id => @track.id,
+        :plays => @track.plays 
+      }
+    }
+
+  end
 
 #REQUIRES AUTH
   def submit
