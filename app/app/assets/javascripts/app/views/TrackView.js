@@ -62,14 +62,28 @@ app.TrackView = Backbone.View.extend({
     increment_plays : function(e) {
 	console.log("[TrackView] increment_plays")
 	var self = this;
+
+	/* client side 'rate-limiting' - only count a play
+	 * if another track has been played
+	 * it'll do for now
+	 */
+	if (this.model.get("played") ) {
+	    return;
+	}
+
 	var $track_meta = $(e.currentTarget).closest('.track-meta')
 	var data = {'track': { 'id': $track_meta.attr("id") } }
 
 	$.post("/tracks/play.json",
 	       data,
 	       function(data) {
+		   /*clear all played flag*/
+		   app.vent.trigger("Track:ResetPlayed")
+
 		   self.model.set("plays", 
 				  self.model.get("plays") + 1)
+
+		   self.model.played()
 	       }
 	      )
     }

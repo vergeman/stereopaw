@@ -9,8 +9,23 @@ app.Track = Backbone.Model.extend({
 	this.gen_attribute_link();
 	this.gen_duration_format();
 
+	this.set("played", false)
+
+	this.listenTo(app.vent, "Track:ResetPlayed", this.reset_played)
+
 	console.log("[Track] initalized")
     },
+
+    reset_played : function() {
+	console.log("[Track] reset_played")
+	this.set("played", false)
+    },
+
+    played : function() {
+	console.log("[Track] played")
+	this.set("played", true)
+    },
+
     gen_duration_format: function() {
 	var service = this.get("service")
 	var duration = this.get("duration")
