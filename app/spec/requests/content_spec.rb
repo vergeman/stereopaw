@@ -14,7 +14,7 @@ describe "Root Page" do
         visit meow_path()
       }
 
-      it "should have display of all the popular tracks" do        
+      pending "should have display of all the popular tracks" do        
         tracks = Track.all.order("created_at ASC").limit(20)
         i=0
         all('.track-meta').each do |t|
@@ -35,7 +35,7 @@ describe "Root Page" do
         visit '/meow/#new'
       }
 
-      it "should display new tracks" do
+      pending "should display new tracks" do
         tracks = Track.all.order("created_at DESC").limit(20)
 
         i=0
@@ -43,7 +43,6 @@ describe "Root Page" do
           expect(t[:id].to_s).to eq(tracks[i].id.to_s)
           i=i+1
         end
-        
       end
 
     end
@@ -70,7 +69,7 @@ describe "Root Page" do
           expect(t['id'].to_s).to eq(tracks[i].id.to_s)
           i=i+1
         end
-        
+
       end
 
     end

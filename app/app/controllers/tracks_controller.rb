@@ -1,7 +1,9 @@
 require 'net/http'
 
 class TracksController < ApplicationController
-  before_filter :authenticate_user!, only: [:new, :create, :submit]
+  include ApplicationHelper
+
+  before_filter :authenticate_user!, only: [:new, :create, :submit, :update, :destroy]
   respond_to :html, :json
 
   #all tracks of a user
@@ -36,6 +38,16 @@ class TracksController < ApplicationController
 
   def show
     @track = Track.find_by_id(params[:id])
+      
+    respond_with(@track) do |format|
+      format.json { 
+        if @track.nil? 
+          render :json => {:errors => "invalid track"}
+        else
+          render
+        end
+      }
+    end
   end
 
 
@@ -61,6 +73,54 @@ class TracksController < ApplicationController
   end
 
 #REQUIRES AUTH
+  def destroy
+    unless user_signed_in?
+      render_json_redirect("/login")
+      return
+    end
+
+    begin
+      @track = current_user.tracks.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render :json => { "errors" => { general: "Not owner" } }
+      return
+    end
+
+    if @track.destroy
+      render :json => { "success" => @track.id }
+    else
+      render :json => { "errors" => @track.errors.messages }
+    end
+
+  end
+
+  def update
+    #totes need to refactor into model
+    if user_signed_in?
+      begin
+        @track = current_user.tracks.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        render :json => { "errors" => { general: "Not owner" } }
+        return
+      end
+
+      if @track.update_attributes(update_params)
+        @track.update_attribute(:genres, update_params[:genres].to_s.split(',').map(&:strip)) if update_params[:genres]
+        
+        render :json => { "success" => @track.id }
+      else
+        puts @track.errors.inspect
+        render :json => { "errors" => @track.errors.messages }
+      end
+
+
+    else
+      render_json_redirect("/login")
+    end
+
+  end
+
+
   def submit
     @track = Track.find_by_id(params[:id])    
   end
@@ -110,7 +170,17 @@ class TracksController < ApplicationController
 #strong params
 private
 
+  def update_params
+    params.require(:track).permit(:artist,
+                                  :title,
+                                  :timeformat,
+                                  :timestamp,
+                                  :comment,
+                                  :genres) if params[:track]
+  end
+
   def new_params
+
     params.require(:track).permit(:track_id, 
                                   :artist, 
                                   :title, 

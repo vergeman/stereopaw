@@ -47,7 +47,6 @@ app.TracksIndexView = Backbone.View.extend({
 	//tracksView
 	this.$el.append(this.tracksView.el)
 
-
 	return this;
     },
 

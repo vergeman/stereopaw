@@ -1,7 +1,7 @@
 
 $track-input-width: 350px;
 
-#track-new {
+#track-new, #track-edit {
     font-family: 'lato', 'open sans', 'helvetica neue', 'georgia';
     margin: 1rem auto;
     display: block;
@@ -41,4 +41,16 @@ $track-input-width: 350px;
 	margin-top: 1rem;
     }
     .error { padding: 0 };
+
+    .cancel {
+	i { margin-right:4px; }
+	font-size: 16px;
+	float:left;
+	cursor: pointer
+    }
+}
+
+#track-edit .track-meta {
+    max-width: 525px;
+    margin: 0 auto;
 }

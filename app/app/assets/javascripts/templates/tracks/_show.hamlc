@@ -64,6 +64,14 @@
         %span
           Share
 
+      - if @editable
+        %li.edit
+          %a{:href => @editable}
+            %i.fi-pencil
+            %span
+              Edit
+          
+
       .track-attribution
         #track-plays
           %i.fi-play

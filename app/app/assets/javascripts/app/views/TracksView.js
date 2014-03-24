@@ -70,13 +70,32 @@ app.TracksView = Backbone.View.extend({
 	});
     },
 
+    /*helper to generate url links for editable tracks*/
+    _editable_url : function(model) {
+	if (!this.collection.session.get("current_user") ) {
+	    return false;
+	}
+	var id = this.collection.session.get("current_user").id
+
+	if (model.get("user_id") != id) {
+	    return false
+	}
+	//so it matches we can edit
+	return "/meow#edit/" + id + "/" + model.get("id")
+    },
 
     /* creates TrackView model and adds 
      * to internal _trackViews collection
      */ 
     add_collection : function(model) {
 	console.log("[TracksView] add")
-	var tv = new app.TrackView({ model : model } ) 
+	var _editable = this._editable_url(model)
+	var tv = new app.TrackView(
+	    { 
+		model : model ,
+		editable : _editable
+	    } 
+	) 
 	this._trackViews.push(tv)
     },
 

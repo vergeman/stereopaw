@@ -1,0 +1,80 @@
+%header
+  %h1 Edit Track
+%hr
+
+#track-edit
+  %form#edit_track.edit_track{"accept-charset" => "UTF-8",
+                            action: "/users/#{@track.user_id}/tracks/#{@track.id}",
+                            method: "post"}
+
+    %div{style: "margin:0;padding:0;display:inline"}
+      %input{name: "_method", type:"hidden", value:"patch"}      
+      %input{name: "utf8", type: "hidden", value: "✓"}
+      %input{name: "authenticity_token", type: "hidden",
+             value: "#{@authenticity_token}"}
+
+    .track-meta  
+      .track-artwork-wrap
+        
+        .track-artwork-url{:style => 'background-image:url("#{@track.artwork_url}")'}
+          
+        %div#track_timeformat_wrap
+          %label{for: "track_timeformat"} Timestamp
+          %div.input-label-prefix
+            %span.prefix
+              %i.fi-clock.medium
+          %div
+            %input#track_timeformat{name: "track[timeformat]",
+                                    type: "text",
+                                    placeholder: "1:01",
+                                    value: "#{@track.timeformat}"}
+          %small{class: "error_timeformat"}
+
+
+      .track-info-wrap
+
+        %label{for: "track_title"} Title
+        %input#track_title{name: "track[title]",
+                            type: "text",
+                            placeholder: "Title",
+                            value: "#{@track.title}"}
+        %small{class: "error_title"}
+            
+
+        %label{for: "track_artist"} Artist
+        %input#track_artist{name: "track[artist]",
+                           type: "text",
+                           placeholder: "Artist",
+                           value: "#{@track.artist}"}
+        %small{class: "error_artist"}
+
+        %label{for: "track_genres"} Genres
+        %input#track_genres{name: "track[genres]",
+                           type: "text",
+                           placeholder: "Rock, Pop, House",
+                           value: "#{@track.genres}"}
+        %small{class: "error_genres"}
+
+        %div#track_comment_wrap
+          %label{for: "track_comment"} Comment
+          %textarea#track_comment{cols: "40", maxlength: "1000", name: "track[comment]", rows: "10", placeholder: "Add comment"}
+            -if @track.comment
+              = @track.comment
+          %small{class: "error_track_comment"}
+            
+        %input#track_timestamp{name: "track[timestamp]",
+                               type: "hidden",
+                               value: "#{@track.timestamp}"}
+
+            
+        %input#track_submit.input-submit.button.expand{name: "commit",
+                                                       type: "submit",
+                                                       value: "Update Track"}          
+        %small{class: "error_general"}
+
+
+        %p.cancel
+          %i.fi-trash
+          Delete Track?
+
+      

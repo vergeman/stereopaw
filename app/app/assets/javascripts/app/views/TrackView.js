@@ -11,8 +11,9 @@ app.TrackView = Backbone.View.extend({
 
     template: JST['tracks/show'],    
 
-    initialize: function() {
+    initialize: function(opts) {
 	this.listenTo(this.model, "change", this.render)
+	this.editable = opts.editable
     },
 
     events : 
@@ -25,9 +26,17 @@ app.TrackView = Backbone.View.extend({
 	/* we pass track_age separately, as rails seems 
 	 * to have trouble rendering template if we generate
 	 * an attribute outside of what's persisted
+	 *
+	 * this.model & this.editable are passed as args in 
+	 * TracksView:add_collection()
 	 */
-	this.$el.html( this.template({track: this.model.toJSON(),
-				      track_age: this.model.get("age")}) );
+	this.$el.html( this.template(
+	    {
+		track: this.model.toJSON(),
+		track_age: this.model.get("age"),
+		editable: this.editable
+	    }
+	));
 	
 	return this;
     },

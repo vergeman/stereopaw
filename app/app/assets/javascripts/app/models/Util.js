@@ -9,6 +9,25 @@ app.Util = Backbone.Model.extend({
 
 {
     /*STATIC UTIL */
+
+    /*makes array of args for Date.UTC, converting timeformat to [0, 0, ...] 
+     *with each element a unit of time up to seconds
+     */
+    _sec_to_times : function(formatted_time) {
+        var times = (formatted_time.split(":")).reverse()
+	times = times.map(function(i) { return i * 1 })
+        while (times.length < 6) {
+            times.push(0)
+        }
+	return times.reverse()
+    },
+    /*converts a timeformat to milleseconds
+     * ex: "1:01" -> 61000 milleseconds
+     */
+    to_ms : function(formatted_time) {	
+	return Date.UTC.apply(window, this._sec_to_times(formatted_time)) - Date.UTC.apply(window, this._sec_to_times("0"))
+    },
+
     prezero : function(num)
     {
 	return (num.toFixed().length > 1 ? num.toFixed() : "0" + num.toFixed())
@@ -24,6 +43,7 @@ app.Util = Backbone.Model.extend({
 
 	return hours + ":" + this.prezero(min) + ":" + this.prezero(sec)
     },
+
     toTime : function(secs, scale)
     {
 

@@ -6,6 +6,7 @@ app.AppRouter = Backbone.Router.extend({
     routes : 
     {
 	'' : 'root',
+	'edit/:user_id/:track_id' : 'edit_track',
 	'tracks' : 'my_tracks',
 	'popular' : 'popular_tracks',
 	'new' : 'new_tracks',
@@ -131,6 +132,26 @@ app.AppRouter = Backbone.Router.extend({
 
     },
 
+    edit_track : function(user_id, track_id) {
+	console.log("[AppRouter] edit_track")
+
+	var redirect = function() { 
+	    Backbone.history.navigate("/login", {trigger:true})
+	}
+
+//	if (this.checkauth(app.Session.SessionState.LOGGEDIN,
+//			   redirect))
+	{
+	    
+	    this.view(new app.EditTrackView({track_id : track_id,
+					     user_id : user_id,
+					     session : this.session}),
+		      "/edit/" + user_id + "/" + track_id)
+	}
+
+
+    },
+
     new_tracks : function() {
 	console.log("[AppRouter] new_tracks")
 	this.generate_trackview("/new", "new")
@@ -164,6 +185,7 @@ app.AppRouter = Backbone.Router.extend({
     generate_trackview : function(route, displayroute) {
 
 	this.trackscollection.url = route
+	this.trackscollection.session = this.session
 	this.playerqueue.update(route, this.trackscollection)
 	this.view(new app.TracksIndexView
 		  (this.trackscollection, displayroute), displayroute )

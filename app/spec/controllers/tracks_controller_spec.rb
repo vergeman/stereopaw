@@ -105,7 +105,7 @@ describe TracksController do
       @user = @track.user
     end
 
-    it "responds successfully with an HTTP 302 redirect code" do
+    it "responds successfully with an HTTP 200 code" do
       get :show, :user_id => @user.id, :id => @track.id
       expect(response.status).to eq(200)
     end
@@ -113,6 +113,11 @@ describe TracksController do
     it "renders the appropriate track page" do 
       get :show, :user_id => @user.id, :id => @track.id
       response.should render_template(:show)
+    end
+
+    it "json request renders a json response of a track object" do
+      get :show, :format => 'json', :user_id => @user.id, :id => @track.id
+      expect(response.body).to eq(@track.to_json)
     end
 
   end
@@ -151,6 +156,151 @@ describe TracksController do
 
   end
 
+
+  describe "PATCH #edit" do
+    #THESE ARE JUST JSON / CONTROLLER
+    describe "when not logged in" do
+
+      before do
+        Warden.test_reset!
+        logout(:user)
+        controller.stub(:authenticate_user!).and_return(false)
+        controller.stub(:user_signed_in?).and_return(false)
+        @track = FactoryGirl.create(:track)
+      end
+
+      it "responds with a 200" do
+        patch :update, :user_id => "100", :id => "10"
+        expect(response.status).to eq(200)
+      end
+
+      it "but has a json header indicating ajax redirect" do
+        patch :update, :user_id => "100", :id => @track.id
+        expect(response.headers).to have_content "AJAX-STATUS"
+        expect(response.headers).to have_content "302"
+      end
+      
+      it "but has a json response with redirect to login" do
+        patch :update, :user_id => "100", :id => @track.id
+        expect(response.body).to have_content "location"
+        expect(response.body).to have_content "/login"
+      end
+      
+    end
+
+
+    describe "when logged in" do
+
+      before do
+        Warden.test_reset!
+        @track = FactoryGirl.create(:track)
+        @user = @track.user
+        login_as(@user, :scope => :user)
+        controller.stub(:authenticate_user!).and_return(true)
+        controller.stub(:current_user).and_return(@user)
+      end
+
+
+      it "responds successfully with html response 200 " do
+        patch :update, :user_id => @user.id, :id => @track.id, :track => @track.attributes
+        expect(response.status).to eq(200)
+      end
+
+      it "patch updates should have updated attributes" do
+        @track.title = "changed title"
+        patch :update, :user_id => @user.id, :id => @track.id, :track => @track.attributes
+
+        Track.find(@track.id).title.should eq("changed title")
+      end
+
+      it "patch updates should return error if not owned user" do
+        patch :update, :user_id => @user.id, :id => 1, :track => @track.attributes
+        expect(response.body).to eq({errors: {general: "Not owner"}}.to_json)
+      end
+
+      it "responds with a json response of 'success' & track_id" do
+        patch :update, :user_id => @user.id, :id => @track.id, :track => @track.attributes
+        expect(response.body).to eq({success: @track.id}.to_json)
+      end
+
+    end
+
+  end
+
+
+  describe "DELETE #edit" do
+
+    describe "when logged OUT" do
+
+      before do
+        Warden.test_reset!
+        logout(:user)
+        controller.stub(:authenticate_user!).and_return(false)
+        controller.stub(:user_signed_in?).and_return(false)
+        @track = FactoryGirl.create(:track)
+      end
+
+      it "responds with a 200" do
+        delete :destroy, :user_id => "100", :id => "10"
+        expect(response.status).to eq(200)
+      end
+
+      it "but has a json header indicating ajax redirect" do
+        delete :destroy, :user_id => "100", :id => @track.id
+        expect(response.headers).to have_content "AJAX-STATUS"
+        expect(response.headers).to have_content "302"
+      end
+      
+      it "but has a json response with redirect to login" do
+        delete :destroy, :user_id => "100", :id => @track.id
+        expect(response.body).to have_content "location"
+        expect(response.body).to have_content "/login"
+      end
+    end
+
+
+
+    describe "when logged in " do
+
+      before do
+        Warden.test_reset!
+        @track = FactoryGirl.create(:track)
+        @user = @track.user
+        login_as(@user, :scope => :user)
+        controller.stub(:authenticate_user!).and_return(true)
+        controller.stub(:current_user).and_return(@user)
+      end
+      it "responds with a 200" do
+        delete :destroy, :user_id =>  @user.id, :id => @track.id
+        expect(response.status).to eq (200)
+      end
+
+      it "a successful destroy should render success response" do
+        delete :destroy, :user_id =>  @user.id, :id => @track.id
+        expect(response.body).to eq({:success => @track.id}.to_json)
+      end
+
+      it "a succesful destroy is realized in user tracks" do
+        count = Track.all.count
+        delete :destroy, :user_id =>  @user.id, :id => @track.id
+        Track.all.count.should eq(count-1)
+        Track.find_by_id(@track.id).should eq(nil)
+      end
+
+      it "should not allow destroy of other user owned tracks" do
+        count = Track.all.count
+        delete :destroy, :user_id => @user.id, :id => @track.id + 1
+        Track.all.count.should eq(count)
+      end
+
+      it "should return an error response if not user's track" do
+        delete :destroy, :user_id => @user.id, :id => @track.id + 1
+        expect(response.body).to eq({errors: {general: "Not owner"}}.to_json)
+      end
+    end
+  
+
+  end
 
 end
 
