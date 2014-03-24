@@ -49,8 +49,6 @@ app.PlayerView = Backbone.View.extend({
     },
 
 
-
-
 /*Controls play, pause, etc*/
     play : function(e, time) {
 	console.log("[PlayerView] trackplay")
@@ -65,6 +63,8 @@ app.PlayerView = Backbone.View.extend({
 	$('#player').show()
 
 	this.player.play[this.current_track.get("service")](this.player, this.current_track, time)
+
+	this.current_track.increment_plays()
 
 	if (!this._update_time_interval) {
 	    this.refreshTime(this.current_track)

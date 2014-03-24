@@ -26,6 +26,35 @@ app.Track = Backbone.Model.extend({
 	this.set("played", true)
     },
 
+    /* we don't BB.sync since track is a nested resource
+     * 'owned' by a user, so we're not interested in
+     * updating all attributes - just a quick play counter.
+     */
+    increment_plays : function() {
+	console.log("[Track] increment_plays")
+
+	/* client side mini 'rate-limiting' - only count a play
+	 * if another track has been played on same route
+	 *..to just prevent mass clicking
+	 */
+
+	if (this.get("played") ) {
+	    return;
+	}
+	var data = {'track': { 'id': this.get("id") } }
+	var self = this;
+	$.post("/tracks/play.json",
+	       data,
+	       function(data) {
+		   /*clear played flag in *all* models*/
+		   app.vent.trigger("Track:ResetPlayed")
+		   self.set("plays", self.get("plays") + 1)
+		   self.played()
+	       }
+	      )
+
+    },
+
     gen_duration_format: function() {
 	var service = this.get("service")
 	var duration = this.get("duration")
