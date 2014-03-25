@@ -20,8 +20,7 @@ app.ForgotpasswordView = Backbone.View.extend({
 	//Forgotpassword:siginup:error - display form errors
 	self.listenTo(app.vent,
 		      "ForgotpasswordView:signup:error",
-		      self.show_error)
-	
+		      app.Util.show_error)
 	
 	/*view inits*/
 	_(this).bindAll('close')
@@ -60,23 +59,6 @@ app.ForgotpasswordView = Backbone.View.extend({
 	    }
 	) );
 	return this;
-    },
-
-    show_error: function(errors) {
-	//clear all errors
-	$('small').removeClass('error')
-	$('small').html('')
-	$('.input-label-prefix > span').css("color", "#333333")
-
-	//add any errors
-	_.each(errors, function(val, key) {
-
-	    $('.error_' + key).html(val)
-	    $('.error_' + key).addClass('error')
-	    $('.error_' + key).parent().prev().children().css("color", "orangered")
-	    $('.error_' + key).show()
-	});
-
     },
 
     submit : function(e) {

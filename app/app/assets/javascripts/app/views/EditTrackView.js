@@ -21,7 +21,7 @@ app.EditTrackView = Backbone.View.extend({
 
 	this.listenTo(app.vent,
 		      "EditTrackView:error",
-		      this.show_error)
+		      app.Util.show_error)
 
 	this.model.fetch()
 
@@ -104,23 +104,6 @@ app.EditTrackView = Backbone.View.extend({
 		comment : $("textarea#track_comment").val()
 	    }
 	};
-    },
-
-    show_error: function(errors) {
-	console.log("[EdituserView] show_error")
-	//clear all errors
-	$('small').removeClass('error')
-	$('small').html('')
-	$('.input-label-prefix > span').css("color", "#333333")
-
-	//add any errors
-	_.each(errors, function(val, key) {
-
-	    $('.error_' + key).html(val)
-	    $('.error_' + key).addClass('error')
-	    $('.error_' + key).parent().prev().children().css("color", "orangered")
-	    $('.error_' + key).show()
-	});
     },
 
     delete_track : function(e) {

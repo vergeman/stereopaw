@@ -10,7 +10,29 @@ app.Util = Backbone.Model.extend({
 {
     /*STATIC UTIL */
 
-    /*makes array of args for Date.UTC, converting timeformat to [0, 0, ...] 
+    /*show_error is commonly used throughout views
+     * to display json errors on the forms
+     */
+    show_error : function(errors) {
+	console.log("[Util] show_error")
+	//clear all errors
+	$('small').removeClass('error')
+	$('small').html('')
+	$('.input-label-prefix > span').css("color", "#333333")
+
+	//add any errors
+	_.each(errors, function(val, key) {
+
+	    $('.error_' + key).html(val)
+	    $('.error_' + key).addClass('error')
+	    $('.error_' + key).parent().prev().children().css("color", "orangered")
+	    $('.error_' + key).show()
+	});
+    },
+
+
+    /*makes array of args for Date.UTC, converting timeformat 
+     *to [0, 0, ...] 
      *with each element a unit of time up to seconds
      */
     _sec_to_times : function(formatted_time) {
@@ -21,6 +43,7 @@ app.Util = Backbone.Model.extend({
         }
 	return times.reverse()
     },
+
     /*converts a timeformat to milleseconds
      * ex: "1:01" -> 61000 milleseconds
      */

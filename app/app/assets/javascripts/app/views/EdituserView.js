@@ -21,7 +21,7 @@ app.EdituserView = Backbone.View.extend({
 	//Signup:siginup:error - display form errors
 	self.listenTo(app.vent,
 		      "EdituserView:signup:error",
-		      self.show_error)
+		      app.Util.show_error)
 
 	app.vent.once("Session:logged-out", this.redirect, this)
 
@@ -60,23 +60,6 @@ app.EdituserView = Backbone.View.extend({
 		}
 	    ));
 	return this;
-    },
-
-    show_error: function(errors) {
-	console.log("[EdituserView] show_error")
-	//clear all errors
-	$('small').removeClass('error')
-	$('small').html('')
-	$('.input-label-prefix > span').css("color", "#333333")
-
-	//add any errors
-	_.each(errors, function(val, key) {
-
-	    $('.error_' + key).html(val)
-	    $('.error_' + key).addClass('error')
-	    $('.error_' + key).parent().prev().children().css("color", "orangered")
-	    $('.error_' + key).show()
-	});
     },
 
     submit_edit_user : function(e) {
