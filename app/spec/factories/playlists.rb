@@ -17,7 +17,7 @@ FactoryGirl.define do
   factory :playlist do
     name "MyString"
     description "MyText"
-    track_ids [1]    
+    track_ids [1,2]
     association :user, factory: :user
   end
 end
