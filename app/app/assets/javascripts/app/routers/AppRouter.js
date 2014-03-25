@@ -22,6 +22,9 @@ app.AppRouter = Backbone.Router.extend({
     initialize : function() {
 	console.log("[AppRouter] initialize")
 
+	this.test = new app.Playlists([], {user_id : 20 })
+	console.log(this.test.url)
+
 	this.trackscollection = new app.Tracks()
 	console.log(this.trackscollection )
 
