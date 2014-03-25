@@ -48,6 +48,11 @@ class Track < ActiveRecord::Base
 
   def played
     self.update_attributes(:plays => self.plays + 1)
+    return self
+  end
+  
+  def played_json
+    return {:track => {:id => self.id, :plays => self.plays} }
   end
 
   def calculate_age

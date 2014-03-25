@@ -67,37 +67,6 @@ describe TracksController do
 
   end
 
-
-  describe "GET #index" do
-
-    #API
-    describe "GET user_tracks as json" do
-
-      before do
-        @user = FactoryGirl.create(:user)
-        login_as(@user, :scope => :user)
-        get :index, :user_id => @user.id, :user => @user, :format => :json
-        @parse_json = JSON.parse(response.body)
-      end
-
-      it "responds with a json object" do
-        response.header['Content-Type'].should include 'application/json'
-      end
-
-      it "responds with an array" do
-        expect(@parse_json.class).to eq(Array)
-      end
-
-      it "reponds with an array of all Tracks, sorted by created_at DESCENDING" do
-        #note escaped
-        tracks = @user.tracks
-        expect(@parse_json.to_json).to eq( tracks.order("created_at DESC").to_json )
-      end
-
-    end
-
-  end
-
   describe "GET #show" do
 
     before do

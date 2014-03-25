@@ -76,10 +76,10 @@ describe "Root Page" do
 
     describe "when logged out", :js => true do
       
-      it "should redirect" do
+      it "should deny" do
         Warden.test_reset!
         get "tracks.json"
-        response.should redirect_to meow_path
+        expect(response.status).to eq(401)
       end
 
     end

@@ -7,12 +7,13 @@ App::Application.routes.draw do
   end
 
   resources :users, only: ['show'] do
-    resources :tracks, except: ['new']
+    resources :tracks, except: ['new', 'index'] #for now
   end
+
   #for marklet submission
   get '/tracks/new' => "tracks#new"
 
-  #marklet succesfull submission redirect page
+  #marklet successful submission redirect page
   get '/tracks/submit/:id', to: "tracks#submit", :as => "tracks_submit"
 
   post '/tracks/play', to: 'tracks#play'
@@ -25,8 +26,8 @@ App::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   get '/meow' => 'main#index'
+
   # You can have the root of your site routed with "root"
-  #root 'main#index'
   root 'welcome#index'
 
   # Example of regular route:

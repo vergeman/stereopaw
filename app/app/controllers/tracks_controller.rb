@@ -3,143 +3,74 @@ require 'net/http'
 class TracksController < ApplicationController
   include ApplicationHelper
 
-  before_filter :authenticate_user!, only: [:new, :create, :submit, :update, :destroy]
+  before_filter :authenticate_user!, only: [:new, :create, :submit, :update, :destroy, :mytracks]
+
+  before_filter :check_auth_or_json_redirect, only: [:update, :destroy]
+
   respond_to :html, :json
 
-  #all tracks of a user
-  def index
-    page = params[:page].to_i
-    @user = User.find(params[:user])
-    @tracks = @user.tracks.limit(10).offset(page * 10)
-    respond_with(@tracks) do |format|
-      format.json { render }
-    end
-
-  end
-
-  #latest tracks
+  #returns paginated set of latest tracks
   def latest
-    page = params[:page].to_i
-    @tracks = Track.all.order("created_at DESC").limit(10).offset(page * 10)
-    respond_with(@tracks) do |format|
-      format.json { render }
-    end
+    get_tracks_json(Track, "created_at DESC")
   end
 
-  #most popular tracks - need metric
+  #returns paginated set of popular tracks
   def popular
-    page = params[:page].to_i
-    @tracks = Track.all.order("plays DESC").limit(10).offset(page * 10)
-    respond_with(@tracks) do |format|
-      format.json { render }
-    end
-
+    get_tracks_json(Track, "plays DESC")
   end
 
+  #returns paginated set of current user's tracks - requires auth
+  def mytracks
+    get_tracks_json(current_user.tracks, "created_at DESC")
+  end
+
+  #find individual track given param, responds in json
   def show
-    @track = Track.find_by_id(params[:id])
-      
-    respond_with(@track) do |format|
-      format.json { 
-        if @track.nil? 
-          render :json => {:errors => "invalid track"}
-        else
-          render
-        end
-      }
+    if Track_find(Track, params[:id], {:errors => "invalid track"})
+      json_response(@track)
     end
   end
 
-
-  #POST/plays
+  #route that augments play count
   def play
-    begin
-      @track = Track.find(params[:track][:id])
-    rescue ActiveRecord::RecordNotFound
-      render :json => {:errors => "invalid track"}
-      return
+    if Track_find(Track, params[:track][:id], 
+                  {:errors => "invalid track"})
+      render :json =>  @track.played.played_json
     end
-
-    @track.played
-    render :json =>
-      {
-      :track => 
-      {
-        :id => @track.id,
-        :plays => @track.plays 
-      }
-    }
-
   end
 
-#REQUIRES AUTH
+  #delete a track from current user's set
   def destroy
-    unless user_signed_in?
-      render_json_redirect("/login")
-      return
-    end
 
-    begin
-      @track = current_user.tracks.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      render :json => { "errors" => { general: "Not owner" } }
-      return
-    end
+    if Track_find(current_user.tracks, params[:id], 
+                  { "errors" => { :general => "Not owner" }})
 
-    if @track.destroy
-      render :json => { "success" => @track.id }
-    else
-      render :json => { "errors" => @track.errors.messages }
-    end
-
-  end
-
-  def update
-    #totes need to refactor into model
-    if user_signed_in?
-      begin
-        @track = current_user.tracks.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        render :json => { "errors" => { general: "Not owner" } }
-        return
-      end
-
-      if @track.update_attributes(update_params)
-        @track.update_attribute(:genres, update_params[:genres].to_s.split(',').map(&:strip)) if update_params[:genres]
-        
+      if @track.destroy
         render :json => { "success" => @track.id }
       else
-        puts @track.errors.inspect
         render :json => { "errors" => @track.errors.messages }
       end
-
-
-    else
-      render_json_redirect("/login")
     end
 
   end
 
+  #receives edited track data
+  def update
+    
+    if Track_find(current_user.tracks, params[:id],
+                  { "errors" => { general: "Not owner" } } )
 
-  def submit
-    @track = Track.find_by_id(params[:id])    
-  end
-
-  def mytracks
-    if user_signed_in?
-      respond_with(current_user.tracks.order("created_at DESC") ) do |format|
-        format.json { render }
-        format.html { redirect_to meow_path() }
+      if @track.update_attributes(update_params)
+        render :json => { "success" => @track.id }
+      else
+        render :json => { "errors" => @track.errors.messages }
       end
-    else
-      redirect_to meow_path()
     end
+
   end
 
-
+  #receives a marklet submission
   def new
-    #our route is tracks/new - we won't know what user we
-    #are on initial submitx
     unless new_params
       redirect_to root_path
       return
@@ -147,53 +78,94 @@ class TracksController < ApplicationController
 
     @user = current_user
     @track = current_user.tracks.build(new_params)
-    @track.genres = new_params[:genres].to_s.split(',').map(&:strip)
   end
 
-
+  #post submission of a track
   def create
     @user = current_user
     @track = current_user.tracks.build(new_params)
-    @track.genres = new_params[:genres].to_s.split(',').map(&:strip)
 
     if @track.save
-      flash[:success] = "Success"
       respond_with(@track, :location => tracks_submit_path(@track))
     else
       respond_with(current_user, @track) #for error submit
     end
   end
 
+  #marklet's "show": what renders after successful submit
+  def submit
+    @track = Track.find_by_id(params[:id])    
+  end
 
 
+###=====
+  protected
+
+  def Track_find(source, track_find_params, json_error_msg)
+    begin
+      @track = source.find(track_find_params)
+    rescue ActiveRecord::RecordNotFound
+      render :json => json_error_msg
+      return false
+    end
+    return true
+  end
+
+  def get_tracks_json(source, track_order)
+    page = params[:page] ? params[:page].to_i : 0
+    @tracks = source.order(track_order).limit(10).offset(page * 10)
+    json_response(@tracks)
+  end
+
+  def json_response(obj)
+    respond_with(obj) do |format|
+      format.json { render }
+    end
+  end
+
+  def check_auth_or_json_redirect
+    if user_signed_in?
+      return true
+    else
+      render_json_redirect('/login')
+    end
+  end
 
 #strong params
-private
 
   def update_params
-    params.require(:track).permit(:artist,
-                                  :title,
-                                  :timeformat,
-                                  :timestamp,
-                                  :comment,
-                                  :genres) if params[:track]
+
+    process_genres_params( 
+                          params.require(:track).permit(:artist,
+                                                        :title,
+                                                        :timeformat,
+                                                        :timestamp,
+                                                        :comment,
+                                                        :genres)
+                          )  if params[:track]
   end
 
   def new_params
-
-    params.require(:track).permit(:track_id, 
-                                  :artist, 
-                                  :title, 
-                                  :page_url, 
-                                  :profile_url, 
-                                  :timeformat, 
-                                  :timestamp, 
-                                  :duration,
-                                  :comment, 
-                                  :shareable,
-                                  :artwork_url,
-                                  :genres,
-                                  :service) if params[:track]
+    process_genres_params (
+                           params.require(:track)
+                             .permit(:track_id, 
+                                     :artist, 
+                                     :title, 
+                                     :page_url, 
+                                     :profile_url, 
+                                     :timeformat, 
+                                     :timestamp, 
+                                     :duration,
+                                     :comment, 
+                                     :shareable,
+                                     :artwork_url,
+                                     :genres,
+                                     :service)
+                           ) if params[:track]
   end
 
+  def process_genres_params(params)
+    params[:genres] = params[:genres].to_s.split(',').map(&:strip) if params[:genres]
+    return params
+  end
 end
