@@ -19,7 +19,7 @@
 #  artwork_url :string(255)
 #  user_id     :integer
 #  genres      :string(255)      default([])
-#  plays       :integer
+#  plays       :integer          default(0)
 #
 # Indexes
 #
