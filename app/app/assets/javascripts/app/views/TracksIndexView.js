@@ -54,6 +54,7 @@ app.TracksIndexView = Backbone.View.extend({
 	console.log("[TracksIndexView] renderfooter")
 	//footer add tracks
 	this.$el.append(this.templatefooter() );
+	$(document).foundation()
 	return this;
     }
 

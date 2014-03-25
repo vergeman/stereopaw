@@ -13,3 +13,4 @@
       %button.small
         Install Chrome Extension
 
+!= JST['tracks/modal']()
