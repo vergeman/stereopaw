@@ -5,7 +5,7 @@
   - if @playlists
     - for p in @playlists
       %li
-        %a{:href => '#'}
+        %a{:href => '#', :playlist_id => p.id}
           = p.name
 
 

@@ -1,5 +1,5 @@
 class PlaylistsController < ApplicationController
-  before_filter :authenticate_user!, only: [:create]
+  before_filter :authenticate_user!, only: [:create, :update]
 
   def index    
     render :json => User.find(params[:user_id]).playlists
@@ -16,6 +16,17 @@ class PlaylistsController < ApplicationController
   def create
     @playlist = current_user.playlists.build(new_params)
     if @playlist.save
+      render :json => @playlist
+    else
+      render :json => {:errors => @playlist.errors.messages}
+    end
+  end
+
+
+
+  def update
+    @playlist = current_user.playlists.find(params[:id])
+    if @playlist.update_attributes(new_params)
       render :json => @playlist
     else
       render :json => {:errors => @playlist.errors.messages}

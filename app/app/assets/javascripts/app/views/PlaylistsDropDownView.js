@@ -9,7 +9,8 @@ app.PlaylistsDropDownView = Backbone.View.extend({
     template: JST['playlists/dropdown'],
 
     events : {
-	'click .create' : 'create'
+	'click .create' : 'create',
+	'click a' : 'add'
     },
 
     initialize: function($track) {
@@ -40,6 +41,43 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 	app.vent.trigger("PlaylistsModalView:openModal", id)
     },
 
+    add : function(e) {
+	console.log("[PlaylistsDropDownView] add")
+	e.preventDefault();
+	var playlist_id = $(e.currentTarget).attr('playlist_id')
+	this.submit_add_playlist($track.attr('id'), playlist_id)
+	$(document).foundation('dropdown', 'close', $('[data-dropdown-content]'));
+    },
+
+/*
+    submit_add_playlist : function(playlist_id, track_id) {
+	console.log("[PlaylistDropDownView] submit_add_playlist")
+	$.ajax({
+	    type: "POST",
+	    url: "/users/" + self.user_id + "/playlists",
+	    data: self.build_data(),
+	    beforeSend: function(request) {
+		request.setRequestHeader("X-CSRF-Token", $.cookie('csrf_token'));
+	    },
+	    success: function(data, textStatus, jqXHR) {
+		console.log("[PlaylistDropDownView] playlist_submit:success")
+	    },
+
+	    error: function(jqXHR, textStatus, errorThrown) {
+		console.log("[PlaylistDropDownView] submit:error")
+		console.log(textStatus)
+		console.log(errorThrown)
+		console.log(jqXHR)
+	    },
+
+	    complete : function(jqXHR, textStatus) {
+		console.log("[PlaylistDropDownView] submit:complete")
+	    }
+	})
+
+	//growl
+    },
+*/
     SetPlaylist : function(playlists) {
 	console.log("[PlaylistsDropDownView] SetPlaylist")
 	this.playlists = playlists

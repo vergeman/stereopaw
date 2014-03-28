@@ -60,8 +60,7 @@ describe PlaylistsController do
   end
 
   #modal based, requires auth
-  describe "POST #create" do
-
+  describe "#CREATE / #UPDATE" do
 
     describe "when logged out" do
 
@@ -70,12 +69,17 @@ describe PlaylistsController do
         logout(:user)
         sign_out(@user)
         controller.stub(:user_signed_in?).and_return(false)        
-
-        post :create, :format => 'json', 
-        :user_id => @user.id, :playlist => @playlist
       }
       
-      it "has a a 401 response" do
+      it "POST #create has a a 401 response" do
+        post :create, :format => 'json', 
+        :user_id => @user.id, :playlist => @playlist
+        expect(response.status).to eq(401)
+      end
+
+      it "PATCH #update has a a 401 response" do
+        patch :update, :format => 'json', 
+        :user_id => @user.id, :id => @playlist.id
         expect(response.status).to eq(401)
       end
 
@@ -84,6 +88,7 @@ describe PlaylistsController do
 
 
     describe "when logged in " do
+
       before {
         Warden.test_reset!
         controller.stub(:authenticate_user!).and_return(true)
@@ -92,37 +97,73 @@ describe PlaylistsController do
         @playlist.user = @user
       }
 
-      it "has a 200 response" do
-        post :create, :format => 'json', 
-        :user_id => @user.id, :playlist => @playlist.attributes
+      describe "POST #create" do
 
-        expect(response.status).to eq(200)
+        it "POST #create: has a 200 response" do
+          post :create, :format => 'json', 
+          :user_id => @user.id, :playlist => @playlist.attributes
+          expect(response.status).to eq(200)
+        end
+
+        it "POST #create: sucessful request responds with playlist " do
+          @playlist.name = @playlist.name + "123" #for scoped uniquness
+          post :create, :format => 'json', 
+          :user_id => @user.id, :playlist => @playlist.attributes
+          expect(response.body).to eq(@user.playlists.last.to_json)
+        end
+
+
+        it "POST #create: invalid playlist responds with json error obj" do
+          @playlist.name = nil
+          post :create, :format => 'json', 
+          :user_id => @user.id, :playlist => @playlist.attributes
+          expect(response.body).to have_content("errors")
+        end
       end
 
-      it "sucessful request responds with playlist " do
-        @playlist.name = @playlist.name + "123" #for scoped uniquness
-        post :create, :format => 'json', 
-        :user_id => @user.id, :playlist => @playlist.attributes
-        expect(response.body).to eq(@user.playlists.last.to_json)
-      end
+      #=======================
+      describe "PATCH #update" do 
+        before do
+          @p = FactoryGirl.create(:playlist, :name => "b" * 100, 
+                                  :user_id => @user.id)
+        end
+
+        it "PATCH #update: has a 200 response" do
+          patch :update, :format => 'json', 
+          :user_id => @user.id, :id => @p.id, 
+          :playlist => @p.attributes
+
+          expect(response.status).to eq(200)
+        end
 
 
-      it "invalid playlist responds with json error obj" do
-        @playlist.name = nil
-        post :create, :format => 'json', 
-        :user_id => @user.id, :playlist => @playlist.attributes
-        expect(response.body).to have_content("errors")
+        it "PATCH #update: sucessful request responds with playlist " do
+          @track3 = FactoryGirl.create(:track)
+          @p.track_ids.push(@track3.id) #for scoped uniquness
+          patch :update, :format => 'json', 
+          :user_id => @user.id, :id => @p.id, 
+          :playlist => @p.attributes
+
+          expect(response.body).to eq(@user.playlists.last.to_json)
+        end
+
+        it "PATCH #update: invalid playlist responds with json error obj" do
+          @p.name = nil
+          @p.user_id = @user
+
+          patch :update, :format => 'json', 
+          :user_id => @user.id, :id => @p.id,
+          :playlist => @p.attributes
+
+          expect(response.body).to have_content("errors")
+        end
+        
       end
-      
     end
 
 
-
-
   end
 
-  pending "PATCH #update" do
-  end
 
   pending "PUT #update" do
   end
