@@ -1,0 +1,33 @@
+#PlaylistModal.reveal-modal{:'data-reveal' =>''}
+  %h3
+    Add to playlist
+  %hr
+
+  #playlist-new
+    %form#new_playlist.new_playlist{"accept-charset" => "UTF-8",
+                                          action: "/users/#{@user_id}/playlists/",
+                                          method: "post"}
+
+      %div{style: "margin:0;padding:0;display:inline"}
+        %input{name: "utf8", type: "hidden", value: "✓"}
+        %input{name: "authenticity_token", type: "hidden",
+               value: "#{@authenticity_token}"}
+
+
+        %label{for: "playlist_name"} Playlist Name
+        %input#playlist_name{name: "playlist[name]",
+                           type: "text",
+                           placeholder: "Name"}
+        %small{class: "error_name"}
+
+        %div#playlist_description_wrap
+          %label{for: "playlist_description"} Description
+          %textarea#playlist_description{cols: "40", maxlength: "1000", name: "playlist[description]", rows: "10", placeholder: "Add description"}
+          %small{class: "error_playlist_description"}
+
+        %input#playlist_submit.input-submit.button.expand{name: "commit", type: "submit", value: "Submit Playlist"}
+          
+        %small{class: "error_general"}
+          
+  %a.close-reveal-modal
+    &#215;

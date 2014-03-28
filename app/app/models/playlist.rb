@@ -17,4 +17,6 @@ class Playlist < ActiveRecord::Base
   validates :name, :user_id, presence: true
   validates :name, length: { maximum: 100 }
   validates :description, length: { maximum: 1000 }
+
+  validates_uniqueness_of :name, scope: :user_id, message: "already exists"
 end

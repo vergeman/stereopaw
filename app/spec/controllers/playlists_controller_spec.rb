@@ -100,6 +100,7 @@ describe PlaylistsController do
       end
 
       it "sucessful request responds with playlist " do
+        @playlist.name = @playlist.name + "123" #for scoped uniquness
         post :create, :format => 'json', 
         :user_id => @user.id, :playlist => @playlist.attributes
         expect(response.body).to eq(@user.playlists.last.to_json)

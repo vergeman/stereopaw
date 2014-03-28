@@ -19,7 +19,6 @@ app.TracksView = Backbone.View.extend({
 	this.listenTo(this.collection, 'add', this.add_collection)
 	this.listenTo(this.collection, 'remove', this.remove_collection)	
 	this.listenTo(this.collection, 'render', this.render)
-
 	this.listenTo(this.collection, 'render', this.lastTrackPageHandler)
 
 	/*fetch initial batch*/
@@ -36,18 +35,23 @@ app.TracksView = Backbone.View.extend({
 	console.log("[TracksView] fetch_next_page: " + this.page)
 	var self = this;
 
+	var success =  function(collection, response, options) {
+	    /*we want to stop rendering on empty's, messes up
+	     *some bound events i.e. PlaylistDropDownView
+	     */
+	    if (response.length != 0) {
+		collection.trigger("render")
+		self.page += 1
+	    }
+	}
+
 	this.collection.fetch
 	(
 	    {
 		data : {page: this.page},
-
 		add: true,
 		remove: false,
-
-		success: function(collection, response, options) {
-		    collection.trigger("render")
-		    self.page += 1
-		}
+		success: success
 	    }
 	)
     },
@@ -80,6 +84,7 @@ app.TracksView = Backbone.View.extend({
 	if (model.get("user_id") != id) {
 	    return false
 	}
+
 	//so it matches we can edit
 	return "/meow#edit/" + id + "/" + model.get("id")
     },
@@ -113,7 +118,6 @@ app.TracksView = Backbone.View.extend({
 	    this.$el.append( tv.render().el )
 	}, this);
     },
-
 
     close : function() {
 	console.log("[TracksView] close")

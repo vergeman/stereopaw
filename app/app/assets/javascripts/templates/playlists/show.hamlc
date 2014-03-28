@@ -1,0 +1,3 @@
+%Playlist#show
+  %h1
+    = @playlist.name

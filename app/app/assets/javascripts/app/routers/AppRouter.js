@@ -6,10 +6,15 @@ app.AppRouter = Backbone.Router.extend({
     routes : 
     {
 	'' : 'root',
+
+	/*tracks*/
 	'edit/:user_id/:track_id' : 'edit_track',
 	'tracks' : 'my_tracks',
 	'popular' : 'popular_tracks',
 	'new' : 'new_tracks',
+
+	/*playlists*/
+	'playlists' : 'playlists',
 
 	/*devise*/
 	'login' : 'login',
@@ -22,8 +27,6 @@ app.AppRouter = Backbone.Router.extend({
     initialize : function() {
 	console.log("[AppRouter] initialize")
 
-	this.test = new app.Playlists([], {user_id : 20 })
-	console.log(this.test.url)
 
 	this.trackscollection = new app.Tracks()
 	console.log(this.trackscollection )
@@ -37,6 +40,9 @@ app.AppRouter = Backbone.Router.extend({
 					     this.trackscollection);
 	this.session = new app.Session()
 
+	this.playlistsMgr = new app.PlaylistsMgr(this.session)
+
+	this.playlistsmodal = new app.PlaylistsModalView(this.session)
 	this.navigationview = new app.NavigationView(this.session)
 
 	this.currentView = null;
@@ -79,6 +85,7 @@ app.AppRouter = Backbone.Router.extend({
 	}
 
     },
+
     signup : function() {
 	console.log("[AppRouter] signup")
 
@@ -118,6 +125,24 @@ app.AppRouter = Backbone.Router.extend({
 
     },
 
+/*Playlist Routes*/
+    playlists : function() {
+	console.log("[AppRouter] playlists")	
+	var self = this;
+	var playlists = this.playlistsMgr.playlists
+	console.log(playlists)
+	var redirect = function() { 
+	    Backbone.history.navigate("/login", {trigger:true})
+	}
+
+	if (this.checkauth(app.Session.SessionState.LOGGEDIN,
+			   redirect))
+	{
+
+	    this.view(new app.PlaylistsView(playlists), '/playlists' )
+	}
+
+    },
 /*Track Routes*/
     my_tracks : function() {
 	console.log("[AppRouter] my_tracks")
@@ -219,6 +244,9 @@ app.AppRouter = Backbone.Router.extend({
 
 	this.currentView = view	
 	$('#content-wrap').html(this.currentView.render().el)
+
+	/*add playlists modal*/
+	$('#content-wrap').append(this.playlistsmodal.render().el)
 
 	this.navigate(updateroute)
     }

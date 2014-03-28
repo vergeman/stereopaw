@@ -14,13 +14,13 @@ app.TrackView = Backbone.View.extend({
     initialize: function(opts) {
 	this.listenTo(this.model, "change", this.render)
 	this.editable = opts.editable
-
     },
 
     events : 
     {
 	'click .play' : 'play',
-	'click .stop' : 'stop'
+	'click .stop' : 'stop',
+	'click .playlist' : 'playlist'
     },
 
     render: function() {
@@ -55,8 +55,27 @@ app.TrackView = Backbone.View.extend({
 	console.log("[TrackView] stop")
     },
 
+    playlist : function(e) {
+	console.log("[TrackView] playlist")
+	var $track = $(e.currentTarget).closest('.track-meta')
+
+	if (!this.playlistdropdown) {
+	    this.playlistdropdown = new app.PlaylistsDropDownView($track) 
+	    this.$el.find('.playlists-dropdown').replaceWith(this.playlistdropdown.el)
+	}
+	else {
+	    app.vent.trigger("PlaylistsMgr:GetPlaylist", 
+			     "PlaylistsDropDownView:SetPlaylist")
+	}
+    },
+
     close : function() {
 	console.log("[TrackView] close")
+
+	if (this.playlistdropdown) {
+	    this.playlistdropdown.close()
+	}
+
 	this.remove()
 	this.unbind()
     }

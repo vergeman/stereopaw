@@ -84,6 +84,19 @@ describe Playlist do
 
     end
 
+    #UNIQUENESS
+    describe "Playlist" do
+      before(:each) do
+        @user = @playlist.user
+        @playlist2 = FactoryGirl.create(:playlist, :user_id => @user.id)
+      end
+      
+      it "should not be valid with same name" do 
+        @playlist.should_not be_valid
+      end
+
+    end
+
   end
 
 end

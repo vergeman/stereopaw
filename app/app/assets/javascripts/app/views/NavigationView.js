@@ -13,6 +13,7 @@ app.NavigationView = Backbone.View.extend({
 	'click ul.navigation #new' : 'new_tracks',
 	'click ul.navigation #popular' : 'popular',
 	'click ul.navigation #mytracks' : 'mytracks',
+	'click ul.navigation #playlist' : 'playlist',
 	'click #settings' : 'settings',
     },
 
@@ -77,6 +78,11 @@ app.NavigationView = Backbone.View.extend({
 	Backbone.history.navigate("/edituser", {trigger:true})	
     },
 
+    playlist : function(e) {
+	console.log("[NavigationView] playlist")
+	e.preventDefault();
+	Backbone.history.navigate("/playlists", {trigger:true})
+    },
 
     mytracks : function(e) {
 	console.log("[NavigationView] mytracks")

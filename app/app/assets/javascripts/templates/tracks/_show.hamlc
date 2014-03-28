@@ -38,7 +38,6 @@
         %i.fi-quote
         %p
           #{@track.comment}
-
           
   .track-controls-wrap
     
@@ -54,11 +53,12 @@
         %span
           Full
 
-      %li.playlist
+      %li.playlist{:'data-dropdown' => "drop-#{@track.id}"}
         %i.fi-plus
         %span
           Add
-
+      .playlists-dropdown
+              
       %li.share
         %i.fi-share
         %span
@@ -82,3 +82,5 @@
           %img{:src => "#{@track.attribution_url}", :width => "#{@track.attribution_width}",:height => "#{@track.attribution_height}" }
 %hr
 
+
+    
