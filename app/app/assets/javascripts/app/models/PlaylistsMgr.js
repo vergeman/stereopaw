@@ -13,6 +13,10 @@ app.PlaylistsMgr = Backbone.Model.extend({
 	/*pseudo-interface to access & pass
 	 *playlist collection between views/models
 	 */
+
+	this.listenTo(app.vent, "PlaylistsMgr:SetPlaylist", 
+		      this.SetPlaylist)
+
 	this.listenTo(app.vent, "PlaylistsMgr:GetPlaylist", 
 		      this.GetPlaylist)
 
@@ -52,6 +56,11 @@ app.PlaylistsMgr = Backbone.Model.extend({
     },
 
     /*playlists passed by events*/
+    SetPlaylist : function(playlist) {
+	console.log("[PlaylistsMgr] SetPlaylist")
+	this.playlists.add(playlist,{ merge: true})
+    },
+
     GetPlaylist : function(sendTo) {
 	console.log("[PlaylistsMgr] GetPlaylist")
 	app.vent.trigger(sendTo, this.playlists)
