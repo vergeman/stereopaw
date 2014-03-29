@@ -44,23 +44,30 @@ app.PlaylistsDropDownView = Backbone.View.extend({
     add : function(e) {
 	console.log("[PlaylistsDropDownView] add")
 	e.preventDefault();
+
 	var playlist_id = $(e.currentTarget).attr('playlist_id')
-	this.submit_add_playlist($track.attr('id'), playlist_id)
-	$(document).foundation('dropdown', 'close', $('[data-dropdown-content]'));
+	this.submit_add_playlist(this.playlists.url,
+				 playlist_id,
+				 this.$track.attr('id'))
+
+	$(document).foundation('dropdown', 'close', 
+			       $('[data-dropdown-content]'));
     },
 
-/*
-    submit_add_playlist : function(playlist_id, track_id) {
+    submit_add_playlist : function(playlists_url, playlist_id, track_id) {
 	console.log("[PlaylistDropDownView] submit_add_playlist")
+
 	$.ajax({
-	    type: "POST",
-	    url: "/users/" + self.user_id + "/playlists",
-	    data: self.build_data(),
+	    type: "PATCH",
+	    url: playlists_url + playlist_id,
+	    data: {'track' : track_id},
 	    beforeSend: function(request) {
 		request.setRequestHeader("X-CSRF-Token", $.cookie('csrf_token'));
 	    },
 	    success: function(data, textStatus, jqXHR) {
 		console.log("[PlaylistDropDownView] playlist_submit:success")
+		//update playlist
+
 	    },
 
 	    error: function(jqXHR, textStatus, errorThrown) {
@@ -77,7 +84,7 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 
 	//growl
     },
-*/
+
     SetPlaylist : function(playlists) {
 	console.log("[PlaylistsDropDownView] SetPlaylist")
 	this.playlists = playlists

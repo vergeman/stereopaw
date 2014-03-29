@@ -12,11 +12,28 @@
 #
 
 class Playlist < ActiveRecord::Base
+  before_save :integerize_track_ids
+
   belongs_to :user
 
   validates :name, :user_id, presence: true
   validates :name, length: { maximum: 100 }
   validates :description, length: { maximum: 1000 }
+  validate :track_ids, :validate_track_ids
 
   validates_uniqueness_of :name, scope: :user_id, message: "already exists"
+
+  def integerize_track_ids
+    self.track_ids = self.track_ids.map(&:to_i)
+  end
+
+  #track_id validation: array type + track_id values are integers
+  def validate_track_ids
+    if track_ids.is_a?(Array)
+      if track_ids.detect { |t|  t.to_s !~ /\A\d+\Z/ }
+        errors.add(:track_ids, "invalid track")
+      end
+    end
+  end
+
 end

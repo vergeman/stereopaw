@@ -56,6 +56,20 @@ describe Playlist do
       end
     end
 
+    describe "of numericality" do
+      it "has track_ids of numeric array" do
+        @playlist.track_ids = ["alpha, beta, 1"]
+        @playlist.should_not be_valid
+      end
+
+      it "has track_ids of integers array" do
+        @playlist.track_ids = ["1.0, 2, 3"]
+        @playlist.should_not be_valid
+      end
+
+    end
+
+
     #PRESENCE (no blank)
     describe "of presence:" do
       it "where it must have a name" do

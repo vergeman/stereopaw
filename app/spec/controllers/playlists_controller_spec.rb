@@ -119,6 +119,7 @@ describe PlaylistsController do
           :user_id => @user.id, :playlist => @playlist.attributes
           expect(response.body).to have_content("errors")
         end
+
       end
 
       #=======================
@@ -137,7 +138,7 @@ describe PlaylistsController do
         end
 
 
-        it "PATCH #update: sucessful request responds with playlist " do
+        it "sucessful request responds with playlist " do
           @track3 = FactoryGirl.create(:track)
           @p.track_ids.push(@track3.id) #for scoped uniquness
           patch :update, :format => 'json', 
@@ -147,7 +148,33 @@ describe PlaylistsController do
           expect(response.body).to eq(@user.playlists.last.to_json)
         end
 
-        it "PATCH #update: invalid playlist responds with json error obj" do
+
+        it "sucessful request of track param responds with playlist " do
+          @track4 = FactoryGirl.create(:track)
+          patch :update, :format => 'json', 
+          :user_id => @user.id, :id => @p.id, 
+          :track => @track4.id
+          expect(response.body).to eq(@user.playlists.last.to_json)
+        end
+
+        it "request with invalid track param responds with error " do
+          @track4 = FactoryGirl.create(:track)
+          patch :update, :format => 'json', 
+          :user_id => @user.id, :id => @p.id, 
+          :track => -1
+          expect(response.body).to eq({:errors => {:track_ids => ["invalid track"]}}.to_json )
+        end
+
+        it "request with invalid track param responds with error " do
+          @track4 = FactoryGirl.create(:track)
+          patch :update, :format => 'json', 
+          :user_id => @user.id, :id => @p.id, 
+          :track => "alpha"
+          expect(response.body).to eq({:errors => {:track_ids => ["invalid track"]}}.to_json )
+        end
+
+
+        it "invalid playlist responds with json error obj" do
           @p.name = nil
           @p.user_id = @user
 
