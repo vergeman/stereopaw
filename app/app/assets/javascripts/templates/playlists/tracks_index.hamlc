@@ -1,0 +1,17 @@
+%header
+  %h1
+    Playlists - #{@playlist.name}
+%hr
+.playlisttracks-wrap
+  %table
+    %thead
+      %tr
+        %th Play
+        %th Title
+        %th Artist
+        %th Genres
+        %th Duration
+        %th Comment
+        %th Service
+    %tbody
+        

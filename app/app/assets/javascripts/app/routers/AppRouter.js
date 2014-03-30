@@ -15,6 +15,7 @@ app.AppRouter = Backbone.Router.extend({
 
 	/*playlists*/
 	'playlists' : 'playlists',
+	'playlists/:playlist_id' : 'playlist',
 
 	/*devise*/
 	'login' : 'login',
@@ -130,7 +131,6 @@ app.AppRouter = Backbone.Router.extend({
 	console.log("[AppRouter] playlists")	
 	var self = this;
 	var playlists = this.playlistsMgr.playlists
-	console.log(playlists)
 	var redirect = function() { 
 	    Backbone.history.navigate("/login", {trigger:true})
 	}
@@ -139,8 +139,28 @@ app.AppRouter = Backbone.Router.extend({
 			   redirect))
 	{
 
-	    this.view(new app.PlaylistsView(playlists), '/playlists' )
+	    this.view(new app.PlaylistsIndexView(playlists), '/playlists' )
 	}
+
+    },
+
+    playlist : function(playlist_id) {
+	console.log("[AppRouter] playlist")
+	var self = this;
+	var playlist = this.playlistsMgr.playlists.get(playlist_id)
+
+	var redirect = function() { 
+	    Backbone.history.navigate("/login", {trigger:true})
+	}
+
+	if (this.checkauth(app.Session.SessionState.LOGGEDIN,
+			   redirect))
+	{
+	    var routename = "/playlists/" + playlist.get("id")
+	    this.view(new app.PlaylistTracksView([], {playlist: playlist}), routename)
+	}
+
+
 
     },
 /*Track Routes*/

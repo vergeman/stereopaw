@@ -5,12 +5,12 @@ class PlaylistsController < ApplicationController
     render :json => User.find(params[:user_id]).playlists
   end
 
-  #we'll send all associated tracks for now,
-  #but this might be a little verbose data-wise
+  #we'll sends playlist-associated tracks
   def show
     @playlist = Playlist.find(params[:id])
     @tracks = Track.find(@playlist.track_ids)
-    render :json => {:playlist => @playlist, :tracks => @tracks}
+    #render :json => {:playlist => @playlist, :tracks => @tracks}
+    render :json => @tracks
   end
 
   def create

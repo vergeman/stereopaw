@@ -1,6 +1,6 @@
 var app = app || {};
 
-app.PlaylistsView = Backbone.View.extend({
+app.PlaylistsIndexView = Backbone.View.extend({
 
     tagName: 'div',
 
@@ -13,7 +13,7 @@ app.PlaylistsView = Backbone.View.extend({
     },
 
     initialize: function(playlists) {
-	console.log("[PlaylistsView] initialize")
+	console.log("[PlaylistsIndexView] initialize")
 
 	this._playlistViews = [];
 
@@ -26,7 +26,7 @@ app.PlaylistsView = Backbone.View.extend({
 	this.listenTo(app.vent, "PlaylistsMgr:playlist_updated", 
 		      this.ask_playlists)
 
-	this.listenTo(app.vent, "PlaylistsView:update_playlists",
+	this.listenTo(app.vent, "PlaylistsIndexView:update_playlists",
 		     this.update_playlists)
 
 	this.collection.set(playlists.models)
@@ -34,24 +34,24 @@ app.PlaylistsView = Backbone.View.extend({
     },
 
     ask_playlists : function() {
-	console.log("[PlaylistsView] ask_playlists")
-	app.vent.trigger("PlaylistsMgr:GetPlaylist", "PlaylistsView:update_playlists")
+	console.log("[PlaylistsIndexView] ask_playlists")
+	app.vent.trigger("PlaylistsMgr:GetPlaylist", "PlaylistsIndexView:update_playlists")
     },
 
     update_playlists : function(playlists) {
-	console.log("[PlaylistsView] update_playlists")
+	console.log("[PlaylistsIndexView] update_playlists")
 	this.listenToOnce(this.collection, "add", 
 			  this.render_updated)
 	this.collection.set(playlists.models)
     },
     render_updated : function() {
-	console.log("[PlaylistsView] render-updated")
+	console.log("[PlaylistsIndexView] render-updated")
 	pv = this._playlistViews[(this._playlistViews.length-1)]
 	this.$el.find('.playlist-wrap').append(pv.render().el)
     },
 
     add_playlist : function(e) {
-	console.log("[PlaylistsView] add_playlists")
+	console.log("[PlaylistsIndexView] add_playlists")
 	e.preventDefault()
 	
 	/*see PlaylistsModalView*/
@@ -59,7 +59,7 @@ app.PlaylistsView = Backbone.View.extend({
     },
 
     add_collection : function(model) {
-	console.log("[PlaylistView] add")
+	console.log("[PlaylistsIndexView] add")
 	var pv = new app.PlaylistView(
 	    {
 		model : model
@@ -70,7 +70,7 @@ app.PlaylistsView = Backbone.View.extend({
     },
 
     remove_collection: function(model) {
-	console.log("[PlaylistView] remove")
+	console.log("[PlaylistsIndexView] remove")
 	var pv_remove = _(this._playlistViews).select(function(pv) {
 	    return pv.model === model;})[0];
 	this._playlistViews = _(this._playlistViews).without(pv_remove);
@@ -79,7 +79,7 @@ app.PlaylistsView = Backbone.View.extend({
     },
 
     render : function() {
-	console.log("[PlaylistsView] render")
+	console.log("[PlaylistsIndexView] render")
 	$(window).scrollTop(0);
 
 	//loop each playlistView & render
@@ -94,7 +94,7 @@ app.PlaylistsView = Backbone.View.extend({
     },
 
     close: function() {
-	console.log("[PlaylistsView] close")
+	console.log("[PlaylistsIndexView] close")
 	_(this._playlistViews).each(function(pv) {
 	    pv.close()
 	});

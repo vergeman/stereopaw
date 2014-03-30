@@ -1,5 +1,5 @@
 .playlist-name
-  %a{:href => "#"}
+  %a{:href => "/meow#playlists/#{@playlist.id}"}
     = @playlist.name
         
 .playlist-description

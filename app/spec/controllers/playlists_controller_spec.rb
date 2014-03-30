@@ -45,7 +45,8 @@ describe PlaylistsController do
 
       it "responds with a json obj: playlists and track data" do
         tracks = Track.find(@playlist.track_ids)
-        obj = {:playlist => @playlist, :tracks => tracks}.to_json
+        #obj = {:playlist => @playlist, :tracks => tracks}.to_json
+        obj = tracks.to_json
         expect(response.body).to eq(obj)
       end
 
