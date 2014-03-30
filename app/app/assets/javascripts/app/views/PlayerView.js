@@ -97,6 +97,14 @@ app.PlayerView = Backbone.View.extend({
 	console.log("[PlayerView] next")
 
 	this.current_track = this.playerqueue.next()
+
+	/*empty playlist/queue possibility*/
+	if (this.current_track == null) {
+	    clearInterval(this._update_time_interval)
+	    this._update_time_interval = null
+	    return;
+	}
+
 	this.play(null, this.current_track.get("timestamp"))
     },
 

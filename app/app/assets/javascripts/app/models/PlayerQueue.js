@@ -26,6 +26,8 @@ app.PlayerQueue = Backbone.Model.extend({
 	this.history_fwd = new Array()
 	this.route = route
 	this.updated = false
+
+	this.listenTo(app.vent, "PlayerQueue:update", this.update)
     },
 
     /* a new route, we flag the collection as updated
@@ -54,6 +56,11 @@ app.PlayerQueue = Backbone.Model.extend({
 	    console.log("[PlayerQueue] next:hasfwd")
 	    this.current_track = this.history_fwd.pop()
 	    return this.current_track
+	}
+
+	//if empty (empty playlist)
+	if (this.queue.length == 0) {
+	    return null
 	}
 
 	//check if new queue, return top

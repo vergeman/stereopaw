@@ -157,7 +157,13 @@ app.AppRouter = Backbone.Router.extend({
 			   redirect))
 	{
 	    var routename = "/playlists/" + playlist.get("id")
-	    this.view(new app.PlaylistTracksView([], {playlist: playlist}), routename)
+	    this.view(
+		new app.PlaylistTracksView(
+		    [], 
+		    {
+			playlist: playlist,
+		    }),
+		routename)
 	}
 
 

@@ -64,6 +64,8 @@ app.PlaylistTracksView = Backbone.View.extend({
 	    this.playlistTracks.add([model])    
 	}, this);
 
+	app.vent.trigger("PlayerQueue:update",
+			 this.playlist.url, this.playlistTracks)
 	this.render()
     },
 

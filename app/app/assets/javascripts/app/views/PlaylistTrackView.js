@@ -9,15 +9,26 @@ app.PlaylistTrackView = Backbone.View.extend({
     initialize: function(model, opts) {
 	console.log("[PlaylistTrackView] initialize")
 	this.listenTo(this.model, "change", this.render)
-	
     },
 
-    events : {},
+    events : {
+	'click .play' : 'play'
+    },
+
+    play : function(e) {
+	console.log("[PlaylistTrackView] play")
+	var time = $(e.currentTarget).attr('timestamp');
+
+	app.vent.trigger("Player:play", $(e.currentTarget), time)
+    },
 
     render : function() {
 	console.log("[PlaylistTrackView] render")
 	this.$el.html( this.template(
-	    {track : this.model.toJSON() }
+	    {
+		track : this.model.toJSON(),
+		cid : this.model.cid
+	    }
 	))
 	return this;
     },
