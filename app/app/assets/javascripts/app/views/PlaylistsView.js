@@ -8,6 +8,10 @@ app.PlaylistsView = Backbone.View.extend({
 
     template: JST['playlists/index'],
 
+    events : {
+	'click .add-playlist' : 'add_playlist'
+    },
+
     initialize: function(playlists) {
 	console.log("[PlaylistsView] initialize")
 
@@ -19,7 +23,39 @@ app.PlaylistsView = Backbone.View.extend({
 
 	this.listenTo(this.collection, 'add', this.add_collection)
 	this.listenTo(this.collection, 'remove', this.remove_collection)
+	this.listenTo(app.vent, "PlaylistsMgr:playlist_updated", 
+		      this.ask_playlists)
+
+	this.listenTo(app.vent, "PlaylistsView:update_playlists",
+		     this.update_playlists)
+
 	this.collection.set(playlists.models)
+	
+    },
+
+    ask_playlists : function() {
+	console.log("[PlaylistsView] ask_playlists")
+	app.vent.trigger("PlaylistsMgr:GetPlaylist", "PlaylistsView:update_playlists")
+    },
+
+    update_playlists : function(playlists) {
+	console.log("[PlaylistsView] update_playlists")
+	this.listenToOnce(this.collection, "add", 
+			  this.render_updated)
+	this.collection.set(playlists.models)
+    },
+    render_updated : function() {
+	console.log("[PlaylistsView] render-updated")
+	pv = this._playlistViews[(this._playlistViews.length-1)]
+	this.$el.find('.playlist-wrap').append(pv.render().el)
+    },
+
+    add_playlist : function(e) {
+	console.log("[PlaylistsView] add_playlists")
+	e.preventDefault()
+	
+	/*see PlaylistsModalView*/
+	app.vent.trigger("PlaylistsModalView:openModal")	
     },
 
     add_collection : function(model) {
@@ -50,7 +86,7 @@ app.PlaylistsView = Backbone.View.extend({
 	this.$el.append(this.template())
 
 	_(this._playlistViews).each(function(pv) {
-	    this.$el.append(pv.render().el)
+	    this.$el.find('.playlist-wrap').append(pv.render().el)
 	}, this);
 
 

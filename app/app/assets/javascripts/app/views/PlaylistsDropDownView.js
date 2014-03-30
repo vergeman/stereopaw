@@ -29,7 +29,6 @@ app.PlaylistsDropDownView = Backbone.View.extend({
     create : function(e) {
 	console.log("[PlaylistsDropDownView] create")
 	e.preventDefault();
-	var id = $(e.currentTarget).attr('track_id')
 
 	/*need to keep dropdown link & dropdown content
 	 *(li.playlist & .playlist-dropdown) at the same 
@@ -38,7 +37,7 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 	$(document).foundation('dropdown', 'close', $('[data-dropdown-content]'));
 
 	/*see PlaylistsModalView*/
-	app.vent.trigger("PlaylistsModalView:openModal", id)
+	app.vent.trigger("PlaylistsModalView:openModal")
     },
 
     add : function(e) {

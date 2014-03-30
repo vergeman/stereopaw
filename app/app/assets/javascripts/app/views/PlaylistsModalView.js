@@ -17,6 +17,7 @@ app.PlaylistsModalView = Backbone.View.extend({
 	this.listenTo(app.vent, "Session:logged-in", this.set_user_id)
 	this.listenTo(app.vent, "Session:logged-out", this.clear_user_id)
 
+
 	this.listenTo(app.vent,
 		      "PlaylistsModalView:openModal",
 		      this.playlist_openModal)
@@ -24,6 +25,8 @@ app.PlaylistsModalView = Backbone.View.extend({
 	this.listenTo(app.vent,
 		      "PlaylistsModalView:submit:error",
 		      app.Util.show_error)
+
+
     },
 
     set_user_id : function() {
@@ -38,6 +41,7 @@ app.PlaylistsModalView = Backbone.View.extend({
     /*renders modal div with appropriate submit url*/
     render: function() {
 	console.log("[PlaylistsModalView] render")
+
 	this.$el.html(
 	    this.template(
 		{ 
@@ -51,7 +55,7 @@ app.PlaylistsModalView = Backbone.View.extend({
 
     /*clear modal previously sent*/
     clear_modal: function() {
-	$('input#playlist_name, input#playlist_description').val("")
+	$('input#playlist_name, textarea#playlist_description').val("")
 	$('.error_name, .error_playlist_description, .error_general').html('')
 	$('.error').removeClass('error')
     },
@@ -59,10 +63,18 @@ app.PlaylistsModalView = Backbone.View.extend({
     /*clears, toggles modal, sets submit handler 
      *to create playlist
      */
-    playlist_openModal : function(id) {
+    playlist_openModal : function() {
 	console.log("[PlaylistsModalView] playlist_openModal")
-
+	
 	this.clear_modal()
+
+	$(document).foundation()
+
+	/*weird foundation bug*/
+	$('.close-reveal-modal').one('click', function(e) {
+	    $('#PlaylistModal').foundation('reveal', 'close')
+	    $('.reveal-modal-bg').remove()
+	})
 
 	/*open modal*/
 	$('#PlaylistModal').foundation('reveal', 'open');
@@ -72,7 +84,6 @@ app.PlaylistsModalView = Backbone.View.extend({
 	    e.preventDefault()
 	    self.playlist_submit()
 	});
-
     },
 
     /*
@@ -82,7 +93,7 @@ app.PlaylistsModalView = Backbone.View.extend({
 	return {
 	    playlist : {
 		name: $("input#playlist_name").val(),
-		description : $("input#playlist_description").val()
+		description : $("textarea#playlist_description").val()
 	    }
 	}
     },
@@ -105,10 +116,18 @@ app.PlaylistsModalView = Backbone.View.extend({
 		    app.vent.trigger("PlaylistsModalView:submit:error", data.errors)
 		}
 		else {
-		    /*open modal and update playlist mgr w/ 
+		    /* 
+		     *close modal and update playlist mgr w/ 
 		     *new data
 		     */
+		    $('#playlist_submit').unbind('click')
+
+		    $(document).foundation()
+
+		    /*bug: second open of playlistsmodal*/
 		    $('#PlaylistModal').foundation('reveal', 'close');
+		    $('.reveal-modal-bg').remove()
+
 		    app.vent.trigger("PlaylistsMgr:AddtoPlaylist", data)
 		}
 	    },

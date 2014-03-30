@@ -1,7 +1,14 @@
 %header
   %h1
     Playlists
+
+  %a{:href => "#", :'data-reveal-id' => "PlaylistModal"}
+    %i.fi-plus.add-playlist
+      %span Add Playlist
+
 %hr
 
-%p Create a Playlist
-%hr  
+
+
+.playlist-wrap  
+  

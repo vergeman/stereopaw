@@ -1,3 +1,72 @@
-// Place all the styles related to the playlists controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.playlist-wrap {
+    font-family: 'lato', 'helvetica neue', 'georgia', 'open-sans';
+    margin-top: 1rem;
+    @media #{$medium-up} {
+	margin-left: 1.5rem;
+    }
+}
+
+i.add-playlist {
+    float: left;
+    margin-left: 10rem;
+    margin-top: -1.75rem; 
+    font-size: 12px;
+    font-style: normal;
+    color: #a2a2a2;
+ 
+    span {
+	padding-left: .25rem;
+    }
+
+    @media #{$medium-up} {
+	font-size: 14px;
+	margin-left: 14rem;
+	margin-top: -2.1rem;
+    }
+
+    &:hover {
+	color: #3498db;	
+    }
+}
+
+
+.playlist {
+    margin-bottom: 1.5rem;
+}
+
+.playlist-name {
+    font-size: 1.6875rem;
+    a { 
+	color: #222222; 
+	&:hover {
+	    color: #3498db;
+	}
+    }
+}
+
+.playlist-controls {
+    margin-top:.5rem;
+    padding-right: 1rem;
+
+    i {
+	font-size: 14px;
+	font-style: normal;
+	cursor:pointer;
+	padding-right: 1.5rem;
+	color: #a2a2a2;
+	
+	&:hover {
+	    color: #3498db;
+	}
+
+    }
+
+    span {
+	font-style: normal;
+	padding-left: .5rem;
+    }
+}
+
+.playlist-description {
+    margin-top: .5rem;
+}

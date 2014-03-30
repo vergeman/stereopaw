@@ -1,3 +1,25 @@
-%Playlist#show
-  %h1
+.playlist-name
+  %a{:href => "#"}
     = @playlist.name
+        
+.playlist-description
+  = @playlist.description
+
+
+.playlist-controls
+
+  %a{:href => "#"}
+    %i.fi-music.num-tracks
+      %span
+        = @playlist.track_ids.length
+
+-#
+  %a{:href => "#"}
+    %i.fi-pencil
+      %span
+        Edit
+      
+  %a{:href => "#"}
+    %i.fi-x
+      %span
+        Delete
