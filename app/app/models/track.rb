@@ -40,6 +40,7 @@ class Track < ActiveRecord::Base
   validates_format_of :timeformat, :with => /\A([^0:\D][0-9]*:)?([1-5]?[0-9]:)([0-5][0-9])\Z/
 
   validates :comment, length: { maximum: 1000 }
+  before_save :capitalize_genres
   after_initialize :default_values
 
   def default_values
@@ -55,7 +56,7 @@ class Track < ActiveRecord::Base
   
   def played_json
     return {:track => {:id => self.id, :plays => self.plays} }
-  end
+  end  
 
   def calculate_age
     diff = (Time.now - self.created_at)
@@ -68,6 +69,10 @@ class Track < ActiveRecord::Base
       return self.created_at.strftime("%b %-d")
     end
 
+  end
+
+  def capitalize_genres
+    self.genres = self.genres.map{|g| g.split.map(&:capitalize).join(" ")}
   end
 
 end

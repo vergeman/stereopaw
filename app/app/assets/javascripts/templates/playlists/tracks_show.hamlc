@@ -9,7 +9,7 @@
   #{@track.artist}
 
 %td.genres
-  #{@track.genres}
+  = @track.genres.join(", ")
 
 %td.duration-format
   #{@track.duration_format}
