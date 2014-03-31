@@ -19,6 +19,27 @@ describe TracksController do
 #                  tracks GET    /tracks(.:format)                         tracks#mytracks
 
 
+  describe "GET latest" do
+    before do 
+      @track1 = FactoryGirl.create(:track)
+      @track2 = FactoryGirl.create(:track)
+    end
+
+    it "responds successfully with an HTTP 200 status code" do
+      get :latest, :format => :json
+      expect(response.status).to eq(200)
+    end
+
+    it "responds with tracks sorted DESC by created_at" do
+      get :latest, :format => :json, :page => 0
+      expect(response.body).to eq(Track.all.order("created_at DESC").limit(10).to_json )
+    end
+    
+    
+  end
+
+
+
   describe "GET #new" do
 
     describe "when logged out" do
@@ -249,11 +270,19 @@ describe TracksController do
         expect(response.body).to eq({:success => @track.id}.to_json)
       end
 
-      it "a succesful destroy is realized in user tracks" do
+      it "a succesful 'destroy' does not actually remove from the database" do
         count = Track.all.count
         delete :destroy, :user_id =>  @user.id, :id => @track.id
-        Track.all.count.should eq(count-1)
-        Track.find_by_id(@track.id).should eq(nil)
+        Track.all.count.should eq(count)
+        Track.find_by_id(@track.id).should_not eq(nil)
+      end
+
+
+      it "a succesful 'destroy' does disassociate the user" do
+        count = Track.all.count
+        delete :destroy, :user_id =>  @user.id, :id => @track.id
+        Track.all.count.should eq(count)
+        Track.find_by_id(@track.id).user_id.should eq(nil)
       end
 
       it "should not allow destroy of other user owned tracks" do

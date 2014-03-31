@@ -45,7 +45,9 @@ class TracksController < ApplicationController
     if Track_find(current_user.tracks, params[:id], 
                   { "errors" => { :general => "Not owner" }})
 
-      if @track.destroy
+      #we dissociate but not remove track
+      @track.user_id = nil
+      if @track.save
         render :json => { "success" => @track.id }
       else
         render :json => { "errors" => @track.errors.messages }

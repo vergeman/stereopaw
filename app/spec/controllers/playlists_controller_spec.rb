@@ -206,12 +206,21 @@ describe PlaylistsController do
           expect(response.body).to eq(@user.playlists.last.to_json)
         end
 
+
+        it "playlist adding non-existent track is invalid " do
+          @track4 = FactoryGirl.create(:track)
+          patch :update, :format => 'json', 
+          :user_id => @user.id, :id => @p.id, 
+          :track => @track4.id + 100
+          expect(response.body).to have_content("errors")
+        end
+
         it "request with invalid track param responds with error " do
           @track4 = FactoryGirl.create(:track)
           patch :update, :format => 'json', 
           :user_id => @user.id, :id => @p.id, 
           :track => -1
-          expect(response.body).to eq({:errors => {:track_ids => ["invalid track"]}}.to_json )
+          expect(response.body).to have_content("errors")
         end
 
         it "request with invalid track param responds with error " do
@@ -219,7 +228,7 @@ describe PlaylistsController do
           patch :update, :format => 'json', 
           :user_id => @user.id, :id => @p.id, 
           :track => "alpha"
-          expect(response.body).to eq({:errors => {:track_ids => ["invalid track"]}}.to_json )
+          expect(response.body).to have_content("errors")
         end
 
 
@@ -230,7 +239,6 @@ describe PlaylistsController do
           patch :update, :format => 'json', 
           :user_id => @user.id, :id => @p.id,
           :playlist => @p.attributes
-
           expect(response.body).to have_content("errors")
         end
 

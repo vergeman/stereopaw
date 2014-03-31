@@ -20,6 +20,7 @@
 #  user_id     :integer
 #  genres      :string(255)      default([])
 #  plays       :integer          default(0)
+#  submit_id   :integer
 #
 # Indexes
 #
@@ -45,5 +46,6 @@ FactoryGirl.define do
     genres ["rock"]
     plays "1"
     association :user, factory: :user
+    submit_id { "#{user_id}" }   
   end
 end

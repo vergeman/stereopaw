@@ -20,6 +20,7 @@
 #  user_id     :integer
 #  genres      :string(255)      default([])
 #  plays       :integer          default(0)
+#  submit_id   :integer
 #
 # Indexes
 #
@@ -99,6 +100,10 @@ describe Track do
       @track.attributes.has_key?("plays").should eq true
     end
 
+    it "has a submit_id attr" do
+      @track.attributes.has_key?("submit_id").should eq true
+    end
+
   end
 
   describe "Track Validations" do
@@ -158,6 +163,11 @@ describe Track do
 
       it "cannot have a blank artwork_url" do
         @track.artwork_url = nil
+        @track.should_not be_valid        
+      end
+
+      it "cannot have a blank submit_id" do
+        @track.submit_id = nil
         @track.should_not be_valid        
       end
 

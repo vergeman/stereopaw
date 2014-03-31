@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140325143842) do
+ActiveRecord::Schema.define(version: 20140331081950) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20140325143842) do
     t.integer  "user_id"
     t.string   "genres",      default: [], array: true
     t.integer  "plays",       default: 0
+    t.integer  "submit_id"
   end
 
   add_index "tracks", ["genres"], name: "index_tracks_on_genres", using: :gin

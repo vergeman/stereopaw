@@ -14,10 +14,11 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
+
   factory :playlist do
     name "MyString"
     description "MyText"
-    track_ids [1,2]
+    track_ids { ([FactoryGirl.create(:track), FactoryGirl.create(:track)]).map(&:id) }
     association :user, factory: :user
   end
 end

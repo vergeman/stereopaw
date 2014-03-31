@@ -20,6 +20,7 @@
 #  user_id     :integer
 #  genres      :string(255)      default([])
 #  plays       :integer          default(0)
+#  submit_id   :integer
 #
 # Indexes
 #
@@ -29,7 +30,7 @@
 class Track < ActiveRecord::Base
   belongs_to :user
 
-  validates :artist, :title, :page_url, :profile_url, :shareable, :service, :artwork_url, :user_id, presence: true
+  validates :artist, :title, :page_url, :profile_url, :shareable, :service, :artwork_url, :submit_id, presence: true
 
   validates :profile_url, :page_url, :artwork_url, url: true #/validators/UrlValidator
 
@@ -44,6 +45,7 @@ class Track < ActiveRecord::Base
   def default_values
     self.timestamp ||= 0
     self.duration ||= 0
+    self.submit_id = self.user_id
   end
 
   def played
