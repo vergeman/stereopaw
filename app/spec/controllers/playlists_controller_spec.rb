@@ -52,16 +52,10 @@ describe PlaylistsController do
 
     end
 
-    #generated from modal, not necessary
-    #pending "GET #new" do
-    #end
-    #pending "GET #edit" do
-    #end
-
   end
 
   #modal based, requires auth
-  describe "#CREATE / #UPDATE" do
+  describe "#CREATE / #UPDATE / #PATCH / #DELETE" do
 
     describe "when logged out" do
 
@@ -90,7 +84,6 @@ describe PlaylistsController do
         expect(response.status).to eq(401)
       end
 
-
     end
 
 
@@ -103,6 +96,7 @@ describe PlaylistsController do
         @playlist = FactoryGirl.build(:playlist)
         @playlist.user = @user
       }
+
 
       describe "POST #create" do
 
@@ -129,7 +123,46 @@ describe PlaylistsController do
 
       end
 
-      #=======================
+      #DESTROY=====
+      describe "DELETE #destroy" do
+        before do
+          @playlist = FactoryGirl.create(:playlist, 
+                                         :name => "b" * 100,
+                                         :user_id => @user.id)
+        end
+
+        it "has a 200 response" do
+          delete :destroy, :format => 'json', 
+          :user_id => @user.id, :id => @playlist.id
+          expect(response.status).to eq(200)
+        end
+
+        it "successfully deletes a playlist" do
+          count = Playlist.all.count
+          delete :destroy, :format => 'json', 
+          :user_id => @user.id, :id => @playlist.id
+          expect(Playlist.all.count).to eq(count-1)
+          expect(Playlist.find_by_id(@playlist.id)).to be_nil
+        end
+
+        it "responds with a 'success' message" do
+          delete :destroy, :format => 'json', 
+          :user_id => @user.id, :id => @playlist.id
+          expect(response.body).to eq({:success => "playlist destroyed"}.to_json)
+        end
+
+        it "if delete non-existent track, responds with error" do
+          delete :destroy, :format => 'json', 
+          :user_id => @user.id, :id => (@playlist.id + 100)
+          expect(response.body).to eq({:errors => "invalid playlist"}.to_json)
+
+        end
+
+        
+
+      end
+
+      #PATCH=======================
       describe "PATCH #update" do 
         before do
           @p = FactoryGirl.create(:playlist, :name => "b" * 100, 
@@ -200,6 +233,16 @@ describe PlaylistsController do
 
           expect(response.body).to have_content("errors")
         end
+
+        it "responds with error message if attempt to update invalid playlist" do
+          @p.user_id = @user
+
+          patch :update, :format => 'json', 
+          :user_id => @user.id, :id => @p.id+100,
+          :playlist => @p.attributes
+
+          expect(response.body).to eq({:errors => "invalid playlist"}.to_json)
+        end
         
       end
     end
@@ -207,8 +250,6 @@ describe PlaylistsController do
 
   end
 
-  pending "DELETE #destroy" do
-  end
 
 
   

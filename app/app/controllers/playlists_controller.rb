@@ -1,5 +1,5 @@
 class PlaylistsController < ApplicationController
-  before_filter :authenticate_user!, only: [:create, :update]
+  before_filter :authenticate_user!, only: [:create, :update, :destroy]
 
   def index    
     render :json => User.find(params[:user_id]).playlists
@@ -24,9 +24,32 @@ class PlaylistsController < ApplicationController
 
   #accepts :track => a single track_id or :playlist => xx params
   def update
+    begin
     @playlist = current_user.playlists.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render :json => {:errors => "invalid playlist"}
+      return
+    end
+
     if @playlist.update_attributes(track_params(@playlist))
       render :json => @playlist
+    else
+      render :json => {:errors => @playlist.errors.messages}
+    end
+  end
+
+  #/users/user_id/playlists/playlist_id
+  def destroy
+    begin
+    @playlist = current_user.playlists.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render :json => {:errors => "invalid playlist"}
+      return
+    end
+
+     
+    if @playlist.destroy
+      render :json => {:success => "playlist destroyed"}
     else
       render :json => {:errors => @playlist.errors.messages}
     end
@@ -52,11 +75,11 @@ class PlaylistsController < ApplicationController
   end
 
 
+
   private
 
-  def _parse_track_id_params()
-    #this is UGLY but pg array saving behavior is really strange
-
+  #this is UGLY but pg array saving behavior is really strange
+  def _parse_track_id_params
     #we aren't updating track_ids 
     if params[:playlist].has_key?(:track_ids)
 

@@ -27,7 +27,6 @@ app.PlaylistTrackView = Backbone.View.extend({
 	    return
 	}
 
-
 	app.vent.trigger("PlaylistTracksView:remove_track", 
 			 $(e.currentTarget).attr("pid"),
 			 $(e.currentTarget).attr("mid"),

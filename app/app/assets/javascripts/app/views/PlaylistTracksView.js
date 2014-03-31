@@ -60,7 +60,23 @@ app.PlaylistTracksView = Backbone.View.extend({
 	console.log("[PlaylistTracksView] delete_playlist")
 	e.preventDefault()
 
+	var r = confirm("Are you sure you want to delete this playlist?");
+	if (!r) {
+	    return
+	}
 
+	var success = function() {
+	    Backbone.history.navigate("/playlists", {trigger:true})
+	}
+
+	this.playlist.destroy(
+	    {
+		success: success,
+		error : function() {
+		    console.log("[PlaylistTracksView] error deleting playlist")
+		}
+	    }
+	);
     },
 
     fetch_tracks : function() {
@@ -74,6 +90,10 @@ app.PlaylistTracksView = Backbone.View.extend({
 	)	
     },
 
+    /*refresh - we remove all and put back
+     *inefficient, but consistent - could have deleted from
+     * middle of playlist, refreshing indices are work to maintain
+     */
     refresh : function() {
 	this.playlistTracks.remove( this.playlistTracks.models )
 	this.update_playlist_tracks()
