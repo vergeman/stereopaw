@@ -34,6 +34,9 @@ app.PlaylistTracksView = Backbone.View.extend({
 	this.listenTo(this.playlistTracks, 'add', this.add_collection)
 	this.listenTo(this.playlistTracks, 'remove', this.remove_collection)
 
+	this.listenTo(app.vent, "PlaylistTracksView:remove_track",
+		      this.remove_track)
+
 	_(this).bindAll('close')
     },
 
@@ -48,6 +51,32 @@ app.PlaylistTracksView = Backbone.View.extend({
 	this.trackscollection.fetch(
 	    {success : success}
 	)	
+    },
+
+    remove_track : function(pid, mid, index) {
+	console.log("[PlaylistTracksView] remove_track")
+	m =  this.playlistTracks.at(index)
+
+	//remove from playlist.track_ids
+
+	/*
+	this.playlist.set(
+	    "track_ids",
+	    this.playlist.get("track_ids").splice(index, 1)
+	)*/
+	var track_ids = this.playlist.get("track_ids")
+	track_ids.splice(index,1)
+	this.playlist.set("track_ids", track_ids)
+
+	console.log(this.playlist)
+
+	this.playlistTracks.remove( this.playlistTracks.models )
+
+	this.update_playlist_tracks()
+
+	this.playlist.save()
+	//rerender
+	//save
     },
 
     /*
@@ -70,12 +99,21 @@ app.PlaylistTracksView = Backbone.View.extend({
     },
 
     add_collection : function(model) {
-	var pltv = new app.PlaylistTrackView({model : model})
+	console.log("[PlaylistTracksView] add_collection")
+	var pltv = new app.PlaylistTrackView(
+	    {model : model},
+	    {playlist_id : this.playlist.get("id")}
+	)
 	this._pltv.push(pltv)
+	
+	pltv.set_index(this._pltv.length - 1)
     },
 
     remove_collection: function(model) {
+	console.log("[PlaylistTracksView] remove_collection")
 	var pltv_remove = _(this._pltv).select(function(pltv) { return pltv.model === model; })[0];
+	console.log("HERE")
+	console.log(pltv_remove)
 	this._pltv = _(this._pltv).without(pltv_remove);
 	pltv_remove.close()
     },

@@ -25,7 +25,7 @@ class PlaylistsController < ApplicationController
   #accepts :track => a single track_id or :playlist => xx params
   def update
     @playlist = current_user.playlists.find(params[:id])
-    if @playlist.update_attributes(track_params(@playlist) )
+    if @playlist.update_attributes(track_params(@playlist))
       render :json => @playlist
     else
       render :json => {:errors => @playlist.errors.messages}
@@ -42,12 +42,29 @@ class PlaylistsController < ApplicationController
   end
 
   def track_params(playlist)
+    #case of just adding a track id to params
     if params[:track] && playlist
       return {:track_ids => playlist.track_ids + [ params[:track] ] }
     else
-      return new_params
+      #case where track_ids are being removed
+      return _parse_track_id_params()
     end
   end
 
+
+  private
+
+  def _parse_track_id_params()
+    #this isn't pretty but pg array saving behavior is really strange
+    if params[:playlist][:track_ids].nil?
+      _params = new_params
+      _params[:track_ids] = []
+      return _params
+    else
+      _params = new_params
+      _params[:track_ids] = Array.new(params[:playlist][:track_ids])
+      return _params
+    end
+  end
 
 end

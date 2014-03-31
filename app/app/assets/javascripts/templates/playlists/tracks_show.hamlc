@@ -19,3 +19,6 @@
 
 %td.service
   #{@track.service}
+
+%td.remove{:pid => @pid, :mid => @track.mid, :index => @index}
+  %i.fi-x
