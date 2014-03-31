@@ -55,7 +55,7 @@ app.PlaylistsIndexView = Backbone.View.extend({
 	e.preventDefault()
 	
 	/*see PlaylistsModalView*/
-	app.vent.trigger("PlaylistsModalView:openModal")	
+	app.vent.trigger("PlaylistsModalView:openModal", "new")	
     },
 
     add_collection : function(model) {

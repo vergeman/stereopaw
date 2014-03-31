@@ -7,13 +7,17 @@ app.PlaylistsModalView = Backbone.View.extend({
 
     id: 'playlistModal',
 
-    template: JST['playlists/playlist_modal'],
+    template_new: JST['playlists/playlist_new_modal'],
+    template_edit: JST['playlists/playlist_edit_modal'],
 
     initialize: function(session) {
 	console.log("[PlaylistsModalView] initialize")
 
 	this.session = session
 	this.user_id = null
+	this.type = null
+	this.playlist = null
+
 	this.listenTo(app.vent, "Session:logged-in", this.set_user_id)
 	this.listenTo(app.vent, "Session:logged-out", this.clear_user_id)
 
@@ -25,8 +29,6 @@ app.PlaylistsModalView = Backbone.View.extend({
 	this.listenTo(app.vent,
 		      "PlaylistsModalView:submit:error",
 		      app.Util.show_error)
-
-
     },
 
     set_user_id : function() {
@@ -38,35 +40,44 @@ app.PlaylistsModalView = Backbone.View.extend({
 	this.user_id = null
     },
 
-    /*renders modal div with appropriate submit url*/
-    render: function() {
-	console.log("[PlaylistsModalView] render")
-
-	this.$el.html(
-	    this.template(
-		{ 
-		    user_id: this.user_id,
-		    authenticity_token: $.cookie('csrf_token')
-		} 
-	    ))
-
-	return this;
+    update_playlist : function(playlist) {
+	this.playlist = playlist
     },
 
-    /*clear modal previously sent*/
-    clear_modal: function() {
-	$('input#playlist_name, textarea#playlist_description').val("")
-	$('.error_name, .error_playlist_description, .error_general').html('')
-	$('.error').removeClass('error')
+    /*renders modal div with appropriate submit url*/
+    render: function(type, playlist) {
+	console.log("[PlaylistsModalView] render")
+
+	//type is new or edit 
+	this.type = type
+
+	//if type is new, no playlist (null)
+	this.playlist = playlist
+
+	var obj = { 
+	    type : type,
+	    user_id: this.user_id,
+	    authenticity_token: $.cookie('csrf_token'),
+	    playlist: playlist
+	} 
+
+	if (type == "new") {
+	    this.$el.html(this.template_new( obj) )
+	}
+	else {
+	    this.$el.html(this.template_edit( obj) )
+	}
+
+	return this;
     },
 
     /*clears, toggles modal, sets submit handler 
      *to create playlist
      */
-    playlist_openModal : function() {
+    playlist_openModal : function(type, playlist) {
 	console.log("[PlaylistsModalView] playlist_openModal")
-	
-	this.clear_modal()
+	console.log(playlist)
+	this.render(type, playlist)
 
 	$(document).foundation()
 
@@ -79,11 +90,21 @@ app.PlaylistsModalView = Backbone.View.extend({
 	/*open modal*/
 	$('#PlaylistModal').foundation('reveal', 'open');
 
+	/*bind submit*/
 	var self = this;
 	$('#playlist_submit').click(function(e) {
 	    e.preventDefault()
 	    self.playlist_submit()
 	});
+    },
+
+    build_url : function() {
+	if (this.type == "new") {
+	    return "/users/" + this.user_id + "/playlists"
+	}
+	//type: edit
+	return "/users/" + this.user_id + 
+	    "/playlists/" + this.playlist.get("id")
     },
 
     /*
@@ -96,6 +117,11 @@ app.PlaylistsModalView = Backbone.View.extend({
 		description : $("textarea#playlist_description").val()
 	    }
 	}
+
+    },
+
+    build_type : function() {
+	return (this.type == "new") ? "POST" : "PATCH"
     },
 
     /*submit form handler to create playlist*/
@@ -104,8 +130,8 @@ app.PlaylistsModalView = Backbone.View.extend({
 	//send post
 	var self = this;
 	$.ajax({
-	    type: "POST",
-	    url: "/users/" + self.user_id + "/playlists",
+	    type: self.build_type(),
+	    url: self.build_url(),
 	    data: self.build_data(),
 	    beforeSend: function(request) {
 		request.setRequestHeader("X-CSRF-Token", $.cookie('csrf_token'));
@@ -128,7 +154,12 @@ app.PlaylistsModalView = Backbone.View.extend({
 		    $('#PlaylistModal').foundation('reveal', 'close');
 		    $('.reveal-modal-bg').remove()
 
-		    app.vent.trigger("PlaylistsMgr:AddtoPlaylist", data)
+		    if (self.type == "new") {
+			app.vent.trigger("PlaylistsMgr:AddtoPlaylist", data)
+		    }
+		    else {
+			app.vent.trigger("PlaylistsMgr:SetPlaylist", data)
+		    }
 		}
 	    },
 
@@ -141,6 +172,7 @@ app.PlaylistsModalView = Backbone.View.extend({
 
 	    complete : function(jqXHR, textStatus) {
 		console.log("[PlaylistsModalView] submit:complete")
+		app.vent.trigger("PlaylistTracksView:refresh")
 	    }
 	})
     },

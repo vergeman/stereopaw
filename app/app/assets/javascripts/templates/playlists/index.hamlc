@@ -2,9 +2,10 @@
   %h1
     Playlists
 
-  %a{:href => "#", :'data-reveal-id' => "PlaylistModal"}
-    %i.fi-plus.add-playlist
-      %span Add Playlist
+  .options-wrap
+    %a{:href => "#", :'data-reveal-id' => "PlaylistModal"}
+      %i.fi-plus.add-playlist
+        %span Add Playlist
 
 %hr
 

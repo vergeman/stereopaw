@@ -55,16 +55,27 @@ class PlaylistsController < ApplicationController
   private
 
   def _parse_track_id_params()
-    #this isn't pretty but pg array saving behavior is really strange
-    if params[:playlist][:track_ids].nil?
-      _params = new_params
-      _params[:track_ids] = []
-      return _params
-    else
-      _params = new_params
-      _params[:track_ids] = Array.new(params[:playlist][:track_ids])
-      return _params
+    #this is UGLY but pg array saving behavior is really strange
+
+    #we aren't updating track_ids 
+    if params[:playlist].has_key?(:track_ids)
+
+      #case: they've deleted the last track in a playlist
+      if params[:playlist][:track_ids].nil?
+        _params = new_params
+        _params[:track_ids] = []
+        return _params
+
+      #track_ids are updated (deleted any)
+      else
+        _params = new_params
+        _params[:track_ids] = Array.new(params[:playlist][:track_ids])
+        return _params
+      end
     end
+
+    #otherwise they've updated other stuff (name, description)
+    return new_params
   end
 
 end

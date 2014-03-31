@@ -6,10 +6,23 @@
     }
 }
 
-i.add-playlist {
-    float: left;
-    margin-left: 10rem;
-    margin-top: -1.75rem; 
+.options-wrap {
+   float: right;
+   margin-top: -1.75rem; 
+
+   @media #{$medium-up} {
+       font-size: 14px;
+       //margin-left: 14rem;
+       margin-top: -2.1rem;
+   }
+
+}
+
+i.add-playlist, i.edit-playlist, i.delete-playlist {
+ 
+//    float:left;
+//    margin-left: 10rem;
+
     font-size: 12px;
     font-style: normal;
     color: #a2a2a2;
@@ -18,16 +31,11 @@ i.add-playlist {
 	padding-left: .25rem;
     }
 
-    @media #{$medium-up} {
-	font-size: 14px;
-	margin-left: 14rem;
-	margin-top: -2.1rem;
-    }
-
     &:hover {
 	color: #3498db;	
     }
 }
+
 
 
 .playlist {

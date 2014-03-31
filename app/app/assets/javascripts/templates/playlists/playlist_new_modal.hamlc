@@ -1,12 +1,13 @@
 #PlaylistModal.reveal-modal{:'data-reveal' =>''}
+  
   %h3
     Add to playlist
   %hr
 
   #playlist-new
     %form#new_playlist.new_playlist{"accept-charset" => "UTF-8",
-                                          action: "/users/#{@user_id}/playlists/",
-                                          method: "post"}
+                                    action: "/users/#{@user_id}/playlists/",
+                                    method: "post"}
 
       %div{style: "margin:0;padding:0;display:inline"}
         %input{name: "utf8", type: "hidden", value: "✓"}
@@ -26,8 +27,8 @@
           %small{class: "error_playlist_description"}
 
         %input#playlist_submit.input-submit.button.expand{name: "commit", type: "submit", value: "Submit Playlist"}
-          
+
         %small{class: "error_general"}
-          
-  %a.close-reveal-modal
-    &#215;
+
+        %a.close-reveal-modal
+          &#215;

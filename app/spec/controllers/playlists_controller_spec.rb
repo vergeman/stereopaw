@@ -84,6 +84,12 @@ describe PlaylistsController do
         expect(response.status).to eq(401)
       end
 
+      it "DELETE #destroy has a a 401 response" do
+        delete :destroy, :format => 'json', 
+        :user_id => @user.id, :id => @playlist.id
+        expect(response.status).to eq(401)
+      end
+
 
     end
 
@@ -139,13 +145,22 @@ describe PlaylistsController do
         end
 
 
-        it "sucessful request responds with playlist " do
+        it "sucessful request responds with playlist when adding track " do
           @track3 = FactoryGirl.create(:track)
           @p.track_ids.push(@track3.id) #for scoped uniquness
           patch :update, :format => 'json', 
           :user_id => @user.id, :id => @p.id, 
           :playlist => @p.attributes
+          expect(response.body).to eq(@user.playlists.last.to_json)
+        end
 
+        it "sucessful request responds with playlist when changing name and description of playlist " do
+          @track3 = FactoryGirl.create(:track)
+          @p.name = "CHANGED NAME"
+          @p.description = "CHANGED DESCRIPTION"
+          patch :update, :format => 'json', 
+          :user_id => @user.id, :id => @p.id, 
+          :playlist => @p.attributes
           expect(response.body).to eq(@user.playlists.last.to_json)
         end
 
@@ -190,10 +205,6 @@ describe PlaylistsController do
     end
 
 
-  end
-
-
-  pending "PUT #update" do
   end
 
   pending "DELETE #destroy" do

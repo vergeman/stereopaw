@@ -66,9 +66,9 @@ app.PlaylistsMgr = Backbone.Model.extend({
 	app.vent.trigger(sendTo, this.playlists)
     },
 
-    AddtoPlaylist : function(model) {
+    AddtoPlaylist : function(playlist) {
 	console.log("[PlaylistsMgr] AddtoPlaylist")
-	this.playlists.add(model)
+	this.playlists.add(playlist)
 	app.vent.trigger("PlaylistsMgr:playlist_updated")
     }
 });

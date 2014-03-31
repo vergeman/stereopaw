@@ -1,6 +1,18 @@
 %header
   %h1
     Playlists - #{@playlist.name}
+
+  .options-wrap
+    %a{:href => "#", :'data-reveal-id' => "PlaylistModal"}
+      %i.fi-plus.edit-playlist
+        %span Edit Playlist
+
+    %a{:href => "#"}
+      %i.fi-x.delete-playlist
+        %span Delete
+      
+    
+    
 %hr
 .playlisttracks-wrap
   %table

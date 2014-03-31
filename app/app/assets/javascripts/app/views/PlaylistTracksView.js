@@ -10,6 +10,11 @@ app.PlaylistTracksView = Backbone.View.extend({
 
     template: JST['playlists/tracks_index'],
 
+    events : {
+	'click .edit-playlist' : 'edit_playlist',
+	'click .delete-playlist' : 'delete_playlist'
+    },
+
     initialize: function(models, opts) {
 	console.log("[PlaylistTracksView] initialize")
 
@@ -37,10 +42,26 @@ app.PlaylistTracksView = Backbone.View.extend({
 	this.listenTo(app.vent, "PlaylistTracksView:remove_track",
 		      this.remove_track)
 
+	this.listenTo(app.vent, "PlaylistTracksView:refresh", 
+		      this.refresh)
+
 	_(this).bindAll('close')
     },
 
-    events : {},
+    edit_playlist : function(e) {
+	console.log("[PlaylistTracksView] edit_playlist")
+	e.preventDefault()
+
+	app.vent.trigger("PlaylistsModalView:openModal",
+			 "edit", this.playlist)
+    },
+
+    delete_playlist : function(e) {
+	console.log("[PlaylistTracksView] delete_playlist")
+	e.preventDefault()
+
+
+    },
 
     fetch_tracks : function() {
 	var self = this;
@@ -53,30 +74,25 @@ app.PlaylistTracksView = Backbone.View.extend({
 	)	
     },
 
+    refresh : function() {
+	this.playlistTracks.remove( this.playlistTracks.models )
+	this.update_playlist_tracks()
+    },
+
     remove_track : function(pid, mid, index) {
 	console.log("[PlaylistTracksView] remove_track")
 	m =  this.playlistTracks.at(index)
 
-	//remove from playlist.track_ids
-
-	/*
-	this.playlist.set(
-	    "track_ids",
-	    this.playlist.get("track_ids").splice(index, 1)
-	)*/
 	var track_ids = this.playlist.get("track_ids")
 	track_ids.splice(index,1)
 	this.playlist.set("track_ids", track_ids)
 
 	console.log(this.playlist)
 
-	this.playlistTracks.remove( this.playlistTracks.models )
-
-	this.update_playlist_tracks()
+	this.refresh()
 
 	this.playlist.save()
-	//rerender
-	//save
+
     },
 
     /*

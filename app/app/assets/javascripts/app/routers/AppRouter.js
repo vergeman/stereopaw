@@ -272,7 +272,7 @@ app.AppRouter = Backbone.Router.extend({
 	$('#content-wrap').html(this.currentView.render().el)
 
 	/*add playlists modal*/
-	$('#content-wrap').append(this.playlistsmodal.render().el)
+	$('#content-wrap').append(this.playlistsmodal.el)
 
 	this.navigate(updateroute)
     }
