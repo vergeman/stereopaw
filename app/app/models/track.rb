@@ -45,7 +45,7 @@ class Track < ActiveRecord::Base
   def default_values
     self.timestamp ||= 0
     self.duration ||= 0
-    self.submit_id = self.user_id
+    self.submit_id ||= self.user_id
   end
 
   def played

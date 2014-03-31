@@ -14,17 +14,17 @@
     
     
 %hr
-.playlisttracks-wrap
+.playlist-tracks-wrap
   %table
     %thead
       %tr
-        %th Play
-        %th Title
-        %th Artist
-        %th Genres
-        %th Duration
-        %th Comment
-        %th Service
-        %th Remove
+        %th.play Play
+        %th.title Title
+        %th.artist Artist
+        %th.genres Genres
+        %th.duration-format Duration
+        %th.comment Comment
+        %th.service Service
+        %th.remove Remove
     %tbody
         

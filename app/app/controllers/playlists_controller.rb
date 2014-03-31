@@ -8,8 +8,13 @@ class PlaylistsController < ApplicationController
   #we'll sends playlist-associated tracks
   def show
     @playlist = Playlist.find(params[:id])
-    @tracks = Track.find(@playlist.track_ids)
-    #render :json => {:playlist => @playlist, :tracks => @tracks}
+    begin
+    @tracks = Track.where(id: @playlist.track_ids)
+    rescue ActiveRecord::RecordNotFound
+      #TODO: if error, sync tracks w/ @playlist.track_ids -- rebuild
+      render :json => {:errors => "missing track"}
+      return
+    end
     render :json => @tracks
   end
 

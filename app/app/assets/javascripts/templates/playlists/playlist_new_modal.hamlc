@@ -1,4 +1,4 @@
-#PlaylistModal.reveal-modal{:'data-reveal' =>''}
+#PlaylistModal.reveal-modal.small{:'data-reveal' =>''}
   
   %h3
     Add to playlist

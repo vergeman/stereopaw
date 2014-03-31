@@ -37,7 +37,7 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 	$(document).foundation('dropdown', 'close', $('[data-dropdown-content]'));
 
 	/*see PlaylistsModalView*/
-	app.vent.trigger("PlaylistsModalView:openModal")
+	app.vent.trigger("PlaylistsModalView:openModal", "new")
     },
 
     add : function(e) {
@@ -66,7 +66,13 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 	    success: function(data, textStatus, jqXHR) {
 		console.log("[PlaylistDropDownView] playlist_submit:success")
 		//update playlists in centralized PlaylistsMgr
-		app.vent.trigger("PlaylistsMgr:SetPlaylist", data)
+		if ('errors' in data) {
+		    console.log("[PlaylistDropDownView] errors")
+		    console.log(data)
+		}
+		else {
+		    app.vent.trigger("PlaylistsMgr:SetPlaylist", data)
+		}
 	    },
 
 	    error: function(jqXHR, textStatus, errorThrown) {

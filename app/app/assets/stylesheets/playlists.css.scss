@@ -1,3 +1,10 @@
+@import "playlists/modal";
+@import "playlists/show";
+
+/*
+ *playlist#index: wrappers and positioning
+ */
+
 .playlist-wrap {
     font-family: 'lato', 'helvetica neue', 'georgia', 'open-sans';
     margin-top: 1rem;
@@ -6,22 +13,25 @@
     }
 }
 
+/*header icon positions*/
 .options-wrap {
-   float: right;
-   margin-top: -1.75rem; 
+   margin-top: -.25rem;
+   margin-bottom: .5rem;
 
    @media #{$medium-up} {
        font-size: 14px;
-       //margin-left: 14rem;
-       margin-top: -2.1rem;
    }
 
+   a { 
+       padding-right: 2rem;
+       @media #{$medium-up} {
+	   padding-right: 4rem;
+       }
+   }
 }
 
+/*header icons (add/edit/delete playlist)*/
 i.add-playlist, i.edit-playlist, i.delete-playlist {
- 
-//    float:left;
-//    margin-left: 10rem;
 
     font-size: 12px;
     font-style: normal;
@@ -37,7 +47,7 @@ i.add-playlist, i.edit-playlist, i.delete-playlist {
 }
 
 
-
+/*playlist index show*/
 .playlist {
     margin-bottom: 1.5rem;
 }
@@ -52,6 +62,7 @@ i.add-playlist, i.edit-playlist, i.delete-playlist {
     }
 }
 
+/*playist index show icons*/
 .playlist-controls {
     margin-top:.5rem;
     padding-right: 1rem;
@@ -59,12 +70,12 @@ i.add-playlist, i.edit-playlist, i.delete-playlist {
     i {
 	font-size: 14px;
 	font-style: normal;
-	cursor:pointer;
+	//cursor:pointer;
 	padding-right: 1.5rem;
 	color: #a2a2a2;
 	
 	&:hover {
-	    color: #3498db;
+	    //color: #3498db;
 	}
 
     }

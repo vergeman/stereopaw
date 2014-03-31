@@ -1,0 +1,61 @@
+/*
+ *playlist - individual track show (table)
+ */
+
+.playlist-tracks-wrap {
+    
+    .comment, .service, .genres, .duration-format, .remove {
+	display:none;
+    }
+
+    @media #{$medium-up} {
+	margin-left: 1.5rem;
+    }
+
+    /*prioritize visible columns given view size
+     *ordered by "importance" - show as we increase size
+     */
+    @media #{$screen} and (min-width: 350px) {
+	.remove { display:table-cell;} 
+    }
+
+    @media #{$screen} and (min-width: 500px) {
+	.duration-format {
+	    display:table-cell;
+	}
+    }
+
+    @media #{$large-up} {
+	.comment, .service, .genres {
+	    display:table-cell;
+	}
+    }
+
+    table {
+	margin-top:1rem;
+	border:none;
+	font-family: 'lato', 'helvetica neue', 'open-sans';
+	width: 100%;
+	@media #{$medium-up} {
+	    padding-right:1.5rem;
+	}
+
+	td.play {
+	    font-size:1.5rem;
+	    cursor:pointer;
+	    &:hover {
+		color: #3498db;
+	    }
+	}
+	td.remove {
+	    font-size: .8rem;
+	    cursor:pointer;
+	    text-align:center;
+	    &:hover {
+		color: red;
+	    }
+
+	}
+    }
+
+}

@@ -11,7 +11,7 @@
 %td.genres
   #{@track.genres}
 
-%td.duration_format
+%td.duration-format
   #{@track.duration_format}
 
 %td.comment

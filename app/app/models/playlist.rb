@@ -19,8 +19,8 @@ class Playlist < ActiveRecord::Base
   validates :name, :user_id, presence: true
   validates :name, length: { maximum: 100 }
   validates :description, length: { maximum: 1000 }
-  validate :track_ids, :validate_track_ids
-  validate :track_ids, :validate_tracks_exist
+  validate  :validate_track_ids
+  validate  :validate_tracks_exist
 
   validates_uniqueness_of :name, scope: :user_id, message: "already exists"
 
@@ -30,16 +30,18 @@ class Playlist < ActiveRecord::Base
 
   #track_id validation: array type + track_id values are integers
   def validate_track_ids
-    if track_ids.is_a?(Array)
-      if track_ids.detect { |t|  t.to_s !~ /\A\d+\Z/ }
+    if self.track_ids.is_a?(Array)
+      if self.track_ids.detect { |t|  t.to_s !~ /\A\d+\Z/ }
         errors.add(:track_ids, "invalid track data")
       end
     end
   end
-
+  
   def validate_tracks_exist
     begin
-      @tracks = Track.find(track_ids)
+      track_ids.each do |t|
+        Track.find(t)
+      end
     rescue ActiveRecord::RecordNotFound
       errors.add(:track_ids, "track not found")
     end
