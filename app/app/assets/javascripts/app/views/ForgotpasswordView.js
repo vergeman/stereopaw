@@ -95,6 +95,9 @@ app.ForgotpasswordView = Backbone.View.extend({
 
 			     if ('errors' in data) {
 				 app.vent.trigger("ForgotpasswordView:signup:error", data.errors)
+				 $.growl.error({ title: "Error", 
+						 message: "Could not process your request"})
+
 			     }
 
 			     console.log(data)

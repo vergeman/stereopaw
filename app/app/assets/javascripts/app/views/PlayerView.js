@@ -71,6 +71,9 @@ app.PlayerView = Backbone.View.extend({
 	}
 
 	this.toggle_play_controls()
+
+	$.growl.notice({ title: "Now Playing", message: this.current_track.get("title") + " by " + this.current_track.get("artist")  });
+
     },
 
     pause: function() {

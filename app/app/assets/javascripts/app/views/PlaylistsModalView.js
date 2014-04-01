@@ -140,6 +140,7 @@ app.PlaylistsModalView = Backbone.View.extend({
 		console.log("[PlaylistsModalView] playlist_submit:success")
 		if ('errors' in data) {		      
 		    app.vent.trigger("PlaylistsModalView:submit:error", data.errors)
+
 		}
 		else {
 		    /* 

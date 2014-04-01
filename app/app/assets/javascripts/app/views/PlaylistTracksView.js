@@ -67,6 +67,9 @@ app.PlaylistTracksView = Backbone.View.extend({
 
 	var success = function() {
 	    Backbone.history.navigate("/playlists", {trigger:true})
+
+	    $.growl.notice({ title: "Deleted", message: "Playlist successfully deleted" });
+
 	}
 
 	this.playlist.destroy(
@@ -103,16 +106,20 @@ app.PlaylistTracksView = Backbone.View.extend({
 	console.log("[PlaylistTracksView] remove_track")
 	m =  this.playlistTracks.at(index)
 
+	/*remove offending track from track_ids*/
 	var track_ids = this.playlist.get("track_ids")
 	track_ids.splice(index,1)
 	this.playlist.set("track_ids", track_ids)
 
-	console.log(this.playlist)
-
+	/*rerender*/
 	this.refresh()
 
-	this.playlist.save()
+	var success_cb = function() {
+	    console.log("CallBACK:")
+	    $.growl.notice({ title: "Deleted", message: "Track successfully deleted" });
+	}
 
+	this.playlist.save({}, {success: success_cb} )
     },
 
     /*
@@ -148,7 +155,6 @@ app.PlaylistTracksView = Backbone.View.extend({
     remove_collection: function(model) {
 	console.log("[PlaylistTracksView] remove_collection")
 	var pltv_remove = _(this._pltv).select(function(pltv) { return pltv.model === model; })[0];
-	console.log("HERE")
 	console.log(pltv_remove)
 	this._pltv = _(this._pltv).without(pltv_remove);
 	pltv_remove.close()

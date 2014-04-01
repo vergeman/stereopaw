@@ -129,15 +129,18 @@ app.EditTrackView = Backbone.View.extend({
 		if (jqXHR.getResponseHeader('AJAX-STATUS') == 302) {
 		    window.location.replace(data.location)
 		}
-		console.log(data)
 
 		//render errors
 		if ('errors' in data) {
 		    app.vent.trigger("EditTrackView:error",
 				     data.errors)
+
+		    $.growl.error({ title: "Error", 
+				    message: "Could not process your request"})
 		}
 		else {
 		    Backbone.history.navigate('/tracks', {trigger:true})
+		    $.growl.notice({ title: "Deleted", message: "Track successfully deleted" });
 		}
 
 	    },
@@ -186,9 +189,14 @@ app.EditTrackView = Backbone.View.extend({
 		if ('errors' in data) {
 		    app.vent.trigger("EditTrackView:error",
 				     data.errors)
+
+		    $.growl.error({ title: "Error", 
+				      message: "Could not process your request"})
+
 		}
 		else {
 		    Backbone.history.navigate('/tracks', {trigger:true})
+		    $.growl.notice({ title: "Updated", message: "Track successfully updated" });
 		}
 
 	    },

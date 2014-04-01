@@ -76,7 +76,6 @@ app.EdituserView = Backbone.View.extend({
 	    },
 	};
 
-
 	app.vent.trigger("Request",
 			 "PUT",
 			 "/users",
@@ -93,11 +92,17 @@ app.EdituserView = Backbone.View.extend({
 
 			     if ('errors' in data) {
 				 app.vent.trigger("EdituserView:signup:error", data.errors)
+				 $.growl.error({ title: "Error", 
+						 message: "Could not process your request"})
+
 			     }
+			     //a successful update redirects
 
 			     //by default we are logged in
 			     self.session.set("state", 
 					      app.Session.SessionState.LOGGEDIN);
+			     
+
 			 },
 			 function(jqXHR, textStatus, errorThrown) {}
 			)

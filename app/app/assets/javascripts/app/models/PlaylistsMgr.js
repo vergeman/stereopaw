@@ -59,6 +59,9 @@ app.PlaylistsMgr = Backbone.Model.extend({
     SetPlaylist : function(playlist) {
 	console.log("[PlaylistsMgr] SetPlaylist")
 	this.playlists.add(playlist,{ merge: true})
+	$.growl.notice({ title: "Playlist Updated",
+			message: "Your track was successfully added" });
+
     },
 
     GetPlaylist : function(sendTo) {
@@ -69,6 +72,9 @@ app.PlaylistsMgr = Backbone.Model.extend({
     AddtoPlaylist : function(playlist) {
 	console.log("[PlaylistsMgr] AddtoPlaylist")
 	this.playlists.add(playlist)
+	$.growl.notice({ title: "Playlist Created",
+			message: playlist.name + " is available" });
+
 	app.vent.trigger("PlaylistsMgr:playlist_updated")
     }
 });

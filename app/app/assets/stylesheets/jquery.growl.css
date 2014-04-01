@@ -4,7 +4,11 @@
  */
 #growls {
   z-index: 50000;
-  position: fixed; }
+  position: fixed; 
+  font-family: 'lato', 'open sans';
+  font-weight: bold;
+}
+
   #growls.default {
       top: 40px;
       right: 0px;
@@ -69,7 +73,7 @@
     font-size: 14px;
     line-height: 18px;
     font-weight: normal;
-    font-family: helvetica, verdana, sans-serif; }
+    font-family: 'lato', helvetica, verdana, sans-serif; }
   .growl .growl-title {
     font-size: 18px;
     line-height: 24px; }
