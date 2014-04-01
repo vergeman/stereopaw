@@ -58,7 +58,7 @@
           %i.fi-plus
           %span
             Add
-        .playlists-dropdown
+
       -#
         %li.share
           %i.fi-share

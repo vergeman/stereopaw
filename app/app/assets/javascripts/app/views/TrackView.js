@@ -15,6 +15,7 @@ app.TrackView = Backbone.View.extend({
 	this.listenTo(this.model, "change", this.render)
 	this.editable = opts.editable
 	this.playlistable = opts.playlistable
+	this.playlistdropdown= null
     },
 
     events : 
@@ -61,14 +62,16 @@ app.TrackView = Backbone.View.extend({
 	console.log("[TrackView] playlist")
 	var $track = $(e.currentTarget).closest('.track-meta')
 
-	if (!this.playlistdropdown) {
-	    this.playlistdropdown = new app.PlaylistsDropDownView($track) 
-	    this.$el.find('.playlists-dropdown').replaceWith(this.playlistdropdown.el)
+	/*noticed a race condition w/ YouTube Player 
+	 *that (rarely) messes dropdowns, so we create anew
+	 *everytime, seems to lead to consistent behavior
+	 */
+	if(this.playlistdropdown) {
+	    this.playlistdropdown.close()
 	}
-	else {
-	    app.vent.trigger("PlaylistsMgr:GetPlaylist", 
-			     "PlaylistsDropDownView:SetPlaylist")
-	}
+
+	this.playlistdropdown = new app.PlaylistsDropDownView($track) 
+	this.$el.find('.playlist').append(this.playlistdropdown.$el)
     },
 
     close : function() {

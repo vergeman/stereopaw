@@ -49,8 +49,8 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 				 playlist_id,
 				 this.$track.attr('id'))
 
-	$(document).foundation('dropdown', 'close', 
-			       $('[data-dropdown-content]'));
+	Foundation.libs.dropdown.close($('#drop-' + this.$track.attr('id') ))
+
     },
 
     submit_add_playlist : function(playlists_url, playlist_id, track_id) {
@@ -65,7 +65,7 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 	    },
 	    success: function(data, textStatus, jqXHR) {
 		console.log("[PlaylistDropDownView] playlist_submit:success")
-		//update playlists in centralized PlaylistsMgr
+		/*Playlists are updated in centralized PlaylistsMgr*/
 		if ('errors' in data) {
 		    console.log("[PlaylistDropDownView] errors")
 		    console.log(data)
@@ -86,8 +86,6 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 		console.log("[PlaylistDropDownView] submit:complete")
 	    }
 	})
-
-	//growl
     },
 
     SetPlaylist : function(playlists) {
@@ -97,7 +95,7 @@ app.PlaylistsDropDownView = Backbone.View.extend({
     },
 
     render: function() {
-	console.log("[PlaylistDropDownView] render")
+	console.log("[PlaylistDropDownView] render " + this.$track.attr("id") )
 	this.$el.html( this.template(
 	    {
 		playlists: this.playlists.toJSON(),
