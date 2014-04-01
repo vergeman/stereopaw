@@ -40,7 +40,8 @@ app.PlayerView = Backbone.View.extend({
 	'click #play-pause' : 'pause',
 	'click #play-next' : 'next',
 	'click #play-prev' : 'prev',
-	'click #ytquit' : 'hide_yt'
+	'click #ytquit' : 'minimize_yt',
+	'click #show_yt' : 'show_yt'
     },
 
     render: function() {
@@ -161,14 +162,29 @@ app.PlayerView = Backbone.View.extend({
 	$("#track-time > #duration").html( " / " + track.get("duration_format") )
     },
 
+    /* when minimize toggle on Youtube player is hit, we
+     * append div. Other cases of showing and hiding are triggered
+     * from player so we'll want to remove any show_yt to return
+     * to a clean/default slate
+     */
+       
+    minimize_yt : function() {
+	this.hide_yt()
+	if ( $("#show_yt").length == 0 ) {
+	    $("#player-track-meta").append("<div id='show_yt'>Show YouTube</div>")
+	}
+    },
+
     show_yt : function () {
 	$('#ytquit').css('display', 'block');
 	$('#ytplayer').css('left', 'auto')
+	$("#show_yt").remove()
     },
 
     hide_yt : function() {
 	$('#ytquit').css('display', 'none');
 	$('#ytplayer').css('left', '-999rem')
+	$("#show_yt").remove()
     }
 
 });

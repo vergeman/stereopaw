@@ -152,6 +152,8 @@ $ytplayer-height: 200px;
 	    padding-left:0;
 	}
     }
+    /*hiding for now until functionality implemented*/
+    #track-share { display:none;}
 }
 
 
@@ -174,6 +176,19 @@ $ytplayer-height: 200px;
 
     i {
 	cursor:pointer;
+    }
+}
+
+#show_yt {
+    float: right;
+    font-family: 'lato';
+    font-size: 12px;
+    margin-right: 1rem;
+    margin-top: .35rem;
+    font-weight: bold;
+    cursor: pointer;
+    &:hover {
+	color: #0078a0;
     }
 }
 
