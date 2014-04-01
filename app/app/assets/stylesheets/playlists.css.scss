@@ -1,5 +1,6 @@
 @import "playlists/modal";
 @import "playlists/show";
+@import "playlists/dropdown";
 
 /*
  *playlist#index: wrappers and positioning
@@ -54,6 +55,7 @@ i.add-playlist, i.edit-playlist, i.delete-playlist {
 
 .playlist-name {
     font-size: 1.6875rem;
+    margin-bottom:.5rem;
     a { 
 	color: #222222; 
 	&:hover {
@@ -87,11 +89,12 @@ i.add-playlist, i.edit-playlist, i.delete-playlist {
 }
 
 .playlist-genres {
+    clear:both;
     .genre {
-	margin-top: .5rem;
+	margin-top: 0;
     }
 }
 .playlist-description {
     clear:both;
-    margin-top: 2rem;
+    padding-top:.5rem;
 }

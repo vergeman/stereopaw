@@ -79,7 +79,7 @@ app.TracksView = Backbone.View.extend({
 	    }
 	});
     },
-
+    
     /*helper to generate url links for editable tracks*/
     _editable_url : function(model) {
 	if (!this.collection.session.get("current_user") ) {
@@ -95,6 +95,12 @@ app.TracksView = Backbone.View.extend({
 	return "/meow#edit/" + id + "/" + model.get("id")
     },
 
+    is_playlistable : function() {
+	if (!this.collection.session.get("current_user") ) {
+	    return false;
+	}
+	return true
+    },
     /* creates TrackView model and adds 
      * to internal _trackViews collection
      */ 
@@ -104,7 +110,8 @@ app.TracksView = Backbone.View.extend({
 	var tv = new app.TrackView(
 	    { 
 		model : model ,
-		editable : _editable
+		editable : _editable,
+		playlistable: this.is_playlistable()
 	    } 
 	) 
 	this._trackViews.push(tv)

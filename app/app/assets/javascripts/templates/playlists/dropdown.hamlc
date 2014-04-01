@@ -3,6 +3,7 @@
   %li
     %a.create{:href => '#', :track_id => "#{@track_id}"} Create Playlist
   - if @playlists
+    %hr
     - for p in @playlists
       %li
         %a{:href => '#', :playlist_id => p.id}

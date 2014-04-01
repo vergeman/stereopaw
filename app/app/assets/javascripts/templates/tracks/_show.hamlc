@@ -53,11 +53,12 @@
         %span
           Full
 
-      %li.playlist{:'data-dropdown' => "drop-#{@track.id}"}
-        %i.fi-plus
-        %span
-          Add
-      .playlists-dropdown
+      - if @playlistable
+        %li.playlist{:'data-dropdown' => "drop-#{@track.id}"}
+          %i.fi-plus
+          %span
+            Add
+        .playlists-dropdown
               
       %li.share
         %i.fi-share

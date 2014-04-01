@@ -1,0 +1,31 @@
+$link-color: darken(#a2a2a2, 30%);
+/*overrides*/
+@media #{$small-only} {
+    .f-dropdown:before {
+	left: 190px;
+    }
+    .f-dropdown:after {
+	left: 189px;
+    }
+}
+
+.playlists-dropdown {
+    font-family: 'lato', 'helvetica neue', 'georgia', 'open-sans';
+
+    li {
+	width: 100%;
+    }
+
+    li a {
+	width: 100%;
+	color: #000;
+	&:hover {
+	    color: #000;
+	}
+    }
+
+    li:first-child a {
+	color: $link-color;
+    }
+
+}
