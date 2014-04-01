@@ -1,0 +1,15 @@
+.submit-wrap {
+    margin-top: 2rem;
+
+    @media #{$medium-up} {
+	margin-left: 1.5rem;
+    }
+    
+    .addfooter {
+	margin-top: 2rem;
+    }
+
+    #how-to {
+	margin-top: 1rem;
+    }
+}

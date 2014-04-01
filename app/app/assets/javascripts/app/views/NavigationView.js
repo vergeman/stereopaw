@@ -14,6 +14,7 @@ app.NavigationView = Backbone.View.extend({
 	'click ul.navigation #popular' : 'popular',
 	'click ul.navigation #mytracks' : 'mytracks',
 	'click ul.navigation #playlist' : 'playlist',
+	'click ul.navigation #submit' : 'submithow',
 	'click #settings' : 'settings',
     },
 
@@ -100,6 +101,12 @@ app.NavigationView = Backbone.View.extend({
 	console.log("[NavigationView] new_tracks")
 	e.preventDefault();
 	Backbone.history.navigate("/new", {trigger:true})	
+    },
+
+    submithow : function(e) {
+	console.log("[NavigationView] submithow")
+	e.preventDefault();
+	Backbone.history.navigate("submithow", {trigger:true})
     },
 
     sign_out: function() {

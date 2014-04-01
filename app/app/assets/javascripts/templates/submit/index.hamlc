@@ -1,0 +1,16 @@
+%header
+  %h1 Submit
+%hr  
+
+.submit-wrap  
+  %h4
+    %img{class: 'paw',
+         src: "/assets/paw28.png"}
+    Get your paws on the browser extension or bookmarklet.
+
+  != JST['tracks/footer']()
+  #how-to
+    %h4
+      %img{class: 'paw',
+           src: "/assets/paw28.png"}
+      When you hear a track you'd like to add to your collection , click the bookmarklet / extension on your streaming music page.

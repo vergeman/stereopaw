@@ -13,6 +13,9 @@ app.AppRouter = Backbone.Router.extend({
 	'popular' : 'popular_tracks',
 	'new' : 'new_tracks',
 
+	/*submit*/
+	'submithow' : 'submithow',
+
 	/*playlists*/
 	'playlists' : 'playlists',
 	'playlists/:playlist_id' : 'playlist',
@@ -217,6 +220,12 @@ app.AppRouter = Backbone.Router.extend({
 	this.generate_trackview("/popular", "popular")
     },
     
+    submithow : function() {
+	console.log("[AppRouter] submit")
+	this.view(new app.SubmitView(), "/submithow")
+	$(document).foundation()
+    },
+
     root : function() {
 	console.log("[AppRouter] root")
 
