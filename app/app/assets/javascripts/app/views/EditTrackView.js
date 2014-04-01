@@ -26,9 +26,6 @@ app.EditTrackView = Backbone.View.extend({
 	this.model.fetch()
 
 	_(this).bindAll('close')
-
-	//if invalid track/error, we redriect back
-	//or we just don't allow post
     },
 
     _gen_url : function(user_id) {
@@ -40,37 +37,37 @@ app.EditTrackView = Backbone.View.extend({
 	'click .cancel' : 'delete_track'
     },
 
+    /* makes sure we receive a valid model 
+     * before we actually render */
     validmodelcheck : function() {
+	console.log("[EditTrackView] validmodelcheck")
 	if (this.model.get("errors")) {
+	    console.log("[EditTrackView] invalid!")
 	    Backbone.history.navigate("/popular", {trigger:true})
 	}
 	else {
-	    this.render()
+	    this._render()
 	}
     },
 
     render : function() {
 	console.log("[EditTrackView] render")
-	console.log(this.model)
-	console.log(this.session.get("state"))
 
-	if (this.session.get("state") == app.Session.SessionState.LOGGEDIN) {
-	    return this._render()
-	}
 	if (this.session.get("state") == app.Session.SessionState.LOGGEDOUT) {
 	    this.redirect()
-	    return
 	}
 
-	app.vent.once('Session:logged-in', this._render, this)
 	return this;
     },
+
     redirect : function() {
 	Backbone.history.navigate("/login", {trigger:true})
     },
+
     _render: function() {
 	console.log("[EditTrackView] __render")
 	$(window).scrollTop(0);
+
 	this.$el.html(this.template(
 	    {
 		track : this.model.toJSON(),

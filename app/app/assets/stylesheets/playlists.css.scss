@@ -86,6 +86,12 @@ i.add-playlist, i.edit-playlist, i.delete-playlist {
     }
 }
 
+.playlist-genres {
+    .genre {
+	margin-top: .5rem;
+    }
+}
 .playlist-description {
-    margin-top: .5rem;
+    clear:both;
+    margin-top: 2rem;
 }

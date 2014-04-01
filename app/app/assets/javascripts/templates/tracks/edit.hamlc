@@ -50,10 +50,10 @@
 
         %label{for: "track_genres"} Genres
         %input#track_genres{name: "track[genres]",
-                           type: "text",
-                           placeholder: "Rock, Pop, House",
-                           value: "#{@track.genres.join(", ")}"}
-        %small{class: "error_genres"}
+                            type: "text",
+                            placeholder: "Rock, Pop, House",
+                            value: "#{@track.genres.join(', ')}" }
+          %small{class: "error_genres"}
 
         %div#track_comment_wrap
           %label{for: "track_comment"} Comment

@@ -1,6 +1,12 @@
 .playlist-name
   %a{:href => "/meow#playlists/#{@playlist.id}"}
     = @playlist.name
+
+.playlist-genres
+  - if @playlist.top_genres
+    - for g in @playlist.top_genres
+      .genre
+        = g
         
 .playlist-description
   = @playlist.description

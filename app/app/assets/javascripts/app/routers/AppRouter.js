@@ -193,8 +193,8 @@ app.AppRouter = Backbone.Router.extend({
 	    Backbone.history.navigate("/login", {trigger:true})
 	}
 
-//	if (this.checkauth(app.Session.SessionState.LOGGEDIN,
-//			   redirect))
+	if (this.checkauth(app.Session.SessionState.LOGGEDIN,
+			   redirect))
 	{
 	    
 	    this.view(new app.EditTrackView({track_id : track_id,

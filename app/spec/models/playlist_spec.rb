@@ -9,6 +9,7 @@
 #  user_id     :integer
 #  created_at  :datetime
 #  updated_at  :datetime
+#  top_genres  :string(255)      default([])
 #
 
 require 'spec_helper'
@@ -39,6 +40,10 @@ describe Playlist do
 
     it "track_ids as an array" do
       @playlist.track_ids.is_a?(Array).should eq true
+    end
+
+    it "has attribute top_genres" do
+      @playlist.top_genres.is_a?(Array).should eq true
     end
 
   end

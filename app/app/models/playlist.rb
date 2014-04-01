@@ -9,10 +9,11 @@
 #  user_id     :integer
 #  created_at  :datetime
 #  updated_at  :datetime
+#  top_genres  :string(255)      default([])
 #
 
 class Playlist < ActiveRecord::Base
-  before_save :integerize_track_ids
+  before_save :integerize_track_ids, :calc_top_genres
 
   belongs_to :user
 
@@ -23,6 +24,17 @@ class Playlist < ActiveRecord::Base
   validate  :validate_tracks_exist
 
   validates_uniqueness_of :name, scope: :user_id, message: "already exists"
+
+  def calc_top_genres
+    top_genres = {}
+    genres = Track.where(id: self.track_ids).map(&:genres)
+    genres.each do |g|
+      g.each do |_g|
+        top_genres.has_key?(_g) ? top_genres[_g]+=1 : top_genres[_g] = 1 
+      end
+    end
+    self.top_genres = top_genres.sort_by{|k,v| v}.reverse.map{|g| g[0]}[0..2]
+  end
 
   def integerize_track_ids
     self.track_ids = self.track_ids.map(&:to_i)
