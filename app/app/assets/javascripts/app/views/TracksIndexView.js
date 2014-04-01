@@ -41,9 +41,9 @@ app.TracksIndexView = Backbone.View.extend({
 
     render: function() {
 	console.log("[TracksIndexView] render")
+
 	//header
 	this.$el.append(this.template({header: this.displayroute}) );
-
 	//tracksView
 	this.$el.append(this.tracksView.el)
 
@@ -52,9 +52,14 @@ app.TracksIndexView = Backbone.View.extend({
 
     renderfooter: function() {
 	console.log("[TracksIndexView] renderfooter")
-	//footer add tracks
+
+	/*footer add tracks
+	 *triggered from TracksView collection render
+	 */
+
 	this.$el.append(this.templatefooter() );
 	$(document).foundation()
+
 	return this;
     }
 

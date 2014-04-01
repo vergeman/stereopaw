@@ -18,6 +18,7 @@ app.TracksView = Backbone.View.extend({
 
 	this.listenTo(this.collection, 'add', this.add_collection)
 	this.listenTo(this.collection, 'remove', this.remove_collection)	
+	/* render triggered after each fetch*/
 	this.listenTo(this.collection, 'render', this.render)
 	this.listenTo(this.collection, 'render', this.lastTrackPageHandler)
 
@@ -36,11 +37,16 @@ app.TracksView = Backbone.View.extend({
 	var self = this;
 
 	var success =  function(collection, response, options) {
+
+	    /*initial render as we need to trigger
+	     * footer render
+	     */
+	    collection.trigger("render")
+
 	    /*we want to stop rendering on empty's, messes up
 	     *some bound events i.e. PlaylistDropDownView
 	     */
 	    if (response.length != 0) {
-		collection.trigger("render")
 		self.page += 1
 	    }
 	}
