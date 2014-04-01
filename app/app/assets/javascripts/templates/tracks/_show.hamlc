@@ -59,11 +59,11 @@
           %span
             Add
         .playlists-dropdown
-              
-      %li.share
-        %i.fi-share
-        %span
-          Share
+      -#
+        %li.share
+          %i.fi-share
+          %span
+            Share
 
       - if @editable
         %li.edit
