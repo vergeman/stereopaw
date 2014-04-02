@@ -161,6 +161,10 @@ var SB = (function () {
 
 //	    document.getElementById('sb-track-service').innerHTML = self.service
 
+	    if (!self.Track.getTimeFormat() ) {
+		document.getElementById('sb-track-time-label').style.display='none';
+	    }
+
 	    document.getElementById('sb-time').innerHTML = self.Track.getTimeFormat()
 
 	    /*render elapsed time bar*/

@@ -9,8 +9,9 @@ SB.Page = (function() {
 	'<img src= "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/icon-close.png" width="12px"/>' +
 	'</div>' +
 
-	'<img id="sb-logo" src= "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/assets/stereopaw-logo-main.png"/>' +
-
+    '<div id="sb-logo""> ' +
+	'<img height="36" src= "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/assets/stereopaw-logo-main.png"/>' +
+'</div>' + 
 	    '<div id = "sb-title">' +
 
 	'<img src= "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/stereopaw-marklet-title.png"/>' +
@@ -67,13 +68,10 @@ SB.Page = (function() {
 	
 
 	'#sb-close { ' +
-	    'float:right;' + 
-	
-	'width: 12px; padding: 8px; padding-right: 6px; cursor: pointer;' +
-
+	    'float:right;padding: 8px; padding-right: 6px; cursor: pointer;' +
 	    '}' +
 
-'#sb-logo { float:left; height: 36px; padding: 8px; padding-left: 10px; margin-right: 4px;} ' +
+'#sb-logo { float:left; padding: 8px; padding-left: 10px; margin-right: 4px;} ' +
 
 '#sb-time { font-size: 14px; }'+
 
