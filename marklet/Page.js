@@ -6,7 +6,7 @@ SB.Page = (function() {
 
 	var _content =
 	    '<div id = "sb-close">x</div>' +
-	    '<h1 id = "sb-title">SoundByte</h1>' + 
+	    '<h1 id = "sb-title">stereo paw</h1>' + 
 	    '<div id = "sb-track">' +        //info
 	    '<div id = "sb-track-title"></div>' +
 	    '<div id = "sb-track-artist"></div>' +

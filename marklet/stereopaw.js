@@ -1,4 +1,4 @@
-console.log("[SoundByte 2.0]");
+console.log("[stereopaw 2.0]");
 
 /*
  * SB: 'main' driver
@@ -39,7 +39,7 @@ var SB = (function () {
 
 	start: function () {
 
-	    console.log("[SoundByte 2.0] start()");
+	    console.log("[stereopaw 2.0] start()");
 
 	    /*determine service*/
 	    self.service = self.Service.getService();
@@ -62,11 +62,11 @@ var SB = (function () {
 	     * attach event handlers
 	     */
 
-	    console.log("[SoundByte 2.0] events()");
+	    console.log("[stereopaw 2.0] events()");
 
 	    /*Exit 'X' click*/
 	    $('#sb-close').bind("click", function() {
-		console.log("[SoundByte 2.0] Exiting");
+		console.log("[stereopaw 2.0] Exiting");
 
 		clearInterval(self._interval)
 
@@ -83,7 +83,7 @@ var SB = (function () {
 	     */
 	     $('#sb-submit-button').bind("click", function(e) {
 		 e.preventDefault();
-		 window.open(self.Track.getURL(), 'SoundByte', 'top=0,left=0,width=600, height=500');
+		 window.open(self.Track.getURL(), 'stereopaw', 'top=0,left=0,width=600, height=500');
 		 console.log("clicked")
 		 $('#sb-close').click();
 		 console.log("closing")
@@ -124,7 +124,7 @@ var SB = (function () {
 
 	update: function() 
 	{
-	    console.log("[SoundByte 2.0] update()");
+	    console.log("[stereopaw 2.0] update()");
 
 	    self._interval = setInterval(function() {
 
@@ -141,7 +141,7 @@ var SB = (function () {
 
 	render: function() 
 	{
-	    console.log("[SoundByte 2.0] render()");
+	    console.log("[stereopaw 2.0] render()");
 	    if ( $('#sb-app').is(":hidden") ) {
 		$('#sb-app').fadeIn();
 	    }

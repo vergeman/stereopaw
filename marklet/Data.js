@@ -247,7 +247,7 @@ SB.Data = (function() {
     
     var data = {};
 
-    //called in SoundByte.js
+    //called in stereopaw.js
     data.setTrack = function(service, track) {
 	_service = service;
 	_track = track;
