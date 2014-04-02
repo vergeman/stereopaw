@@ -59,6 +59,7 @@ SB.Page = (function() {
 	    'background-color: #fff;' +
 	    'border: 1px solid #aaa;' +
 	    'z-index: 99999999999999999;' +
+	    'text-align:left;' +
 	    'display:none' +
 	    '}' +
 
