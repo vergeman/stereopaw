@@ -16,7 +16,7 @@ var SB = (function () {
 
 	init: function() {
 	    self = this
-	    
+
 	    self.Util.load_jQuery()
 
 	    _interval = setInterval(function() {
@@ -147,9 +147,20 @@ var SB = (function () {
 	    }
 
 	    /*track data & time*/
+	    if (!self.Track.getTitle() ) {
+		document.getElementById('sb-track-title-label').style.display = "none";
+	    }
+
 	    document.getElementById('sb-track-title').innerHTML = self.Track.getTitle()
+
+	    if (!self.Track.getArtist() ) {
+		document.getElementById('sb-track-artist-label').style.display='none';
+	    }
+
 	    document.getElementById('sb-track-artist').innerHTML = self.Track.getArtist()
-	    document.getElementById('sb-track-service').innerHTML = self.service
+
+//	    document.getElementById('sb-track-service').innerHTML = self.service
+
 	    document.getElementById('sb-time').innerHTML = self.Track.getTimeFormat()
 
 	    /*render elapsed time bar*/
