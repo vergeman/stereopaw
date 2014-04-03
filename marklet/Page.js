@@ -4,51 +4,61 @@
 
 SB.Page = (function() {
 
-	var _content =
-	    '<div id = "sb-close">' +
-	'<img src= "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/icon-close.png" width="12px"/>' +
-	'</div>' +
+    
+    var HOME = "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151";
 
-    '<div id="sb-logo""> ' +
-	'<img height="36" src= "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/assets/stereopaw-logo-main.png"/>' +
-'</div>' + 
-	    '<div id = "sb-title">' +
+    var _content = [
+	'<div id = "sb-close">',
+	[
+	    '<img src= ' + HOME + "/icon-close.png" + ' width="12px"/>',
+	].join('\n'),
+	'</div>',
 
-	'<img src= "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/stereopaw-marklet-title.png"/>' +
-	'</div>' + 
+	'<div id="sb-logo">',
+	[
+	    '<img width="26" src= ' + HOME + "/assets/stereopaw-logo-main.png" + '/>',
+	].join('\n'),
+	'</div>',
 
-	    '<div id = "sb-track">' +        //info
+	'<div id = "sb-title">',
+	[
+	    '<img src= ' + HOME + "/stereopaw-marklet-title.png" + '/>'
+	].join('\n'),
+	'</div>',
 
-	    '<div id = "sb-track-title-label" class = "sb-label">Title</div>' +
-	    '<div id = "sb-track-title"></div>' +
+	'<div id = "sb-track">',
+	[
+	    '<div id = "sb-track-title-label" class = "sb-label">Title</div>',
+	    '<div id = "sb-track-title"></div>',
+	    '<div id = "sb-track-artist-label" class = "sb-label">Artist</div>',
+	    '<div id = "sb-track-artist"></div>',
+	    '<div id = "sb-track-time-label" class = "sb-label">Timestamp</div>',
+	    '<div id = "sb-time"></div>',
+	    //'<div id = "sb-track-service"></div>',
+	].join('\n'),
+	'</div>',                   //info
 
-	    '<div id = "sb-track-artist-label" class = "sb-label">Artist</div>' +
-	    '<div id = "sb-track-artist"></div>' +
+	'<div id = "sb-player">',     //player container
+	[
 
-	    '<div id = "sb-track-time-label" class = "sb-label">Timestamp</div>' +
-	    '<div id = "sb-time"></div>' +
+	    '<div id = "sb-display-bar">', //graphic bar, seektime
+	    [
+		'<div id = "sb-display-bar-elapsed"></div>',
+		'<div id = "sb-display-seek"></div>',
+	    ].join('\n'),
+	    '</div>',
 
-//	    '<div id = "sb-track-service"></div>' +
-	    '</div>' +                   //info
+	].join('\n'),
+	'</div>',
 
+	'<div id = "sb-submit">',
+	[
+	    '<div id="sb-submit-button">Submit</div>',
+	].join('\n'),
 
-	    '<div id = "sb-player">' +     //player container
+	'</div>',
 
-
-	    '<div id = "sb-display-bar">' + //graphic bar, seektime
-	    '<div id = "sb-display-bar-elapsed"></div>' +
-	    '<div id = "sb-display-seek"></div>' +
-	    '</div>' + 
-
-
-	    '</div>' + 
-
-
-	    '<div id = "sb-submit">' +
-	'<div id="sb-submit-button">Submit</div>' + 
-	    '</div>' + //soundbyte-submit
-
-	    '</div>'; //player,
+    ].join('\n')
 	    
     var _styles = {
 	'#sb-app' : {
@@ -119,7 +129,7 @@ SB.Page = (function() {
 
 	'#sb-track-title' : { 'font-size' : "18px" },
 	'#sb-track-artist' : { 'font-size' : "14px" },
-	//'#sb-track-service { font-size: 12px; margin-top: 10px;}' +
+	//'#sb-track-service { font-size: 12px; margin-top: 10px;}
 
 	'#sb-display-seek' : {
 	    'position' : "relative",
