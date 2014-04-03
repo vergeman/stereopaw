@@ -5,9 +5,10 @@
 SB.Page = (function() {
 
     
+
     var HOME = "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151";
 
-    var _content = [
+    var _header = [
 	'<div id = "sb-close">',
 	[
 	    '<img src= ' + HOME + "/icon-close.png" + ' width="12px"/>',
@@ -25,6 +26,11 @@ SB.Page = (function() {
 	    '<img src= ' + HOME + "/stereopaw-marklet-title.png" + '/>'
 	].join('\n'),
 	'</div>',
+    ].join('\n');
+
+    var _content = [
+
+	_header,
 
 	'<div id = "sb-track">',
 	[
@@ -59,18 +65,37 @@ SB.Page = (function() {
 	'</div>',
 
     ].join('\n')
+
+    var _error = [
+	_header, 
+
+	'<div id = "sb-error">',
+	[
+	    '<div class="sb-service"> This website is not yet supported </div>',
+	    '<div class="sb-service"> Sorry! </div>'
+	].join('\n'),
+	'</div>'
+
+    ].join('\n')
 	    
     var _styles = {
 	'#sb-app' : {
-	    'position' : "fixed",
-	    'top' : "50px",
-	    'right' : "0",
+	    'position' : "fixed !important",
+	    'top' : "50px !important",
+	    'right' : "0 !important",
 	    'width' : "300px",
 	    'background-color' : "#fff",
 	    'border' : "1px solid #aaa",
 	    'z-index': "99999999999999999",
 	    'text-align' : "left",
 	    'display' : "none"
+	},
+
+	'#sb-error' : {
+	    'margin' : '10px 0px'
+	},
+	'.sb-service' : {
+	    'padding': '10px'
 	},
 
 	'#sb-title' : { 
@@ -157,6 +182,7 @@ SB.Page = (function() {
 
     };
 
+
     function parseCSSObj(obj) {
 	css = ""
 	for (key in obj) {
@@ -189,7 +215,27 @@ SB.Page = (function() {
 		},
 		_content
 	    )
-			   
+	    build_element(
+		{ 
+		    type : "style",
+		    attr : "id",
+		    value : "sb-style"
+		},
+		parseCSSObj(_styles)
+	    )
+
+	},
+
+	insert_error_page : function() {
+
+	    build_element(
+		{ 
+		    type : "div",
+		    attr : "id",
+		    value : "sb-app"
+		},
+		_error
+	    )
 	    build_element(
 		{ 
 		    type : "style",
@@ -200,7 +246,6 @@ SB.Page = (function() {
 	    )
 
 	}
-
     }
 
     return page;

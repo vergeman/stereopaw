@@ -45,11 +45,14 @@ var SB = (function () {
 	    self.service = self.Service.getService();
 	    console.log( "Service: " + self.service )
 
-	    /*build page shell*/
 	    if ( !document.getElementById('sb-app') )
 	    {
-		self.Page.insert_page()
-		self.events()	
+		self.service == "NA" ? 
+		    self.Page.insert_error_page() :
+		    self.Page.insert_page()
+
+		/*bind events*/
+		self.events()
 	    }
 
 	    /* enter update loop*/
@@ -100,7 +103,6 @@ var SB = (function () {
 		$('#sb-display-seek').hide();
 	    });
 
-
 	    $('#sb-display-bar').mousemove(function(e) {
 
 		var offset = $(this).parent().offset();
@@ -146,31 +148,30 @@ var SB = (function () {
 		$('#sb-app').fadeIn();
 	    }
 
-	    /*track data & time*/
-	    if (!self.Track.getTitle() ) {
-		document.getElementById('sb-track-title-label').style.display = "none";
+	    /* error */
+	    if (self.service != "NA") {
+
+
+		/*track data & time*/
+		!self.Track.getTitle() ? 
+		    document.getElementById('sb-track-title-label').style.display = 'none' : 
+		    document.getElementById('sb-track-title').innerHTML = self.Track.getTitle()
+
+		!self.Track.getArtist() ?
+		    document.getElementById('sb-track-artist-label').style.display='none' :
+		    document.getElementById('sb-track-artist').innerHTML = self.Track.getArtist()
+
+		//document.getElementById('sb-track-service').innerHTML = self.service
+
+		!self.Track.getTimeFormat() ?
+		    document.getElementById('sb-track-time-label').style.display='none' :
+		    document.getElementById('sb-time').innerHTML = self.Track.getTimeFormat()
+
+		/*render elapsed time bar*/
+		//document.getElementById('sb-display-bar-elapsed').setAttribute('style', 'width: ' + self.Track.getElapsed() * 100 + '%;');
+
+
 	    }
-
-	    document.getElementById('sb-track-title').innerHTML = self.Track.getTitle()
-
-	    if (!self.Track.getArtist() ) {
-		document.getElementById('sb-track-artist-label').style.display='none';
-	    }
-
-	    document.getElementById('sb-track-artist').innerHTML = self.Track.getArtist()
-
-//	    document.getElementById('sb-track-service').innerHTML = self.service
-
-	    if (!self.Track.getTimeFormat() ) {
-		document.getElementById('sb-track-time-label').style.display='none';
-	    }
-
-	    document.getElementById('sb-time').innerHTML = self.Track.getTimeFormat()
-
-	    /*render elapsed time bar*/
-	    document.getElementById('sb-display-bar-elapsed').setAttribute('style', 'width: ' + self.Track.getElapsed() * 100 + '%;');
-
-
 	}
 
     };
