@@ -86,10 +86,14 @@ app.PlaylistsModalView = Backbone.View.extend({
 
 	$(document).foundation()
 
-	/*weird foundation bug*/
+	//weird foundation bug
 	$('.close-reveal-modal').one('click', function(e) {
 	    $('#PlaylistModal').foundation('reveal', 'close')
 	    $('.reveal-modal-bg').remove()
+	})
+
+	$('nav').one('click', function(e) {
+	    $('.close-reveal-modal').click()
 	})
 
 	/*open modal*/
@@ -154,6 +158,7 @@ app.PlaylistsModalView = Backbone.View.extend({
 		     *close modal and update playlist mgr w/ 
 		     *new data
 		     */
+
 		    $('#playlist_submit').unbind('click')
 
 		    $(document).foundation()

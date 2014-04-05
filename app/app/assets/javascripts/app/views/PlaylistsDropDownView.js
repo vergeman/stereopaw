@@ -52,8 +52,7 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 				 playlist_id,
 				 this.$track.attr('id'))
 
-	Foundation.libs.dropdown.close($('#drop-' + this.$track.attr('id') ))
-
+	$('#drop-' + this.$track.attr('id').foundation('reveal', 'close'));
     },
 
     submit_add_playlist : function(playlists_url, playlist_id, track_id) {
