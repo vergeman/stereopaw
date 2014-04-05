@@ -14,6 +14,7 @@
 //= require ./lib/underscore-min.js
 //= require_tree ./lib
 //= stub ./lib/backbone.debug.js
+//= stub ./lib/soundmanager2-jsmin.js
 
 //= require_tree ../templates
 

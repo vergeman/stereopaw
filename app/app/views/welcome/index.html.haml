@@ -19,12 +19,8 @@
     %a{name: "welcome",
        :'data-magellan-destination' => "welcome"}
 
-
     #logo
-      %img{:src => '/assets/stereopaw-logo-main.png',
-           width: "76px",
-           height: "125px",
-           alt: "stereo paw"}
+      = image_tag("stereopaw-logo-main.png", width: "76px", height: "125px", alt: "stereo paw")
         
     %h2#title stereo paw
 
@@ -53,14 +49,13 @@
   #gettingstarted.page.destination.row
     .small-12.large-12.columns      
       %h2
-        %img.cat{src: "assets/stereopaw-logo-main.png"}
+        = image_tag("stereopaw-logo-main.png", class:"cat")
         Getting Started
       %hr
       #description
         %br
         %h4
-          %img{class: 'paw',
-               src: "/assets/paw28.png"}
+          = image_tag("paw28.png", class: 'paw')
           Stereo paw saves timestamps of your streaming music.
         %br
         %br
@@ -74,8 +69,7 @@
             
 
         %h4
-          %img{class: 'paw',
-               src: "/assets/paw28.png"}
+          = image_tag("paw28.png", class: 'paw')
           Get your paws on the browser extension or bookmarklet.
           
         .installbuttons
@@ -93,8 +87,7 @@
 
         #how-to
           %h4
-            %img{class: 'paw',
-                 src: "/assets/paw28.png"}
+            = image_tag("paw28.png", class: 'paw')
             When you hear a track you'd like to add to your collection , click the bookmarklet / extension on your streaming music page.
           %p
             %h4

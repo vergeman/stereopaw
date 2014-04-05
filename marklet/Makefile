@@ -13,6 +13,7 @@ concatenate:
 build:
 	java -jar ./lib/yuicompressor-2.4.8.jar -o ./bin/stereopaw-min.js ./bin/*.js
 	rm ./bin/stereopaw.js
+	mv ./bin/stereopaw-min.js ../app/public/
 
 clean:
 	rm -f ./bin/*
