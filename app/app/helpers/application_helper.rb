@@ -19,5 +19,4 @@ module ApplicationHelper
     render :json => {'location' => path}.to_json
   end
 
-
 end

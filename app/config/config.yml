@@ -1,0 +1,8 @@
+production:
+      markletURL: "www.stereopaw.com"
+
+development:
+      markletURL: "www.ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151"
+
+test:
+      markletURL: "www.ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151"
