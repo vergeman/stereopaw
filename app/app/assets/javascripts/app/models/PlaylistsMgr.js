@@ -4,7 +4,9 @@ app.PlaylistsMgr = Backbone.Model.extend({
 
 
     initialize: function(session) {
-	console.log("[PlaylistsMgr] initialize")
+	if (DEBUG)
+	    console.log("[PlaylistsMgr] initialize")
+
 	this.playlists = new app.Playlists([], session)
 	this.session = session
 	this.listenTo(app.vent, "Session:logged-in", this.load)
@@ -27,7 +29,9 @@ app.PlaylistsMgr = Backbone.Model.extend({
     },
 
     load : function() {
-	console.log("[PlaylistsMgr] collection:load")
+	if (DEBUG)
+	    console.log("[PlaylistsMgr] collection:load")
+
 	if(this.init) {
 	    return
 	}
@@ -45,7 +49,8 @@ app.PlaylistsMgr = Backbone.Model.extend({
 		add: true,
 		remove: false,
 		success: function(collection, response, options) {
-		    console.log("[PlaylistsMgrView] fetched")
+		    if (DEBUG)
+			console.log("[PlaylistsMgrView] fetched")
 		}
 	    }
 	)
@@ -57,20 +62,26 @@ app.PlaylistsMgr = Backbone.Model.extend({
 
     /*playlists passed by events*/
     SetPlaylist : function(playlist) {
-	console.log("[PlaylistsMgr] SetPlaylist")
+	if (DEBUG)
+	    console.log("[PlaylistsMgr] SetPlaylist")
+
 	this.playlists.add(playlist,{ merge: true})
 	$.growl.notice({ title: "Playlist Updated",
-			message: "Your track was successfully added" });
+			 message: "Your track was successfully added" });
 
     },
 
     GetPlaylist : function(sendTo) {
-	console.log("[PlaylistsMgr] GetPlaylist")
+	if (DEBUG)
+	    console.log("[PlaylistsMgr] GetPlaylist")
+
 	app.vent.trigger(sendTo, this.playlists)
     },
 
     AddtoPlaylist : function(playlist) {
-	console.log("[PlaylistsMgr] AddtoPlaylist")
+	if (DEBUG)
+	    console.log("[PlaylistsMgr] AddtoPlaylist")
+
 	this.playlists.add(playlist)
 	$.growl.notice({ title: "Playlist Created",
 			message: playlist.name + " is available" });

@@ -20,7 +20,9 @@ app.YouTube_Player = Backbone.Model.extend({
 
     _load_player : function() {
 	// load the IFrame Player API code asynchronously.
-	console.log("[YouTube_Player] _load_player");
+	if (DEBUG)
+	    console.log("[YouTube_Player] _load_player");
+
 	var tag = document.createElement('script');
 	tag.src = "http://www.youtube.com/iframe_api";
 	var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -35,16 +37,22 @@ app.YouTube_Player = Backbone.Model.extend({
 
     onPlayerReady : function(event) {
 	//post load - used only for play
-	console.log("[YouTube_Player] onPlayerReady")
+	if (DEBUG)
+	    console.log("[YouTube_Player] onPlayerReady")
+
 	this._play(this._track_id, this._timestamp)
     },
 
     onPlayerStateChange : function(e) {
 	this.state = e.data
-	console.log('[YouTube_Player] onPlayerStateChange')
-	console.log(e)
-	console.log("state: " + this.state)
-	console.log(this)
+	if (DEBUG)
+	    console.log('[YouTube_Player] onPlayerStateChange')
+	if (DEBUG)
+	    console.log(e)
+	if (DEBUG)
+	    console.log("state: " + this.state)
+	if (DEBUG)
+	    console.log(this)
 
 	if ( this.state === YT.PlayerState.ENDED ) {
 	    this.hide()
@@ -55,15 +63,19 @@ app.YouTube_Player = Backbone.Model.extend({
     },
 
     onPlayerError : function(event) {
-	console.log("[YouTube_Player] onPlayerError")
-	console.log(event)
-	console.log(event.data)
+	if (DEBUG)
+	    console.log("[YouTube_Player] onPlayerError")
+	if (DEBUG)
+	    console.log(event)
+	if (DEBUG)
+	    console.log(event.data)
 	app.vent.trigger("Player:next")
     },
     
     /* Create YT.Player */
     set_player : function() {
-	console.log("[YouTube_Player] set_player")
+	if (DEBUG)
+	    console.log("[YouTube_Player] set_player")
 
 	this._player = new YT.Player('ytplayer', {
 	    width: '266.7',
@@ -103,7 +115,8 @@ app.YouTube_Player = Backbone.Model.extend({
 	this._player.playVideo()
     },
     play : function(self, track_id, timestamp) {
-	console.log("[YouTube_Player]")
+	if (DEBUG)
+	    console.log("[YouTube_Player]")
 
 	if (!this._player) 
 	{
@@ -112,12 +125,14 @@ app.YouTube_Player = Backbone.Model.extend({
 	     * called in onPlayerReady, here we just set track
 	     */
 
-	    console.log('[YouTube_player] setting track')
+	    if (DEBUG)
+		console.log('[YouTube_player] setting track')
 	    this._track_id = track_id
 	    this._timestamp = timestamp
 	}
 	else {
-	    console.log('[YouTube_Player] play')
+	    if (DEBUG)
+		console.log('[YouTube_Player] play')
 	    this._track_id = track_id
 	    this._timestamp = timestamp
 	    
@@ -128,9 +143,12 @@ app.YouTube_Player = Backbone.Model.extend({
     },
 
     _play : function(track_id, timestamp) {
-	console.log("[YouTube_Player] _play")
-	console.log(track_id)
-	console.log(timestamp)
+	if (DEBUG)
+	    console.log("[YouTube_Player] _play")
+	if (DEBUG)
+	    console.log(track_id)
+	if (DEBUG)
+	    console.log(timestamp)
 
 	this.show();	
 
@@ -143,14 +161,17 @@ app.YouTube_Player = Backbone.Model.extend({
 	)
 	this._player.playVideo();
 
-	console.log(this._player)
+	if (DEBUG)
+	    console.log(this._player)
 
-	console.log("end youtube _play")
+	if (DEBUG)
+	    console.log("end youtube _play")
     },
 
 
     stop : function() {
-	console.log("[YouTube_Player] stop")
+	if (DEBUG)
+	    console.log("[YouTube_Player] stop")
 
 	this._player.pauseVideo();
 

@@ -8,9 +8,10 @@ app.Session = Backbone.Model.extend({
      * current user, not trigger anything (we'll leave
      * that scoped to respective views
      */
-     
+    
     initialize: function() {
-	console.log("[Sesssion] initialize")
+	if (DEBUG)
+	    console.log("[Sesssion] initialize")
 
 	/*states*/
 	this.set("state", app.Session.SessionState.INIT)
@@ -41,7 +42,8 @@ app.Session = Backbone.Model.extend({
      */
 
     logged_in : function(data) {
-	console.log("[Session] logged_in")
+	if (DEBUG)
+	    console.log("[Session] logged_in")
 
 	this.set("state", app.Session.SessionState.LOGGEDIN)
 
@@ -51,7 +53,8 @@ app.Session = Backbone.Model.extend({
     },
 
     logged_out: function(data) {
-	console.log("[Session] logged_out")
+	if (DEBUG)
+	    console.log("[Session] logged_out")
 
 	this.set("state", app.Session.SessionState.LOGGEDOUT)
 	/*clear User information for session*/
@@ -70,7 +73,9 @@ app.Session = Backbone.Model.extend({
 	var self = this;
 
 	$(window).bind('storage', function (e) {
-	    console.log("[Session] reload heard")
+	    if (DEBUG)
+		console.log("[Session] reload heard")
+
 	    this.notifiable = false
 	    self.auth()
 	});
@@ -111,7 +116,9 @@ app.Session = Backbone.Model.extend({
      */
 
     auth: function() {
-	console.log("[Session] auth")
+	if (DEBUG)
+	    console.log("[Session] auth")
+
 	this.request(
 	    'POST',
 	    '/users/auth.json',
@@ -127,29 +134,35 @@ app.Session = Backbone.Model.extend({
 	)
     },
 
-/*FUCK NOT USED*/
+    /*FUCK NOT USED*/
     check_auth: function(loggedin_handler,
 			 busyinit_handler, 
 			 unauthorized_handler) {
 
 	switch (this.get("state") ) {
 
-	//logged in already
+	    //logged in already
 	case app.Session.SessionState.LOGGEDIN :
-	    console.log("[Session] loggedin_handler")
+	    if (DEBUG)
+		console.log("[Session] loggedin_handler")
+
 	    loggedin_handler()
 	    break;
 	    
-	//mid-auth request (busy) || page was directly loaded (init)
+	    //mid-auth request (busy) || page was directly loaded (init)
 	case app.Session.SessionState.INIT:
 	case app.Session.SessionState.BUSY:
-	    console.log("[Session] busyinit_handler")
+	    if (DEBUG)
+		console.log("[Session] busyinit_handler")
+
 	    busyinit_handler()
 	    break;
 
-	//not authorized/ indeterminate state (finished/ error)
+	    //not authorized/ indeterminate state (finished/ error)
 	default:
-	    console.log("[Session] unauthorized_handler")
+	    if (DEBUG)
+		console.log("[Session] unauthorized_handler")
+
 	    unauthorized_handler()
 	}
 
@@ -173,8 +186,8 @@ app.Session = Backbone.Model.extend({
 	    },
 
 	    success: function(data, textStatus, jqXHR) {
-		console.log("[Request] Success")
-
+		if (DEBUG)
+		    console.log("[Request] Success")
 
 		/*lazy but if instructed to redirect, just do so*/
 		if (jqXHR.getResponseHeader('AJAX-STATUS') == 302) {
@@ -187,14 +200,19 @@ app.Session = Backbone.Model.extend({
 	    },
 
 	    error: function(jqXHR, textStatus, errorThrown) {
-		console.log("[Request] Error")
+		if (DEBUG)
+		    console.log("[Request] Error")
 
 		//TODO: return invalid login message
 		//returns...
-		console.log(jqXHR)
-		console.log(textStatus) //error
-		console.log(errorThrown) //unauthorized
+		if (DEBUG)
+		    console.log(jqXHR)
 
+		if (DEBUG)
+		    console.log(textStatus) //error
+
+		if (DEBUG)
+		    console.log(errorThrown) //unauthorized
 
 
 		/*not a 401 unauthorized error, who knows*/
@@ -203,14 +221,18 @@ app.Session = Backbone.Model.extend({
 		}else {
 		    self.set("state", app.Session.SessionState.LOGGEDOUT)
 		}
-		console.log("state: " + self.get("state"))
+		if (DEBUG)
+		    console.log("state: " + self.get("state"))
+
 		cberror(jqXHR, textStatus, errorThrown)
 	    },
 
 	    complete : function(jqXHR, textStatus) {
 
 		//gets called after success
-		console.log("[Request] Complete")
+		if (DEBUG)
+		    console.log("[Request] Complete")
+
 		document.body.style.cursor='default'
 	    }
 	});

@@ -15,4 +15,11 @@
 //= require foundation
 
 
-$(document).foundation(); 
+/*
+ *cancel console.log in production, we pass DEBUG value
+ *in uglifier
+ */
+if (typeof DEBUG === "undefined")
+    DEBUG = true;
+
+$(document).foundation();

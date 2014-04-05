@@ -11,7 +11,8 @@ app.PlaylistsModalView = Backbone.View.extend({
     template_edit: JST['playlists/playlist_edit_modal'],
 
     initialize: function(session) {
-	console.log("[PlaylistsModalView] initialize")
+	if (DEBUG)
+	    console.log("[PlaylistsModalView] initialize")
 
 	this.session = session
 	this.user_id = null
@@ -32,7 +33,8 @@ app.PlaylistsModalView = Backbone.View.extend({
     },
 
     set_user_id : function() {
-	console.log("[PlaylistsModalView] set_user_id")
+	if (DEBUG)
+	    console.log("[PlaylistsModalView] set_user_id")
 	this.user_id = this.session.get("current_user").get("id")
     },
 
@@ -46,7 +48,8 @@ app.PlaylistsModalView = Backbone.View.extend({
 
     /*renders modal div with appropriate submit url*/
     render: function(type, playlist) {
-	console.log("[PlaylistsModalView] render")
+	if (DEBUG)
+	    console.log("[PlaylistsModalView] render")
 
 	//type is new or edit 
 	this.type = type
@@ -75,8 +78,10 @@ app.PlaylistsModalView = Backbone.View.extend({
      *to create playlist
      */
     playlist_openModal : function(type, playlist) {
-	console.log("[PlaylistsModalView] playlist_openModal")
-	console.log(playlist)
+	if (DEBUG)
+	    console.log("[PlaylistsModalView] playlist_openModal")
+	if (DEBUG)
+	    console.log(playlist)
 	this.render(type, playlist)
 
 	$(document).foundation()
@@ -126,7 +131,8 @@ app.PlaylistsModalView = Backbone.View.extend({
 
     /*submit form handler to create playlist*/
     playlist_submit : function() {
-	console.log("[PlaylistsModalView] playlist_submit")
+	if (DEBUG)
+	    console.log("[PlaylistsModalView] playlist_submit")
 	//send post
 	var self = this;
 	$.ajax({
@@ -137,7 +143,8 @@ app.PlaylistsModalView = Backbone.View.extend({
 		request.setRequestHeader("X-CSRF-Token", $.cookie('csrf_token'));
 	    },
 	    success: function(data, textStatus, jqXHR) {
-		console.log("[PlaylistsModalView] playlist_submit:success")
+		if (DEBUG)
+		    console.log("[PlaylistsModalView] playlist_submit:success")
 		if ('errors' in data) {		      
 		    app.vent.trigger("PlaylistsModalView:submit:error", data.errors)
 
@@ -165,14 +172,19 @@ app.PlaylistsModalView = Backbone.View.extend({
 	    },
 
 	    error: function(jqXHR, textStatus, errorThrown) {
-		console.log("[PlaylistsModalView] submit:error")
-		console.log(textStatus)
-		console.log(errorThrown)
-		console.log(jqXHR)
+		if (DEBUG)
+		    console.log("[PlaylistsModalView] submit:error")
+		if (DEBUG)
+		    console.log(textStatus)
+		if (DEBUG)
+		    console.log(errorThrown)
+		if (DEBUG)
+		    console.log(jqXHR)
 	    },
 
 	    complete : function(jqXHR, textStatus) {
-		console.log("[PlaylistsModalView] submit:complete")
+		if (DEBUG)
+		    console.log("[PlaylistsModalView] submit:complete")
 		app.vent.trigger("PlaylistTracksView:refresh")
 	    }
 	})
@@ -180,7 +192,8 @@ app.PlaylistsModalView = Backbone.View.extend({
 
     /*garbage collect*/
     close : function() {
-	console.log("[PlaylistsModalView] close")
+	if (DEBUG)
+	    console.log("[PlaylistsModalView] close")
 	this.unbind()
 	this.remove()
     },

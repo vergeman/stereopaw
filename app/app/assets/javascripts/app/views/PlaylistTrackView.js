@@ -7,7 +7,8 @@ app.PlaylistTrackView = Backbone.View.extend({
     template: JST['playlists/tracks_show'],
 
     initialize: function(model, opts) {
-	console.log("[PlaylistTrackView] initialize")
+	if (DEBUG)
+	    console.log("[PlaylistTrackView] initialize")
 	this.listenTo(this.model, "change", this.render)
 	this.pid = opts.playlist_id
     },
@@ -18,7 +19,8 @@ app.PlaylistTrackView = Backbone.View.extend({
     },
 
     remove_track : function(e) {
-	console.log("[PlaylistTrackView] remove")
+	if (DEBUG)
+	    console.log("[PlaylistTrackView] remove")
 	/*likely have cross-tab sync problem if delete on one
 	 *tab and don't refresh collection on other tab..
 	 */
@@ -36,14 +38,16 @@ app.PlaylistTrackView = Backbone.View.extend({
     },
 
     play : function(e) {
-	console.log("[PlaylistTrackView] play")
+	if (DEBUG)
+	    console.log("[PlaylistTrackView] play")
 	var time = $(e.currentTarget).attr('timestamp');
 
 	app.vent.trigger("Player:play", $(e.currentTarget), time)
     },
 
     render : function() {
-	console.log("[PlaylistTrackView] render")
+	if (DEBUG)
+	    console.log("[PlaylistTrackView] render")
 	this.$el.html( this.template(
 	    {
 		track : this.model.toJSON(),
@@ -60,7 +64,8 @@ app.PlaylistTrackView = Backbone.View.extend({
     },
 
     close : function() {
-	console.log("[PlaylistTrackView] close")
+	if (DEBUG)
+	    console.log("[PlaylistTrackView] close")
 	this.remove()
 	this.unbind()
     }

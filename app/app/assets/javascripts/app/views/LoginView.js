@@ -14,7 +14,8 @@ app.LoginView = Backbone.View.extend({
     },
 
     initialize: function(session) {
-	console.log("[LoginView] initialize")
+	if (DEBUG)
+	    console.log("[LoginView] initialize")
 	var self = this;
 	this.session = session
 
@@ -35,26 +36,30 @@ app.LoginView = Backbone.View.extend({
     },
 
     signup : function(e) {
-	console.log("[LoginView] signup")
+	if (DEBUG)
+	    console.log("[LoginView] signup")
 	e.preventDefault()
 	Backbone.history.navigate("/signup", {trigger:true})
     },
 
     redirect: function() {
-	console.log("[LoginView] redirect")
+	if (DEBUG)
+	    console.log("[LoginView] redirect")
 	Backbone.history.navigate("/", {trigger:true})
 	return
     },
 
     render : function() {
-	console.log("[LoginView] render")
+	if (DEBUG)
+	    console.log("[LoginView] render")
 
 	/*only render login screen if logged out
 	 *if it's indetermined, we'll listen for 
 	 *an updated session change
 	 *onus on other listeners
 	 */
-	console.log(this.session.get("state"))
+	if (DEBUG)
+	    console.log(this.session.get("state"))
 	if (this.session.get("state") == app.Session.SessionState.LOGGEDOUT) {
 	    return this._render()
 	}
@@ -64,7 +69,8 @@ app.LoginView = Backbone.View.extend({
     },
 
     _render: function() {
-	console.log("[LoginView] __render")
+	if (DEBUG)
+	    console.log("[LoginView] __render")
 	this.$el.html(this.template(
 	    {
 		authenticity_token : this.authenticity_token, 
@@ -76,7 +82,8 @@ app.LoginView = Backbone.View.extend({
     },
 
     show_error: function(jqXHR) {
-	console.log("[LoginView] showerror")
+	if (DEBUG)
+	    console.log("[LoginView] showerror")
 	var msg = jqXHR.responseJSON.error
 	$('.errormessage').html(msg)
 	$('.errormessage').show()
@@ -85,7 +92,8 @@ app.LoginView = Backbone.View.extend({
 
     submit : function(e) {
 	e.preventDefault();
-	console.log("Submit")
+	if (DEBUG)
+	    console.log("Submit")
 
 	var data = {
 	    user : {
@@ -100,7 +108,8 @@ app.LoginView = Backbone.View.extend({
 
 
     sign_in: function(login_data) {
-	console.log("[LoginView] sign_in")
+	if (DEBUG)
+	    console.log("[LoginView] sign_in")
 	var self = this;
 
 	app.vent.trigger(
@@ -115,18 +124,20 @@ app.LoginView = Backbone.View.extend({
 		     data.user.email) {
 
 		    self.session.set("state", 
-			     app.Session.SessionState.LOGGEDIN)
+				     app.Session.SessionState.LOGGEDIN)
 		} else {
 		    self.session.set("state", 
-			     app.Session.SessionState.LOGGEDOUT)
+				     app.Session.SessionState.LOGGEDOUT)
 		}
-		console.log("state: " + self.session.get("state"))
+		if (DEBUG)
+		    console.log("state: " + self.session.get("state"))
 
 		app.vent.trigger("Session:logged-in", data) 
 	    },
 
 	    function(jqXHR, textStatus, errorThrown) {
-		console.log("[LoginView:sign_in] error")
+		if (DEBUG)
+		    console.log("[LoginView:sign_in] error")
 
 		//updates form for error handling validation
 		app.vent.trigger("LoginView:signin:error", jqXHR)
@@ -138,7 +149,8 @@ app.LoginView = Backbone.View.extend({
 
 
     close: function() {
-	console.log("[LoginView] close")
+	if (DEBUG)
+	    console.log("[LoginView] close")
 	this.remove()
 	this.unbind()
     }

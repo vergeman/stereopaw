@@ -14,7 +14,8 @@ app.Util = Backbone.Model.extend({
      * to display json errors on the forms
      */
     show_error : function(errors) {
-	console.log("[Util] show_error")
+	if (DEBUG)
+	    console.log("[Util] show_error")
 	//clear all errors
 	$('small').removeClass('error')
 	$('small').html('')

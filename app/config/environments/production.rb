@@ -23,11 +23,8 @@ App::Application.configure do
   config.serve_static_assets = false
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
-  config.assets.js_compressor = Uglifier.new(
-                                             # Remove all console.* functions
-                                             :compress => { :drop_console => true }
-                                             ) if defined? Uglifier
+  #config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = Uglifier.new(define: { DEBUG:false} )
 
   # config.assets.css_compressor = :sass
 
@@ -65,6 +62,7 @@ App::Application.configure do
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
   # config.assets.precompile += %w( search.js )
+  config.assets.precompile += ["main.js", "controller.js"]
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

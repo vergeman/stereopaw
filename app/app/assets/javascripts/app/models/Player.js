@@ -8,7 +8,8 @@ var app = app || {};
 app.Player = Backbone.Model.extend({
 
     initialize: function() {
-	console.log("[Player] initialize")
+	if (DEBUG)
+	    console.log("[Player] initialize")
 
 	this.initialized_players = {};
 	this.current_player = null;
@@ -34,10 +35,14 @@ app.Player = Backbone.Model.extend({
 	youtube : function(self, track, timestamp)
 	{
 	    /*load youtube player*/
-	    console.log(self)
+	    if (DEBUG)
+		console.log(self)
+
 	    if (!self.initialized_players['youtube']) 
 	    {
-		console.log("[youtubeplayer.init_player]")
+		if (DEBUG)
+		    console.log("[youtubeplayer.init_player]")
+
 		self.youtube_player = new app.YouTube_Player();
 		self.initialized_players['youtube'] = true
 	    }
@@ -52,10 +57,14 @@ app.Player = Backbone.Model.extend({
 	soundcloud : function(self, track, timestamp)
 	{
 	    /* load SMplayer */
-	    console.log(self)
+	    if (DEBUG)
+		console.log(self)
+	    
 	    if (!self.initialized_players['soundmanager'])
 	    {
-		console.log("[soundmanager.init_player]")
+		if (DEBUG)
+		    console.log("[soundmanager.init_player]")
+
 		self.soundmanager_player = new app.SoundManager_Player();
 		self.initialized_players['soundmanager'] = true
 	    }
@@ -76,7 +85,9 @@ app.Player = Backbone.Model.extend({
 
 	//stop playback
 	if (this.current_player != null) {
-	    console.log("[Player] stop")
+	    if (DEBUG)
+		console.log("[Player] stop")
+
 	    this.current_player.stop();
 	}
 

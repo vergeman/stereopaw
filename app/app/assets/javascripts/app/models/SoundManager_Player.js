@@ -16,10 +16,10 @@ app.SoundManager_Player = Backbone.Model.extend({
     buildUrl : function(track) {
 	switch(track.get("service"))
 	{
-	    case "soundcloud" :
+	case "soundcloud" :
 	    return 'http://api.soundcloud.com/tracks/' + track.get("track_id") + '/stream?client_id=' + this.SOUNDCLOUD_KEY
 
-	    default:
+	default:
 	    return "";
 	}
 
@@ -47,7 +47,8 @@ app.SoundManager_Player = Backbone.Model.extend({
 		}
 	    },
 	});
-	console.log("init_player")
+	if (DEBUG)
+	    console.log("init_player")
     },
 
     _load : function(track, timestamp)
@@ -65,7 +66,8 @@ app.SoundManager_Player = Backbone.Model.extend({
 
 		if (!is_ok) {
 		    /*sound didn't load properly*/
-		    console.log("[SoundManager_Player] fail load")
+		    if (DEBUG)
+			console.log("[SoundManager_Player] fail load")
 		    app.vent.trigger("Player:next")
 		}
 		else {
@@ -99,7 +101,8 @@ app.SoundManager_Player = Backbone.Model.extend({
     },
 
     play : function(track, timestamp) {
-	console.log("[SoundManager] play")
+	if (DEBUG)
+	    console.log("[SoundManager] play")
 
 	if (this._ready) {
 	    this._load(track, timestamp)
@@ -120,13 +123,17 @@ app.SoundManager_Player = Backbone.Model.extend({
     },
     stop : function()
     {
-	console.log("[Soundmanager] stop")
+	if (DEBUG)
+	    console.log("[Soundmanager] stop")
+
 	this._sound.stop();
 	this.unload();
     },
     unload : function()
     {
-	console.log("[Soundmanager] destruct")
+	if (DEBUG)
+	    console.log("[Soundmanager] destruct")
+
 	this._sound.destruct()
     }
 });

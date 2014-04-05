@@ -14,7 +14,8 @@ app.PlaylistsDropDownView = Backbone.View.extend({
     },
 
     initialize: function($track) {
-	console.log("[PlaylistDropDownView] initialize")
+	if (DEBUG)
+	    console.log("[PlaylistDropDownView] initialize")
 	this.playlists = null;
 	this.$track = $track;
 	this.listenTo(app.vent, 
@@ -27,7 +28,8 @@ app.PlaylistsDropDownView = Backbone.View.extend({
     },
 
     create : function(e) {
-	console.log("[PlaylistsDropDownView] create")
+	if (DEBUG)
+	    console.log("[PlaylistsDropDownView] create")
 	e.preventDefault();
 
 	/*need to keep dropdown link & dropdown content
@@ -41,7 +43,8 @@ app.PlaylistsDropDownView = Backbone.View.extend({
     },
 
     add : function(e) {
-	console.log("[PlaylistsDropDownView] add")
+	if (DEBUG)
+	    console.log("[PlaylistsDropDownView] add")
 	e.preventDefault();
 
 	var playlist_id = $(e.currentTarget).attr('playlist_id')
@@ -54,7 +57,8 @@ app.PlaylistsDropDownView = Backbone.View.extend({
     },
 
     submit_add_playlist : function(playlists_url, playlist_id, track_id) {
-	console.log("[PlaylistDropDownView] submit_add_playlist")
+	if (DEBUG)
+	    console.log("[PlaylistDropDownView] submit_add_playlist")
 
 	$.ajax({
 	    type: "PATCH",
@@ -64,11 +68,14 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 		request.setRequestHeader("X-CSRF-Token", $.cookie('csrf_token'));
 	    },
 	    success: function(data, textStatus, jqXHR) {
-		console.log("[PlaylistDropDownView] playlist_submit:success")
+		if (DEBUG)
+		    console.log("[PlaylistDropDownView] playlist_submit:success")
 		/*Playlists are updated in centralized PlaylistsMgr*/
 		if ('errors' in data) {
-		    console.log("[PlaylistDropDownView] errors")
-		    console.log(data)
+		    if (DEBUG)
+			console.log("[PlaylistDropDownView] errors")
+		    if (DEBUG)
+			console.log(data)
 		}
 		else {
 		    app.vent.trigger("PlaylistsMgr:SetPlaylist", data)
@@ -76,26 +83,33 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 	    },
 
 	    error: function(jqXHR, textStatus, errorThrown) {
-		console.log("[PlaylistDropDownView] submit:error")
-		console.log(textStatus)
-		console.log(errorThrown)
-		console.log(jqXHR)
+		if (DEBUG)
+		    console.log("[PlaylistDropDownView] submit:error")
+		if (DEBUG)
+		    console.log(textStatus)
+		if (DEBUG)
+		    console.log(errorThrown)
+		if (DEBUG)
+		    console.log(jqXHR)
 	    },
 
 	    complete : function(jqXHR, textStatus) {
-		console.log("[PlaylistDropDownView] submit:complete")
+		if (DEBUG)
+		    console.log("[PlaylistDropDownView] submit:complete")
 	    }
 	})
     },
 
     SetPlaylist : function(playlists) {
-	console.log("[PlaylistsDropDownView] SetPlaylist")
+	if (DEBUG)
+	    console.log("[PlaylistsDropDownView] SetPlaylist")
 	this.playlists = playlists
 	this.render()
     },
 
     render: function() {
-	console.log("[PlaylistDropDownView] render " + this.$track.attr("id") )
+	if (DEBUG)
+	    console.log("[PlaylistDropDownView] render " + this.$track.attr("id") )
 	this.$el.html( this.template(
 	    {
 		playlists: this.playlists.toJSON(),
@@ -107,7 +121,8 @@ app.PlaylistsDropDownView = Backbone.View.extend({
     },
 
     close: function() {
-	console.log("[PlaylistDropDownView] close")
+	if (DEBUG)
+	    console.log("[PlaylistDropDownView] close")
 	this.remove()
 	this.unbind()
     }

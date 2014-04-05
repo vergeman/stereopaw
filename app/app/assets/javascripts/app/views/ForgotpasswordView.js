@@ -13,7 +13,8 @@ app.ForgotpasswordView = Backbone.View.extend({
     },
 
     initialize: function(session) {
-	console.log("[ForgotpasswordView] initialize")
+	if (DEBUG)
+	    console.log("[ForgotpasswordView] initialize")
 	var self = this;
 	this.session = session;
 
@@ -30,7 +31,8 @@ app.ForgotpasswordView = Backbone.View.extend({
     },
 
     signup : function(e) {
-	console.log("[ForgotpasswordView] signup")
+	if (DEBUG)
+	    console.log("[ForgotpasswordView] signup")
 	e.preventDefault()
 	Backbone.history.navigate("/signup", {trigger:true})
     },
@@ -40,7 +42,8 @@ app.ForgotpasswordView = Backbone.View.extend({
     },
 
     render : function() {
-	console.log("[ForgotpasswordView] render")
+	if (DEBUG)
+	    console.log("[ForgotpasswordView] render")
 	if (this.session.get("state") == app.Session.SessionState.LOGGEDOUT) {
 	    return this._render()
 	}
@@ -51,7 +54,8 @@ app.ForgotpasswordView = Backbone.View.extend({
     },
 
     _render: function() {
-	console.log("[ForgotpasswordView] __render")
+	if (DEBUG)
+	    console.log("[ForgotpasswordView] __render")
 	this.$el.html(this.template(
 	    {
 		authenticity_token : this.authenticity_token,
@@ -63,7 +67,8 @@ app.ForgotpasswordView = Backbone.View.extend({
 
     submit : function(e) {
 	e.preventDefault();
-	console.log("Submit")
+	if (DEBUG)
+	    console.log("Submit")
 	var self = this;
 
 	var data = {
@@ -77,7 +82,8 @@ app.ForgotpasswordView = Backbone.View.extend({
 			 "/users/password",
 			 data,
 			 function(data, textStatus, jqXHR) {
-			     console.log("[ForgotpasswordView] Request")
+			     if (DEBUG)
+				 console.log("[ForgotpasswordView] Request")
 			     /*Signup Errors are a 200 
 			      *'successful ajaxresponse
 			      */
@@ -100,18 +106,23 @@ app.ForgotpasswordView = Backbone.View.extend({
 
 			     }
 
-			     console.log(data)
-			     console.log(textStatus)
-			     console.log(jqXHR)
-			     console.log("state: " + self.session.get("state"))			     
+			     if (DEBUG)
+				 console.log(data)
+			     if (DEBUG)
+				 console.log(textStatus)
+			     if (DEBUG)
+				 console.log(jqXHR)
+			     if (DEBUG)
+				 console.log("state: " + self.session.get("state"))			     
 			 },
 			 function(jqXHR, textStatus, errorThrown) {}
 			)
-			 
+	
     },
     
     close: function() {
-	console.log("[ForgotpasswordView] close")
+	if (DEBUG)
+	    console.log("[ForgotpasswordView] close")
 	this.remove()
 	this.unbind()
     }

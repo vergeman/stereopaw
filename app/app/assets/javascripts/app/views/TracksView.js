@@ -7,7 +7,8 @@ app.TracksView = Backbone.View.extend({
     id: 'tracks',
 
     initialize: function(tracks_collection) {
-	console.log("[TracksView] initialize")
+	if (DEBUG)
+	    console.log("[TracksView] initialize")
 
 	this._trackViews = [];
 
@@ -33,7 +34,8 @@ app.TracksView = Backbone.View.extend({
      *and increments page counter
      */
     fetch_next_page : function() {
-	console.log("[TracksView] fetch_next_page: " + this.page)
+	if (DEBUG)
+	    console.log("[TracksView] fetch_next_page: " + this.page)
 	var self = this;
 
 	var success =  function(collection, response, options) {
@@ -67,7 +69,8 @@ app.TracksView = Backbone.View.extend({
      *fetches the next set (page) of tracks
      */
     lastTrackPageHandler: function() {
-	console.log("TracksView] lastTrackPageHandler")
+	if (DEBUG)
+	    console.log("TracksView] lastTrackPageHandler")
 	var self = this;
 	$last = $('.track').last()
 
@@ -105,7 +108,8 @@ app.TracksView = Backbone.View.extend({
      * to internal _trackViews collection
      */ 
     add_collection : function(model) {
-	console.log("[TracksView] add")
+	if (DEBUG)
+	    console.log("[TracksView] add")
 	var _editable = this._editable_url(model)
 	var tv = new app.TrackView(
 	    { 
@@ -118,14 +122,16 @@ app.TracksView = Backbone.View.extend({
     },
 
     remove_collection : function(model) {
-	console.log("[TracksView] remove")
+	if (DEBUG)
+	    console.log("[TracksView] remove")
 	var tv_remove = _(this._trackViews).select(function(tv) { return tv.model === model; })[0];
 	this._trackViews = _(this._trackViews).without(tv_remove);
 	tv_remove.close()
     },
 
     render: function() {
-	console.log("[TracksView] render")
+	if (DEBUG)
+	    console.log("[TracksView] render")
 
 	_(this._trackViews).each(function(tv) {
 	    this.$el.append( tv.render().el )
@@ -133,7 +139,8 @@ app.TracksView = Backbone.View.extend({
     },
 
     close : function() {
-	console.log("[TracksView] close")
+	if (DEBUG)
+	    console.log("[TracksView] close")
 
 	_(this._trackViews).each(function(tv) {
 	    tv.close()

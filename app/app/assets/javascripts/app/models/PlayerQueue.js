@@ -18,7 +18,9 @@ app.PlayerQueue = Backbone.Model.extend({
 
 
     initialize : function(route, trackscollection) {
-	console.log("[PlayerQueue] initialize")
+	if (DEBUG)
+	    console.log("[PlayerQueue] initialize")
+
 	this.current_track = null
 
 	this.queue = trackscollection
@@ -34,7 +36,9 @@ app.PlayerQueue = Backbone.Model.extend({
      * to adjust our track selection in next()
      */
     update : function(route, trackscollection) {
-	console.log("[PlayerQueue] update")
+	if (DEBUG)
+	    console.log("[PlayerQueue] update")
+
 	if (this.route != route) {
 	    this.route = route
 	    this.updated = true
@@ -47,13 +51,18 @@ app.PlayerQueue = Backbone.Model.extend({
      * then sequentially 
      */
     next : function() {
-	console.log("[PlayerQueue] next")
+	if (DEBUG)
+	    console.log("[PlayerQueue] next")
+
 	//populate history_back w/ current track
 	this.history_back.push(this.current_track)
 
 	/*check history_fwd first*/
 	if (this.has_fwd()) {
-	    console.log("[PlayerQueue] next:hasfwd")
+
+	    if (DEBUG)
+		console.log("[PlayerQueue] next:hasfwd")
+
 	    this.current_track = this.history_fwd.pop()
 	    return this.current_track
 	}
@@ -65,14 +74,18 @@ app.PlayerQueue = Backbone.Model.extend({
 
 	//check if new queue, return top
 	if (this.updated) {
-	    console.log("[PlayerQueue] next:updated")
+
+	    if (DEBUG)
+		console.log("[PlayerQueue] next:updated")
+
 	    this.updated = false
 	    this.current_track = this.queue.at(0)
 	    return this.current_track
 	}
 
 	//move sequentially
-	console.log("[PlayerQueue] next:sequential")
+	if (DEBUG)
+	    console.log("[PlayerQueue] next:sequential")
 
 	var current_index = this.queue.indexOf(this.current_track)
 	var next_index = (current_index + 1) % this.queue.length
@@ -82,16 +95,19 @@ app.PlayerQueue = Backbone.Model.extend({
     },
 
     has_fwd : function() {
-	console.log("[PlayerQueue] has_fwd")
+	if (DEBUG)
+	    console.log("[PlayerQueue] has_fwd")
 	return this.history_fwd.length > 0
     },
 
     /*take from history_stack, otherwise null - nothing previous*/
     prev : function() {
-	console.log("[PlayerQueue] prev")
+	if (DEBUG)
+	    console.log("[PlayerQueue] prev")
 
 	if (this.has_prev()) {
-	    console.log("[PlayerQueue] prev has_prev true")
+	    if (DEBUG)
+		console.log("[PlayerQueue] prev has_prev true")
 	    this.history_fwd.push(this.current_track)
 	    this.current_track = this.history_back.pop()
 	    return this.current_track
@@ -101,17 +117,20 @@ app.PlayerQueue = Backbone.Model.extend({
     },
 
     has_prev : function() {
-	console.log("[PlayerQueue] has_prev")
+	if (DEBUG)
+	    console.log("[PlayerQueue] has_prev")
 	return this.history_back.length > 0;
     },
 
 
     /*a DOM user-selected track - 
-      * make sure to mute updated flag if playing
-      * somewhere from DOM
+     * make sure to mute updated flag if playing
+     * somewhere from DOM
      */
     find : function(id) {
-	console.log("[PlayerQueue] find")
+	if (DEBUG)
+	    console.log("[PlayerQueue] find")
+
 	if (this.current_track != null) {
 	    //add current_track to history_back
 	    this.history_back.push(this.current_track)

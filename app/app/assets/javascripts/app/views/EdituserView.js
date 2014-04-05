@@ -13,7 +13,8 @@ app.EdituserView = Backbone.View.extend({
     },
 
     initialize: function(session) {
-	console.log("[Edituser] initialize")
+	if (DEBUG)
+	    console.log("[Edituser] initialize")
 	var self = this;
 	this.session = session
 
@@ -32,7 +33,8 @@ app.EdituserView = Backbone.View.extend({
     },
 
     redirect : function() {
-	console.log("[EdituserView] redirect")
+	if (DEBUG)
+	    console.log("[EdituserView] redirect")
 	Backbone.history.navigate("/", { trigger:true})
     },
 
@@ -40,7 +42,8 @@ app.EdituserView = Backbone.View.extend({
      * otherwise, wait for login
      */
     render: function() {
-	console.log("[EdituserView] render")
+	if (DEBUG)
+	    console.log("[EdituserView] render")
 	if (this.session.get("state") == app.Session.SessionState.LOGGEDIN) {
 	    return this._render()
 	}
@@ -49,7 +52,8 @@ app.EdituserView = Backbone.View.extend({
     },
 
     _render: function() {
-	console.log("[EdituserView] __render")
+	if (DEBUG)
+	    console.log("[EdituserView] __render")
 	var self = this;
 
 	this.$el.html(
@@ -63,7 +67,8 @@ app.EdituserView = Backbone.View.extend({
     },
 
     submit_edit_user : function(e) {
-	console.log("[EdituserView] submit_edit_user")
+	if (DEBUG)
+	    console.log("[EdituserView] submit_edit_user")
 	e.preventDefault();
 	var self = this;
 
@@ -81,14 +86,18 @@ app.EdituserView = Backbone.View.extend({
 			 "/users",
 			 data,
 			 function(data, textStatus, jqXHR) {
-			     console.log("[SignupView] Request")
+			     if (DEBUG)
+				 console.log("[SignupView] Request")
 			     /*Signup Errors are a 200 
 			      *'successful ajaxresponse
 			      */
 
-			     console.log(data)
-			     console.log(textStatus)
-			     console.log(jqXHR)
+			     if (DEBUG)
+				 console.log(data)
+			     if (DEBUG)
+				 console.log(textStatus)
+			     if (DEBUG)
+				 console.log(jqXHR)
 
 			     if ('errors' in data) {
 				 app.vent.trigger("EdituserView:signup:error", data.errors)
@@ -107,11 +116,12 @@ app.EdituserView = Backbone.View.extend({
 			 function(jqXHR, textStatus, errorThrown) {}
 			)
 
-			 
+	
     },
 
     close: function() {
-	console.log("[EdituserView] close")
+	if (DEBUG)
+	    console.log("[EdituserView] close")
 	this.remove()
 	this.unbind()
     }

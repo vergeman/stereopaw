@@ -46,7 +46,8 @@ app.TrackView = Backbone.View.extend({
     },
 
     play : function(e) {
-	console.log("[TrackView] play")
+	if (DEBUG)
+	    console.log("[TrackView] play")
 
 	var time = $(e.currentTarget).attr('timestamp');
 
@@ -55,11 +56,13 @@ app.TrackView = Backbone.View.extend({
     },
 
     stop : function() {
-	console.log("[TrackView] stop")
+	if (DEBUG)
+	    console.log("[TrackView] stop")
     },
 
     playlist : function(e) {
-	console.log("[TrackView] playlist")
+	if (DEBUG)
+	    console.log("[TrackView] playlist")
 	var $track = $(e.currentTarget).closest('.track-meta')
 
 	/*noticed a race condition w/ YouTube Player 
@@ -75,7 +78,8 @@ app.TrackView = Backbone.View.extend({
     },
 
     close : function() {
-	console.log("[TrackView] close")
+	if (DEBUG)
+	    console.log("[TrackView] close")
 
 	if (this.playlistdropdown) {
 	    this.playlistdropdown.close()

@@ -19,7 +19,8 @@ app.NavigationView = Backbone.View.extend({
     },
 
     initialize : function(session) {
-	console.log("[NavigationView] initialize")
+	if (DEBUG)
+	    console.log("[NavigationView] initialize")
 	this.session = session
 	this.listenTo(app.vent, "Session:logged-in", this.render_loggedin)
 	this.listenTo(app.vent, "Session:logged-out", this.render_loggedout)
@@ -28,14 +29,16 @@ app.NavigationView = Backbone.View.extend({
 	 * so we manually attach
 	 */
 	$('#home').click(function(e) {
-	    console.log("[NavigationView] home")
+	    if (DEBUG)
+		console.log("[NavigationView] home")
 	    e.preventDefault()
 	    Backbone.history.navigate("/", {trigger:true})	    
 	});
     },
 
     render_loggedin: function() {
-	console.log("[NavigationView] render_loggedin")
+	if (DEBUG)
+	    console.log("[NavigationView] render_loggedin")
 
 	this.$el.html(this.template({user: this.session.get("current_user").toJSON()} ))
 
@@ -44,7 +47,8 @@ app.NavigationView = Backbone.View.extend({
     },
 
     render_loggedout : function() {
-	console.log("[NavigationView] render_loggedout")
+	if (DEBUG)
+	    console.log("[NavigationView] render_loggedout")
 
 	this.$el.html(this.template({user: null} ))
 
@@ -62,55 +66,64 @@ app.NavigationView = Backbone.View.extend({
     },
 
     logout: function(e) {
-	console.log("[NavigationView] logout")
+	if (DEBUG)
+	    console.log("[NavigationView] logout")
 	e.preventDefault();
 	this.sign_out()
     },
 
     login: function(e) {
-	console.log("[NavigationView] login")
+	if (DEBUG)
+	    console.log("[NavigationView] login")
 	e.preventDefault();
 	Backbone.history.navigate("/login", {trigger:true})
     },
 
     settings: function(e) {
-	console.log("[NavigationView] settings")
+	if (DEBUG)
+	    console.log("[NavigationView] settings")
 	e.preventDefault();
 	Backbone.history.navigate("/edituser", {trigger:true})	
     },
 
     playlist : function(e) {
-	console.log("[NavigationView] playlist")
+	if (DEBUG)
+	    console.log("[NavigationView] playlist")
 	e.preventDefault();
 	Backbone.history.navigate("/playlists", {trigger:true})
     },
 
     mytracks : function(e) {
-	console.log("[NavigationView] mytracks")
+	if (DEBUG)
+	    console.log("[NavigationView] mytracks")
 	e.preventDefault();
 	Backbone.history.navigate("/tracks", {trigger:true})	
     },
 
     popular : function(e) {
-	console.log("[NavigationView] popular")
+	if (DEBUG)
+	    console.log("[NavigationView] popular")
 	e.preventDefault();
 	Backbone.history.navigate("/popular", {trigger:true})	
     },
 
     new_tracks : function(e) {
-	console.log("[NavigationView] new_tracks")
+	if (DEBUG)
+	    console.log("[NavigationView] new_tracks")
 	e.preventDefault();
 	Backbone.history.navigate("/new", {trigger:true})	
     },
 
     submithow : function(e) {
-	console.log("[NavigationView] submithow")
+	if (DEBUG)
+	    console.log("[NavigationView] submithow")
 	e.preventDefault();
 	Backbone.history.navigate("submithow", {trigger:true})
     },
 
     sign_out: function() {
-	console.log("[NavigationView] sign_out")
+	if (DEBUG)
+	    console.log("[NavigationView] sign_out")
 	this.session.request(
 	    'DELETE',
 	    '/users/sign_out.json', 
@@ -124,7 +137,8 @@ app.NavigationView = Backbone.View.extend({
     },
 
     close : function() {
-	console.log("[NavigationView] close")
+	if (DEBUG)
+	    console.log("[NavigationView] close")
 	this.$el.html("")
     }
 

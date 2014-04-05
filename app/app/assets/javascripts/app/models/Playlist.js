@@ -5,7 +5,8 @@ app.Playlist = Backbone.Model.extend({
     defaults : {},
 
     initialize : function() {
-	console.log("[Playlist] initialize")
+	if (DEBUG)
+	    console.log("[Playlist] initialize")
     }
 
 

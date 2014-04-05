@@ -13,7 +13,8 @@ app.SignupView = Backbone.View.extend({
     },
 
     initialize: function(session) {
-	console.log("[SignupView] initialize")
+	if (DEBUG)
+	    console.log("[SignupView] initialize")
 	var self = this;
 	this.session = session;
 
@@ -36,7 +37,8 @@ app.SignupView = Backbone.View.extend({
     },
 
     login : function(e) {
-	console.log("[SignupView] login")
+	if (DEBUG)
+	    console.log("[SignupView] login")
 	e.preventDefault()
 	Backbone.history.navigate("/login", {trigger:true})
     },
@@ -46,7 +48,8 @@ app.SignupView = Backbone.View.extend({
     },
 
     render : function() {
-	console.log("[SignupView] render")
+	if (DEBUG)
+	    console.log("[SignupView] render")
 	if (this.session.get("state") == app.Session.SessionState.LOGGEDOUT) {
 	    return this._render()
 	}
@@ -57,7 +60,8 @@ app.SignupView = Backbone.View.extend({
     },
 
     _render: function() {
-	console.log("[SignupView] __render")
+	if (DEBUG)
+	    console.log("[SignupView] __render")
 	this.$el.html(this.template(
 	    {
 		authenticity_token : this.authenticity_token,
@@ -69,7 +73,8 @@ app.SignupView = Backbone.View.extend({
 
     submit : function(e) {
 	e.preventDefault();
-	console.log("Submit")
+	if (DEBUG)
+	    console.log("Submit")
 	var self = this;
 
 	var data = {
@@ -85,7 +90,8 @@ app.SignupView = Backbone.View.extend({
 			 "/users",
 			 data,
 			 function(data, textStatus, jqXHR) {
-			     console.log("[SignupView] Request")
+			     if (DEBUG)
+				 console.log("[SignupView] Request")
 			     /*Signup Errors are a 200 
 			      *'successful ajaxresponse
 			      */
@@ -105,18 +111,23 @@ app.SignupView = Backbone.View.extend({
 				 app.vent.trigger("SignupView:signup:error", data.errors)
 			     }
 
-			     console.log(data)
-			     console.log(textStatus)
-			     console.log(jqXHR)
-			     console.log("state: " + self.session.get("state"))			     
+			     if (DEBUG)
+				 console.log(data)
+			     if (DEBUG)
+				 console.log(textStatus)
+			     if (DEBUG)
+				 console.log(jqXHR)
+			     if (DEBUG)
+				 console.log("state: " + self.session.get("state"))			     
 			 },
 			 function(jqXHR, textStatus, errorThrown) {}
 			)
-			 
+	
     },
     
     close: function() {
-	console.log("[SignupView] close")
+	if (DEBUG)
+	    console.log("[SignupView] close")
 	this.remove()
 	this.unbind()
     }

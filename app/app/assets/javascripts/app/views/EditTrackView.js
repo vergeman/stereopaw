@@ -9,7 +9,9 @@ app.EditTrackView = Backbone.View.extend({
     template: JST['tracks/edit'],    
 
     initialize: function(opts) {
-	console.log("[EditTrackView] initialize")
+	if (DEBUG)
+	    console.log("[EditTrackView] initialize")
+
 	this.authenticity_token = $("meta[name=csrf-token]").attr("content")
 	this.session = opts.session
 
@@ -40,9 +42,13 @@ app.EditTrackView = Backbone.View.extend({
     /* makes sure we receive a valid model 
      * before we actually render */
     validmodelcheck : function() {
-	console.log("[EditTrackView] validmodelcheck")
+	if (DEBUG)
+	    console.log("[EditTrackView] validmodelcheck")
+
 	if (this.model.get("errors")) {
-	    console.log("[EditTrackView] invalid!")
+	    if (DEBUG)
+		console.log("[EditTrackView] invalid!")
+
 	    Backbone.history.navigate("/popular", {trigger:true})
 	}
 	else {
@@ -51,7 +57,8 @@ app.EditTrackView = Backbone.View.extend({
     },
 
     render : function() {
-	console.log("[EditTrackView] render")
+	if (DEBUG)
+	    console.log("[EditTrackView] render")
 
 	if (this.session.get("state") == app.Session.SessionState.LOGGEDOUT) {
 	    this.redirect()
@@ -65,7 +72,9 @@ app.EditTrackView = Backbone.View.extend({
     },
 
     _render: function() {
-	console.log("[EditTrackView] __render")
+	if (DEBUG)
+	    console.log("[EditTrackView] __render")
+
 	$(window).scrollTop(0);
 
 	this.$el.html(this.template(
@@ -104,7 +113,9 @@ app.EditTrackView = Backbone.View.extend({
     },
 
     delete_track : function(e) {
-	console.log("[EditTrackView] delete_track")
+	if (DEBUG)
+	    console.log("[EditTrackView] delete_track")
+
 	e.preventDefault()
 
 	var r = confirm("You sure you want to delete this track?");
@@ -124,7 +135,8 @@ app.EditTrackView = Backbone.View.extend({
 	    },
 	    //redirect 
 	    success: function(data, textStatus, jqXHR) {
-		console.log("[EditTrackView] delete_track:success")
+		if (DEBUG)
+		    console.log("[EditTrackView] delete_track:success")
 
 		if (jqXHR.getResponseHeader('AJAX-STATUS') == 302) {
 		    window.location.replace(data.location)
@@ -146,14 +158,19 @@ app.EditTrackView = Backbone.View.extend({
 	    },
 	    //redirect 
 	    error: function(jqXHR, textStatus, errorThrown) {
-		console.log("[EditTrackView] delete_tracK: submit error")
-		console.log(textStatus)
-		console.log(errorThrown)
-		console.log(jqXHR)
+		if (DEBUG)
+		    console.log("[EditTrackView] delete_tracK: submit error")
+		if (DEBUG)
+		    console.log(textStatus)
+		if (DEBUG)
+		    console.log(errorThrown)
+		if (DEBUG)
+		    console.log(jqXHR)
 	    },
 
 	    complete : function(jqXHR, textStatus) {
-		console.log("[EditTrackView] delete_track:complete")
+		if (DEBUG)
+		    console.log("[EditTrackView] delete_track:complete")
 	    }
 	})
 	//otherwise render error
@@ -163,7 +180,8 @@ app.EditTrackView = Backbone.View.extend({
 
     submit_edit_track : function(e) {
 	//check login
-	console.log("[EditTrackView] submit_edit_track")
+	if (DEBUG)
+	    console.log("[EditTrackView] submit_edit_track")
 	e.preventDefault()
 
 	var self = this;
@@ -177,13 +195,15 @@ app.EditTrackView = Backbone.View.extend({
 		request.setRequestHeader("X-CSRF-Token", $.cookie('csrf_token'));
 	    },
 	    success: function(data, textStatus, jqXHR) {
-		console.log("[EditTrackView] success")
+		if (DEBUG)
+		    console.log("[EditTrackView] success")
 
 		if (jqXHR.getResponseHeader('AJAX-STATUS') == 302) {
 		    window.location.replace(data.location)
 		}
 
-		console.log(data)
+		if (DEBUG)
+		    console.log(data)
 
 		//render errors
 		if ('errors' in data) {
@@ -191,7 +211,7 @@ app.EditTrackView = Backbone.View.extend({
 				     data.errors)
 
 		    $.growl.error({ title: "Error", 
-				      message: "Could not process your request"})
+				    message: "Could not process your request"})
 
 		}
 		else {
@@ -202,14 +222,19 @@ app.EditTrackView = Backbone.View.extend({
 	    },
 	    //redirect 
 	    error: function(jqXHR, textStatus, errorThrown) {
-		console.log("[EditTrackView] submit_edit_track: submit_error")
-		console.log(textStatus)
-		console.log(errorThrown)
-		console.log(jqXHR)
+		if (DEBUG)
+		    console.log("[EditTrackView] submit_edit_track: submit_error")
+		if (DEBUG)
+		    console.log(textStatus)
+		if (DEBUG)
+		    console.log(errorThrown)
+		if (DEBUG)
+		    console.log(jqXHR)
 	    },
 
 	    complete : function(jqXHR, textStatus) {
-		console.log("[EditTrackView] submit_edit_track:Complete")
+		if (DEBUG)
+		    console.log("[EditTrackView] submit_edit_track:Complete")
 	    }
 	})
 	//otherwise render error
@@ -217,7 +242,9 @@ app.EditTrackView = Backbone.View.extend({
     },
 
     close : function() {
-	console.log("[EditTrackView] close")
+	if (DEBUG)
+	    console.log("[EditTrackView] close")
+
 	this.remove()
 	this.unbind()
     }

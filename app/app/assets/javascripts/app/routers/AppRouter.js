@@ -29,11 +29,13 @@ app.AppRouter = Backbone.Router.extend({
 
 
     initialize : function() {
-	console.log("[AppRouter] initialize")
-
+	if (DEBUG)
+	    console.log("[AppRouter] initialize")
 
 	this.trackscollection = new app.Tracks()
-	console.log(this.trackscollection )
+
+	if (DEBUG)
+	    console.log(this.trackscollection )
 
 	this.player = new app.Player();
 
@@ -55,7 +57,8 @@ app.AppRouter = Backbone.Router.extend({
 
 /*Devise Routes*/
     edituser : function() {
-	console.log("[AppRouter] edituser")
+	if (DEBUG)
+	    console.log("[AppRouter] edituser")
 
 	var redirect = function() { 
 	    Backbone.history.navigate("/", {trigger:true})
@@ -70,7 +73,8 @@ app.AppRouter = Backbone.Router.extend({
 
     },
     forgot : function() {
-	console.log("[AppRouter] forgot")
+	if (DEBUG)
+	    console.log("[AppRouter] forgot")
 
 	var redirect = function() { 
 	    Backbone.history.navigate("/", {trigger:true})
@@ -91,7 +95,8 @@ app.AppRouter = Backbone.Router.extend({
     },
 
     signup : function() {
-	console.log("[AppRouter] signup")
+	if (DEBUG)
+	    console.log("[AppRouter] signup")
 
 	var redirect = function() { 
 	    Backbone.history.navigate("/", {trigger:true})
@@ -112,7 +117,8 @@ app.AppRouter = Backbone.Router.extend({
     },
 
     login : function() {
-	console.log("[AppRouter] login")
+	if (DEBUG)
+	    console.log("[AppRouter] login")
 
 	/*if not logged in, we render signin view, otherwise
 	 *we're logged in so redirect to root*/
@@ -129,9 +135,11 @@ app.AppRouter = Backbone.Router.extend({
 
     },
 
-/*Playlist Routes*/
+    /*Playlist Routes*/
     playlists : function() {
-	console.log("[AppRouter] playlists")	
+	if (DEBUG)
+	    console.log("[AppRouter] playlists")
+
 	var self = this;
 	var playlists = this.playlistsMgr.playlists
 	var redirect = function() { 
@@ -148,7 +156,9 @@ app.AppRouter = Backbone.Router.extend({
     },
 
     playlist : function(playlist_id) {
-	console.log("[AppRouter] playlist")
+	if (DEBUG)
+	    console.log("[AppRouter] playlist")
+
 	var self = this;
 	var playlist = this.playlistsMgr.playlists.get(playlist_id)
 
@@ -174,7 +184,8 @@ app.AppRouter = Backbone.Router.extend({
     },
 /*Track Routes*/
     my_tracks : function() {
-	console.log("[AppRouter] my_tracks")
+	if (DEBUG)
+	    console.log("[AppRouter] my_tracks")
 
 	var redirect = function() { 
 	    Backbone.history.navigate("/login", {trigger:true})
@@ -190,7 +201,8 @@ app.AppRouter = Backbone.Router.extend({
     },
 
     edit_track : function(user_id, track_id) {
-	console.log("[AppRouter] edit_track")
+	if (DEBUG)
+	    console.log("[AppRouter] edit_track")
 
 	var redirect = function() { 
 	    Backbone.history.navigate("/login", {trigger:true})
@@ -210,24 +222,30 @@ app.AppRouter = Backbone.Router.extend({
     },
 
     new_tracks : function() {
-	console.log("[AppRouter] new_tracks")
+	if (DEBUG)
+	    console.log("[AppRouter] new_tracks")
+
 	this.generate_trackview("/new", "new")
     },
 
 
     popular_tracks : function() {
+	if (DEBUG)
 	console.log("[AppRouter] popular")
 	this.generate_trackview("/popular", "popular")
     },
     
     submithow : function() {
-	console.log("[AppRouter] submit")
+	if (DEBUG)
+	    console.log("[AppRouter] submit")
+
 	this.view(new app.SubmitView(), "/submithow")
 	$(document).foundation()
     },
 
     root : function() {
-	console.log("[AppRouter] root")
+	if (DEBUG)
+	    console.log("[AppRouter] root")
 
 	/*default view logged in -> /tracks
 	 *otherwise -> /popular

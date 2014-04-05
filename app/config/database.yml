@@ -11,3 +11,11 @@ test:
     database: soundbyte_test
     username: alan
     pool: 5
+
+production:
+    adapter: postgresql
+    encoding: unicode
+    database: soundbyte_production
+    username: alan
+    pool: 5
+

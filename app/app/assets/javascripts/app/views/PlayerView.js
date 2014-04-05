@@ -10,7 +10,8 @@ app.PlayerView = Backbone.View.extend({
     /*playerview - tracks_collection needed for internal queue*/
     initialize: function(player, playerqueue, tracks_collection) {
 
-	console.log("[PlayerView] initialize")
+	if (DEBUG)
+	    console.log("[PlayerView] initialize")
 
 	this.playerslider = new app.PlayerSliderView()
 
@@ -45,14 +46,16 @@ app.PlayerView = Backbone.View.extend({
     },
 
     render: function() {
-	console.log("[PlayerView] render")
+	if (DEBUG)
+	    console.log("[PlayerView] render")
 	return this;
     },
 
 
-/*Controls play, pause, etc*/
+    /*Controls play, pause, etc*/
     play : function(e, time) {
-	console.log("[PlayerView] trackplay")
+	if (DEBUG)
+	    console.log("[PlayerView] trackplay")
 
 	/*set current track if it was chosen via DOM*/
 	if (e != null) {
@@ -79,26 +82,30 @@ app.PlayerView = Backbone.View.extend({
 
     pause: function() {
 	//clearInterval(this._update_time_interval)
-	console.log("[PlayerView] pause")
+	if (DEBUG)
+	    console.log("[PlayerView] pause")
 	this.player.pause()
 	this.toggle_pause_controls()
     },
 
     resume: function() {
-	console.log("[PlayerView] resume")
+	if (DEBUG)
+	    console.log("[PlayerView] resume")
 	this.player.resume()
 	this.toggle_play_controls()
     },
 
     seek: function(posX_percent) {
-	console.log("[PlayerView] seek " + posX_percent)
+	if (DEBUG)
+	    console.log("[PlayerView] seek " + posX_percent)
 	if (this.current_track) {
 	    this.player.seek(posX_percent/100 * this.current_track.get("duration"))
 	}
     },
 
     next: function() {
-	console.log("[PlayerView] next")
+	if (DEBUG)
+	    console.log("[PlayerView] next")
 
 	this.current_track = this.playerqueue.next()
 
@@ -113,7 +120,8 @@ app.PlayerView = Backbone.View.extend({
     },
 
     prev: function() {
-	console.log("[PlayerView] prev")
+	if (DEBUG)
+	    console.log("[PlayerView] prev")
 
 	var track = this.playerqueue.prev()
 
@@ -123,7 +131,7 @@ app.PlayerView = Backbone.View.extend({
 	}
     },
 
-/*GUI-ish & Controls*/
+    /*GUI-ish & Controls*/
     refreshTime : function() {
 	var self = this
 
@@ -167,7 +175,7 @@ app.PlayerView = Backbone.View.extend({
      * from player so we'll want to remove any show_yt to return
      * to a clean/default slate
      */
-       
+    
     minimize_yt : function() {
 	this.hide_yt()
 	if ( $("#show_yt").length == 0 ) {

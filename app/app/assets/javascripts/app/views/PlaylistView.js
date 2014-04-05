@@ -11,7 +11,8 @@ app.PlaylistView = Backbone.View.extend({
     template: JST['playlists/show'],
 
     initialize : function(opts) {
-	console.log("[PlaylistView] initialize")
+	if (DEBUG)
+	    console.log("[PlaylistView] initialize")
 
 	this.listenTo(this.model, "change", this.render)
 
@@ -20,7 +21,8 @@ app.PlaylistView = Backbone.View.extend({
     events : {},
 
     render: function() {
-	console.log("[PlaylistView] render")
+	if (DEBUG)
+	    console.log("[PlaylistView] render")
 	this.$el.html( this.template( 
 	    { playlist: this.model.toJSON() } 
 	));
@@ -28,7 +30,8 @@ app.PlaylistView = Backbone.View.extend({
     },
 
     close : function() {
-	console.log("[PlaylistView] close")
+	if (DEBUG)
+	    console.log("[PlaylistView] close")
 	this.remove()
 	this.unbind()
     }

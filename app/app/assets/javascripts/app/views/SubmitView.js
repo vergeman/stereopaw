@@ -9,19 +9,22 @@ app.SubmitView = Backbone.View.extend({
     template : JST['submit/index'],
 
     initialize: function() {
-	console.log("[SubmitView] initialize")
+	if (DEBUG)
+	    console.log("[SubmitView] initialize")
     },
 
     events : {}, 
 
     render: function() {
-	console.log("[SubmitView] render")
+	if (DEBUG)
+	    console.log("[SubmitView] render")
 	this.$el.html(this.template() )
 	return this
     },
 
     close: function() {
-	console.log("[SubmitView] close")
+	if (DEBUG)
+	    console.log("[SubmitView] close")
 	this.remove()
 	this.unbind()
     }

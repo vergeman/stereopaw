@@ -42,8 +42,9 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+gem 'annotate'
+
 group :development, :test do
-  gem 'annotate'					
   gem 'rspec-rails'
   gem 'factory_girl_rails'
 end
@@ -60,6 +61,7 @@ end
 
 # Use unicorn as the app server
 # gem 'unicorn'
+gem 'passenger'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development

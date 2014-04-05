@@ -16,7 +16,8 @@ app.PlaylistTracksView = Backbone.View.extend({
     },
 
     initialize: function(models, opts) {
-	console.log("[PlaylistTracksView] initialize")
+	if (DEBUG)
+	    console.log("[PlaylistTracksView] initialize")
 
 	/*_pltv array keeps references to views*/
 	this._pltv = []
@@ -49,7 +50,8 @@ app.PlaylistTracksView = Backbone.View.extend({
     },
 
     edit_playlist : function(e) {
-	console.log("[PlaylistTracksView] edit_playlist")
+	if (DEBUG)
+	    console.log("[PlaylistTracksView] edit_playlist")
 	e.preventDefault()
 
 	app.vent.trigger("PlaylistsModalView:openModal",
@@ -57,7 +59,8 @@ app.PlaylistTracksView = Backbone.View.extend({
     },
 
     delete_playlist : function(e) {
-	console.log("[PlaylistTracksView] delete_playlist")
+	if (DEBUG)
+	    console.log("[PlaylistTracksView] delete_playlist")
 	e.preventDefault()
 
 	var r = confirm("Are you sure you want to delete this playlist?");
@@ -76,7 +79,8 @@ app.PlaylistTracksView = Backbone.View.extend({
 	    {
 		success: success,
 		error : function() {
-		    console.log("[PlaylistTracksView] error deleting playlist")
+		    if (DEBUG)
+			console.log("[PlaylistTracksView] error deleting playlist")
 		}
 	    }
 	);
@@ -103,7 +107,8 @@ app.PlaylistTracksView = Backbone.View.extend({
     },
 
     remove_track : function(pid, mid, index) {
-	console.log("[PlaylistTracksView] remove_track")
+	if (DEBUG)
+	    console.log("[PlaylistTracksView] remove_track")
 	m =  this.playlistTracks.at(index)
 
 	/*remove offending track from track_ids*/
@@ -115,7 +120,8 @@ app.PlaylistTracksView = Backbone.View.extend({
 	this.refresh()
 
 	var success_cb = function() {
-	    console.log("CallBACK:")
+	    if (DEBUG)
+		console.log("CallBACK:")
 	    $.growl.notice({ title: "Deleted", message: "Track successfully deleted" });
 	}
 
@@ -127,7 +133,8 @@ app.PlaylistTracksView = Backbone.View.extend({
      * list of tracks and track_ids in the playlist
      */
     update_playlist_tracks : function() {
-	console.log("[PlaylistTracksView] update_playlist_tracks")
+	if (DEBUG)
+	    console.log("[PlaylistTracksView] update_playlist_tracks")
 
 	_(this.playlist.get("track_ids") ).each( function(tid) {
 	    var model = this.trackscollection.get(tid).toJSON()
@@ -142,7 +149,8 @@ app.PlaylistTracksView = Backbone.View.extend({
     },
 
     add_collection : function(model) {
-	console.log("[PlaylistTracksView] add_collection")
+	if (DEBUG)
+	    console.log("[PlaylistTracksView] add_collection")
 	var pltv = new app.PlaylistTrackView(
 	    {model : model},
 	    {playlist_id : this.playlist.get("id")}
@@ -153,16 +161,19 @@ app.PlaylistTracksView = Backbone.View.extend({
     },
 
     remove_collection: function(model) {
-	console.log("[PlaylistTracksView] remove_collection")
+	if (DEBUG)
+	    console.log("[PlaylistTracksView] remove_collection")
 	var pltv_remove = _(this._pltv).select(function(pltv) { return pltv.model === model; })[0];
-	console.log(pltv_remove)
+	if (DEBUG)
+	    console.log(pltv_remove)
 	this._pltv = _(this._pltv).without(pltv_remove);
 	pltv_remove.close()
     },
 
 
     render: function() {
-	console.log("[PlaylistTracksView] render")
+	if (DEBUG)
+	    console.log("[PlaylistTracksView] render")
 
 	this.$el.html( this.template({playlist: this.playlist.toJSON()}) )
 
@@ -174,7 +185,8 @@ app.PlaylistTracksView = Backbone.View.extend({
     },
 
     close: function() {
-	console.log("[PlaylistTracksView] close")
+	if (DEBUG)
+	    console.log("[PlaylistTracksView] close")
 
 	_(this._pltv).each( function(pltv) {
 	    pltv.close()

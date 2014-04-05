@@ -13,16 +13,21 @@ app.Track = Backbone.Model.extend({
 
 	this.listenTo(app.vent, "Track:ResetPlayed", this.reset_played)
 
-	console.log("[Track] initalized")
+	if (DEBUG)
+	    console.log("[Track] initalized")
     },
 
     reset_played : function() {
-	console.log("[Track] reset_played")
+	if (DEBUG)
+	    console.log("[Track] reset_played")
+
 	this.set("played", false)
     },
 
     played : function() {
-	console.log("[Track] played")
+	if (DEBUG)
+	    console.log("[Track] played")
+
 	this.set("played", true)
     },
 
@@ -31,7 +36,8 @@ app.Track = Backbone.Model.extend({
      * updating all attributes - just a quick play counter.
      */
     increment_plays : function() {
-	console.log("[Track] increment_plays")
+	if (DEBUG)
+	    console.log("[Track] increment_plays")
 
 	/* client side mini 'rate-limiting' - only count a play
 	 * if another track has been played on same route
@@ -81,7 +87,7 @@ app.Track = Backbone.Model.extend({
 
     gen_attribute_link : function() {
 	switch(this.get('service') ) {
-	    case 'youtube':
+	case 'youtube':
 	    this.set(
 		{
 		    attribution_url: "http://developers.google.com/youtube/images/YouTube_logo_standard_white.png",
@@ -91,7 +97,7 @@ app.Track = Backbone.Model.extend({
 	    )
 	    break;
 
-	    case 'soundcloud':
+	case 'soundcloud':
 	    this.set(
 		{
 		    attribution_url: "http://developers.soundcloud.com/assets/logo_black.png",
@@ -101,7 +107,7 @@ app.Track = Backbone.Model.extend({
 	    )
 	    break;
 
-	    default:
+	default:
 	    this.set({attribution_url: ""})
 	}
     }
