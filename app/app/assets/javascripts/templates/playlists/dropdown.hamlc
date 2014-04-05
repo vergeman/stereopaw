@@ -6,7 +6,7 @@
     %hr
     - for p in @playlists
       %li
-        %a{:href => '#', :playlist_id => p.id}
+        %a{:href => '#', :playlist_id => p.id, :class=>"playlist-dd"}
           = p.name
 
 

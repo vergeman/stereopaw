@@ -10,7 +10,7 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 
     events : {
 	'click .create' : 'create',
-	'click a' : 'add'
+	'click .playlist-dd' : 'add'
     },
 
     initialize: function($track) {
@@ -30,13 +30,13 @@ app.PlaylistsDropDownView = Backbone.View.extend({
     create : function(e) {
 	if (DEBUG)
 	    console.log("[PlaylistsDropDownView] create")
+
 	e.preventDefault();
 
 	/*need to keep dropdown link & dropdown content
 	 *(li.playlist & .playlist-dropdown) at the same 
 	 *level in DOM 
 	 */
-	$(document).foundation('dropdown', 'close', $('[data-dropdown-content]'));
 
 	/*see PlaylistsModalView*/
 	app.vent.trigger("PlaylistsModalView:openModal", "new")
@@ -45,6 +45,7 @@ app.PlaylistsDropDownView = Backbone.View.extend({
     add : function(e) {
 	if (DEBUG)
 	    console.log("[PlaylistsDropDownView] add")
+
 	e.preventDefault();
 
 	var playlist_id = $(e.currentTarget).attr('playlist_id')
@@ -52,7 +53,8 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 				 playlist_id,
 				 this.$track.attr('id'))
 
-	$('#drop-' + this.$track.attr('id').foundation('reveal', 'close'));
+	console.log('#drop-' + this.$track.attr('id'))
+	$('#drop-' + this.$track.attr('id') ).foundation('reveal', 'close');
     },
 
     submit_add_playlist : function(playlists_url, playlist_id, track_id) {

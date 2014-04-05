@@ -74,17 +74,64 @@ app.PlaylistsModalView = Backbone.View.extend({
 	return this;
     },
 
-    /*clears, toggles modal, sets submit handler 
+    /*foundation fix for weird bg/css undefined errors*/
+    reset_modal : function(div) {
+	$('div').data('reveal-init', {
+	    animation: 'fadeAndPop',
+	    animation_speed: 250,
+	    close_on_background_click: false,
+	    close_on_esc: false,
+	    dismiss_modal_class: 'close-reveal-modal',
+	    bg_class: 'reveal-modal-bg',
+	    bg : $('.reveal-modal-bg'),
+	    css : {
+		open : {
+		    'opacity': 0,
+		    'visibility': 'visible',
+		    'display' : 'block'
+		},
+		close : {
+		    'opacity': 1,
+		    'visibility': 'hidden',
+		    'display': 'none'
+		}
+	    }
+	});
+
+    },
+
+
+    /*
+     *clears, toggles modal, sets submit handler 
      *to create playlist
+     *lots of problems with foundation and sharing modals
+     *this sequence seems to work
      */
     playlist_openModal : function(type, playlist) {
 	if (DEBUG)
 	    console.log("[PlaylistsModalView] playlist_openModal")
 	if (DEBUG)
 	    console.log(playlist)
+
 	this.render(type, playlist)
 
-	$(document).foundation()
+	/*open modal*/
+	this.reset_modal("#PlaylistModal")
+
+	$(document).on('open', '[data-reveal]', function () {
+	    $('.reveal-modal-bg').hide()
+	})
+
+	$('#PlaylistModal').foundation('reveal', 'open');
+
+	$(document).on('opened', '[data-reveal]', function () {
+	    $('.reveal-modal-bg').show()
+	    $('.reveal-modal-bg').click(function() {
+		$('#PlaylistModal').foundation('reveal', 'close')
+	    })
+	});
+
+	/*bind submit*/
 
 	//weird foundation bug
 	$('.close-reveal-modal').one('click', function(e) {
@@ -92,14 +139,6 @@ app.PlaylistsModalView = Backbone.View.extend({
 	    $('.reveal-modal-bg').remove()
 	})
 
-	$('nav').one('click', function(e) {
-	    $('.close-reveal-modal').click()
-	})
-
-	/*open modal*/
-	$('#PlaylistModal').foundation('reveal', 'open');
-
-	/*bind submit*/
 	var self = this;
 	$('#playlist_submit').click(function(e) {
 	    e.preventDefault()
