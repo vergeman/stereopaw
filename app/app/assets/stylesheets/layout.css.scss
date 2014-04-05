@@ -98,9 +98,15 @@ nav {
 
     /*hamburger right*/
     a.menu-icon{
-	float:right;
+	float:right;	
+	width: 50px;
+	height: 44px;
 	span {
+	    float: right;
 	    box-shadow: 0 10px 0 1px white, 0 16px 0 1px white, 0 22px 0 1px white;
+	    width: 18px;
+	    margin-right: 1rem;
+	    margin-top: .3rem;
 	}
     }
 
