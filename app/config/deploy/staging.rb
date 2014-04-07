@@ -28,12 +28,12 @@ set :rails_env,     "staging"
 #    auth_methods: %w(password)
 #  }
 # and/or per server
- server '204.236.198.206',
-   user: 'ubuntu',
+ server ENV['STAGING_IP'],
+   user: ENV['STAGING_USER'],
    roles: %w{web app db}, :primary => true,
    ssh_options: {
-     user: 'ubuntu', # overrides user setting above
-     keys: [ ENV['STEREOPAW_SSH_KEY_PATH'] ],
+     #user: 'ubuntu', # overrides user setting above
+     keys: [ ENV['STAGING_SSH_KEY_PATH'] ],
      forward_agent: true,
      auth_methods: %w(publickey)
      # password: 'please use keys'

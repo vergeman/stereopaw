@@ -28,14 +28,14 @@ set :rails_env,     "production"
 #    auth_methods: %w(password)
 #  }
 # and/or per server
-#server '204.236.198.206',
-# user: 'ubuntu',
-# roles: %w{web app db} :primary => true,
-# ssh_options: {
+server ENV['PRODUCTION_IP'],
+  user: ENV['PRODUCTION_USER'],
+  roles: %w{web app db} :primary => true,
+  ssh_options: {
 #   user: 'ubuntu', # overrides user setting above
-#   keys: ENV['STEREOPAW_SSH_KEY_PATH'],
-#   forward_agent: true,
-#   auth_methods: %w(publickey)
+    keys: ENV['PRODUCTION_SSH_KEY_PATH'],
+    forward_agent: true,
+    auth_methods: %w(publickey)
 #  # password: 'please use keys'
-#}
+}
 # setting per server overrides global ssh_options

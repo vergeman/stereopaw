@@ -13,9 +13,6 @@ set :ssh_options, { :forward_agent => true }
 set :repository, "git@github.com:vergeman/SoundByte.git"
 set :scm, :git
 set :branch, "master"
-
-set :repository,  "git@github.com:name/project.git"
-set :branch, "master"
 set :subdir, "app"
 
 
@@ -40,7 +37,7 @@ set :deploy_to, '/home/ubuntu/stereopaw'
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config/database.yml .env}
+set :linked_files, %w{.env .env.staging .env.production}
 
 # Default value for linked_dirs is []
 #set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}

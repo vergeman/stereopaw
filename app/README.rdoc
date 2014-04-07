@@ -1,3 +1,8 @@
+* ENV setup
+.env, .env.staging, .env.production need to be symlinked into repo before running app.
+see .env.example for necessary env variables
+
+
 == README
 
 This README would normally document whatever steps are necessary to get the
