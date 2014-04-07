@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+#.env vars for secrets
+gem 'dotenv-rails'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.1'
 
@@ -65,6 +68,11 @@ gem 'passenger'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
+
+group :development do
+  gem 'capistrano',  '~> 3.1'
+  gem 'capistrano-rails', '~> 1.1'
+end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]

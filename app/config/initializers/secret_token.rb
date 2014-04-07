@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-App::Application.config.secret_key_base = '273c085f3c36a6b5c4bb27b6774a38469ca8134cdb813e46060dfbac1b0f8294803aa9a23422f42de9875f09122c4dbe10f5ce66dbdebcbeaffd3b3519bbb31c'
+App::Application.config.secret_key_base = ENV['APP_SECRET']

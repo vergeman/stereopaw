@@ -17,3 +17,8 @@
 
 #ignore code coverage output
 /coverage
+
+#ignore .env's
+.env
+.env.production
+.env.staging

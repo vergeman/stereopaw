@@ -17,5 +17,8 @@ production:
     encoding: unicode
     database: soundbyte_production
     username: alan
+    host: <%= ENV['STEREOPAW_DB_HOST'] %>
+    password: <%= ENV['STEREOPAW_DB_PASSWORD'] %>
     pool: 5
+
 
