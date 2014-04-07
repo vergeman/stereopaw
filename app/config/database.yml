@@ -12,7 +12,7 @@ test:
     username: alan
     pool: 5
 
-production:
+staging:
     adapter: postgresql
     encoding: unicode
     database: soundbyte_production
@@ -21,4 +21,11 @@ production:
     password: <%= ENV['STEREOPAW_DB_PASSWORD'] %>
     pool: 5
 
-
+production:
+    adapter: postgresql
+    encoding: unicode
+    database: soundbyte_production
+    username: alan
+    host: <%= ENV['STEREOPAW_DB_HOST'] %>
+    password: <%= ENV['STEREOPAW_DB_PASSWORD'] %>
+    pool: 5
