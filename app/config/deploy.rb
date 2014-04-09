@@ -20,7 +20,7 @@ set :subdir, "app"
 #ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
 # Default deploy_to directory is /var/www/my_app
-set :deploy_to, '/home/ubuntu/stereopaw'
+set :deploy_to, ENV['DEPLOY_DIR']
 
 #ssh_options[:forward_agent] = true
 #ssh_options[:auth_methods] = ["publickey"]
