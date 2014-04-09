@@ -16,7 +16,7 @@ staging:
     adapter: postgresql
     encoding: unicode
     database: soundbyte_production
-    username: alan
+    username: stereopaw
     host: <%= ENV['STAGING_DB_HOST'] %>
     password: <%= ENV['STAGING_DB_PASSWORD'] %>
     pool: 5
@@ -25,7 +25,7 @@ production:
     adapter: postgresql
     encoding: unicode
     database: soundbyte_production
-    username: alan
+    username: stereopaw
     host: <%= ENV['PRODUCTION_DB_HOST'] %>
     password: <%= ENV['PRODUCTION_DB_PASSWORD'] %>
     pool: 5
