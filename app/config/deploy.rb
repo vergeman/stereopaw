@@ -77,9 +77,8 @@ namespace :deploy do
     end
   end
 
-  after :stop, "delayed_job:stop"
-  after :start, "delayed_job:start"
   after :restart, "delayed_job:stop", "delayed_job:restart"
+
   after :updating, :checkout_subdir
 end
 
