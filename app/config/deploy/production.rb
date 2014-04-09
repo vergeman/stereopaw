@@ -29,7 +29,7 @@ set :rails_env,     "production"
 #  }
 # and/or per server
 server ENV['PRODUCTION_IP'],
-  user: ENV['PRODUCTION_USER'],
+o  user: ENV['PRODUCTION_USER'],
   roles: %w{web app db}, :primary => true,
   ssh_options: {
 #   user: 'ubuntu', # overrides user setting above

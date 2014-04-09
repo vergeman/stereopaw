@@ -4,6 +4,8 @@ lock '3.1.0'
 require 'dotenv'
 Dotenv.load
 
+
+
 set :application, 'stereopaw'
 set :repo_url, 'git@github.com:vergeman/SoundByte.git'
 set :user, "ubuntu"
@@ -15,6 +17,7 @@ set :scm, :git
 set :branch, "master"
 set :subdir, "app"
 
+set :delayed_job_command, "bin/delayed_job"
 
 # Default branch is :master
 #ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
@@ -53,8 +56,6 @@ set :rvm_type, :user                     # Defaults to: :auto
 #set :rvm_ruby_version, '2.0.0-p247'      # Defaults to: 'default'
 set :default_env, { rvm_bin_path: '~/.rvm/bin' }
 
-
-
 namespace :deploy do
 
   desc 'Restart application'
@@ -76,6 +77,9 @@ namespace :deploy do
     end
   end
 
+  after :stop, "delayed_job:stop"
+  after :start, "delayed_job:start"
+  after :restart, "delayed_job:stop", "delayed_job:restart"
   after :updating, :checkout_subdir
 end
 

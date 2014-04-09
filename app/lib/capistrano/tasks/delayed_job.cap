@@ -1,0 +1,24 @@
+desc "Delayed Job Worker"
+namespace :delayed_job do
+  task :restart do
+    on roles(:all) do
+      execute "cd #{current_path};RAILS_ENV=#{fetch(:rails_env)} bin/delayed_job restart"
+    end
+  end
+
+
+  task :stop do
+    on roles(:all) do
+      execute "cd #{current_path};RAILS_ENV=#{fetch(:rails_env)} bin/delayed_job stop"
+    end
+  end
+
+
+  task :start do
+    on roles(:all) do
+      execute "cd #{current_path};RAILS_ENV=#{fetch(:rails_env)} bin/delayed_job start"
+    end
+  end
+
+end
+  
