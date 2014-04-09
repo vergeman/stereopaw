@@ -71,6 +71,8 @@ app.AppRouter = Backbone.Router.extend({
 		      "/edituser" )
 	}
 
+	app.vent.trigger("NavigationView:ActivateLink", "settings")
+
     },
     forgot : function() {
 	if (DEBUG)
@@ -91,7 +93,7 @@ app.AppRouter = Backbone.Router.extend({
 	else {
 	    redirect()
 	}
-
+	app.vent.trigger("NavigationView:ActivateLink", "login_nav")
     },
 
     signup : function() {
@@ -113,7 +115,8 @@ app.AppRouter = Backbone.Router.extend({
 	else {
 	    redirect()
 	}
-	
+
+	app.vent.trigger("NavigationView:ActivateLink", "login_nav")
     },
 
     login : function() {
@@ -132,7 +135,7 @@ app.AppRouter = Backbone.Router.extend({
 	else {
 	    Backbone.history.navigate("/", { trigger:true})
 	}
-
+	app.vent.trigger("NavigationView:ActivateLink", "login_nav")
     },
 
     /*Playlist Routes*/
@@ -153,6 +156,7 @@ app.AppRouter = Backbone.Router.extend({
 	    this.view(new app.PlaylistsIndexView(playlists), '/playlists' )
 	}
 
+	app.vent.trigger("NavigationView:ActivateLink", "playlist")
     },
 
     playlist : function(playlist_id) {
@@ -179,7 +183,7 @@ app.AppRouter = Backbone.Router.extend({
 		routename)
 	}
 
-
+	app.vent.trigger("NavigationView:ActivateLink", "playlist")
 
     },
 /*Track Routes*/
@@ -197,7 +201,7 @@ app.AppRouter = Backbone.Router.extend({
 	    this.generate_trackview("/tracks", "tracks")
 	}
 
-
+	app.vent.trigger("NavigationView:ActivateLink", "mytracks")
     },
 
     edit_track : function(user_id, track_id) {
@@ -218,7 +222,7 @@ app.AppRouter = Backbone.Router.extend({
 		      "/edit/" + user_id + "/" + track_id)
 	}
 
-
+	app.vent.trigger("NavigationView:ActivateLink", "mytracks")
     },
 
     new_tracks : function() {
@@ -226,13 +230,16 @@ app.AppRouter = Backbone.Router.extend({
 	    console.log("[AppRouter] new_tracks")
 
 	this.generate_trackview("/new", "new")
+	app.vent.trigger("NavigationView:ActivateLink", "new")
     },
 
 
     popular_tracks : function() {
 	if (DEBUG)
-	console.log("[AppRouter] popular")
+	    console.log("[AppRouter] popular")
+
 	this.generate_trackview("/popular", "popular")
+	app.vent.trigger("NavigationView:ActivateLink", "popular")
     },
     
     submithow : function() {
@@ -241,6 +248,8 @@ app.AppRouter = Backbone.Router.extend({
 
 	this.view(new app.SubmitView(), "/submithow")
 	$(document).foundation()
+
+	app.vent.trigger("NavigationView:ActivateLink", "submit")
     },
 
     root : function() {
@@ -259,6 +268,8 @@ app.AppRouter = Backbone.Router.extend({
 		redirect) )
 	{
 	    this.generate_trackview("/tracks", "tracks")
+	    app.vent.trigger("NavigationView:ActivateLink", 
+			     "mytracks")
 	}
     },
 

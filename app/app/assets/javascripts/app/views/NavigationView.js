@@ -24,7 +24,12 @@ app.NavigationView = Backbone.View.extend({
 	this.session = session
 	this.listenTo(app.vent, "Session:logged-in", this.render_loggedin)
 	this.listenTo(app.vent, "Session:logged-out", this.render_loggedout)
-	
+
+	/*toggle active state of nav link*/
+	this.listenTo(app.vent, "NavigationView:ActivateLink",
+		      this.activate_link)
+
+
 	/* Root Link: this is out of navbar scope 
 	 * so we manually attach
 	 */
@@ -59,6 +64,22 @@ app.NavigationView = Backbone.View.extend({
 	$('ul.navigation li').click(function() {
 	    $('.menu-icon').click()
 	});
+    },
+
+    _clear_links : function() {
+	if (DEBUG)
+	    console.log("[NavigationView] clear_links")
+	$('ul.navigation li').removeClass("route")
+    },
+
+    activate_link : function(div_name) {
+	if (DEBUG)
+	    console.log("[NavigationView] activate_link")
+
+	/*clear all link*/
+	this._clear_links()
+	/*make active*/
+	$('ul.navigation li#' + div_name).addClass("route")
     },
 
     home : function(e) {
