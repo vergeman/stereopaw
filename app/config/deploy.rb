@@ -77,9 +77,17 @@ namespace :deploy do
     end
   end
 
-  after :restart, "delayed_job:stop", "delayed_job:restart"
 
   after :updating, :checkout_subdir
 end
 
+
+after 'deploy:publishing', 'deploy:restart'           
+namespace :deploy do
+  task :restart do
+    invoke 'delayed_job:stop'
+    #invoke 'delayed_job:start'
+    invoke 'delayed_job:restart'          
+  end                                                
+end
 
