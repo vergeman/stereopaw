@@ -27,7 +27,7 @@ set :deploy_to, ENV['DEPLOY_DIR']
 
 #ssh_options[:forward_agent] = true
 #ssh_options[:auth_methods] = ["publickey"]
-#ssh_options[:keys] = [ ENV['STEREOPAW_SSH_KEY_PATH'] ]
+#ssh_options[:keys] = []
 
 
 # Default value for :format is :pretty
@@ -40,7 +40,7 @@ set :deploy_to, ENV['DEPLOY_DIR']
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{.env .env.staging .env.production}
+set :linked_files, %w{.env .env.staging .env.production scottishfold.key ssl-bundle.crt}
 
 # Default value for linked_dirs is []
 #set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
