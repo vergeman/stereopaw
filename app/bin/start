@@ -1,0 +1,3 @@
+#!/bin/bash
+passenger start -p 5152 --ssl --ssl-certificate ./localhost.crt --ssl-certificate-key ./localhost.key
+
