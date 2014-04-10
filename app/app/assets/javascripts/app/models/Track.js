@@ -90,7 +90,7 @@ app.Track = Backbone.Model.extend({
 	case 'youtube':
 	    this.set(
 		{
-		    attribution_url: "http://developers.google.com/youtube/images/YouTube_logo_standard_white.png",
+		    attribution_url: "//developers.google.com/youtube/images/YouTube_logo_standard_white.png",
 		    attribution_width: "60px",
 		    attribution_height: "38px"
 		}
@@ -100,7 +100,7 @@ app.Track = Backbone.Model.extend({
 	case 'soundcloud':
 	    this.set(
 		{
-		    attribution_url: "http://developers.soundcloud.com/assets/logo_black.png",
+		    attribution_url: "//developers.soundcloud.com/assets/logo_black.png",
 		    attribution_width: "104px",
 		    attribution_height: "16px"
 		}

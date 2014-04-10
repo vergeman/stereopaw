@@ -17,7 +17,7 @@ app.SoundManager_Player = Backbone.Model.extend({
 	switch(track.get("service"))
 	{
 	case "soundcloud" :
-	    return 'http://api.soundcloud.com/tracks/' + track.get("track_id") + '/stream?client_id=' + this.SOUNDCLOUD_KEY
+	    return '//api.soundcloud.com/tracks/' + track.get("track_id") + '/stream?client_id=' + this.SOUNDCLOUD_KEY
 
 	default:
 	    return "";

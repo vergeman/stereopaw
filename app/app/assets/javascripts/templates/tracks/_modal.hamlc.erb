@@ -7,7 +7,7 @@
     %h3{:style=>"text-align:center;"}
       Save the best of the mix.
     %p.marklet
-      %a{:onclick => 'return false;', :href => 'javascript:(function(){document.getElementById("sb-app") ? false : (function() {var e = document.createElement("script");e.setAttribute("id", "sb-script");e.setAttribute("src","http://<%= ENV['markletURL'] %>/stereopaw-min.js?r="+Math.random()*99999999);document.body.appendChild(e)})() }())'}        
+      %a{:onclick => 'return false;', :href => 'javascript:(function(){document.getElementById("sb-app") ? false : (function() {var e = document.createElement("script");e.setAttribute("id", "sb-script");e.setAttribute("src","//<%= ENV['markletURL'] %>/stereopaw-min.js?r="+Math.random()*99999999);document.body.appendChild(e)})() }())'}        
         %button
           stereo paw
       .caption
@@ -22,7 +22,7 @@
 
     #code
       %textarea{:readonly => ''}
-        javascript:(function(){document.getElementById("sb-app") ? false : (function() {var e = document.createElement("script");e.setAttribute("id", "sb-script");e.setAttribute("src","http://<%= ENV['markletURL'] %>/stereopaw-min.js?r="+Math.random()*99999999);document.body.appendChild(e)})() }())
+        javascript:(function(){document.getElementById("sb-app") ? false : (function() {var e = document.createElement("script");e.setAttribute("id", "sb-script");e.setAttribute("src","//<%= ENV['markletURL'] %>/stereopaw-min.js?r="+Math.random()*99999999);document.body.appendChild(e)})() }())
         
   %a.close-reveal-modal
     &#215;

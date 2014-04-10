@@ -6,7 +6,7 @@ SB.Page = (function() {
 
     
 
-    var HOME = "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151";
+    var HOME = "//ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151";
 
     var _header = [
 	'<div id = "sb-close">',
