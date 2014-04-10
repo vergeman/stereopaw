@@ -86,7 +86,7 @@ var SB = (function () {
 	     */
 	     $('#sb-submit-button').bind("click", function(e) {
 		 e.preventDefault();
-		 window.open(self.Track.getURL(), 'stereopaw', 'top=0,left=0,width=600, height=500');
+		 window.open(self.Track.getURL(), 'stereopaw', 'top=0,left=0,width=600, height=675');
 		 console.log("clicked")
 		 $('#sb-close').click();
 		 console.log("closing")

@@ -35,3 +35,16 @@ $('input#track_submit').click(function(e) {
 
     $('form#new_track').submit()
 });
+
+
+/*submit page auto close*/
+
+$(document).ready(function() {
+    //if we are on the submit page
+    if ($('#musicbutton').length) {
+	_interval = setInterval(function() {
+	    window.close()
+	}, 4000)
+    }
+
+})
