@@ -3,7 +3,8 @@
  * contains information to be marked
  */
 SB.Track = (function() {
-    _url = "http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/tracks/new";
+
+    _url = HOST + "/tracks/new";
 
     var track = {};
 

@@ -1,6 +1,13 @@
 if (DEBUG)
     console.log("[stereopaw 2.0]");
 
+if (!ENV)
+    HOST = "//ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151"
+
+if (ENV)
+    HOST = "//www.stereopaw.com"
+
+
 /*
  * SB: 'main' driver
  *
