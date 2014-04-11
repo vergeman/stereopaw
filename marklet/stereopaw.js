@@ -1,4 +1,5 @@
-console.log("[stereopaw 2.0]");
+if (DEBUG)
+    console.log("[stereopaw 2.0]");
 
 /*
  * SB: 'main' driver
@@ -39,11 +40,14 @@ var SB = (function () {
 
 	start: function () {
 
-	    console.log("[stereopaw 2.0] start()");
+	    if (DEBUG)
+		console.log("[stereopaw 2.0] start()");
 
 	    /*determine service*/
 	    self.service = self.Service.getService();
-	    console.log( "Service: " + self.service )
+
+	    if (DEBUG)
+		console.log( "Service: " + self.service )
 
 	    if ( !document.getElementById('sb-app') )
 	    {
@@ -65,11 +69,14 @@ var SB = (function () {
 	     * attach event handlers
 	     */
 
-	    console.log("[stereopaw 2.0] events()");
+	    if (DEBUG)
+		console.log("[stereopaw 2.0] events()");
 
 	    /*Exit 'X' click*/
 	    $('#sb-close').bind("click", function() {
-		console.log("[stereopaw 2.0] Exiting");
+
+		if (DEBUG)
+		    console.log("[stereopaw 2.0] Exiting");
 
 		clearInterval(self._interval)
 
@@ -87,9 +94,14 @@ var SB = (function () {
 	     $('#sb-submit-button').bind("click", function(e) {
 		 e.preventDefault();
 		 window.open(self.Track.getURL(), 'stereopaw', 'top=0,left=0,width=600, height=675');
-		 console.log("clicked")
+
+		 if (DEBUG)
+		     console.log("clicked")
+
 		 $('#sb-close').click();
-		 console.log("closing")
+
+		 if (DEBUG)
+		     console.log("closing")
 	     });
 
 	    /*player controls*/
@@ -114,7 +126,8 @@ var SB = (function () {
 
 	    //track seek - serviceplayer unique
 	    $('#sb-display-bar').click(function(e) {
-		console.log("seek");
+		if (DEBUG)
+		    console.log("seek");
 
 		var offset = $(this).parent().offset();
 		var x = e.pageX - offset.left;
@@ -126,7 +139,8 @@ var SB = (function () {
 
 	update: function() 
 	{
-	    console.log("[stereopaw 2.0] update()");
+	    if (DEBUG)
+		console.log("[stereopaw 2.0] update()");
 
 	    self._interval = setInterval(function() {
 
@@ -143,7 +157,9 @@ var SB = (function () {
 
 	render: function() 
 	{
-	    console.log("[stereopaw 2.0] render()");
+	    if (DEBUG)
+		console.log("[stereopaw 2.0] render()");
+
 	    if ( $('#sb-app').is(":hidden") ) {
 		$('#sb-app').fadeIn();
 	    }
