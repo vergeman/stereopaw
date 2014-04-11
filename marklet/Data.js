@@ -97,14 +97,14 @@ SB.Data = (function() {
 		sc_md.sound.attributes.id,
 		sc_md.sound.attributes.user.username,
 		sc_md.sound.attributes.title,
-		sc_md.sound.attributes.user.permalink_url,
+		sc_md.sound.attributes.user.permalink_url.replace(/^(http|https):\/\//, "//"),
 		sc_md.sound.attributes.duration,
 		sc_time,
 		SB.Util.toTime(sc_time, "ms"),
-		sc_md.sound.attributes.permalink_url,
+		sc_md.sound.attributes.permalink_url.replace(/^(http|https):\/\//, "//"),
 		(sc_md.sound.attributes.sharing == "public" ? true : false),
 		_service,
-		artwork_url
+		artwork_url.replace(/^(http|https):\/\//, "//")
 	    );
 
 	},
@@ -159,14 +159,14 @@ SB.Data = (function() {
 		ytplayer.config.args.video_id,
 		yt_artist,
 		yt_title,
-		ytplayer.config.args.loaderUrl,
+		ytplayer.config.args.loaderUrl.replace(/^(http|https):\/\//, "//"),
 		yt_duration,
 		yt_time,
 		SB.Util.toTime(yt_time, "secs"),
-		ytplayer.config.args.loaderUrl,
+		ytplayer.config.args.loaderUrl.replace(/^(http|https):\/\//, "//"),
 		true,
 		_service,
-		"http://img.youtube.com/vi/" + ytplayer.config.args.video_id + "/0.jpg"
+		"//img.youtube.com/vi/" + ytplayer.config.args.video_id + "/0.jpg"
 	    );
 
 	},
