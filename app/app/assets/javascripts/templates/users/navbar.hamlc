@@ -1,7 +1,7 @@
 #profile
   - if @user
     #email
-      #{@user.email}
+      = @user.email.split("@").shift()
     
 %ul.navigation
   - if @user
