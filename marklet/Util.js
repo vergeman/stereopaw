@@ -3,7 +3,6 @@ SB.Util = (function() {
 
     var util = {};
 
-
     function prezero(num)
     {
 	return (num.toFixed().length > 1 ? num.toFixed() : "0" + num.toFixed())
@@ -18,6 +17,24 @@ SB.Util = (function() {
 
 	return hours + ":" + prezero(min) + ":" + prezero(sec)
     }
+
+//format : textToSecs("1h", "34m", "10s")
+    util.textToSecs = function(hrs, mins, secs) {
+
+	var total_secs = 0;
+
+	if (hrs)
+	    total_secs += parseInt(60 * 60 * hrs[0].match(/\d+/)[0])
+
+	if (mins)
+	    total_secs += parseInt(60 * mins[0].match(/\d+/)[0])
+
+	if (secs)
+	    total_secs += parseInt(secs)
+
+	return total_secs
+    }
+
 
     util.TimetoMs = function(timestring) {
 	min = timestring.split(":")[0];

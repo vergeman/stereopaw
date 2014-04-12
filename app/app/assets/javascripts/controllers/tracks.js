@@ -20,14 +20,20 @@ $('#musicbutton a').click(function(e) {
 })
 
 
+/*
+ * timestamp input as milleseconds
+ * note: may need duration as input as milleseconds also
+ * from marklet
+ */
 
 $('input#track_submit').click(function(e) {
     e.preventDefault()
     var timestamp;
 
-    if ($('input#track_service').val() == "youtube") {
+    if ( $('input#track_service').val() == "youtube")  {
 	timestamp = to_ms( $('input#track_timeformat').val() ) / 1000
-    }else {
+    }
+    else {
 	timestamp = to_ms( $('input#track_timeformat').val() )
     }
 

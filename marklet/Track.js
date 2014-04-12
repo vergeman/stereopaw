@@ -23,7 +23,20 @@ SB.Track = (function() {
     _service ='';
     _artwork_url= '';
 
-    track.set = function(track_id, artist, title, profile_url, duration, timestamp, timeformat, page_url, shareable, service, artwork_url) {
+/*youtube allow timestamp/duration in seconds, as 
+ *the iframe player wants those values
+*/
+    track.set = function(track_id,
+			 artist,
+			 title,
+			 profile_url,
+			 duration, //ms
+			 timestamp,
+			 timeformat, //ms
+			 page_url,
+			 shareable,
+			 service,
+			 artwork_url) {
 
 	_track_id = track_id
 	_artist = artist

@@ -107,6 +107,26 @@ app.Track = Backbone.Model.extend({
 	    )
 	    break;
 
+	case 'spotify':
+	    this.set(
+		{
+		    attribution_url: "spotify-logo.jpg",
+		    attribution_width: "70px",
+		    attribution_height: "21px"
+		}
+	    )
+	    break;
+
+	case 'mixcloud':
+	    this.set(
+		{
+		    attribution_url: "mixcloud-logo.png",
+		    attribution_width: "90px",
+		    attribution_height: "15px"
+		}
+	    )
+	    break;
+
 	default:
 	    this.set({attribution_url: ""})
 	}

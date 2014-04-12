@@ -16,7 +16,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 
 chrome.browserAction.onClicked.addListener(function(tab) {
   chrome.tabs.executeScript(null, 
-			    { code: "(function(){document.getElementById('sb-app') ? false : (function() {var e = document.createElement('script');e.setAttribute('id', 'sb-script');e.setAttribute('src','//ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/stereopaw-min.js?r='+Math.random()*99999999);document.body.appendChild(e)})() }())"
+			    { code: "(function(){document.getElementById('sb-app') ? false : (function() {var e = document.createElement('script');e.setAttribute('id', 'sb-script');e.setAttribute('src','https://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/stereopaw-min.js?r='+Math.random()*99999999);document.body.appendChild(e)})() }())"
 });
 
 

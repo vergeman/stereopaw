@@ -44,32 +44,53 @@ SB.Data = (function() {
 
 	'mixcloud': function() 
 	{
-	    var mc = {}, mc_time;
 
-	    mc = try_get(
-		function() { return $("#player-module").data()['controller:player_module'].playerStatus }, 
-		function() { return 0; },
-		{}
-	    )
+/*
+current track in set
+		    mc.nowPlaying.currentDisplayTrack.artist,
+		    mc.nowPlaying.currentDisplayTrack.title,
+*/
 
-	    mc_time = try_get(
-		function() { return mc.audio_position},
-		function() { return 0; },
-		0
-	    )
-	    
-	    _track.set(
-		try_get( function() { return $('#cloudcast-owner-link > span')[0].innerHTML; }, 
-			 function() { return $('#cloudcast-owner-link')[0].innerHTML; },
-			 ''
-		       ),
-		$('#cloudcast-name').html(),
-		"http://www.mixcloud.com" + $('#cloudcast-owner-link').attr("href"),
-		mc.now_playing_audio_length,
-		mc_time,
-		SB.Util.toTime(mc_time, "secs"),
-		"http://www.mixcloud.com" + mc.now_playing_key
-	    );
+	    var mc = $('.player').scope()
+
+	    if (mc.playerStarted) {
+
+		_track.set(
+		    mc.waveformUrl.match(/([^\/]+)\.json/)[1],
+		    mc.currentCloudcast.owner,
+		    mc.currentCloudcast.title,
+		    "//www.mixcloud.com" + mc.currentCloudcast.ownerUrl,
+		    mc.audioLength * 1000,
+		    mc.audioPosition,
+		    SB.Util.toTime(mc.audioPosition, "secs"),
+		    "//www.mixcloud.com" + mc.currentCloudcast.url,
+		    true,
+		    "mixcloud",
+		    mc.currentCloudcast.mobilePlayerFullImage
+		)
+
+	    } else {
+
+		var hrs = $('.cloudcast-time').html().match(/(\d+)h/)
+		var mins = $('.cloudcast-time').html().match(/(\d+)m/)
+		_track.set(
+		    undefined,
+		    $('span[itemprop="name"]').html(),
+		    $('.cloudcast-title').html(),
+		    "//www.mixcloud.com" + $('.cloudcast-uploader').attr("href"),
+		    SB.Util.textToSecs(hrs, mins, 0) * 1000,
+		    0,
+		    "0:00",
+		    window.location.href.match("[^(http|https):]\.*"),
+		    true,
+		    "mixcloud",
+		    $('.cloudcast-image').attr("src")
+		);
+
+
+	    }
+
+
 	},
 
 	/*
@@ -108,6 +129,10 @@ SB.Data = (function() {
 	    );
 
 	},
+
+	/*
+	 * YOUTUBE
+	 */
 	'youtube' : function() {
 	    if(_player == null) {
 		_player = document.getElementById("movie_player");
@@ -191,7 +216,12 @@ SB.Data = (function() {
 		window.frames[1].document.getElementById('track-current').innerHTML,
 		window.frames[1].document.getElementById('track-name').children[0].href,
 		true,
-		"spotify"
+		"spotify",
+		try_get(
+		    function() {
+			return window.frames[1].document.getElementsByClassName('sp-image-img')[0].getAttribute("style").match(/http[^)(]+/)[0] },
+		    function() { return null }
+		)
 	    )
 
 
