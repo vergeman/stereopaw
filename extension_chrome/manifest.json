@@ -7,6 +7,10 @@
 	"persistence": false,
 	"scripts": [ "bg.js" ]
     },
+    "externally_connectable": {
+	"matches": ["*://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com/*",
+		    "*://*.stereopaw.com/*"]
+    },
 /*
   //we will inject via bg.js onclick
     "content_scripts": [ {

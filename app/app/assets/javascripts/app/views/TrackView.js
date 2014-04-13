@@ -16,6 +16,7 @@ app.TrackView = Backbone.View.extend({
 	this.editable = opts.editable
 	this.playlistable = opts.playlistable
 	this.playlistdropdown= null
+	this.services = ["youtube", "soundcloud"]
     },
 
     events : 
@@ -45,13 +46,55 @@ app.TrackView = Backbone.View.extend({
 	return this;
     },
 
+    /*
+     *sends message to extension for possible external play
+     *url, timestamp, service params
+     */
+    extension_play : function($track_meta, timestamp) {
+	if (DEBUG)
+	    console.log("[TrackView] Extension Play")
+
+	// The ID of the extension we want to talk to.
+	var editorExtensionId = "gljkhinfbefolpcbippakocpbaikhflg";
+	var url = "http:" + $track_meta.find('.track-title a').attr("href")
+	console.log(url)
+
+
+	// Make a simple request:
+	chrome.runtime.sendMessage(editorExtensionId, 
+				   {
+				       URL: url,
+				       time: timestamp,
+				       service : $track_meta.attr("service")
+				   },
+				   function(response) {
+				       if (!response.success)
+					   handleError(url);
+				   }
+				  );
+
+    },
+
     play : function(e) {
 	if (DEBUG)
 	    console.log("[TrackView] play")
 
-	var time = $(e.currentTarget).attr('timestamp');
+	var $track_meta = $(e.currentTarget).parents('.track-meta')
+	var timestamp = $(e.currentTarget).attr('timestamp');
+	var service = $(e.currentTarget).attr("service")
 
-	app.vent.trigger("Player:play", $(e.currentTarget).parents('.track-meta'), time)
+	/*play in-site*/
+	if ($.inArray(service, this.services) >= 0) {
+
+	    app.vent.trigger("Player:play", $track_meta, timestamp)
+
+	}
+	/*launch external site*/
+	else {
+
+	    this.extension_play($track_meta, timestamp)
+
+	}
 
     },
 
