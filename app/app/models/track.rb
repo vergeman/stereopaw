@@ -35,9 +35,9 @@ class Track < ActiveRecord::Base
   validates :profile_url, :page_url, :artwork_url, url: true #/validators/UrlValidator
 
   validates :duration, :timestamp, numericality: true
+  validate :timeformat_less_than_duration
   validates :plays, numericality: { only_integer: true, :greater_than_or_equal_to => 0 }
-
-  validates_format_of :timeformat, :with => /\A([^0:\D][0-9]*:)?([1-5]?[0-9]:)([0-5][0-9])\Z/
+  validates_format_of :timeformat, :with => /\A^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$\Z/
 
   validates :comment, length: { maximum: 1000 }
   before_save :capitalize_genres
@@ -75,4 +75,11 @@ class Track < ActiveRecord::Base
     self.genres = self.genres.map{|g| g.split.map(&:capitalize).join(" ")}
   end
 
+  #timeformat is just a time-formatted timestamp value,
+  #so we check timestamp for ease
+  def timeformat_less_than_duration
+    if (timestamp > duration)
+      errors.add(:timeformat, "exceeds duration")
+    end
+  end
 end
