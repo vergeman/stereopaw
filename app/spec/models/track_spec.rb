@@ -175,34 +175,34 @@ describe Track do
     end
 
     #URL Format
-    context "page_url | profile_url | artwork_url URL type Validations" do
+    context "page_url | profile_url | artwork_url URI type Validations" do
 
-      it "page_url must be of url type" do
-        @track.page_url = "https://www.google.com/dfdkf"
+      it "page_url must be of uri type" do
+        @track.page_url = "//www.google.com/dfdkf"
         @track.should be_valid
       end
 
-      it "page_url must only be of url type" do
+      it "page_url must only be of uri type" do
         @track.page_url = "asdfasd"
         @track.should_not be_valid
       end
 
-      it "profile_url must be of url type" do
-        @track.profile_url = "https://www.google.com/dfdkf?dfd=etes&dfd=dfd"
+      it "profile_url must be of uri type" do
+        @track.profile_url = "//www.google.com/dfdkf?dfd=etes&dfd=dfd"
         @track.should be_valid
       end
 
-      it "profile_url must only be of url type" do
+      it "profile_url must only be of uri type" do
         @track.profile_url = "aalkenfek"
         @track.should_not be_valid
       end
 
-      it "artwork_url must be of url type" do
-        @track.artwork_url = "https://www.google.com/dfdkf?dfd=etes&dfd=dfd"
+      it "artwork_url must be of uri type" do
+        @track.artwork_url = "//www.google.com/dfdkf?dfd=etes&dfd=dfd"
         @track.should be_valid
       end
 
-      it "artwork_url must only be of url type" do
+      it "artwork_url must only be of uri type" do
         @track.artwork_url = "aalkenfek"
         @track.should_not be_valid
       end
@@ -241,7 +241,7 @@ describe Track do
       end
 
       it "duration only accepts numeric values" do
-        @track.duration = "342.34"
+        @track.duration = "342000000.34"
         @track.should be_valid
       end
 
@@ -285,22 +285,12 @@ describe Track do
         @track.should be_valid
       end
 
-      it "has a valid timeformat [71:23:45]" do
-        @track.timeformat = "71:23:45"
-        @track.should be_valid
-      end
-
-      it "has a valid timeformat [1:23:12]" do
-        @track.timeformat = "71:23:45"
-        @track.should be_valid
-      end
-
       it "timeformat values (min/sec/hr) shoult not be >= 60" do
         @track.timeformat = "61:60:52"
         @track.should_not be_valid
       end
 
-      it "timeformat values shoult contain valid leading characters" do
+      it "timeformat values should contain valid leading characters" do
         @track.timeformat = ":23:23"
         @track.should_not be_valid
       end

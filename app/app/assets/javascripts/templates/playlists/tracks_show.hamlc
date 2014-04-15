@@ -2,8 +2,9 @@
 
   %i.fi-play
 
-%td.title
-  #{@track.title}
+%td.title.track-title
+  %a{:href => @track.page_url, :target => "_blank"}
+    #{@track.title}
 
 %td.artist
   #{@track.artist}

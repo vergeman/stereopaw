@@ -40,9 +40,11 @@ app.PlaylistTrackView = Backbone.View.extend({
     play : function(e) {
 	if (DEBUG)
 	    console.log("[PlaylistTrackView] play")
-	var time = $(e.currentTarget).attr('timestamp');
 
-	app.vent.trigger("Player:play", $(e.currentTarget), time)
+	var $track_meta = $(e.currentTarget)
+	var timestamp = $track_meta.attr('timestamp');
+
+	app.vent.trigger("Player:play", $track_meta, timestamp)
     },
 
     render : function() {

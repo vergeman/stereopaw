@@ -16,7 +16,6 @@ app.TrackView = Backbone.View.extend({
 	this.editable = opts.editable
 	this.playlistable = opts.playlistable
 	this.playlistdropdown= null
-	this.services = ["youtube", "soundcloud"]
     },
 
     events : 
@@ -52,22 +51,8 @@ app.TrackView = Backbone.View.extend({
 
 	var $track_meta = $(e.currentTarget).parents('.track-meta')
 	var timestamp = $(e.currentTarget).attr('timestamp');
-	var service = $track_meta.attr("service")
 
-	/*play in-site*/
-	if ($.inArray(service, this.services) >= 0) {
-
-	    app.vent.trigger("Player:play", $track_meta, timestamp)
-
-	}
-	/*launch external site*/
-	else {
-
-	    app.vent.trigger("Player:play_extension",
-			     $track_meta, timestamp)
-
-	}
-
+	app.vent.trigger("Player:play", $track_meta, timestamp)
     },
 
     stop : function() {

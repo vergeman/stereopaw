@@ -57,6 +57,12 @@
 	    }
 
 	}
+
+	td.title {
+	    a {
+		color: #222;
+		&:hover { color:#008cba;} }
+	}
     }
 
 }

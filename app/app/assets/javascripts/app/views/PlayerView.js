@@ -18,7 +18,9 @@ app.PlayerView = Backbone.View.extend({
 	this.player = player;
 	this.playerqueue = playerqueue;
 
+	this.services = ["youtube", "soundcloud"]
 	this.extensionID = "gljkhinfbefolpcbippakocpbaikhflg";
+
 	this._update_time_interval = null;
 	this.current_track = null;
 
@@ -31,10 +33,6 @@ app.PlayerView = Backbone.View.extend({
 	this.listenTo(app.vent, "Player:play", this.play)
 	this.listenTo(app.vent, "Player:next", this.next)
 	this.listenTo(app.vent, "Player:prev", this.prev)
-
-	/*extension play*/
-	this.listenTo(app.vent, "Player:play_extension",
-		      this.play_extension)
 
 	/*triggered from YouTube_Player*/
 	this.listenTo(app.vent, "YouTube_Player:hide", this.hide_yt)
@@ -56,68 +54,108 @@ app.PlayerView = Backbone.View.extend({
 	return this;
     },
 
+
+    /*
+     *general play function, builds track info and 
+     *chooses between extension or stereopaw (direct) play
+     */
+    play : function($track_meta, time) {
+	if (DEBUG)
+	    console.log("[PlayerView] play")
+
+	/*
+	 *select our track object
+	 *source: 
+	 *DOM ($track_meta)
+	 *PlayerQueue - in which case
+	 *this.current_track already points to what is to play
+	 */
+
+	/*if $track_meta, we were DOM selected, so it's available
+	 *in the playerqueue
+	 */
+
+	if ($track_meta)
+	    this.current_track = this.playerqueue.find($track_meta.attr("id"))
+
+	/*play in-site stereopaw*/
+	if ($.inArray(this.current_track.get("service"), 
+		      this.services) >= 0) {
+
+	    this.play_direct(time)
+	}
+
+	/*launch external site*/
+	else {
+
+	    this.play_extension(time)
+
+	}
+    },
+
     /*
      *sends message to extension for possible external play
      *url, timestamp, service params
      */
-    play_extension : function($track_meta, timestamp) {
+    play_extension : function(timestamp) {
 	if (DEBUG)
 	    console.log("[PlayerView] play_extension")
 
-	this.current_track = this.playerqueue.find($track_meta.attr("id"))
-	var url = "http:" + $track_meta.find('.track-title a').attr("href")
-
 	/*chrome request*/
 	var chrome_msg = {
-	    URL: url,
+	    URL: "http:" + this.current_track.get("page_url"),
 	    time: timestamp,
-	    service : $track_meta.attr("service")
+	    service : this.current_track.get("service")
 	}
-	
+
+	if (DEBUG)
+	    console.log(chrome_msg)
+
 	/*send message to chrome extension*/
-	if (window.chrome && $('meta#extension').attr("type") == "chrome") {
+	if (window.chrome && 
+	    $('meta#extension').attr("type") == "chrome") {
+
 	    if (DEBUG)
 		console.log("sending to chrome extension")
 
-	    /* stop player*/
 	    this.player.stop()
 
-	    $.growl.notice({ title: "Now Playing", message: this.current_track.get("title") + " by " + this.current_track.get("artist")  });
+	    $.growl.notice({ title: "Now Playing", 
+			     message: this.current_track.get("title") + 
+			     " by " + this.current_track.get("artist")  });
 
 	    /* send info to extension */
 	    chrome.runtime.sendMessage(this.extensionID, chrome_msg)
-
+	    
 	    this.current_track.increment_plays()
 	}
 
-	//open link
+	/*open modal to launch to site*/
 	else {
-	    /* stop player*/
+
 	    this.player.stop()
 
 	    var url = encodeURI(chrome_msg.URL)
 	    app.vent.trigger("GetExtensionView:openModal", url)
 	}
+
+	this.updateTrackInfo(this.current_track)
     },
 
-    /*Controls play, pause, etc*/
-    play : function(e, time) {
+    /*Controls Direct play, pause, etc*/
+    play_direct : function(time) {
 	if (DEBUG)
 	    console.log("[PlayerView] trackplay")
 
-	/*set current track if it was chosen via DOM*/
-	if (e != null) {
-	    this.current_track = this.playerqueue.find($(e).attr("id"))
-	}
-
+	/*update player display*/
 	this.updateTrackInfo(this.current_track)
-
 	$('#player').show()
 
 	this.player.play[this.current_track.get("service")](this.player, this.current_track, time)
 
 	this.current_track.increment_plays()
 
+	/*refresh time on player display*/
 	if (!this._update_time_interval) {
 	    this.refreshTime(this.current_track)
 	}
@@ -132,6 +170,7 @@ app.PlayerView = Backbone.View.extend({
 	//clearInterval(this._update_time_interval)
 	if (DEBUG)
 	    console.log("[PlayerView] pause")
+
 	this.player.pause()
 	this.toggle_pause_controls()
     },
@@ -139,6 +178,7 @@ app.PlayerView = Backbone.View.extend({
     resume: function() {
 	if (DEBUG)
 	    console.log("[PlayerView] resume")
+
 	this.player.resume()
 	this.toggle_play_controls()
     },
