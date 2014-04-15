@@ -1,0 +1,25 @@
+#ExtensionModal.reveal-modal.tiny{:'data-reveal' => ''}
+
+  %h3
+    Get Extension
+  %hr
+
+  #getExtension
+    %h5
+      To automatically play from the timestamp, please
+      install the browser extension.
+
+    .extension-button-wrap
+      %button#install.small
+        Install Extension
+
+    %h5
+      But we'll happily take you to the artist.
+
+    .extension-button-wrap
+      %button#external.small
+        To the music
+
+    
+  %a.close-reveal-modal
+    &#215;

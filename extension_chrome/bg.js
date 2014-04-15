@@ -14,6 +14,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 });
 */
 
+
 chrome.runtime.onMessageExternal.addListener(
     function(request, sender, sendResponse) {
 
@@ -58,6 +59,94 @@ chrome.runtime.onMessageExternal.addListener(
 
 		} + ')(' + JSON.stringify(_time) + ')'
 
+
+		/*
+		 *SPOTIFY
+		 *NOTWORKING FOR NOW
+		 */
+
+		var spotify  = '(' + function(time) {
+		    var _self = this;
+		    var _models;
+
+
+		    var loadmodels = function() {
+		    	window.frames[1].require('$api/models', 
+						 function(models) { 
+						     _models = models 
+						 }
+						)
+			return _models
+		    }
+
+
+		    var checkExist = setInterval(function() {
+
+			if (window.frames[1] && 
+			    window.frames[1].require) {
+
+		    	    window.frames[1].require(['$api/models'], 
+						     function(models)
+						     { 
+
+							 player = models.player
+							 models.player.load("track").done(function(track) {
+
+							     // this is so ugly
+							     // things aren't loading properly and many calls don't respond
+							     // some strange asynchronicity happening, but can't figure out what.
+
+							     if (player.track && player.track.number && player.track.album
+								 && ( player.track.uri.contains("spotify:track") || 
+								      player.track.uri.contains("spotify:album"))
+								) {								 
+
+								 clearInterval(checkExist)
+
+								 _album = player.track.album
+								 _number = player.track.number
+
+								 //initial play at timestamp
+								 player.stop()
+
+								 player.playContext(_album,
+										    _number-1,
+										    time)
+
+
+								 //on track change,we play next track in new context
+								 var next = function() {
+								     player.stop()
+
+								     player.playContext(_album,
+											_number,
+											0)
+								 }
+
+								 //we kill the old listener...by adding a listener.
+								 //player.removeEventListener() doesn't seem to pick up next
+								 var kill = function() {
+								     player.removeEventListener('change:track', next)
+								 }
+								 
+								 player.addEventListener('change:track', next)
+								 player.addEventListener('change:track', kill)
+							     }
+							     
+							 })//end model load
+
+						     }
+						    )//end window.frames[1]
+
+			}
+
+		    }, 500);
+
+
+		} + ')(' + JSON.stringify(_time) + ')'
+
+
+
 		/*
 		 *Add Services..
 		 */
@@ -67,6 +156,11 @@ chrome.runtime.onMessageExternal.addListener(
 		if (_service == "mixcloud") {
 		    script.textContent = mixcloud
 		}
+
+		if (_service == "spotify") {
+		    script.textContent = spotify
+		}
+
 
 		if (_service == "another") {
 		    script.textContent = "another"
@@ -79,14 +173,18 @@ chrome.runtime.onMessageExternal.addListener(
 	    }
 
 
-	    /*Insert Code*/
+	    /*Inject JS
+	     *note: can't pass functions through JSON.stringfy
+	     */
+
 	    chrome.tabs.executeScript(null,
 				      { 
 					  code: "(" + insert + ")(" + JSON.stringify([service, timestamp]) + ");"
 				      }
 				     );
+
 	    
-	}
+	}//end if request.url
 	
     }
 );

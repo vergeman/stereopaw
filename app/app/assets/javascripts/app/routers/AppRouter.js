@@ -51,6 +51,8 @@ app.AppRouter = Backbone.Router.extend({
 	this.playlistsmodal = new app.PlaylistsModalView(this.session)
 	this.navigationview = new app.NavigationView(this.session)
 
+	this.getextensionview = new app.GetExtensionView();
+
 	this.currentView = null;
     },
 
@@ -311,6 +313,9 @@ app.AppRouter = Backbone.Router.extend({
 
 	/*add playlists modal*/
 	$('#content-wrap').append(this.playlistsmodal.el)
+
+	/*add getextension modal*/
+	$('#content-wrap').append(this.getextensionview.render().el)
 
 	this.navigate(updateroute)
     }

@@ -46,42 +46,13 @@ app.TrackView = Backbone.View.extend({
 	return this;
     },
 
-    /*
-     *sends message to extension for possible external play
-     *url, timestamp, service params
-     */
-    extension_play : function($track_meta, timestamp) {
-	if (DEBUG)
-	    console.log("[TrackView] Extension Play")
-
-	// The ID of the extension we want to talk to.
-	var editorExtensionId = "gljkhinfbefolpcbippakocpbaikhflg";
-	var url = "http:" + $track_meta.find('.track-title a').attr("href")
-	console.log(url)
-
-
-	// Make a simple request:
-	chrome.runtime.sendMessage(editorExtensionId, 
-				   {
-				       URL: url,
-				       time: timestamp,
-				       service : $track_meta.attr("service")
-				   },
-				   function(response) {
-				       if (!response.success)
-					   handleError(url);
-				   }
-				  );
-
-    },
-
     play : function(e) {
 	if (DEBUG)
 	    console.log("[TrackView] play")
 
 	var $track_meta = $(e.currentTarget).parents('.track-meta')
 	var timestamp = $(e.currentTarget).attr('timestamp');
-	var service = $(e.currentTarget).attr("service")
+	var service = $track_meta.attr("service")
 
 	/*play in-site*/
 	if ($.inArray(service, this.services) >= 0) {
@@ -92,7 +63,8 @@ app.TrackView = Backbone.View.extend({
 	/*launch external site*/
 	else {
 
-	    this.extension_play($track_meta, timestamp)
+	    app.vent.trigger("Player:play_extension",
+			     $track_meta, timestamp)
 
 	}
 

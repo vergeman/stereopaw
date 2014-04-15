@@ -195,6 +195,7 @@ current track in set
 	    );
 
 	},
+
 	'spotify': function() 
 	{
 
@@ -210,16 +211,16 @@ current track in set
 		window.frames[1].document.getElementById('track-name').children[0].href.match(/track\/(.*)/)[1],
 		window.frames[1].document.getElementById('track-artist').children[0].text,
 		window.frames[1].document.getElementById('track-name').children[0].text,
-		window.frames[1].document.getElementById('track-artist').children[0].href,
+		window.frames[1].document.getElementById('track-artist').children[0].href.match(/[^(http:||https:)].*/)[0],
 		duration,
 		time,
 		window.frames[1].document.getElementById('track-current').innerHTML,
-		window.frames[1].document.getElementById('track-name').children[0].href,
+		window.frames[1].document.getElementById('track-name').children[0].href.match(/[^(http:||https:)].*/)[0],
 		true,
 		"spotify",
 		try_get(
 		    function() {
-			return window.frames[1].document.getElementsByClassName('sp-image-img')[0].getAttribute("style").match(/http[^)(]+/)[0] },
+			return window.frames[1].document.getElementsByClassName('sp-image-img')[0].getAttribute("style").match(/\/\/[^);]+/)[0] },
 		    function() { return null }
 		)
 	    )

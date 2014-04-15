@@ -11,24 +11,21 @@
 	"matches": ["*://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com/*",
 		    "*://*.stereopaw.com/*"]
     },
-/*
-  //we will inject via bg.js onclick
-    "content_scripts": [ {
-	"js": [ "content.js" ],
-	"matches": [ "*://*.soundcloud.com/*", 
-		     "*://*.youtube.com/*",
-		     "*://*.mixcloud.com/*",
-		     "*://*.8tracks.com/*",
-		     "*://*.grooveshark.com/*",
-		     "*://*.spotify.com/*"]
-    } ],
-*/
+    "content_scripts": [
+	{
+	    "matches": [
+		"*://*.stereopaw.com/*",
+		"*://*.compute.amazonaws.com/*"
+	    ],
+	    "js": ["content.js"]
+	} 
+    ],
     "manifest_version": 2,
     "name": "stereo paw",
     "description": "stereo paw for Chrome",
     "homepage_url": "http://www.stereopaw.com",
     "version": "0.1",
-    "permissions": [ "tabs", "*://*/*" ],
+    "permissions": [ "tabs", "*://*/*", "activeTab" ],
     "icons": {
 	"16": "icon-16.png",
 	"48": "icon-48.png",

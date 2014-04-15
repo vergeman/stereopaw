@@ -18,6 +18,7 @@ app.PlayerView = Backbone.View.extend({
 	this.player = player;
 	this.playerqueue = playerqueue;
 
+	this.extensionID = "gljkhinfbefolpcbippakocpbaikhflg";
 	this._update_time_interval = null;
 	this.current_track = null;
 
@@ -30,6 +31,10 @@ app.PlayerView = Backbone.View.extend({
 	this.listenTo(app.vent, "Player:play", this.play)
 	this.listenTo(app.vent, "Player:next", this.next)
 	this.listenTo(app.vent, "Player:prev", this.prev)
+
+	/*extension play*/
+	this.listenTo(app.vent, "Player:play_extension",
+		      this.play_extension)
 
 	/*triggered from YouTube_Player*/
 	this.listenTo(app.vent, "YouTube_Player:hide", this.hide_yt)
@@ -51,6 +56,49 @@ app.PlayerView = Backbone.View.extend({
 	return this;
     },
 
+    /*
+     *sends message to extension for possible external play
+     *url, timestamp, service params
+     */
+    play_extension : function($track_meta, timestamp) {
+	if (DEBUG)
+	    console.log("[PlayerView] play_extension")
+
+	this.current_track = this.playerqueue.find($track_meta.attr("id"))
+	var url = "http:" + $track_meta.find('.track-title a').attr("href")
+
+	/*chrome request*/
+	var chrome_msg = {
+	    URL: url,
+	    time: timestamp,
+	    service : $track_meta.attr("service")
+	}
+	
+	/*send message to chrome extension*/
+	if (window.chrome && $('meta#extension').attr("type") == "chrome") {
+	    if (DEBUG)
+		console.log("sending to chrome extension")
+
+	    /* stop player*/
+	    this.player.stop()
+
+	    $.growl.notice({ title: "Now Playing", message: this.current_track.get("title") + " by " + this.current_track.get("artist")  });
+
+	    /* send info to extension */
+	    chrome.runtime.sendMessage(this.extensionID, chrome_msg)
+
+	    this.current_track.increment_plays()
+	}
+
+	//open link
+	else {
+	    /* stop player*/
+	    this.player.stop()
+
+	    var url = encodeURI(chrome_msg.URL)
+	    app.vent.trigger("GetExtensionView:openModal", url)
+	}
+    },
 
     /*Controls play, pause, etc*/
     play : function(e, time) {
