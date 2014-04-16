@@ -8,6 +8,9 @@
         %dd{:'data-magellan-arrival'=>"gettingstarted"}
           %a{href: "#gettingstarted"}
             Getting Started
+        %dd{:'data-magellan-arrival'=>"support"}
+          %a{href: "#support"}
+            Support
         %dd{:'data-magellan-arrival'=>"explore"}
           %a{href: "/meow#popular"}
             Music
@@ -26,13 +29,17 @@
 
     #tag
       %h3.subheader
-        Hear the best of the mix.
+        Hear the best of the mix
 
     #signage
+      -#
+        %a{:href => "/meow#signup"}
+          %button#signup
+            Sign Up
 
-      %a{:href => "/meow#signup"}
-        %button#signup
-          Sign Up
+      .extension-button-wrap
+        %button#install.small
+          Install Chrome Extension
           
       %p.haveaccount
         Have an account?
@@ -46,7 +53,7 @@
   %a{name: "gettingstarted",
      class: "topspacer",
      :'data-magellan-destination' =>"gettingstarted"}
-  #gettingstarted.page.destination.row
+  #gettingstarted.row
     .small-12.large-12.columns      
       %h2
         = image_tag("stereopaw-logo-main.png", class:"cat")
@@ -66,73 +73,79 @@
             Want to easily share a snippet of a mix?
             
 
-        %h4.tidbit
-          = image_tag("paw28.png", class: 'paw')
-          Get your paws on the browser extension or bookmarklet.
-        %h6
-          The browser extension allows timestamped playback across all supported sites. Please consider installing the extension.
-          
-        = render :partial => "submit/installbuttons"
+      %h4.tidbit
+        = image_tag("paw28.png", class: 'paw')
+        Get your paws on the browser extension or bookmarklet.
+      %h6
+        The browser extension allows timestamped playback across all supported sites. Please consider installing the extension.
 
-        #how-to
-          %h4.tidbit
-            = image_tag("paw28.png", class: 'paw')
-            When you hear something you like, click the extension or marklet on the page.
+      = render :partial => "submit/installbuttons"
 
-          %p.extension-img-wrap
-            = image_tag("extension.png", :class => "extension-img")
+  #how-to.row
+    .small-12.large-12.columns
+      %h4.tidbit
+        = image_tag("paw28.png", class: 'paw')
+        When you hear something you like, click the extension (or marklet) on the page.
 
-          %h4.tidbit
-            = image_tag("paw28.png", class: 'paw')
+      %p.extension-img-wrap
+        = image_tag("extension.png", :class => "extension-img")
 
-            Submit the track at the time you want saved. Visit
-            %a{href: "/meow"} stereo paw
-            to listen to your tracks, and hear more of the best.
+      %h4.tidbit
+        = image_tag("paw28.png", class: 'paw')
 
-          %p.marklet-img-wrap
-            = image_tag("marklet.png", :class => "marklet-img", :width => "435px", :height => "274px")
-            
-        #support
-          %h2
-            = image_tag("stereopaw-logo-main.png", class:"cat")
-            Support
-          %hr
-          %br
-                        
-          %h4
-            For ideal audio streaming, your browser/os needs to support partial http range requests for mp3.
-          %ul.services
-            %li Windows 7: Chrome (v 34.0.1847.116), IE 9+
-            %li Linux: Chrome (v 34.0.1847.116)
-            %li Mac: (sorry, don't own one!)
+        Submit the track at the time you want saved. Visit
+        %a{href: "/meow"} stereo paw
+        to listen to your tracks, and hear more of the best.
 
-          %h4
-            Stereo paw is slowly adding services. Bookmarking is available on the following services.
-          %ul.services
-            %li
-              Soundcloud
-            %li
-              YouTube
-            %li
-              Mixcloud
-            %li
-              Spotify Web Player
+      %p.marklet-img-wrap
+        = image_tag("marklet.png", :class => "marklet-img", :width => "435px", :height => "274px")
 
-          %h4
-            Audio from these services are played on their respective sites. The browser extension is required for timestamped playback.
-          %ul.services
-            %li
-              Mixcloud
-            %li
-              Spotify Web Player
-              
-          %h5.notebene
-            Stereo paw is a side project to "scratch an itch." Only meta data is stored. Use at your own risk, etc. Feedback and questions are most welcome - send an email to: admin@stereopaw.com. Enjoy!
 
-          %br
-          %br
+  %a{name: "support",
+     class: "topspacer",
+     :'data-magellan-destination' =>"support"}
+  #support.row
+    .small-12.large-12.columns
+      %h2
+        = image_tag("stereopaw-logo-main.png", class:"cat")
+        Support
+      %hr
+      %br                        
+      %h4
+        Stereo paw is slowly adding services. Bookmarking is available on the following services.
+      %ul.services
+        %li
+          Soundcloud
+        %li
+          YouTube
+        %li
+          Mixcloud
+        %li
+          Spotify Web Player
 
-      
+      %h4
+        Audio from these services are played on their respective sites. The browser extension is required for timestamped playback.
+      %ul.services
+        %li
+          Mixcloud
+        %li
+          Spotify Web Player
+
+      %h4
+        For ideal audio streaming, your browser/os needs to support partial http range requests for mp3.
+      %ul.services
+        %li Windows 7: Chrome (v 34.0.1847.116), IE 9+
+        %li Linux: Chrome (v 34.0.1847.116)
+        %li Mac: (sorry, don't own one!)
+
+      %hr
+      %h5.notebene
+        Stereo paw is a side project to "scratch an itch." Only meta data is stored. Use at your own risk, etc. Feedback and questions are most welcome - send an email to: admin@stereopaw.com. Enjoy!
+
+      %br
+      %br
+
+
 #BookmarkletModal.reveal-modal{:'data-reveal' =>''}
   %h2
     Add The Bookmarklet
