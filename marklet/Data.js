@@ -35,6 +35,34 @@ SB.Data = (function() {
 
     }
 
+    function load_empty_track() {
+
+	_track.set
+	(
+	    null,
+	    "Please select something to play",
+	    "Nothing Loaded",
+	    null,
+	    null,
+	    0,
+	    "0:00",
+	    null,
+	    false,
+	    _service,
+	    null
+	);
+
+	$("#sb-submit-button").css('display', 'none');
+    }
+
+    function refresh_view() {
+
+	document.getElementById('sb-track-title-label').style.display = 'block'
+
+	document.getElementById('sb-track-artist-label').style.display='block'
+
+	$("#sb-submit-button").css('display', 'block');
+    }
 
     var _set = {
 
@@ -51,12 +79,20 @@ current track in set
 		    mc.nowPlaying.currentDisplayTrack.title,
 */
 
+
+	    refresh_view()
+
 	    var mc = $('.player').scope()
 
 	    if (mc.playerStarted) {
 
 		_track.set(
-		    mc.waveformUrl.match(/([^\/]+)\.json/)[1],
+
+		    try_get(
+			function() { return mc.waveformUrl.match(/([^\/]+)\.json/)[1] },
+			function() { return mc.currentCloudcast.url }
+		    ),
+
 		    mc.currentCloudcast.owner,
 		    mc.currentCloudcast.title,
 		    "//www.mixcloud.com" + mc.currentCloudcast.ownerUrl,
@@ -71,8 +107,18 @@ current track in set
 
 	    } else {
 
+		if (!$('.cloudcast-head').length) {
+
+		    load_empty_track()
+		    
+		    return
+		}
+
+
+		/*not playing but on track*/
 		var hrs = $('.cloudcast-time').html().match(/(\d+)h/)
 		var mins = $('.cloudcast-time').html().match(/(\d+)m/)
+
 		_track.set(
 		    undefined,
 		    $('span[itemprop="name"]').html(),
@@ -91,6 +137,7 @@ current track in set
 	    }
 
 
+
 	},
 
 	/*
@@ -105,7 +152,16 @@ current track in set
 	    //player
 	    _player = sc_mgr.getCurrentSound()
 
-	    //track meta data
+	    /* no sound loaded/playing */
+	    if(!_player) {
+
+		load_empty_track()
+		return
+	    }
+
+	    refresh_view()
+
+	    /*load track meta data*/
 	    var sc_md = sc_mgr.getCurrentMetadata()
 	    var sc_time = sc_md.sound.audio.currentTime()
 
@@ -179,6 +235,16 @@ current track in set
 		0
 	    )
 
+	    refresh_view()
+
+	    /*nothing loaded*/
+	    if (!ytplayer.config.args.loaderUrl) {
+		load_empty_track()
+
+		return
+	    }
+
+	    /*populate yt args*/
 	    _track.set
 	    (
 		ytplayer.config.args.video_id,
@@ -196,8 +262,20 @@ current track in set
 
 	},
 
+
+	/*
+	 * SPOTIFY
+	 */
+
 	'spotify': function() 
 	{
+
+	    if (!window.frames[1].document.getElementById('track-name').children[0].href.match(/track\/(.*)/) ) {
+
+		load_empty_track()
+
+		return
+	    }
 
 	    /*not sure if it's always window.frames[1] - will have to do a check */
 	    
@@ -226,12 +304,14 @@ current track in set
 	    )
 
 
-
+	    refresh_view()
 	},
+/*
 	'grooveshark' : function() {},
 	'8tracks' : function() {},
 	'earbits' : function() {},
 	'pandora': function() {},
+*/
 	'NA' : function()
 	{
 	    return "NA"

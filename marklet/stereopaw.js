@@ -181,8 +181,9 @@ var SB = (function () {
 		    document.getElementById('sb-track-title').innerHTML = self.Track.getTitle()
 
 		!self.Track.getArtist() ?
-		    document.getElementById('sb-track-artist-label').style.display='none' :
-		    document.getElementById('sb-track-artist').innerHTML = self.Track.getArtist()
+		    document.getElementById('sb-track-artist-label').style.display='none' : ""
+ 
+		document.getElementById('sb-track-artist').innerHTML = self.Track.getArtist()
 
 		//document.getElementById('sb-track-service').innerHTML = self.service
 
