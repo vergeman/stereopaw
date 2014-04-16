@@ -3,6 +3,12 @@
 
     @media #{$medium-up} {
 	margin-left: 1.5rem;
+	padding:0rem 4rem;
+    }
+
+    @media #{$large-up} {
+	margin-left: 1.5rem;
+	padding:0rem 10rem;
     }
     
     .addfooter {

@@ -7,11 +7,29 @@
     %img{class: 'paw', alt: 'paw',
          src: '<%= asset_path("paw28.png") %>'}
     Get your paws on the browser extension or bookmarklet.
+  %h6
+    The browser extension allows timestamped playback across all supported sites. Please consider installing the extension.
 
   != JST['tracks/footer']()
 
+  -# see welcome/index.html/haml as well. Partials aren't rendering
+    across hamlc/erb so havent been able to throw #how-to into its
+    rightful place
+  
   #how-to
-    %h4
-      %img{class: 'paw', alt: 'paw',
-           src: '<%= asset_path("paw28.png") %>'}
-      When you hear a track you'd like to add to your collection , click the bookmarklet / extension on your streaming music page.
+    %h4.tidbit
+      <%= image_tag("paw28.png", class: 'paw') %>
+      When you hear something you like, click the extension or marklet on the page.
+
+    %p.extension-img-wrap
+      <%= image_tag("extension.png", :class => "extension-img") %>
+
+    %h4.tidbit
+      <%= image_tag("paw28.png", class: 'paw') %>
+
+      Submit the track at the time you want saved. Visit
+      %a{href: "/meow"} stereo paw
+      to listen to your tracks, and hear more of the best.
+
+    %p.marklet-img-wrap
+      <%= image_tag("marklet.png", :class => "marklet-img", :width => "435px", :height => "274px") %>

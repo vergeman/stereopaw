@@ -1,0 +1,8 @@
+.installbuttons
+  %a{:onclick => 'return false;', :href => "/meow#signup"}
+    %button.small
+      Install Chrome Extension
+
+  %a{:href => "#", :'data-reveal-id' => "BookmarkletModal", 'data-reveal' => ''}
+    %button.small
+      Add Bookmarklet

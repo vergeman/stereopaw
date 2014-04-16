@@ -72,6 +72,9 @@
 }
 
 /*lists*/
+.tidbit {
+    margin-top: 1rem;
+}
 .problems, .services {
     font-family: 'lato', 'helvetica neue', 'georgia';
 
@@ -83,6 +86,7 @@
 }
 .problems li {
     list-style-type: none;
+    margin-bottom: .5rem;
 }
 
 /*GETTING STARTED*/
@@ -102,7 +106,31 @@
 	}
     }
 }
+/*HOW-TO*/
+#how-to {
 
+    
+    .extension-img-wrap, .marklet-img-wrap {
+	text-align: center;
+	margin: 2rem auto;    }
+
+    .extension-img, .marklet-img {
+	border: 1px solid #a6a6a6;
+    }
+}
+
+/*SUPPORT*/
+#support {
+    margin-top:4rem;
+}
+
+.notebene {
+    margin-top: 2rem;
+}
+.external-link {
+    display:inline;
+    font-size: 14px;
+}
 
 /*MODAL*/
 #BookmarkletModal {
