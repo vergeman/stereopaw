@@ -88,11 +88,16 @@ but without li.share display, we don't need the adjust. Keep handy if want to ad
     width: 100%;
     padding-bottom: .25rem;
     @media #{$large-up} {
-	width: 180px;
+	width: 200px;
     }
 
     a { float:right;}
 }
+
+.external {
+    color: #2980b9;
+}
+
 #track-plays {
     float: left;
     width: 60px;

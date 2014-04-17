@@ -79,6 +79,10 @@
           .num-plays
             = @track.plays
             
+        - if @track.is_external
+          %i.fi-link.external{:title => "Opens external site"}
+
+            
         %a{:href => "#{@track.page_url}", :target => "_blank"}          
           %img{src: "#{@track.attribution_url}", width: "#{@track.attribution_width}", height: "#{@track.attribution_height}"}
 

@@ -18,7 +18,6 @@ app.PlayerView = Backbone.View.extend({
 	this.player = player;
 	this.playerqueue = playerqueue;
 
-	this.services = ["youtube", "soundcloud"]
 	this.extensionID = "gljkhinfbefolpcbippakocpbaikhflg";
 
 	this._update_time_interval = null;
@@ -79,9 +78,7 @@ app.PlayerView = Backbone.View.extend({
 	    this.current_track = this.playerqueue.find($track_meta.attr("id"))
 
 	/*play in-site stereopaw*/
-	if ($.inArray(this.current_track.get("service"), 
-		      this.services) >= 0) {
-
+	if (app.Util.service_playable(this.current_track.get("service") )) {
 	    this.play_direct(time)
 	}
 

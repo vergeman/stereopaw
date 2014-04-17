@@ -10,6 +10,19 @@ app.Util = Backbone.Model.extend({
 {
     /*STATIC UTIL */
 
+    /*determines what services are available
+     * to play on site, or must be launched externally
+     */
+    SERVICES : ["youtube", "soundcloud"],
+
+    service_playable : function(service) {
+	if (DEBUG)
+	    console.log("[Util] service_playable")
+
+	return ($.inArray(service, this.SERVICES)  >= 0 ? 
+	    true : false)
+    },
+
     /*show_error is commonly used throughout views
      * to display json errors on the forms
      */

@@ -23,8 +23,8 @@ h4, h6 { display:inline-block;}
 	     &:hover { color: $anchor-font-color-hover;}}
     h6 > a { color: $subheader-font-color;
 	     &:hover { color: $anchor-font-color-hover;}}
-
 }
+
 .track-title {
     @media #{$medium-only} {
 	margin-top: -0.5rem;

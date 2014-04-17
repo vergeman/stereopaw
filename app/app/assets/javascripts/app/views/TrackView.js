@@ -15,6 +15,7 @@ app.TrackView = Backbone.View.extend({
 	this.listenTo(this.model, "change", this.render)
 	this.editable = opts.editable
 	this.playlistable = opts.playlistable
+	this.is_external = opts.is_external
 	this.playlistdropdown= null
     },
 
@@ -38,7 +39,8 @@ app.TrackView = Backbone.View.extend({
 		track: this.model.toJSON(),
 		track_age: this.model.get("age"),
 		editable: this.editable,
-		playlistable : this.playlistable
+		playlistable : this.playlistable,
+		is_external : this.is_external
 	    }
 	));
 	

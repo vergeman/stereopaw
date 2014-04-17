@@ -6,8 +6,9 @@ app.Track = Backbone.Model.extend({
     initialize : function() 
     {
 	this.gen_age();
-	this.gen_attribute_link();
-	this.gen_duration_format();
+	this.gen_attribute_link()
+	this.gen_duration_format()
+	this.check_service_playable()
 
 	this.set("played", false)
 
@@ -15,6 +16,20 @@ app.Track = Backbone.Model.extend({
 
 	if (DEBUG)
 	    console.log("[Track] initalized")
+    },
+
+    /*can we play Track on stereopaw, or only
+     *linked to outer site
+     */
+    check_service_playable : function() {
+	if (DEBUG)
+	    console.log("[Track] check_service_playable")
+
+	this.set
+	(
+	    "is_external", 
+	    !app.Util.service_playable(this.get("service"))
+	)
     },
 
     reset_played : function() {
