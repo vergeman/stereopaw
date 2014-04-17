@@ -8,6 +8,7 @@ gem 'rails', '4.0.1'
 
 # Use postgres as the database for Active Record
 gem 'pg'
+gem 'pg_search'
 
 gem 'daemons'
 gem 'delayed_job_active_record'
