@@ -11,6 +11,7 @@ app.NavigationView = Backbone.View.extend({
 	'click #logout' : 'logout',
 	'click #login_nav' : 'login',
 	'click ul.navigation #new' : 'new_tracks',
+	'click ul#search' : 'search',
 	'click ul.navigation #popular' : 'popular',
 	'click ul.navigation #mytracks' : 'mytracks',
 	'click ul.navigation #playlist' : 'playlist',
@@ -22,6 +23,7 @@ app.NavigationView = Backbone.View.extend({
 	if (DEBUG)
 	    console.log("[NavigationView] initialize")
 	this.session = session
+
 	this.listenTo(app.vent, "Session:logged-in", this.render_loggedin)
 	this.listenTo(app.vent, "Session:logged-out", this.render_loggedout)
 
@@ -39,6 +41,7 @@ app.NavigationView = Backbone.View.extend({
 	    e.preventDefault()
 	    Backbone.history.navigate("/", {trigger:true})	    
 	});
+
     },
 
     render_loggedin: function() {
@@ -48,7 +51,6 @@ app.NavigationView = Backbone.View.extend({
 	this.$el.html(this.template({user: this.session.get("current_user").toJSON()} ))
 
 	this.close_menu_listener()
-
     },
 
     render_loggedout : function() {
@@ -100,6 +102,14 @@ app.NavigationView = Backbone.View.extend({
 	Backbone.history.navigate("/login", {trigger:true})
     },
 
+    search : function(e) {
+	if (DEBUG)
+	    console.log("[NavigationView] search")
+
+	
+
+    },
+    
     settings: function(e) {
 	if (DEBUG)
 	    console.log("[NavigationView] settings")

@@ -16,6 +16,11 @@
       %i.fi-music
       Login
   %br
+
+  %li#search
+    %form#search-form
+      %i.fi-magnifying-glass
+      %input#search-query{:placeholder => "Search"}
       
   %li#popular
     %i.fi-like
