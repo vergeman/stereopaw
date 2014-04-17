@@ -39,6 +39,8 @@ app.GetExtensionView = Backbone.View.extend({
 	    return
 	}
 
+	$(document).foundation()
+
 	/*
 	 *function to bind listeners & action
 	 *to buttons inside modal

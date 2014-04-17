@@ -76,7 +76,7 @@ app.PlaylistsModalView = Backbone.View.extend({
 
     /*foundation fix for weird bg/css undefined errors*/
     reset_modal : function(div) {
-	$('div').data('reveal-init', {
+	$(div).data('reveal-init', {
 	    animation: 'fadeAndPop',
 	    animation_speed: 250,
 	    close_on_background_click: false,
