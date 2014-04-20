@@ -42,6 +42,7 @@ app.NavigationView = Backbone.View.extend({
 	    Backbone.history.navigate("/", {trigger:true})	    
 	});
 
+	this.bind_search()
     },
 
     render_loggedin: function() {
@@ -62,6 +63,21 @@ app.NavigationView = Backbone.View.extend({
 	this.close_menu_listener()
     },
 
+    bind_search : function(e) {
+	if (DEBUG)
+	    console.log("[NavigationView] bind_search")
+
+	$(document).on('submit', '#search-form', function(e){
+	    e.preventDefault()
+	    var query = $('#search-query').val()
+	    var route = "/search/" + query
+
+	    Backbone.history.navigate(route,
+				      {trigger: true})
+	});
+
+    },
+
     close_menu_listener : function(e) {
 	$('ul.navigation li').click(function() {
 	    $('.menu-icon').click()
@@ -80,6 +96,7 @@ app.NavigationView = Backbone.View.extend({
 
 	/*clear all link*/
 	this._clear_links()
+
 	/*make active*/
 	$('ul.navigation li#' + div_name).addClass("route")
     },
@@ -100,14 +117,6 @@ app.NavigationView = Backbone.View.extend({
 	    console.log("[NavigationView] login")
 	e.preventDefault();
 	Backbone.history.navigate("/login", {trigger:true})
-    },
-
-    search : function(e) {
-	if (DEBUG)
-	    console.log("[NavigationView] search")
-
-	
-
     },
     
     settings: function(e) {

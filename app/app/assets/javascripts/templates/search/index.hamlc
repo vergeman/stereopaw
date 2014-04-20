@@ -1,0 +1,14 @@
+%header
+  %h1
+    Search
+
+  %form#search-form-page
+    %input#search-box{value: @query, placeholder: "Search"}
+    
+  .options-wrap
+    %span.all All Tracks
+    - if @current_user
+      %span.mytracks My Tracks
+    %span.playlists Playlists
+
+%hr

@@ -70,9 +70,9 @@ app.TracksView = Backbone.View.extend({
      */
     lastTrackPageHandler: function() {
 	if (DEBUG)
-	    console.log("TracksView] lastTrackPageHandler")
+	    console.log("[TracksView] lastTrackPageHandler")
 	var self = this;
-	$last = $('.track').last()
+	var $last = $('.track').last()
 
 	/* we trigger only once, as "last" element
 	 * will change  */

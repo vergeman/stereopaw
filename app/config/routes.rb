@@ -1,5 +1,5 @@
 App::Application.routes.draw do
-  devise_for :users, controllers: { sessions: "sessions", registrations: "registrations", passwords: "passwords"}
+  devise_for :users, controllers: { sessions: "sessions", registrations: "registrations", passwords: "passwords", search: "search"}
 
   #custom devise route
   devise_scope :user do
@@ -22,6 +22,9 @@ App::Application.routes.draw do
   get '/new' => "tracks#latest"
   get '/popular' => "tracks#popular"
   get '/tracks' => "tracks#mytracks"
+
+  get '/search' => "search#show"
+  get '/search/me' => "search#mytracks"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

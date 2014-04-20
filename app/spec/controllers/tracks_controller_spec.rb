@@ -24,7 +24,6 @@ describe TracksController do
       @track1 = FactoryGirl.create(:track)
       @track2 = FactoryGirl.create(:track)
     end
-
     it "responds successfully with an HTTP 200 status code" do
       get :latest, :format => :json
       expect(response.status).to eq(200)
