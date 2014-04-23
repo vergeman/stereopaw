@@ -26,8 +26,9 @@ describe PlaylistsController do
         expect(response.status).to eq(200)
       end
 
-      it "responds with all playlists of user" do
-        expect(response.body).to eq(@user.playlists.to_json)
+      it "responds with all playlists of user + with a track preview listing of the most played " do
+        @user.playlists = @user.playlists.map(&:with_track_preview)
+        expect(response.body).to eq(@user.playlists.to_json(:methods => [:track_previews]))
       end
 
     end
@@ -184,7 +185,8 @@ describe PlaylistsController do
           patch :update, :format => 'json', 
           :user_id => @user.id, :id => @p.id, 
           :playlist => @p.attributes
-          expect(response.body).to eq(@user.playlists.last.to_json)
+
+          expect(response.body).to eq(@user.playlists.last.with_track_preview.to_json(:methods => [:track_previews]))
         end
 
         it "sucessful request responds with playlist when changing name and description of playlist " do
@@ -194,7 +196,7 @@ describe PlaylistsController do
           patch :update, :format => 'json', 
           :user_id => @user.id, :id => @p.id, 
           :playlist => @p.attributes
-          expect(response.body).to eq(@user.playlists.last.to_json)
+          expect(response.body).to eq(@user.playlists.last.with_track_preview.to_json(:methods => [:track_previews]))
         end
 
 
@@ -203,7 +205,7 @@ describe PlaylistsController do
           patch :update, :format => 'json', 
           :user_id => @user.id, :id => @p.id, 
           :track => @track4.id
-          expect(response.body).to eq(@user.playlists.last.to_json)
+          expect(response.body).to eq(@user.playlists.last.with_track_preview.to_json(:methods => [:track_previews]))
         end
 
 

@@ -13,6 +13,11 @@
 #
 
 class Playlist < ActiveRecord::Base
+  attr_accessor :track_previews
+
+  include PgSearch
+  pg_search_scope :search_by_descriptions, :against => [:name, :description]
+
   before_save :integerize_track_ids, :calc_top_genres
 
   belongs_to :user
@@ -24,6 +29,28 @@ class Playlist < ActiveRecord::Base
   validate  :validate_tracks_exist
 
   validates_uniqueness_of :name, scope: :user_id, message: "already exists"
+
+#generates array of track_previews
+#Note: since track_previews not persisted, json response needs to be aware of non-active record attributes
+  def with_track_preview(options = {})
+    options = {sort_order: "plays DESC", count: 3, query: false}
+      .merge(options)
+
+    if options[:query]
+      #take most relevant first, then order
+      @track_previews = Track.where(id: self.track_ids)
+        .search_by_meta(options[:query]).limit(options[:count])
+        .order(options[:sort_order])
+      
+    else
+      @track_previews = Track.where(id: self.track_ids)
+        .order(options[:sort_order]).limit(options[:count])
+    end
+
+    #make sure to return playlist obj
+    return self
+  end
+
 
   def calc_top_genres
     top_genres = {}

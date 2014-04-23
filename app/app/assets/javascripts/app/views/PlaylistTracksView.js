@@ -25,7 +25,7 @@ app.PlaylistTracksView = Backbone.View.extend({
 	this.playlist = opts.playlist
 
 	/*trackscollection: collection of unique
-	 *tracks in a placelist
+	 *tracks in a playlist
 	 */
 	this.trackscollection = new app.Tracks()
 	this.trackscollection.url = this.playlist.url()
@@ -106,28 +106,6 @@ app.PlaylistTracksView = Backbone.View.extend({
 	this.update_playlist_tracks()
     },
 
-    remove_track : function(pid, mid, index) {
-	if (DEBUG)
-	    console.log("[PlaylistTracksView] remove_track")
-	m =  this.playlistTracks.at(index)
-
-	/*remove offending track from track_ids*/
-	var track_ids = this.playlist.get("track_ids")
-	track_ids.splice(index,1)
-	this.playlist.set("track_ids", track_ids)
-
-	/*rerender*/
-	this.refresh()
-
-	var success_cb = function() {
-	    if (DEBUG)
-		console.log("CallBACK:")
-	    $.growl.notice({ title: "Deleted", message: "Track successfully deleted" });
-	}
-
-	this.playlist.save({}, {success: success_cb} )
-    },
-
     /*
      * update_playlist_tracks builds playlist from unique 
      * list of tracks and track_ids in the playlist
@@ -146,6 +124,28 @@ app.PlaylistTracksView = Backbone.View.extend({
 	app.vent.trigger("PlayerQueue:update",
 			 this.playlist.url, this.playlistTracks)
 	this.render()
+    },
+
+    remove_track : function(pid, mid, index) {
+	if (DEBUG)
+	    console.log("[PlaylistTracksView] remove_track")
+
+	/*remove offending track from track_ids*/
+	var track_ids = this.playlist.get("track_ids")
+	track_ids.splice(index,1)
+	this.playlist.set("track_ids", track_ids)
+
+	/*rerender*/
+	this.refresh()
+
+	var success_cb = function() {
+	    if (DEBUG)
+		console.log("[PlaylistTracksView] success callback:")
+	    $.growl.notice({ title: "Deleted", message: "Track successfully deleted" });
+	}
+
+	/*update model on server*/
+	this.playlist.save({}, {success: success_cb} )
     },
 
     add_collection : function(model) {

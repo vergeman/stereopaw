@@ -49,37 +49,87 @@ i.add-playlist, i.edit-playlist, i.delete-playlist {
 
 
 /*playlist index show*/
-.playlist {
-    margin-bottom: 1.5rem;
-}
+.playlist-wrap {
+    .playlist {
+	margin-top:1rem;
+	margin-bottom: 1.5rem;
+    }
 
-.playlist-name {
-    font-size: 1.6875rem;
-    margin-bottom:.5rem;
-    a { 
-	color: #222222; 
-	&:hover {
-	    color: #3498db;
+    .playlist-name {
+	font-size: 1.6875rem;
+	a { 
+	    color: #222222; 
+	    &:hover {
+		color: #3498db;
+	    }
 	}
     }
 }
 
+/*playlist inner wrap*/
+.playlist-inner-wrap {
+    @media #{$medium-up} {
+	hr.playlist { margin-left: -1.5rem;} 
+    }
+}
+
+.playlist-meta {
+    @media #{$medium-up} {
+	float:left;
+	width: 25%;
+    }
+}
+
+.playlist-tracks-preview {
+
+    table { 
+	margin-top: 1rem;
+	width: 100%;
+	border: none;
+    }
+    th, td { 
+	font-size: 14px;
+	line-height: 1rem;
+	width: 50%;
+	padding:.5rem .625rem;
+    }
+
+    @media #{$medium-up} {
+	margin-left: 25%;
+
+	table { 
+	    margin-top: 0rem;
+	    padding-top:.85rem;
+	}
+    }
+    
+    .playlist-see-more {
+	text-align:center;
+	font-size: .75rem;
+	a { color: #222222;
+	    &:hover {
+		color: #008cba;
+	    }
+	  }
+    }
+}
+
+
 /*playist index show icons*/
 .playlist-controls {
-    margin-top:.5rem;
+    margin-top:1rem;
     padding-right: 1rem;
+    margin-bottom: 1rem;
+
+    @media #{$medium-up} {
+	margin-bottom: 2rem;
+    }
 
     i {
 	font-size: 14px;
 	font-style: normal;
-	//cursor:pointer;
 	padding-right: 1.5rem;
 	color: #a2a2a2;
-	
-	&:hover {
-	    //color: #3498db;
-	}
-
     }
 
     span {
@@ -91,10 +141,11 @@ i.add-playlist, i.edit-playlist, i.delete-playlist {
 .playlist-genres {
     clear:both;
     .genre {
-	margin-top: 0;
+	margin-top: 1rem;
     }
 }
+
 .playlist-description {
     clear:both;
-    padding-top:.5rem;
+    padding-top:1rem;
 }

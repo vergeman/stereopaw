@@ -2,19 +2,42 @@
   %a{:href => "/meow#playlists/#{@playlist.id}"}
     = @playlist.name
 
-.playlist-genres
-  - if @playlist.top_genres
-    - for g in @playlist.top_genres
-      .genre
-        = g
+.playlist-inner-wrap
+  
+  .playlist-meta
+    .playlist-genres
+      - if @playlist.top_genres
+        - for g in @playlist.top_genres
+          .genre
+            = g
+
+    .playlist-description
+      = @playlist.description
+
+
+    .playlist-controls
+
+      %i.fi-music.num-tracks
+        %span
+          = @playlist.track_ids.length
+
+    -#==playlist prevew==
+  - if @playlist.track_previews.length
+    .playlist-tracks-preview
+      %table
+        %thead
+          %tr
+            %th Track
+            %th Artist
+        %tbody
+          - for track in @playlist.track_previews
+            %tr
+              %td.tracks-preview-title
+                = track.title
+              %td.tracks-preview-artist
+                = track.artist
+      .playlist-see-more        
+        %a{:href => "/meow#playlists/#{@playlist.id}"}
+          see more
         
-.playlist-description
-  = @playlist.description
-
-
-.playlist-controls
-
-  %i.fi-music.num-tracks
-    %span
-      = @playlist.track_ids.length
-
+  %hr.playlist

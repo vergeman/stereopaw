@@ -71,13 +71,13 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 	    success: function(data, textStatus, jqXHR) {
 		if (DEBUG)
 		    console.log("[PlaylistDropDownView] playlist_submit:success")
-		/*Playlists are updated in centralized PlaylistsMgr*/
 		if ('errors' in data) {
 		    if (DEBUG)
 			console.log("[PlaylistDropDownView] errors")
 		    if (DEBUG)
 			console.log(data)
 		}
+		/*Playlists updated in centralized PlaylistsMgr*/
 		else {
 		    app.vent.trigger("PlaylistsMgr:SetPlaylist", data)
 		}

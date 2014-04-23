@@ -1,11 +1,13 @@
 class PlaylistsController < ApplicationController
   before_filter :authenticate_user!, only: [:create, :update, :destroy]
 
-  def index    
-    render :json => User.find(params[:user_id]).playlists
+  def index
+    playlists = User.find(params[:user_id]).playlists
+    render :json => playlists.map{|p| p.with_track_preview}, :methods => [:track_previews]
   end
 
-  #we'll sends playlist-associated tracks
+
+  #we'll send playlist-associated tracks
   def show
     @playlist = Playlist.find(params[:id])
     begin
@@ -17,6 +19,7 @@ class PlaylistsController < ApplicationController
     end
     render :json => @tracks
   end
+
 
   def create
     @playlist = current_user.playlists.build(new_params)
@@ -37,10 +40,11 @@ class PlaylistsController < ApplicationController
     end
 
     if @playlist.update_attributes(track_params(@playlist))
-      render :json => @playlist
+      render :json => @playlist.with_track_preview, :methods => [:track_previews], :except => [:pg_search_rank]
     else
       render :json => {:errors => @playlist.errors.messages}
     end
+
   end
 
   #/users/user_id/playlists/playlist_id
@@ -51,7 +55,6 @@ class PlaylistsController < ApplicationController
       render :json => {:errors => "invalid playlist"}
       return
     end
-
      
     if @playlist.destroy
       render :json => {:success => "playlist destroyed"}

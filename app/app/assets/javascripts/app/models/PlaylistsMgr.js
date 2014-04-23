@@ -25,6 +25,10 @@ app.PlaylistsMgr = Backbone.Model.extend({
 	this.listenTo(app.vent, "PlaylistsMgr:AddtoPlaylist", 
 		      this.AddtoPlaylist)
 
+	/*reload / refetch*/
+	this.listenTo(app.vent, "PlaylistsMgr:ReloadPlaylist",
+		      this.fetch)
+
 	this.init = false
     },
 
@@ -42,7 +46,15 @@ app.PlaylistsMgr = Backbone.Model.extend({
 	this.init = true
 
 	var user_id = this.session.get("current_user").get("id")
-	this.playlists.set_url("/users/" + user_id + "/playlists/")
+
+	this.fetch("/users/" + user_id + "/playlists/")
+    },
+
+    fetch : function(url) {
+	if (DEBUG)
+	    console.log("[PlaylistsMgr] fetch")
+
+	this.playlists.set_url(url)
 
 	this.playlists.fetch(
 	    {
@@ -50,7 +62,8 @@ app.PlaylistsMgr = Backbone.Model.extend({
 		remove: false,
 		success: function(collection, response, options) {
 		    if (DEBUG)
-			console.log("[PlaylistsMgrView] fetched")
+			console.log("[PlaylistsMgr] fetch:success")
+
 		}
 	    }
 	)
@@ -60,12 +73,14 @@ app.PlaylistsMgr = Backbone.Model.extend({
 	this.playlists.unbind()
     },
 
-    /*playlists passed by events*/
+/*playlists passed by events*/
+    
     SetPlaylist : function(playlist) {
 	if (DEBUG)
 	    console.log("[PlaylistsMgr] SetPlaylist")
 
-	this.playlists.add(playlist,{ merge: true})
+	this.playlists.add(playlist, {merge: true})
+
 	$.growl.notice({ title: "Playlist Updated",
 			 message: "Your track was successfully added" });
 

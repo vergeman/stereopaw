@@ -29,7 +29,8 @@
 
 class Track < ActiveRecord::Base
   include PgSearch
-  multisearchable :against => [:artist, :title, :genres, :service, :comment]
+  pg_search_scope :search_by_meta, :against => [:artist, :title, :genres, :service, :comment]
+
   belongs_to :user
 
   validates :artist, :title, :page_url, :profile_url, :shareable, :service, :artwork_url, :submit_id, presence: true

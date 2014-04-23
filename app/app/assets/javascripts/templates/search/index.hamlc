@@ -9,6 +9,6 @@
     %span.all All Tracks
     - if @current_user
       %span.mytracks My Tracks
-    %span.playlists Playlists
+      %span.playlists Playlists
 
 %hr
