@@ -9,7 +9,8 @@
       - if @playlist.top_genres
         - for g in @playlist.top_genres
           .genre
-            = g
+            %a{:href => "/meow#search/genres/#{g}"}
+              = g
 
     .playlist-description
       = @playlist.description
