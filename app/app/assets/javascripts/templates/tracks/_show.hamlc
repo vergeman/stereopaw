@@ -30,7 +30,8 @@
       - if @track.genres
         - for g in @track.genres
           .genre
-            = g
+            %a{:href => "/meow#search/genres/#{g}"}
+              = g
 
 			
     - if @track['comment']

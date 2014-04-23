@@ -14,6 +14,7 @@ app.AppRouter = Backbone.Router.extend({
 	'new' : 'new_tracks',
 
 	/*search*/
+	'search/genres/:query' : 'search_genres',
 	'search/playlists/:query' : 'search_playlists',
 	'search/me/:query' : 'search_me',
 	'search/:query' : 'search_all',
@@ -283,6 +284,15 @@ app.AppRouter = Backbone.Router.extend({
 
 	var route = "/search/" + query
 	this.trackscollection.url = "/search?q=" + query
+	this._searchTracks(route, query)
+    },
+
+    search_genres : function(query) {
+	if (DEBUG)
+	    console.log("[AppRouter] search_genres")
+
+	var route = "/search/genres/" + query
+	this.trackscollection.url = "/search/genres?q=" + query
 	this._searchTracks(route, query)
     },
 

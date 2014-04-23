@@ -10,5 +10,5 @@
     - if @current_user
       %span.mytracks My Tracks
       %span.playlists Playlists
-
+    %span.genres Genres
 %hr

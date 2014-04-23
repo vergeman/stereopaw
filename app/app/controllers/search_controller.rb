@@ -40,6 +40,12 @@ class SearchController < ApplicationController
   end
 
 
+  def genres
+    @tracks = Track.search_by_genre(query_params)
+    render :json => @tracks, :except => [:pg_search_rank]
+  end
+
+
   private
 
   def page_params

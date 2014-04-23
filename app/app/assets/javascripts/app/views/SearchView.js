@@ -14,7 +14,9 @@ app.SearchView = Backbone.View.extend({
     {	
 	'click .all' : 'search_alltracks',
 	'click .mytracks' : 'search_mytracks',
+	'click .genres' : 'search_genres',
 	'click .playlists' : 'search_playlists'
+
     },
 
     initialize : function(opts) {
@@ -124,6 +126,18 @@ app.SearchView = Backbone.View.extend({
 	e.preventDefault()
 	var query = $('#search-box').val()
 	var route = "/search/me/" + query
+
+	Backbone.history.navigate(route, true)
+	
+    },
+
+    search_genres : function(e) {
+	if (DEBUG)
+	    console.log("[SearchView] search_mytracks")
+
+	e.preventDefault()
+	var query = $('#search-box').val()
+	var route = "/search/genres/" + query
 
 	Backbone.history.navigate(route, true)
 	

@@ -57,6 +57,13 @@ h4, h6 { display:inline-block;}
     @media #{$large-up} {
 	margin-top: 1.5rem;
     }
+
+    a { 
+	color: #a2a2a2; 
+	&:hover {
+	    color: #0078a0;
+	}
+    }
 }
 
 /*track date*/

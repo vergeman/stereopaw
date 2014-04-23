@@ -30,7 +30,31 @@ describe SearchController do
   end
 
 
-  describe "GET search logged out" do
+  describe "GET #genre" do
+
+    before do
+      Warden.test_reset!
+      logout(:user)
+      @track = FactoryGirl.create(:track)
+    end
+
+    it "has a 200 response" do
+      get :genres, :format => 'json', :q => "Query", :page => 0
+      expect(response.status).to eq(200)
+    end
+
+
+    it "responds with a json obj: collection of tracks that match genre rock" do
+      get :genres, :format => 'json', :q => "rock", :page => 0
+      @tracks = Track.search_by_genre("rock")
+      expect(response.body).to eq(@tracks.to_json(except: ['pg_search_rank']))
+    end
+
+
+  end
+
+
+  describe "GET search - [mytracks, playlists] : logged out" do
 
     before do
       Warden.test_reset!
@@ -50,7 +74,7 @@ describe SearchController do
   end
 
 
-  describe "GET search logged in" do
+  describe "GET search - [mytracks, playlists] : logged in" do
 
     before do
       Warden.test_reset!

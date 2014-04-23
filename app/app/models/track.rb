@@ -30,6 +30,7 @@
 class Track < ActiveRecord::Base
   include PgSearch
   pg_search_scope :search_by_meta, :against => [:artist, :title, :genres, :service, :comment]
+  pg_search_scope :search_by_genre, :against => [:genres]
 
   belongs_to :user
 
