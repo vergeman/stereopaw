@@ -87,7 +87,7 @@ namespace :deploy do
   task :restart do
     invoke 'delayed_job:stop'
     #invoke 'delayed_job:start'
-    invoke 'delayed_job:restart'          
+    invoke 'delayed_job:restart'    
   end                                                
 end
 
