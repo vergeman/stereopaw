@@ -1,14 +1,19 @@
 %header
-  %h1
+  
+  %h1#search-title
     Search
 
-  %form#search-form-page
-    %input#search-box{value: @query, placeholder: "Search"}
+  #search-wrap
     
-  .options-wrap
-    %span.all All Tracks
-    - if @current_user
-      %span.mytracks My Tracks
-      %span.playlists Playlists
-    %span.genres Genres
+    %form#search-form-page
+      %input#search-box{value: @query, placeholder: "Search"}
+      %i.fi-magnifying-glass
+        
+    %ul#search-filters
+      %li.all.filter All Tracks
+      - if @current_user
+        %li.mytracks.filter My Tracks
+        %li.playlists.filter Playlists
+      %li.genres.filter Genres
+      
 %hr

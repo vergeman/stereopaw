@@ -1,3 +1,5 @@
+require 'uri'
+
 class SearchController < ApplicationController
   before_filter :authenticate_user!, only: [:mytracks, :playlists]
 
@@ -28,11 +30,19 @@ class SearchController < ApplicationController
   private
 
   def page_params
-    params.require(:page) ? params[:page].to_i : 0
+    if params.has_key?(:page) && !params[:page].empty?
+      return params.require(:page) ? params[:page].to_i : 0
+    end
+
+    return 0
   end
 
   def query_params
-    params.require(:q)
+    if params.has_key?(:q) && !params[:q].empty?
+      return params.require(:q) 
+    end
+
+    return "[]"
   end
 
 

@@ -8,6 +8,8 @@ app.SearchView = Backbone.View.extend({
 
     template: JST['search/index'],
 
+    templateEmpty: JST['search/noresults'],
+
     templatefooter : JST['tracks/footer'],
 
     events : 
@@ -27,6 +29,7 @@ app.SearchView = Backbone.View.extend({
 	this.collection = opts.collection
 	this.session = opts.session
 	this.query = opts.query
+	this.link = opts.link
 
 	/*need to fetch collection in this view*/
 	if (opts.fetch) {
@@ -51,9 +54,22 @@ app.SearchView = Backbone.View.extend({
 
 	_(this).bindAll('close')
 
+	/*listen for render, if empty, render empty*/
+	this.listenToOnce(this.collection, 'render',
+			  this.renderEmpty)
+
+	//listen to reset needed for playlist
+	this.listenToOnce(this.collection, 'reset',
+			  this.renderEmpty)
+
 	/*add footer post render*/
 	this.listenToOnce(this.collection, 'render',
 			  this.renderfooter)
+
+	//listen to reset needed for playlist
+	this.listenToOnce(this.collection, 'reset',
+			  this.renderfooter)
+
     },
 
     render : function() {
@@ -69,7 +85,8 @@ app.SearchView = Backbone.View.extend({
 	    )
 	)
 
-	//this.$el.append(this.tracksView.el)
+	this.activate_link(this.link)
+
 	this.$el.append(this.View.el)
 
 	return this;
@@ -78,7 +95,7 @@ app.SearchView = Backbone.View.extend({
     /*limited for playlists for now*/
     resetView : function() {
 	if (DEBUG)
-	    console.log("[SearchView] reload")
+	    console.log("[SearchView] resetView")
 
 	this.View.reset(this.collection.models)
     },
@@ -87,9 +104,26 @@ app.SearchView = Backbone.View.extend({
 	if (DEBUG)
 	    console.log("[SearchView] close")
 
+	//$(document).off('submit', '#search-form-page')
+
 	this.View.close()
 	this.remove()
 	this.unbind()
+    },
+
+    activate_link : function(link) {
+	if (DEBUG)
+	    console.log("[SearchView] activate_link: " + link)
+
+	this.$el.find(".filter." + link).addClass('active')
+    },
+
+    renderEmpty : function() {
+	/* no search results */
+	if (this.collection.length == 0) {
+	    $('.playlist-wrap').remove()
+	    this.$el.append(this.templateEmpty())
+	}
     },
 
 /*button bindings*/
@@ -97,13 +131,12 @@ app.SearchView = Backbone.View.extend({
 	if (DEBUG)
 	    console.log("[SearchView] bind_search")
 
-	$(document).one('submit', '#search-form-page', function(e) {
+	$(document).on('submit', '#search-form-page', function(e) {
 	    e.preventDefault()
 	    var query = $('#search-box').val()
 	    var route = "/search/" + query
 	    Backbone.history.navigate(route, 
 				      true)
-
 	});
 
     },
