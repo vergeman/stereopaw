@@ -7,6 +7,12 @@ app.NavigationView = Backbone.View.extend({
 
     template: JST['users/navbar'],
 
+    /*
+     *for responsive top bar view we launch 
+     *render from this View
+     */
+    templateTop: JST['users/navbar_top'],
+
     events : {
 	'click #logout' : 'logout',
 	'click #login_nav' : 'login',
@@ -16,7 +22,7 @@ app.NavigationView = Backbone.View.extend({
 	'click ul.navigation #mytracks' : 'mytracks',
 	'click ul.navigation #playlist' : 'playlist',
 	'click ul.navigation #submit' : 'submithow',
-	'click #settings' : 'settings',
+	'click #settings' : 'settings'
     },
 
     initialize : function(session) {
@@ -31,7 +37,6 @@ app.NavigationView = Backbone.View.extend({
 	this.listenTo(app.vent, "NavigationView:ActivateLink",
 		      this.activate_link)
 
-
 	/* Root Link: this is out of navbar scope 
 	 * so we manually attach
 	 */
@@ -42,42 +47,95 @@ app.NavigationView = Backbone.View.extend({
 	    Backbone.history.navigate("/", {trigger:true})	    
 	});
 
-	this.bind_search_bars()
     },
 
     render_loggedin: function() {
 	if (DEBUG)
 	    console.log("[NavigationView] render_loggedin")
 
-	this.$el.html(this.template({user: this.session.get("current_user").toJSON()} ))
-
-	this.close_menu_listener()
+	this.render(this.session.get("current_user").toJSON())
     },
 
     render_loggedout : function() {
 	if (DEBUG)
 	    console.log("[NavigationView] render_loggedout")
 
-	this.$el.html(this.template({user: null} ))
+	this.render(null)
+    },
+
+    render : function(user) {
+	if (DEBUG)
+	    console.log("[NavigationView] render")
+
+	//sidebar
+	this.$el.html(this.template({user: user} ))
+
+	//top menu
+	$('.navbar-top-wrap').html(
+	    this.templateTop({user: user}))
 
 	this.close_menu_listener()
+
+	this.bind_search_bars()
+	
     },
+
 
     bind_search_bars : function() {
 	if (DEBUG)
-	    console.log("[NavigationView] bind_search")
+	    console.log("[NavigationView] bind_search_bars")
 
 	this._bind_search("#search-form",
 			  "#search-query")
 
 	this._bind_search("#mobile-search-form",
 			  "#mobile-search-query")
+
+	/*hamburger mobile dropdown*/
+	$('.menu-icon').click(function(e) {
+	    e.preventDefault();
+	    $('ul.navigation').toggleClass('mobile');
+	});
+
+	/*bind click to search icon*/
+	$('#mobile-search-form i').click(function(e) {
+	    $('#mobile-search-form').submit()
+	})
+
+	/*bind mobile search links*/
+	$('#mobile-search-query').focus(function(e) {
+	    $('#mobile-search-filters').show()
+	    //there can be only one menu visible
+	    $('ul.navigation').removeClass('mobile')
+	})
+
+	/*
+	 *mobile search filter bindnings
+	 *click and fadeout
+	 */
+	$('li.filter').click(function(e) {
+	    var query = $('#mobile-search-query').val()
+	    var route = "/search" + $(e.currentTarget).attr('route') + "/" + query
+
+	    Backbone.history.navigate(route, {trigger:true})
+	})
+
+	$('#mobile-search-query').focusout(function(e) {
+	    console.log(e)
+
+	    window.setTimeout(function() {
+ 		$('#mobile-search-filters').hide()
+	    }, 100);  
+
+	})
     },
+
 
     _bind_search : function(form_div, query_div) {
 	if (DEBUG)
 	    console.log("[NavigationView] bind_search")
-	
+
+
 	$(document).on('submit', form_div, function(e) {
 	    e.preventDefault()
 	    var query = $(query_div).val()
@@ -85,11 +143,13 @@ app.NavigationView = Backbone.View.extend({
 
 	    /*update values in respective search boxes*/
 	    $('nav input').val(query)
-	    $('.navigation input').val(query)
+	    $('.navigation input').val("") //side
 	    Backbone.history.navigate(route,
 				      {trigger: true})
 
+	    $(window).scrollTop(0);
 	});
+
     },
 
     close_menu_listener : function(e) {
@@ -115,10 +175,7 @@ app.NavigationView = Backbone.View.extend({
 	$('ul.navigation li#' + div_name).addClass("route")
     },
 
-    home : function(e) {
-
-    },
-
+/*LINKS*/
     logout: function(e) {
 	if (DEBUG)
 	    console.log("[NavigationView] logout")

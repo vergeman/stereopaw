@@ -17,8 +17,8 @@ app.SearchView = Backbone.View.extend({
 	'click .all' : 'search_alltracks',
 	'click .mytracks' : 'search_mytracks',
 	'click .genres' : 'search_genres',
-	'click .playlists' : 'search_playlists'
-
+	'click .playlists' : 'search_playlists',
+	'click #search-form-page i' : 'search_submit'
     },
 
     initialize : function(opts) {
@@ -141,6 +141,11 @@ app.SearchView = Backbone.View.extend({
 
     },
 
+    search_submit : function() {
+	$('#search-form-page').submit()
+    },
+
+/*filters*/
     search_alltracks : function(e) {
 	if (DEBUG)
 	    console.log("[SearchView] search_alltracks")	

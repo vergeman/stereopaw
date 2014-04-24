@@ -26,11 +26,12 @@
     #search-form-page {
 	padding-bottom: .5rem;
 	
-	.fi-magnifying-glass {
+	i {
 	    color: black;
 	    font-size: 1rem;
 	    float: left;
 	    margin: .5rem 0 0 -1.25rem;
+	    cursor:pointer;
 	}
     }
 

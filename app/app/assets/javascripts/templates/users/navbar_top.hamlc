@@ -1,0 +1,11 @@
+%form#mobile-search-form
+  %input#mobile-search-query{placeholder: "Search", autocomplete: "off"}
+  %i.fi-magnifying-glass
+  %ul#mobile-search-filters
+    .filterhead
+      Filter search by
+    %li.all.filter{route: ""} All Tracks
+    - if @user
+      %li.mytracks.filter{route: "/me"} My Tracks
+      %li.playlists.filter{route: "/playlists"} Playlists
+    %li.genres.filter{route: "/genres"} Genres

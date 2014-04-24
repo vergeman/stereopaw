@@ -23,7 +23,7 @@ ul.navigation {
 	padding: 0;
 	padding-left:3.1rem;
 	border: none;
-
+	color:white;
 	font-size: 16px;
 	font-weight: 300;
 	font-family: 'lato';
@@ -31,9 +31,9 @@ ul.navigation {
 	&:hover {
 	    background-color: #007fff;
 	}
-
-	&:focus {
-	    outline:none;	    
+	&:active, &:focus {
+	    outline:none;
+	    color:white;
 	}
     }
 
@@ -74,11 +74,12 @@ ul.navigation {
     min-width: 80px;
     i {
 	float:right;
-	margin-top: -1.6rem;
-	margin-right: -.5rem;
-	color: black;
+	margin: -1.8rem -.5rem 0 0;
+	color: white;
 	font-size: 1rem;
+	cursor:pointer;
     }
+
     margin-right: 1rem;
 
     @media only screen and (max-width: 360px) { 
@@ -96,7 +97,66 @@ ul.navigation {
     width: 11rem;
     font-size: 1rem;
     font-family: 'lato';
-    margin-top: .4rem;
-    padding: 4px;
+    color:white;
+    background: #0066AE;
+    height: 45px;
+    padding: 4px 4px 4px 1rem;
+    border:none;
+
+    &:active, &:focus {
+	outline:none;
+	color:white;
+    }
+    
+}
+#mobile-search-query::-webkit-input-placeholder { 
+    color:    white;
+}
+#mobile-search-query:-moz-placeholder {
+    color:    white;
+}
+#mobile-search-query::-moz-placeholder {
+    color:    white;
+}
+#mobile-search-query:-ms-input-placeholder {
+    color:    white;
 }
 
+
+#mobile-search-filters {
+    position: fixed;
+    right: 0;
+    top: 2.8rem;
+    display:none;
+    width: 11rem;
+    margin-right: 4.1rem;
+    background: #0066cc;
+    padding: .5rem 0 .5rem 0;
+    font-size: .8rem;
+    color: white;
+    z-index: 102;
+
+    li { 
+	list-style-type:none;
+	padding: .25rem 0 .25rem 1.5rem;
+
+	&:hover {
+	    background-color:  #007fff;
+	    cursor:pointer;
+	}
+	@media only screen and (max-width: 360px) {
+	    padding-left: 1.4rem;
+	}
+    }
+    .filterhead {
+	padding: 0 0 .5rem 1rem;
+	font-style:italic;
+	font-size: .8rem;
+    }
+
+    @media only screen and (max-width: 360px) {
+	margin-right: 0;
+	left: -1.2rem;
+    }
+
+}
