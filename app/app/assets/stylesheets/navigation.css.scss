@@ -45,6 +45,10 @@ ul.navigation {
 	&:hover {
 	    background:#007fff;
 	}
+
+	@media #{$small-only} {
+	    display:none;
+	}
     }
 
     ::-webkit-input-placeholder { /* WebKit browsers */
@@ -59,5 +63,40 @@ ul.navigation {
     :-ms-input-placeholder { /* Internet Explorer 10+ */
 	color:    #fff;
     }
+}
+
+/*
+ *mobile search bar
+ */
+#mobile-search-form {
+    float:right;
+    width: 80px;
+    min-width: 80px;
+    i {
+	float:right;
+	margin-top: -1.6rem;
+	margin-right: -.5rem;
+	color: black;
+	font-size: 1rem;
+    }
+    margin-right: 1rem;
+
+    @media only screen and (max-width: 360px) { 
+	float:left;
+	margin-right: 0;
+    }
+
+    @media #{$medium-up} {
+	display:none;
+    }
+}
+
+#mobile-search-query {
+    float:right;
+    width: 11rem;
+    font-size: 1rem;
+    font-family: 'lato';
+    margin-top: .4rem;
+    padding: 4px;
 }
 
