@@ -30,7 +30,7 @@ class SearchController < ApplicationController
   private
 
   def page_params
-    if params.has_key?(:page) && !params[:page].empty?
+    if params.has_key?(:page) && !params[:page].blank?
       return params.require(:page) ? params[:page].to_i : 0
     end
 
@@ -38,7 +38,7 @@ class SearchController < ApplicationController
   end
 
   def query_params
-    if params.has_key?(:q) && !params[:q].empty?
+    if params.has_key?(:q) && !params[:q].blank?
       return params.require(:q) 
     end
 
