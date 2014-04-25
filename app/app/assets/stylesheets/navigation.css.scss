@@ -8,6 +8,7 @@ ul.navigation {
 	&:hover {
 	    background-color: #007fff;
 	}
+
     }
 
     i.fi-magnifying-glass {
@@ -15,22 +16,22 @@ ul.navigation {
     }
 
     #search-query {
-	float: left;
+	float:left;
 	width: 100%;
-	height: 41px;
-	margin-top: -2rem;
-	background: #0066cc;
+	background: transparent;
 	padding: 0;
 	padding-left:3.1rem;
+	margin-top:-2.1rem;
+	height:40px;
 	border: none;
 	color:white;
 	font-size: 16px;
 	font-weight: 300;
 	font-family: 'lato';
-
 	&:hover {
 	    background-color: #007fff;
 	}
+
 	&:active, &:focus {
 	    outline:none;
 	    color:white;
@@ -39,9 +40,11 @@ ul.navigation {
 
 
     li#search {
+	//float: left;
 	padding: .5rem 0;
 	color:#fff;
 	font-size: 16px;
+
 	&:hover {
 	    background:#007fff;
 	}

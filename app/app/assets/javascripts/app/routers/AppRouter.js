@@ -320,6 +320,7 @@ app.AppRouter = Backbone.Router.extend({
 	    ), route)
 
 	//activate/hightlight linky?
+	app.vent.trigger("NavigationView:ActivateLink", "search")
     },
 
 /*ROOT*/
@@ -361,7 +362,9 @@ app.AppRouter = Backbone.Router.extend({
 		    link: link
 		}
 	    ), route)
+
 	//activate/hightlight linky?
+	app.vent.trigger("NavigationView:ActivateLink", "search")
     },
 
     generate_trackview : function(route, displayroute) {

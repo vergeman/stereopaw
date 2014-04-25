@@ -23,7 +23,6 @@ header {
 nav {
     width: 100%;
     height: auto;
-
     position:fixed !important;
     top:0;
     left:0;
@@ -64,6 +63,7 @@ nav {
     .navigation > li { 
 	display:block;
 	padding: .5rem 0 .5rem 1.1rem;
+	clear: both;
     }
 
     /*mobile*/
@@ -119,6 +119,7 @@ nav {
 
     /*SIDEBAR (adjusted navbar)*/
     @media #{$medium-up} {
+	//width: 136px;
 	width: $sidebar-width;
 	height: 100%;
 	display:block;
@@ -141,8 +142,8 @@ nav {
 	    a#home h4 {
 		display:block;
 		float:left;
-		margin-top: -2.5rem;
-		margin-left: 1rem;
+		margin-top: 1.5rem;
+		margin-left: -1.1rem;
 		color:$sidebar-color;
 	    }
 
