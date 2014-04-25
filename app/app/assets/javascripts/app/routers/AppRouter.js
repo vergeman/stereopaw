@@ -80,7 +80,7 @@ app.AppRouter = Backbone.Router.extend({
 	}
 
 	app.vent.trigger("NavigationView:ActivateLink", "settings")
-
+	$(window).scrollTop(0);
     },
 
     forgot : function() {
@@ -266,6 +266,7 @@ app.AppRouter = Backbone.Router.extend({
 	$(document).foundation()
 
 	app.vent.trigger("NavigationView:ActivateLink", "submit")
+	$(window).scrollTop(0);
     },
 
 /*search routes*/

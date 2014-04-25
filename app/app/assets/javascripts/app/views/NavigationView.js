@@ -91,11 +91,6 @@ app.NavigationView = Backbone.View.extend({
 	this._bind_search("#mobile-search-form",
 			  "#mobile-search-query")
 
-	/*hamburger mobile dropdown*/
-	$('.menu-icon').click(function(e) {
-	    e.preventDefault();
-	    $('ul.navigation').toggleClass('mobile');
-	});
 
 	/*bind click to search icon*/
 	$('#mobile-search-form i').click(function(e) {
