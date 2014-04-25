@@ -14,7 +14,17 @@ $ytplayer-height: 200px;
     //border-top: 1px solid #bdc3c7;
     width: 100%;
     display:none;
+
+    /*do this to allow better sliding*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
 }
+
 
 /*Progressbar*/
 .progress{
@@ -60,7 +70,6 @@ $ytplayer-height: 200px;
 
 #player-controls {
     float:left;
-    width: $sidebar-width;
     height:100%;
     padding: .25rem 0 0 1.25rem;
     border-right: 1px solid #dbdbda;
@@ -70,7 +79,6 @@ $ytplayer-height: 200px;
 	display:inline;
 	margin-top: .7rem;
 	font-size: 1.5rem;
-	//color: #a2a2a2;
 	color: #191818;
 	cursor:pointer;
 	&:hover {
@@ -83,10 +91,43 @@ $ytplayer-height: 200px;
 	font-size: 2.75rem;
 	margin-top:0;
     }
-   
+    #play-next {
+	margin-right: 1.1rem;
+    }
+
     /*play/pause icon size diff*/
     .fi-pause {
 	padding-right: 4px;
+    }
+
+    /*volume stuff*/
+    #volume {
+	padding-left: 1.1rem;
+	padding-right:1.1rem;
+	border-left: 1px solid #dbdbda;
+	height: 100%;
+    }
+
+    #volume.active {
+	width: 180px;
+	@media screen and (max-width: 300px) {
+	    width: 125px;
+	}
+    }
+
+    #volume-meter {
+	width: 100%;
+	background: #bdc3c7;
+	height: 8px;
+	padding-top: -0.5rem;
+	margin-top: .5rem;
+	display:none;
+    }
+
+    #volume-slider {
+	width: 50%;
+	height: 100%;
+	background: #2980b9;
     }
 }
 /*meta info & slider*/
@@ -100,6 +141,10 @@ $ytplayer-height: 200px;
     }
 }
 
+/**Volume djust*/
+.track-meta-volumed {
+    margin-left: 320px !important; //$sidebar-width + 177px !important;
+}
 
 
 #player-track-meta { 

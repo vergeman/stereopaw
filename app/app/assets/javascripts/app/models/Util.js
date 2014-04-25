@@ -81,16 +81,20 @@ app.Util = Backbone.Model.extend({
 	return hours + ":" + this.prezero(min) + ":" + this.prezero(sec)
     },
 
+    deNaN : function(unit) {
+	return isNaN(unit) ? 0 : unit
+    },
+
     toTime : function(secs, scale)
     {
 
 	var alpha = (scale == "secs") ? 1 : 1000;
 
-	var hours =  Math.floor(secs / (3600.0 * alpha) )
+	var hours =  this.deNaN( Math.floor(secs / (3600.0 * alpha) ))
 
-	var min = Math.floor( (secs / (60.0 * alpha)) - 60 * hours )
+	var min = this.deNaN( Math.floor( (secs / (60.0 * alpha)) - 60 * hours ))
 
-	var sec = (secs / (60 * alpha) - (60 * hours) -  min) * 60 
+	var sec = this.deNaN( (secs / (60 * alpha) - (60 * hours) -  min) * 60 )
 
 	/*granularity: round vs floor*/
 	if (scale == "secs") 

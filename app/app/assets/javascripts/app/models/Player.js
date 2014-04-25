@@ -16,7 +16,18 @@ app.Player = Backbone.Model.extend({
 	this.soundmanager_player = null;
 	this.youtube_player = null;
 
+
+	/*
+	 *set initial volume value 
+	 *take from cookie, or default to 100
+	 */
+	this.volume = $.cookie("volume") || 100	
+	$.cookie("volume", this.volume)
+
+	this.listenTo(app.vent, "Player:set_volume",
+		      this.set_volume)
     },
+
     getElapsed : function()
     {
 	if (!this.current_player) {
@@ -52,6 +63,11 @@ app.Player = Backbone.Model.extend({
 	    self.current_player = self.youtube_player;
 
 	    self.current_player.play(self.youtube_player, track.get("track_id"), timestamp)
+
+
+	    console.log("VOLUME: " + self.volume)
+
+	    self.set_volume(self.volume)
 	},
 
 	soundcloud : function(self, track, timestamp)
@@ -76,6 +92,8 @@ app.Player = Backbone.Model.extend({
 	    self.current_player = self.soundmanager_player;
 
 	    self.current_player.play(track, timestamp)
+
+	    self.set_volume(self.volume)
 	}
 
     },
@@ -94,13 +112,21 @@ app.Player = Backbone.Model.extend({
     },
     seek : function(time) {
 	this.current_player.seek(time)
-    },
+   },
     pause : function(){
 	this.current_player.pause()
     },
     resume : function(){
 	this.current_player.resume()
-    }
+    },
 
+    set_volume : function(vol) {
+	if (DEBUG)
+	    console.log("[Player] set_volume: " + vol)
+
+	/*vol 0-100*/
+	this.volume = vol
+	this.current_player.set_volume(this.volume)
+    }
 });
 

@@ -15,6 +15,8 @@ app.PlayerView = Backbone.View.extend({
 
 	this.playerslider = new app.PlayerSliderView()
 
+	this.volumeslider = new app.VolumeSliderView()
+
 	this.player = player;
 	this.playerqueue = playerqueue;
 
@@ -36,6 +38,7 @@ app.PlayerView = Backbone.View.extend({
 	/*triggered from YouTube_Player*/
 	this.listenTo(app.vent, "YouTube_Player:hide", this.hide_yt)
 	this.listenTo(app.vent, "YouTube_Player:show", this.show_yt)
+
     },
 
     events : {
@@ -44,7 +47,7 @@ app.PlayerView = Backbone.View.extend({
 	'click #play-next' : 'next',
 	'click #play-prev' : 'prev',
 	'click #ytquit' : 'minimize_yt',
-	'click #show_yt' : 'show_yt'
+	'click #show_yt' : 'show_yt'	
     },
 
     render: function() {
@@ -233,6 +236,7 @@ app.PlayerView = Backbone.View.extend({
 
 	}, 350)
     },
+
     update_slider : function(elapsed, duration) {
 	if (!this.playerslider.is_busy()) {
 	    this.playerslider.moveSlider((elapsed / duration) * 100)

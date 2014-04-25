@@ -5,14 +5,14 @@ function onYouTubeIframeAPIReady() {
     app.vent.trigger("YouTube_Player:set_player");
 }
 
-
 app.YouTube_Player = Backbone.Model.extend({
 
     initialize: function() {
 	this._player = null
 	this. _track_id = null
 	this._timestamp = null
-	
+	this.volume = null;
+
 	this._load_player(); //load player
 
 	this.listenTo(app.vent, "YouTube_Player:set_player", this.set_player)
@@ -41,6 +41,7 @@ app.YouTube_Player = Backbone.Model.extend({
 	    console.log("[YouTube_Player] onPlayerReady")
 
 	this._play(this._track_id, this._timestamp)
+	this._player.setVolume(this.volume)
     },
 
     onPlayerStateChange : function(e) {
@@ -127,12 +128,14 @@ app.YouTube_Player = Backbone.Model.extend({
 
 	    if (DEBUG)
 		console.log('[YouTube_player] setting track')
+
 	    this._track_id = track_id
 	    this._timestamp = timestamp
 	}
 	else {
 	    if (DEBUG)
 		console.log('[YouTube_Player] play')
+
 	    this._track_id = track_id
 	    this._timestamp = timestamp
 	    
@@ -168,7 +171,6 @@ app.YouTube_Player = Backbone.Model.extend({
 	    console.log("end youtube _play")
     },
 
-
     stop : function() {
 	if (DEBUG)
 	    console.log("[YouTube_Player] stop")
@@ -184,8 +186,26 @@ app.YouTube_Player = Backbone.Model.extend({
 	    return 0
 	}
 	return this._player.getCurrentTime();
+    },
+
+    set_volume : function(vol) {
+	if (DEBUG)
+	    console.log("[YouTube_Player] set_volume")
+
+	/*
+	 *set volume for player
+	 *if player not ready, set volume variable
+	 *and try again to set player volume in
+	 *onPlayerReady()
+	 */
+
+	if (this._player) {
+	    this._player.setVolume(vol)
+	}
+	this.volume = vol
+
     }
-	
+
 });
 
 

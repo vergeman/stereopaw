@@ -131,6 +131,13 @@ app.SoundManager_Player = Backbone.Model.extend({
 	this._sound.stop();
 	this.unload();
     },
+
+    set_volume: function(vol) {
+	if (DEBUG)
+	    console.log("[SoundManager_Player] set_volume")
+	this._sound.setVolume(vol)
+    },
+
     unload : function()
     {
 	if (DEBUG)
