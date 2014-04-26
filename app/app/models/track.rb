@@ -45,7 +45,13 @@ class Track < ActiveRecord::Base
 
   validates :comment, length: { maximum: 1000 }
   before_save :capitalize_genres
-  after_initialize :default_values
+  before_validation :default_values, :on => :create
+
+  #override to hide some data
+  def as_json(options={})
+    options[:except] ||= [:submit_id, :user_id, :updated_at, :shareable]
+    super
+  end
 
   def default_values
     self.timestamp ||= 0
@@ -82,8 +88,9 @@ class Track < ActiveRecord::Base
   #timeformat is just a time-formatted timestamp value,
   #so we check timestamp for ease
   def timeformat_less_than_duration
-    if (timestamp > duration)
+    if (self.timestamp > self.duration)
       errors.add(:timeformat, "exceeds duration")
     end
   end
+
 end

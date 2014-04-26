@@ -88,7 +88,7 @@ class TracksController < ApplicationController
     @track = current_user.tracks.build(new_params)
 
     if @track.save
-      respond_with(@track, :location => tracks_submit_path(@track))
+      respond_with(@track, :location => tracks_submit_path(@track) )
     else
       respond_with(current_user, @track) #for error submit
     end
@@ -121,7 +121,7 @@ class TracksController < ApplicationController
 
   def json_response(obj)
     respond_with(obj) do |format|
-      format.json { render }
+      format.json { render :json => obj }
     end
   end
 

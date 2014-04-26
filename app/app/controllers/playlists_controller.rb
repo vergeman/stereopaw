@@ -40,7 +40,7 @@ class PlaylistsController < ApplicationController
     end
 
     if @playlist.update_attributes(track_params(@playlist))
-      render :json => @playlist.with_track_preview, :methods => [:track_previews], :except => [:pg_search_rank]
+      render :json => @playlist.with_track_preview, :methods => [:track_previews]
     else
       render :json => {:errors => @playlist.errors.messages}
     end

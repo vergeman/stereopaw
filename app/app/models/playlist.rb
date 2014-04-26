@@ -30,21 +30,30 @@ class Playlist < ActiveRecord::Base
 
   validates_uniqueness_of :name, scope: :user_id, message: "already exists"
 
-#generates array of track_previews
-#Note: since track_previews not persisted, json response needs to be aware of non-active record attributes
+  #override to hide data
+  def as_json(options={})
+    options[:except] ||= [:user_id, :pg_search_rank]
+    super
+  end
+
+  #generates array of track_previews
   def with_track_preview(options = {})
     options = {sort_order: "plays DESC", count: 3, query: false}
       .merge(options)
 
     if options[:query]
+
       #take most relevant first, then order
       @track_previews = Track.where(id: self.track_ids)
         .search_by_meta(options[:query]).limit(options[:count])
         .order(options[:sort_order])
-      
+        .as_json(except: [:submit_id, :user_id, :updated_at, :shareable, :pg_search_rank])
+
     else
+      #order by plays first, then limit
       @track_previews = Track.where(id: self.track_ids)
         .order(options[:sort_order]).limit(options[:count])
+        .as_json(except: [:submit_id, :user_id, :updated_at, :shareable, :pg_search_rank])
     end
 
     #make sure to return playlist obj
@@ -62,6 +71,7 @@ class Playlist < ActiveRecord::Base
     end
     self.top_genres = top_genres.sort_by{|k,v| v}.reverse.map{|g| g[0]}[0..2]
   end
+
 
   def integerize_track_ids
     self.track_ids = self.track_ids.map(&:to_i)

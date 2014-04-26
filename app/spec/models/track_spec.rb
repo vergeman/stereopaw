@@ -166,9 +166,10 @@ describe Track do
         @track.should_not be_valid        
       end
 
-      it "cannot have a blank submit_id" do
+      it "a blank submit_id will default to user_id" do
         @track.submit_id = nil
-        @track.should_not be_valid        
+        @track.valid?
+        @track.user_id.should eq(@track.submit_id)
       end
 
 

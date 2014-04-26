@@ -1,18 +1,17 @@
 class Search
 
-
   def self.tracks_by_meta(query, page)
-    Track.search_by_meta(query).limit(10).offset(page * 10)
+    Track.search_by_meta(query).limit(10).offset(page * 10).as_json(except: track_exceptions)
   end
 
 
   def self.tracks_by_meta_and_user(query, current_user_id, page)
-    Track.search_by_meta(query).where(user_id: current_user_id).limit(10).offset(page * 10)
+    Track.search_by_meta(query).where(user_id: current_user_id).limit(10).offset(page * 10).as_json(except: track_exceptions)
   end
 
 
   def self.tracks_by_genre(query, page)
-    Track.search_by_genre(query).limit(10).offset(page * 10)
+    Track.search_by_genre(query).limit(10).offset(page * 10).as_json(except: track_exceptions)
   end
 
 
@@ -21,8 +20,7 @@ class Search
     ###
     #search playlists for name/description matches to query
     ###
-    searched_playlists = Playlist.search_by_descriptions(query)
-      .where(user_id: current_user.id)
+    searched_playlists = Playlist.search_by_descriptions(query).where(user_id: current_user.id)
 
     current_user.playlists.each do |p|
 
@@ -44,5 +42,12 @@ class Search
     results
   end
 
+
+
+  private
+
+  def self.track_exceptions
+    [:submit_id, :user_id, :updated_at, :shareable, :pg_search_rank]
+  end
 
 end

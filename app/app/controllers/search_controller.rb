@@ -5,19 +5,19 @@ class SearchController < ApplicationController
 
   def show
     tracks = Search.tracks_by_meta(query_params, page_params)
-    render :json => tracks, except: [:pg_search_rank]
+    render :json => tracks
   end
 
 
   def mytracks
     tracks = Search.tracks_by_meta_and_user(query_params, current_user.id, page_params)
-    render :json => tracks, except: [:pg_search_rank]
+    render :json => tracks
   end
 
 
   def genres
     tracks = Search.tracks_by_genre(query_params, page_params)
-    render :json => tracks, :except => [:pg_search_rank]
+    render :json => tracks
   end
 
 
@@ -25,6 +25,7 @@ class SearchController < ApplicationController
     results = Search.playlists(query_params, current_user)
     render :json => results, :methods => [:track_previews]
   end
+
 
 
   private

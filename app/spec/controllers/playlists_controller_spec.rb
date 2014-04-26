@@ -28,7 +28,7 @@ describe PlaylistsController do
 
       it "responds with all playlists of user + with a track preview listing of the most played " do
         @user.playlists = @user.playlists.map(&:with_track_preview)
-        expect(response.body).to eq(@user.playlists.to_json(:methods => [:track_previews]))
+        expect(response.body).to eq(@user.playlists.to_json(:methods => [:track_previews], except: [:user_id]))
       end
 
     end
@@ -46,8 +46,7 @@ describe PlaylistsController do
 
       it "responds with a json obj: playlists and track data" do
         tracks = Track.find(@playlist.track_ids)
-        #obj = {:playlist => @playlist, :tracks => tracks}.to_json
-        obj = tracks.to_json
+        obj = tracks.to_json(except: [:submit_id, :user_id, :updated_at, :shareable])
         expect(response.body).to eq(obj)
       end
 
@@ -111,7 +110,7 @@ describe PlaylistsController do
           @playlist.name = @playlist.name + "123" #for scoped uniquness
           post :create, :format => 'json', 
           :user_id => @user.id, :playlist => @playlist.attributes
-          expect(response.body).to eq(@user.playlists.last.to_json)
+          expect(response.body).to eq(@user.playlists.last.to_json(except: [:user_id]) )
         end
 
 
@@ -186,7 +185,7 @@ describe PlaylistsController do
           :user_id => @user.id, :id => @p.id, 
           :playlist => @p.attributes
 
-          expect(response.body).to eq(@user.playlists.last.with_track_preview.to_json(:methods => [:track_previews]))
+          expect(response.body).to eq(@user.playlists.last.with_track_preview.to_json(:methods => [:track_previews], except: [:user_id]))
         end
 
         it "sucessful request responds with playlist when changing name and description of playlist " do
@@ -196,7 +195,7 @@ describe PlaylistsController do
           patch :update, :format => 'json', 
           :user_id => @user.id, :id => @p.id, 
           :playlist => @p.attributes
-          expect(response.body).to eq(@user.playlists.last.with_track_preview.to_json(:methods => [:track_previews]))
+          expect(response.body).to eq(@user.playlists.last.with_track_preview.to_json(:methods => [:track_previews], except: [:user_id]))
         end
 
 
@@ -205,7 +204,7 @@ describe PlaylistsController do
           patch :update, :format => 'json', 
           :user_id => @user.id, :id => @p.id, 
           :track => @track4.id
-          expect(response.body).to eq(@user.playlists.last.with_track_preview.to_json(:methods => [:track_previews]))
+          expect(response.body).to eq(@user.playlists.last.with_track_preview.to_json(:methods => [:track_previews], except: [:user_id]))
         end
 
 

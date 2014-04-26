@@ -31,7 +31,7 @@ describe TracksController do
 
     it "responds with tracks sorted DESC by created_at" do
       get :latest, :format => :json, :page => 0
-      expect(response.body).to eq(Track.all.order("created_at DESC").limit(10).to_json )
+      expect(response.body).to eq(Track.all.order("created_at DESC").limit(10).to_json(:except => [:submit_id, :user_id, :updated_at, :shareable]) )
     end
     
     
@@ -106,7 +106,7 @@ describe TracksController do
 
     it "json request renders a json response of a track object" do
       get :show, :format => 'json', :user_id => @user.id, :id => @track.id
-      expect(response.body).to eq(@track.to_json)
+      expect(response.body).to eq(@track.to_json(:except => [:submit_id, :user_id, :updated_at, :shareable]))
     end
 
   end

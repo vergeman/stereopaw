@@ -5,7 +5,9 @@ Warden.test_reset!
 
 describe SearchController do
 
-
+  before do
+      @exceptions = [:submit_id, :user_id, :updated_at, :shareable, :pg_search_rank]
+  end
 
   describe "GET #show" do
 
@@ -24,7 +26,7 @@ describe SearchController do
 
     it "responds with a json obj: collection of track data that matches the query 'youtube'" do
       get :show, :format => 'json', :q => "youtube", :page => 0
-      expect(response.body).to eq([@track].to_json)
+      expect(response.body).to eq([@track].to_json(:except => @exceptions))
     end
 
   end
@@ -47,7 +49,7 @@ describe SearchController do
     it "responds with a json obj: collection of tracks that match genre rock" do
       get :genres, :format => 'json', :q => "rock", :page => 0
       @tracks = Track.search_by_genre("rock")
-      expect(response.body).to eq(@tracks.to_json(except: ['pg_search_rank']))
+      expect(response.body).to eq(@tracks.to_json(except: @exceptions))
     end
 
 
@@ -95,7 +97,7 @@ describe SearchController do
 
       it "responds with a json obj: collection of track data *of the user* that matches the query 'youtube'" do
         get :mytracks, :format => 'json', :q => "youtube", :page => 0
-        expect(response.body).to eq([@track2].to_json)
+        expect(response.body).to eq([@track2].to_json(except: @exceptions) )
       end
 
     end
