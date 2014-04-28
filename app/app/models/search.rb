@@ -17,26 +17,31 @@ class Search
 
   def self.playlists(query, current_user)
     results = Array.new
+
     ###
     #search playlists for name/description matches to query
     ###
     searched_playlists = Playlist.search_by_descriptions(query).where(user_id: current_user.id)
 
-    current_user.playlists.each do |p|
+    results = Rails.cache.fetch(["search-playlists", current_user.id, query]) do
 
-      ###
-      #find any playlists with track preview matches to query
-      ###
+      current_user.playlists.each do |p|
 
-      result = p.with_track_preview({query: query})
+        ###
+        #find any playlists with track preview matches to query
+        ###
+        result = p.with_track_preview({query: query})
 
-      if p.track_previews.empty?
-        search_result = searched_playlists.where(id: p.id).first
-        results.push(search_result.with_track_preview) unless search_result.nil?
-      else
-        results.push(result)
-      end
+        if p.track_previews.empty?
+          search_result = searched_playlists.where(id: p.id).first
+          results.push(search_result.with_track_preview) unless search_result.nil?
+        else
+          results.push(result)
+        end
 
+      end #current_user end
+
+      results
     end
 
     results

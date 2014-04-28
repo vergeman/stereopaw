@@ -24,6 +24,7 @@ class PlaylistsController < ApplicationController
   def create
     @playlist = current_user.playlists.build(new_params)
     if @playlist.save
+      Rails.cache.delete_matched("search-playlists/#{current_user.id}/*")
       render :json => @playlist
     else
       render :json => {:errors => @playlist.errors.messages}
@@ -40,6 +41,7 @@ class PlaylistsController < ApplicationController
     end
 
     if @playlist.update_attributes(track_params(@playlist))
+      Rails.cache.delete_matched("search-playlists/#{current_user.id}/*")
       render :json => @playlist.with_track_preview, :methods => [:track_previews]
     else
       render :json => {:errors => @playlist.errors.messages}
@@ -57,6 +59,7 @@ class PlaylistsController < ApplicationController
     end
      
     if @playlist.destroy
+      Rails.cache.delete_matched("search-playlists/#{current_user.id}/*")
       render :json => {:success => "playlist destroyed"}
     else
       render :json => {:errors => @playlist.errors.messages}
