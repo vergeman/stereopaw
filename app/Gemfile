@@ -85,7 +85,7 @@ end
 # gem 'debugger', group: [:development, :test]
 
 # Caching
-gem 'actionpack-page_caching'
+#gem 'actionpack-page_caching'
 
 # New relic monitoring
 gem 'newrelic_rpm'
