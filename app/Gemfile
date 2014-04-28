@@ -88,4 +88,4 @@ end
 #gem 'actionpack-page_caching'
 
 # New relic monitoring
-gem 'newrelic_rpm'
+#gem 'newrelic_rpm'
