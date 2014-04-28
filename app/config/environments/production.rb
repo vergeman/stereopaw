@@ -14,7 +14,7 @@ App::Application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
   config.cache_store = :memory_store
-  config.action_controller.page_cache_directory = "#{Rails.root.to_s}/public/deploy"
+  config.action_controller.page_cache_directory = "#{Rails.root.to_s}/public"
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
   # Add `rack-cache` to your Gemfile before enabling this.
