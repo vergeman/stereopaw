@@ -1,17 +1,17 @@
 class Search
 
   def self.tracks_by_meta(query, page)
-    Track.search_by_meta(query).limit(10).offset(page * 10).as_json(except: track_exceptions)
+    Track.search_by_meta(query).where(spam: false).limit(10).offset(page * 10).as_json(except: track_exceptions)
   end
 
 
   def self.tracks_by_meta_and_user(query, current_user_id, page)
-    Track.search_by_meta(query).where(user_id: current_user_id).limit(10).offset(page * 10).as_json(except: track_exceptions)
+    Track.search_by_meta(query).where(user_id: current_user_id, spam: false).limit(10).offset(page * 10).as_json(except: track_exceptions)
   end
 
 
   def self.tracks_by_genre(query, page)
-    Track.search_by_genre(query).limit(10).offset(page * 10).as_json(except: track_exceptions)
+    Track.search_by_genre(query).where(spam: false).limit(10).offset(page * 10).as_json(except: track_exceptions)
   end
 
 

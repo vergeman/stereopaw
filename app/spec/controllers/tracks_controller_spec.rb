@@ -21,8 +21,8 @@ describe TracksController do
 
   describe "GET latest" do
     before do 
-      @track1 = FactoryGirl.create(:track)
-      @track2 = FactoryGirl.create(:track)
+      @track1 = FactoryGirl.create(:track, spam: false)
+      @track2 = FactoryGirl.create(:track, spam: false)
     end
     it "responds successfully with an HTTP 200 status code" do
       get :latest, :format => :json
@@ -90,7 +90,7 @@ describe TracksController do
   describe "GET #show" do
 
     before do
-      @track = FactoryGirl.create(:track)
+      @track = FactoryGirl.create(:track, spam: false)
       @user = @track.user
     end
 
@@ -114,7 +114,7 @@ describe TracksController do
   describe "POST #play" do
 
     before do
-      @track = FactoryGirl.create(:track)
+      @track = FactoryGirl.create(:track, spam: false)
     end
 
     it "responds successfully with 200 request" do
@@ -155,7 +155,7 @@ describe TracksController do
         logout(:user)
         controller.stub(:authenticate_user!).and_return(false)
         controller.stub(:user_signed_in?).and_return(false)
-        @track = FactoryGirl.create(:track)
+        @track = FactoryGirl.create(:track, spam: false)
       end
 
       it "responds with a 200" do
@@ -182,7 +182,7 @@ describe TracksController do
 
       before do
         Warden.test_reset!
-        @track = FactoryGirl.create(:track)
+        @track = FactoryGirl.create(:track, spam: false)
         @user = @track.user
         login_as(@user, :scope => :user)
         controller.stub(:authenticate_user!).and_return(true)
@@ -233,7 +233,7 @@ describe TracksController do
         logout(:user)
         controller.stub(:authenticate_user!).and_return(false)
         controller.stub(:user_signed_in?).and_return(false)
-        @track = FactoryGirl.create(:track)
+        @track = FactoryGirl.create(:track, spam: false)
       end
 
       it "responds with a 200" do
@@ -260,7 +260,7 @@ describe TracksController do
 
       before do
         Warden.test_reset!
-        @track = FactoryGirl.create(:track)
+        @track = FactoryGirl.create(:track, spam: false)
         @user = @track.user
         login_as(@user, :scope => :user)
         controller.stub(:authenticate_user!).and_return(true)

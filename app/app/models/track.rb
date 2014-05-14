@@ -52,9 +52,9 @@ class Track < ActiveRecord::Base
   ## Controller Wrap
   #
 
-  def self.get_tracks(params, source, track_order)
+  def self.get_tracks(params, source, conditions, track_order)
     page = params[:page] ? params[:page].to_i : 0
-    @tracks = source.order(track_order).limit(10).offset(page * 10)
+    @tracks = source.order(track_order).where(conditions).limit(10).offset(page * 10)
     return @tracks
   end
 

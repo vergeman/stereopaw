@@ -14,7 +14,7 @@ describe SearchController do
     before do
       Warden.test_reset!
       logout(:user)
-      @track = FactoryGirl.create(:track)
+      @track = FactoryGirl.create(:track, spam: false)
     end
 
 
@@ -47,7 +47,7 @@ describe SearchController do
     before do
       Warden.test_reset!
       logout(:user)
-      @track = FactoryGirl.create(:track)
+      @track = FactoryGirl.create(:track, spam: false)
     end
 
     it "has a 200 response" do
@@ -90,8 +90,8 @@ describe SearchController do
 
     before do
       Warden.test_reset!
-      @track2 = FactoryGirl.create(:track)
-      @track3 = FactoryGirl.create(:track)
+      @track2 = FactoryGirl.create(:track, spam: false)
+      @track3 = FactoryGirl.create(:track, spam: false)
       @user = @track2.user
       login_as(@user, :scope => :user)
       controller.stub(:authenticate_user!).and_return(true)

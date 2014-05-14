@@ -11,18 +11,25 @@ class TracksController < ApplicationController
 
   #returns paginated set of latest tracks
   def latest
-    render :json => Track.get_tracks(params, Track, "created_at DESC")
+    render :json => Track.get_tracks(params,
+                                     Track,
+                                     "spam = false",
+                                     "created_at DESC")
   end
 
   #returns paginated set of popular tracks
   def popular
-    render :json => Track.get_tracks(params, Track, "plays DESC")
+    render :json => Track.get_tracks(params,
+                                     Track,
+                                     "spam = false",
+                                     "plays DESC")
   end
 
   #returns paginated set of current user's tracks - requires auth
   def mytracks
     render :json => Track.get_tracks(params,
                                      current_user.tracks,
+                                     "",
                                      "created_at DESC")
   end
 

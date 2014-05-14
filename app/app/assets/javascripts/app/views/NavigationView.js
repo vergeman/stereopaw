@@ -236,7 +236,9 @@ app.NavigationView = Backbone.View.extend({
 	    null,
 	    function(data) { 
 		app.vent.trigger("Session:logged-out", data)
-		Backbone.history.navigate("/", {trigger:true})
+		/*want to get rid of all 
+		  js data with full refresh*/
+		window.location.href = "/meow"
 	    },
 	    function(jqXHR, textStatus, errorThrown) {}
 	)

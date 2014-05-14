@@ -20,7 +20,7 @@ describe SessionsController do
         Warden.test_reset!
         @request.env["devise.mapping"] = Devise.mappings[:user]
         @user = FactoryGirl.create(:user)
-        sign_out(@user)
+        sign_out @user
       }
       
       it "responds with 200" do
@@ -38,21 +38,21 @@ describe SessionsController do
     describe "when logged in" do
 
       before {
-        Warden.test_reset!
         @request.env["devise.mapping"] = Devise.mappings[:user]
-        @user = FactoryGirl.create(:user)
-        login_as(@user, :scope => :user)
+        Warden.test_reset!
         controller.stub(:authenticate_user!).and_return(true)
+        @user = FactoryGirl.create(:user)
+        sign_in @user
       }
 
-      it "should render 302 redirect" do
-        get :new, :format => :html
-        expect(response.status).to eq(200)
+      it "should have 302 redirect" do
+        get :new
+        expect(response.status).to eq(302)
       end
 
       it "should render / template" do
-        get :new, :format => :html
-        response.should redirect_to '/'
+        get :new
+        response.should redirect_to root_path
       end
     end    
   end
