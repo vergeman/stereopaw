@@ -29,6 +29,16 @@ describe SearchController do
       expect(response.body).to eq([@track].to_json(:except => @exceptions))
     end
 
+    it "responds with a json obj: collection of track data that matches the query 'youtube' even without page as parameter" do
+      get :show, :format => 'json', :q => "youtube"
+      expect(response.body).to eq([@track].to_json(:except => @exceptions))
+    end
+
+    it "responds with an empty result set with empty query" do
+      get :show, :format => 'json', :q => ""
+      expect(response.body).to eq([].to_json(:except => @exceptions))
+    end
+
   end
 
 

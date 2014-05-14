@@ -204,12 +204,19 @@ describe TracksController do
 
       it "patch updates should return error if not owned user" do
         patch :update, :user_id => @user.id, :id => 1, :track => @track.attributes
-        expect(response.body).to eq({errors: {general: "Not owner"}}.to_json)
+        expect(response.body).to eq({errors: "invalid track"}.to_json)
       end
 
       it "responds with a json response of 'success' & track_id" do
         patch :update, :user_id => @user.id, :id => @track.id, :track => @track.attributes
         expect(response.body).to eq({success: @track.id}.to_json)
+      end
+
+      it "a failed update returns error message" do
+        @track[:title] = nil
+        @track.save
+        patch :update, :user_id => @user.id, :id => @track.id, :track => @track.attributes
+        expect(response.body).to eq({:errors => @track.errors.messages}.to_json)
       end
 
     end
@@ -294,6 +301,13 @@ describe TracksController do
         delete :destroy, :user_id => @user.id, :id => @track.id + 1
         expect(response.body).to eq({errors: {general: "Not owner"}}.to_json)
       end
+
+      it "should return an error response if delete fails" do
+        Track.any_instance.stub(:save).and_return(false)
+        delete :destroy, :user_id => @user.id, :id => @track.id
+        expect(response.body).to eq({:errors => @track.errors.messages}.to_json)
+      end
+
     end
   
 

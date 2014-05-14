@@ -52,6 +52,18 @@ describe PlaylistsController do
 
     end
 
+
+    describe "GET #show w/ playlist errors" do
+
+      #non-existent playlist
+      it "responds with an 'invalid playlist' error if requesting a playlist that does not exist" do
+        get :show, :format => 'json', 
+        :user_id => @user.id, :id => @playlist.id + 100000
+        expect(response.body).to eq({:errors => "invalid playlist"}.to_json)
+      end
+
+    end
+
   end
 
   #modal based, requires auth
@@ -63,7 +75,7 @@ describe PlaylistsController do
         Warden.test_reset!
         logout(:user)
         sign_out(@user)
-        controller.stub(:user_signed_in?).and_return(false)        
+        controller.stub(:user_signed_in?).and_return(false)
       }
       
       it "POST #create has a a 401 response" do
@@ -110,7 +122,8 @@ describe PlaylistsController do
           @playlist.name = @playlist.name + "123" #for scoped uniquness
           post :create, :format => 'json', 
           :user_id => @user.id, :playlist => @playlist.attributes
-          expect(response.body).to eq(@user.playlists.last.to_json(except: [:user_id]) )
+          playlist = @user.playlists.last.with_track_preview
+          expect(response.body).to eq(playlist.to_json(except: [:user_id], methods: [:track_previews]) )
         end
 
 
@@ -155,9 +168,14 @@ describe PlaylistsController do
           delete :destroy, :format => 'json', 
           :user_id => @user.id, :id => (@playlist.id + 100)
           expect(response.body).to eq({:errors => "invalid playlist"}.to_json)
-
         end
 
+        it "if destroy results in an error" do
+          Playlist.any_instance.stub(:destroy).and_return(false)
+          delete :destroy, :format => 'json', 
+          :user_id => @user.id, :id => (@playlist.id)
+          expect(response.body).to eq({:errors => "error destroying playlist"}.to_json)
+        end
         
 
       end
@@ -188,13 +206,13 @@ describe PlaylistsController do
           expect(response.body).to eq(@user.playlists.last.with_track_preview.to_json(:methods => [:track_previews], except: [:user_id]))
         end
 
-        it "sucessful request responds with playlist when changing name and description of playlist " do
-          @track3 = FactoryGirl.create(:track)
+        it "sucessful request responds with playlist when changing name and description of playlist," \
+        "which occurs when sending only those params over (playlist[name], playlist[description] " do
           @p.name = "CHANGED NAME"
           @p.description = "CHANGED DESCRIPTION"
           patch :update, :format => 'json', 
           :user_id => @user.id, :id => @p.id, 
-          :playlist => @p.attributes
+          :playlist => {:name => @p.name, :description => @p.description}
           expect(response.body).to eq(@user.playlists.last.with_track_preview.to_json(:methods => [:track_previews], except: [:user_id]))
         end
 
@@ -252,7 +270,17 @@ describe PlaylistsController do
 
           expect(response.body).to eq({:errors => "invalid playlist"}.to_json)
         end
-        
+
+                
+        it "removal of all track_ids results in an empty playlist" do
+          @p.track_ids = nil
+          patch :update, :format => 'json', 
+          :user_id => @user.id, :id => @p.id,
+          :playlist => @p.attributes
+
+          expect(response.body).to eq(Playlist.find(@p).with_track_preview.to_json(:methods => [:track_previews]) )
+        end
+
       end
     end
 

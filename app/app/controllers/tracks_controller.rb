@@ -11,62 +11,53 @@ class TracksController < ApplicationController
 
   #returns paginated set of latest tracks
   def latest
-    get_tracks_json(Track, "created_at DESC")
+    render :json => Track.get_tracks(params, Track, "created_at DESC")
   end
 
   #returns paginated set of popular tracks
   def popular
-    get_tracks_json(Track, "plays DESC")
+    render :json => Track.get_tracks(params, Track, "plays DESC")
   end
 
   #returns paginated set of current user's tracks - requires auth
   def mytracks
-    get_tracks_json(current_user.tracks, "created_at DESC")
+    render :json => Track.get_tracks(params,
+                                     current_user.tracks,
+                                     "created_at DESC")
   end
 
   #find individual track given param, responds in json
   def show
-    if Track_find(Track, params[:id], {:errors => "invalid track"})
-      json_response(@track)
-    end
+    @track = Track.find_tracks(Track,
+                               params[:id])
+    respond_with(@track)
   end
 
   #route that augments play count
   def play
-    if Track_find(Track, params[:track][:id], 
-                  {:errors => "invalid track"})
-      render :json =>  @track.played.played_json
-    end
+    render :json => Track.augment_plays(Track,
+                                        params[:track][:id])
   end
 
   #delete a track from current user's set
   def destroy
-
-    if Track_find(current_user.tracks, params[:id], 
-                  { "errors" => { :general => "Not owner" }})
-
-      #we dissociate but not remove track
-      @track.user_id = nil
-      if @track.save
-        render :json => { "success" => @track.id }
-      else
-        render :json => { "errors" => @track.errors.messages }
-      end
-    end
-
+    render :json => Track.destroy(current_user.tracks, params[:id])
   end
 
   #receives edited track data
+  #update_params processes genres into appropriate format
   def update
-    
-    if Track_find(current_user.tracks, params[:id],
-                  { "errors" => { general: "Not owner" } } )
+    @track = Track.find_tracks(current_user.tracks, params[:id])
 
-      if @track.update_attributes(update_params)
-        render :json => { "success" => @track.id }
-      else
-        render :json => { "errors" => @track.errors.messages }
-      end
+    if @track[:errors]
+      render :json => @track
+      return
+    end
+
+    if @track.update_attributes(update_params)
+      render :json => { "success" => @track.id }
+    else
+      render :json => { "errors" => @track.errors.messages }
     end
 
   end
@@ -102,28 +93,6 @@ class TracksController < ApplicationController
 
 ###=====
   protected
-
-  def Track_find(source, track_find_params, json_error_msg)
-    begin
-      @track = source.find(track_find_params)
-    rescue ActiveRecord::RecordNotFound
-      render :json => json_error_msg
-      return false
-    end
-    return true
-  end
-
-  def get_tracks_json(source, track_order)
-    page = params[:page] ? params[:page].to_i : 0
-    @tracks = source.order(track_order).limit(10).offset(page * 10)
-    json_response(@tracks)
-  end
-
-  def json_response(obj)
-    respond_with(obj) do |format|
-      format.json { render :json => obj }
-    end
-  end
 
   def check_auth_or_json_redirect
     if user_signed_in?

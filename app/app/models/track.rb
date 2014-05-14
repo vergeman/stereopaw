@@ -47,9 +47,62 @@ class Track < ActiveRecord::Base
   before_save :capitalize_genres
   before_validation :default_values, :on => :create
 
+  #
+  ## Controller Wrap
+  #
+
+  def self.get_tracks(params, source, track_order)
+    page = params[:page] ? params[:page].to_i : 0
+    @tracks = source.order(track_order).limit(10).offset(page * 10)
+    return @tracks
+  end
+
+
+  def self.find_tracks(source, track_find_params)
+    begin
+      @track = source.find(track_find_params)
+    rescue ActiveRecord::RecordNotFound
+      return {:errors => "invalid track"}
+    end
+    return @track
+  end
+
+  #DESTROY
+  def self.destroy(source, track_find_params)
+
+    @track = self.find_tracks(source, track_find_params)
+
+    if @track[:errors]
+      return { "errors" => { :general => "Not owner" } }
+
+    else
+      #we dissociate but not remove track
+      @track.user_id = nil
+
+      if @track.save
+        return { "success" => @track.id }
+      else
+        return { "errors" => @track.errors.messages }
+      end
+
+    end
+  end
+
+
+  #PLAY
+  def self.augment_plays(source, track_find_params)
+    @track = self.find_tracks(source, track_find_params)
+    @track[:errors] ? @track : @track.played.played_json
+  end
+
+
+  #
+  ## Model Methods
+  #
+
   #override to hide some data
   def as_json(options={})
-    options[:except] ||= [:submit_id, :user_id, :updated_at, :shareable]
+    options[:except] ||= [:submit_id, :updated_at, :shareable]
     super
   end
 

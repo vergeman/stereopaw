@@ -89,7 +89,9 @@ app.TracksView = Backbone.View.extend({
 	    return false;
 	}
 	var id = this.collection.session.get("current_user").id
-
+	console.log("ID")
+	console.log(id)
+	console.log(model.get("user_id"))
 	if (model.get("user_id") != id) {
 	    return false
 	}

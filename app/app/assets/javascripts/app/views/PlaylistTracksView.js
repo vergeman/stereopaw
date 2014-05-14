@@ -181,6 +181,8 @@ app.PlaylistTracksView = Backbone.View.extend({
 	    this.$el.find('tbody').append(pltv.render().el)
 	}, this);
 
+	$(window).scrollTop(0);
+
 	return this;
     },
 
