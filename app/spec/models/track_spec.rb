@@ -21,6 +21,7 @@
 #  genres      :string(255)      default([])
 #  plays       :integer          default(0)
 #  submit_id   :integer
+#  spam        :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -102,6 +103,10 @@ describe Track do
 
     it "has a submit_id attr" do
       @track.attributes.has_key?("submit_id").should eq true
+    end
+    
+    it "has a spam attr" do
+      @track.attributes.has_key?("spam").should eq true
     end
 
   end
@@ -206,6 +211,12 @@ describe Track do
       it "artwork_url must only be of uri type" do
         @track.artwork_url = "aalkenfek"
         @track.should_not be_valid
+      end
+    end
+
+    context "spam" do
+      it "should default to true" do
+        @track.spam.should eq true
       end
     end
 

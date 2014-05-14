@@ -79,6 +79,9 @@ class TracksController < ApplicationController
     @track = current_user.tracks.build(new_params)
 
     if @track.save
+
+      SpamCheck.new(@user, @track, request.remote_ip, request.user_agent, request.referer).delay.check
+
       respond_with(@track, :location => tracks_submit_path(@track) )
     else
       respond_with(current_user, @track) #for error submit

@@ -89,3 +89,6 @@ end
 
 # New relic monitoring
 gem 'newrelic_rpm'
+
+#spam
+gem 'rakismet'

@@ -21,6 +21,7 @@
 #  genres      :string(255)      default([])
 #  plays       :integer          default(0)
 #  submit_id   :integer
+#  spam        :boolean          default(TRUE)
 #
 # Indexes
 #

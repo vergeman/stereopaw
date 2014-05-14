@@ -103,6 +103,7 @@ app.AppRouter = Backbone.Router.extend({
 	    redirect()
 	}
 	app.vent.trigger("NavigationView:ActivateLink", "login_nav")
+	$(window).scrollTop(0);
     },
 
     signup : function() {
@@ -126,6 +127,7 @@ app.AppRouter = Backbone.Router.extend({
 	}
 
 	app.vent.trigger("NavigationView:ActivateLink", "login_nav")
+	$(window).scrollTop(0);
     },
 
     login : function() {
@@ -145,6 +147,7 @@ app.AppRouter = Backbone.Router.extend({
 	    Backbone.history.navigate("/", { trigger:true})
 	}
 	app.vent.trigger("NavigationView:ActivateLink", "login_nav")
+	$(window).scrollTop(0);
     },
 
 /*
@@ -170,6 +173,7 @@ app.AppRouter = Backbone.Router.extend({
 	}
 
 	app.vent.trigger("NavigationView:ActivateLink", "playlist")
+	$(window).scrollTop(0);
     },
 
     /*Playlist View individual*/
@@ -198,7 +202,7 @@ app.AppRouter = Backbone.Router.extend({
 	}
 
 	app.vent.trigger("NavigationView:ActivateLink", "playlist")
-
+	$(window).scrollTop(0);
     },
 
 
@@ -218,6 +222,7 @@ app.AppRouter = Backbone.Router.extend({
 	}
 
 	app.vent.trigger("NavigationView:ActivateLink", "mytracks")
+	$(window).scrollTop(0);
     },
 
     edit_track : function(user_id, track_id) {
@@ -239,6 +244,7 @@ app.AppRouter = Backbone.Router.extend({
 	}
 
 	app.vent.trigger("NavigationView:ActivateLink", "mytracks")
+	$(window).scrollTop(0);
     },
 
     new_tracks : function() {
@@ -247,6 +253,7 @@ app.AppRouter = Backbone.Router.extend({
 
 	this.generate_trackview("/new", "new")
 	app.vent.trigger("NavigationView:ActivateLink", "new")
+	$(window).scrollTop(0);
     },
 
 
@@ -256,6 +263,7 @@ app.AppRouter = Backbone.Router.extend({
 
 	this.generate_trackview("/popular", "popular")
 	app.vent.trigger("NavigationView:ActivateLink", "popular")
+	$(window).scrollTop(0);
     },
     
     submithow : function() {
@@ -277,6 +285,7 @@ app.AppRouter = Backbone.Router.extend({
 	var route = "/search/" + query
 	this.trackscollection.url = "/search?q=" + query
 	this._searchTracks(route, query, "all")
+	$(window).scrollTop(0);
     },
 
     search_me : function(query) {
@@ -286,8 +295,7 @@ app.AppRouter = Backbone.Router.extend({
 	var route = "/search/me/" + query
 	this.trackscollection.url = "/search/me?q=" + query
 	this._searchTracks(route, query, "mytracks")
-
-
+	$(window).scrollTop(0);
     },
 
     search_genres : function(query) {
@@ -297,7 +305,7 @@ app.AppRouter = Backbone.Router.extend({
 	var route = "/search/genres/" + query
 	this.trackscollection.url = "/search/genres?q=" + query
 	this._searchTracks(route, query, "genres")
-
+	$(window).scrollTop(0);
     },
 
     search_playlists : function(query) {
@@ -322,6 +330,7 @@ app.AppRouter = Backbone.Router.extend({
 
 	//activate/hightlight linky?
 	app.vent.trigger("NavigationView:ActivateLink", "search")
+	$(window).scrollTop(0);
     },
 
 /*ROOT*/

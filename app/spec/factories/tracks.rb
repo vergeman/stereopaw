@@ -21,6 +21,7 @@
 #  genres      :string(255)      default([])
 #  plays       :integer          default(0)
 #  submit_id   :integer
+#  spam        :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -45,6 +46,7 @@ FactoryGirl.define do
     track_id "123456789"
     genres ["rock"]
     plays "1"
+    spam true
     association :user, factory: :user
     submit_id { "#{user_id}" }   
   end
