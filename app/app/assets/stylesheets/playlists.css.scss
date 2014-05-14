@@ -24,9 +24,9 @@
    }
 
    a { 
-       padding-right: 2rem;
+       margin-right: 2rem;
        @media #{$medium-up} {
-	   padding-right: 4rem;
+	   margin-right: 4rem;
        }
    }
 }
