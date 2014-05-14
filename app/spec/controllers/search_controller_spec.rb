@@ -70,7 +70,7 @@ describe SearchController do
 
     before do
       Warden.test_reset!
-      logout(:user)
+      sign_out :user
     end
 
     it "mytracks has a 401 unauthorized response" do
