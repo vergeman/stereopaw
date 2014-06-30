@@ -1,3 +1,4 @@
+//DEBUG=true
 /*
 insert google analytics code
 http://developer.chrome.com/extensions/tut_analytics.html
@@ -7,36 +8,68 @@ http://developer.chrome.com/extensions/tut_analytics.html
 //analytics track event
 //alert & append code
 
-/* marklet 1.0 w/ require & backbone
-chrome.browserAction.onClicked.addListener(function(tab) {
-  chrome.tabs.executeScript(null, 
-			    { code: "!document.getElementById('stereo paw') ? (function(){var e=document.createElement('script');e.setAttribute('type','text/javascript');e.setAttribute('charset','UTF-8');e.setAttribute('id','stereo paw');e.setAttribute('data-main', 'http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5150/assets/stereo paw.js?r='+Math.random()*999999999);e.setAttribute('src','http://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5150/assets/require.js?r='+Math.random()*99999999);document.body.appendChild(e)})() : console.log('RUN')"
-});
-*/
 
+/*
+ *listens to responses from extension post-play:
+ *remove externally launched tab, and launches player:next on stereopaw
 
 chrome.runtime.onMessageExternal.addListener(
+
     function(request, sender, sendResponse) {
+
+	if (request.removetab) {
+	    chrome.tabs.remove(request.removetab)
+
+	    //we're in extension context, so we append to dom our js code
+	    chrome.tabs.executeScript(request.stereopawtab, 
+				      { 
+					  code: "var e = document.createElement('script');e.setAttribute('type','text/javascript');e.textContent = \"(function(){ app.vent.trigger('Player:next')} ())\"; document.body.appendChild(e);"
+				      });
+	}
+    }
+)
+*/
+
+/*
+ * how we control playback on a 3rd party site
+ * with injected code
+ */
+chrome.runtime.onMessageExternal.addListener(
+
+    function(request, sender, sendResponse) {
+	if (DEBUG)
+	    console.log("SERVICE")
 
 	if (request.URL) {
 
 	    var service = request.service
 	    var timestamp = request.time
-	    var url = request.URL
+	    var url = request.URL	    
+	    var stereopaw_tab = sender.tab
 
-	    chrome.tabs.create({'url': url});
-
+	    /*
+	     * code here executes on service's (mixcloud/spotify,etc)
+	     * page not extensions
+	     */
 	    var insert = function(args) {
 		var _service = args[0]
 		var _time = args[1]
+		var _tab_id = args[2]
+		var _stereopawtab_id = args[3]
 
 		/*
 		 * MIXCLOUD
 		 */
-		var mixcloud  = '(' + function(time) {
+		var mixcloud  = '(' + function(args) {
+		    var time = args[0]
+		    var mixcloudtab_id = args[1]
+		    var stereopawtab_id = args[2]
+
 		    x = $('.player').scope()
+		    x.volume = 0;
 
 		    if (!x.playerStarted && !x.playing) {
+			x.volume=0;
 			$('.cloudcast-play').click()
 		    }
 
@@ -57,17 +90,37 @@ chrome.runtime.onMessageExternal.addListener(
 
 		    }, 100);
 
-		} + ')(' + JSON.stringify(_time) + ')'
+
+/*
+ * gives us uninterrupted play
+
+		    var checkEnd = setInterval(function() {
+			if (x.playerStarted && x.playing && !x.loading) {
+
+			    if (x.audioPosition >= x.audioLength - 1) {
+
+				var extensionID = "gljkhinfbefolpcbippakocpbaikhflg";
+				$(window).unbind("beforeunload")
+				chrome.runtime.sendMessage(extensionID, {removetab: mixcloudtab_id,
+									 stereopawtab: stereopawtab_id})
+			    }
+			}
+
+		    }, 300);
+*/
+		} + ')(' + JSON.stringify([_time, _tab_id, _stereopawtab_id]) + ')'
 
 
 		/*
 		 *SPOTIFY
-		 *NOTWORKING FOR NOW
 		 */
 
-		var spotify  = '(' + function(time) {
+		var spotify  = '(' + function(args) {
 		    var _self = this;
 		    var _models;
+		    var time = args[0]
+		    var spotifytab_id = args[1]
+		    var stereopawtab_id = args[2]
 
 
 		    var loadmodels = function() {
@@ -92,10 +145,11 @@ chrome.runtime.onMessageExternal.addListener(
 							 player = models.player
 							 models.player.load("track").done(function(track) {
 
-							     // this is so ugly
-							     // things aren't loading properly and many calls don't respond
-							     // some strange asynchronicity happening, but can't figure out what.
-
+							     /*
+							       this is so ugly
+							       things aren't loading properly and many calls don't respond
+							       some strange asynchronicity happening, but can't figure out what.
+							     */
 							     if (player.track && player.track.number && player.track.album
 								 && ( player.track.uri.contains("spotify:track") || 
 								      player.track.uri.contains("spotify:album"))
@@ -114,17 +168,29 @@ chrome.runtime.onMessageExternal.addListener(
 										    time)
 
 
-								 //on track change,we play next track in new context
+								 //on end of track
 								 var next = function() {
+
+								    // var extensionID = "gljkhinfbefolpcbippakocpbaikhflg";
+var extensionID = "nhdgndjpbheaiiconnkbgbblmpfhkeki"
+								     /*if we want the sequentail stereopaw play & close tab behavior 
+								      *uncomment here and we don't need the rest.
+
+								      chrome.runtime.sendMessage(extensionID, {removetab: spotifytab_id,
+													      stereopawtab: stereopawtab_id})
+								     */
+
+								     //we close and move to next track
 								     player.stop()
 
+								     //we play next track in new context
 								     player.playContext(_album,
 											_number,
 											0)
 								 }
 
 								 //we kill the old listener...by adding a listener.
-								 //player.removeEventListener() doesn't seem to pick up next
+
 								 var kill = function() {
 								     player.removeEventListener('change:track', next)
 								 }
@@ -143,12 +209,13 @@ chrome.runtime.onMessageExternal.addListener(
 		    }, 500);
 
 
-		} + ')(' + JSON.stringify(_time) + ')'
+		} + ')(' + JSON.stringify([_time, _tab_id, _stereopawtab_id]) + ')'
 
 
 
 		/*
 		 *Add Services..
+		 *where we build DOM element to insert code into service's page
 		 */
 
 		var script = document.createElement('script');
@@ -170,18 +237,26 @@ chrome.runtime.onMessageExternal.addListener(
 		(document.head||document.documentElement).appendChild(script);
 		script.parentNode.removeChild(script);
 
-	    }
+	    } //end var=insert
 
 
 	    /*Inject JS
 	     *note: can't pass functions through JSON.stringfy
 	     */
 
-	    chrome.tabs.executeScript(null,
-				      { 
-					  code: "(" + insert + ")(" + JSON.stringify([service, timestamp]) + ");"
-				      }
-				     );
+	    chrome.tabs.create({'url': url}, function(tab) {
+
+		/* executes the insert code
+		 * setup for "seamless" play with tab messaging, but hold off for now
+		 * the behavior may be too confusing
+		 */
+		chrome.tabs.executeScript(null,
+					  { 
+					      code: "(" + insert + ")(" + JSON.stringify([service, timestamp, tab.id, stereopaw_tab.id]) + ");"
+					  }
+					 );
+	    });
+
 
 	    
 	}//end if request.url
@@ -189,10 +264,58 @@ chrome.runtime.onMessageExternal.addListener(
     }
 );
 
+/*
+ *notify via shutdown message to marklet when popup is closed
+ * on a connect = we have an open popup, so we listen for a disconnect
+ * on a disconnect = we have closed the popup
+ *   on a close, if there was nothing sent (i.e. audio pause, or no detected services) we never add msg listener,
+ *     and just remove the port listener
+ *   on a close, if track data is being sent, we add the msg_listener on MessageExternal event
+ * this means one message must be received, (to trigger the msg_listener) and responded with a shutdown, and then we clean up
+ */
 
-chrome.browserAction.onClicked.addListener(function(tab) {
-  chrome.tabs.executeScript(null, 
-			    { code: "(function(){document.getElementById('sb-app') ? false : (function() {var e = document.createElement('script');e.setAttribute('id', 'sb-script');e.setAttribute('src','https://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/stereopaw-min.js?r='+Math.random()*99999999);document.body.appendChild(e)})() }())"
-			    });
+var connect_listener = function(port) {
+    if (DEBUG)
+	console.log("[Stereopaw BG] connect_listener: connected")
 
-});
+    var port_listener = function(event) {
+	if (DEBUG)
+	    console.log("[Stereopaw BG] port listener")
+
+	/*when shutdown, 'intercept' by adding a new listener
+	 *and tell it to shutup
+	 */
+	var msg_listener = function(request, sender, sendResponse) {
+	    if (DEBUG)
+		console.log("[Stereopaw BG] msg_listener")
+
+	    if (request.track) {
+		if (DEBUG)
+		    console.log("BG: sending shutdown response")
+
+		sendResponse({shutdown:true})
+	    }
+
+	    if (DEBUG)
+		console.log("remove listener")
+
+	    chrome.runtime.onMessageExternal.removeListener(msg_listener)
+	}
+
+	/*
+	 *we will receive one message before the listener gets removed
+	 *enough to send a shutdown message, and then remove itself.
+	 *all being triggered by an ondisconnect
+	 */
+
+	chrome.runtime.onMessageExternal.addListener(msg_listener)
+
+	port.onDisconnect.removeListener(port_listener)
+    }
+
+    port.onDisconnect.addListener(port_listener);
+}
+chrome.extension.onConnect.addListener(connect_listener)
+
+
+

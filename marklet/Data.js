@@ -15,7 +15,7 @@ SB.Data = (function() {
     var _service = null,
     _track = null,
     _player = null;
-
+    _mode =null;
     /* 
      * try/catch around data grab
      * handles only main and one alternate for now
@@ -56,12 +56,13 @@ SB.Data = (function() {
     }
 
     function refresh_view() {
+	if (_mode == MODE.MARKLET) {
+	    document.getElementById('sb-track-title-label').style.display = 'block'
 
-	document.getElementById('sb-track-title-label').style.display = 'block'
+	    document.getElementById('sb-track-artist-label').style.display='block'
 
-	document.getElementById('sb-track-artist-label').style.display='block'
-
-	$("#sb-submit-button").css('display', 'block');
+	    $("#sb-submit-button").css('display', 'block');
+	}
     }
 
     var _set = {
@@ -359,7 +360,8 @@ current track in set
     var data = {};
 
     //called in stereopaw.js
-    data.setTrack = function(service, track) {
+    data.setTrack = function(mode, service, track) {
+	_mode = mode;
 	_service = service;
 	_track = track;
 	_set[_service]()

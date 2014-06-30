@@ -7,11 +7,20 @@ if (!ENV)
 if (ENV)
     HOST = "https://www.stereopaw.com"
 
+//non-bin extension
+//EXTENSION_ID = "gljkhinfbefolpcbippakocpbaikhflg"
+
+//bin extension
+EXTENSION_ID = "nhdgndjpbheaiiconnkbgbblmpfhkeki"
 
 /*
  * SB: 'main' driver
  *
 */
+var MODE = { 
+    MARKLET : 0,
+    EXTENSION : 1
+}
 
 var SB = (function () {
 
@@ -19,6 +28,8 @@ var SB = (function () {
     _interval = null,
     _sbjq = null,
     service = '';
+
+    var mode;
 
     var sb = {
 
@@ -31,6 +42,12 @@ var SB = (function () {
 		/*still need to do something about actually 
 		  loading jQuery and noConflict
 		*/
+
+		/*weird case*/
+		if ($ == undefined && jQuery != null) {
+		    $ = jQuery
+		}
+
 		if (typeof jQuery == "undefined")
 		{
 		    return false;
@@ -38,6 +55,7 @@ var SB = (function () {
 		else
 		{
 		    clearInterval(_interval);
+		    _interval = null
 		    self.start()
 		}
 
@@ -56,7 +74,22 @@ var SB = (function () {
 	    if (DEBUG)
 		console.log( "Service: " + self.service )
 
-	    if ( !document.getElementById('sb-app') )
+	    /*determine mode: [extension, marklet]*/
+	    if (window.chrome &&
+		document.getElementById('sb-script').getAttribute('mode')
+	       ) {
+		mode = MODE.EXTENSION
+	    }
+	    else {
+		mode = MODE.MARKLET
+	    }
+	    
+	    if (DEBUG)
+		console.log("mode: " + mode)
+
+	    /*build page if marklet mode*/
+	    if (mode == MODE.MARKLET &&
+		!document.getElementById('sb-app') )
 	    {
 		self.service == "NA" ? 
 		    self.Page.insert_error_page() :
@@ -65,11 +98,12 @@ var SB = (function () {
 		/*bind events*/
 		self.events()
 	    }
-
+	
 	    /* enter update loop*/
 	    self.update()
 
 	},
+
 	events: function() {
 
 	    /*
@@ -86,6 +120,7 @@ var SB = (function () {
 		    console.log("[stereopaw 2.0] Exiting");
 
 		clearInterval(self._interval)
+		self._interval = null
 
 		$('#sb-submit-button').unbind('click');
 		$('#sb-close').unbind('click')
@@ -150,16 +185,57 @@ var SB = (function () {
 		console.log("[stereopaw 2.0] update()");
 
 	    self._interval = setInterval(function() {
+		console.log("[stereopaw 2.0] setInterval")
 
-		/*get track information*/
-		self.Data.setTrack(self.service, self.Track)
+		/*get/set track information*/
+		self.Data.setTrack(mode, self.service, self.Track)
 
+		/*render accordingly*/
+		if (mode == MODE.MARKLET) {
 		//need error handling on empty track (not started plaing, etc)
+		    self.render()
+		}
+		else {
 
+		    self.sendExtension();
+		}
 
-		self.render()		
-	    }, 300)
+	    }, 400)
 
+	},
+
+	/*
+	 *loops and sends updated track information
+	 *waits fora  shutdown message from bg.js
+	 */
+	sendExtension: function() {
+	    if (DEBUG)
+		console.log("[stereopaw 2.0] sendExtension()");
+
+	    var msg;
+
+	    if (self.service == "NA") {
+		msg = {error: true}
+	    }
+	    else {
+		msg = {track: self.Track.toJSON()}
+	    }
+
+	    console.log(msg)
+	    /*response an 'intercept' from bg.js: 
+	     *port.onDisconnect listener
+	     */
+	    var cb = function(response) {
+		console.log("cb")
+		if (response.shutdown) {
+		    console.log("Shutting down")
+		    console.log(msg)
+		    clearInterval(SB._interval)
+		    SB._interval = null
+		}
+	    }
+	    console.log("stereopaw 2.0 sending msg")
+	    chrome.runtime.sendMessage(EXTENSION_ID, msg, cb)
 	},
 
 	render: function() 

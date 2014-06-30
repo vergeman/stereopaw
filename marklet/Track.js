@@ -93,6 +93,26 @@ SB.Track = (function() {
 	return _duration
     }
 
+    track.toJSON = function() {
+	return {
+	    track_id: _track_id,
+	    title: _title,
+	    artist: _artist,
+	    profile_url: _profile_url,
+	    duration: _duration,
+	    timestamp: _timestamp,
+	    page_url: _page_url,
+	    timeformat: _timeformat,
+	    subtrack: _subtrack,
+	    subartist: _subartist,
+	    elapsed: _elapsed,
+	    shareable: _shareable,
+	    service: _service,
+	    artwork_url: _artwork_url,
+	    url: track.getURL()
+	}
+    };
+
     return track;
 
 }());

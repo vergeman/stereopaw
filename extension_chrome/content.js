@@ -1,4 +1,5 @@
-/*add a meta div to indicate installation & usage of stereopaw 
+/*
+ *add a meta div to indicate installation & usage of stereopaw 
  *chrome extension
  */
 var extension_meta = document.createElement("meta")

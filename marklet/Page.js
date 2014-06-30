@@ -78,7 +78,8 @@ SB.Page = (function() {
 
     ].join('\n')
 	    
-    var _styles = {
+
+    var _styles = {	
 	'#sb-app' : {
 	    'position' : "fixed !important",
 	    'top' : "50px !important",
@@ -206,6 +207,8 @@ SB.Page = (function() {
     var page = {
 
 	insert_page : function() {
+	    if (DEBUG)
+		console.log("[stereopaw] Page.insert_page()")
 
 	    build_element(
 		{ 
@@ -227,6 +230,8 @@ SB.Page = (function() {
 	},
 
 	insert_error_page : function() {
+	    if (DEBUG)
+		console.log("[stereopaw] Page.insert_error_page()")
 
 	    build_element(
 		{ 

@@ -20,7 +20,10 @@ app.PlayerView = Backbone.View.extend({
 	this.player = player;
 	this.playerqueue = playerqueue;
 
-	this.extensionID = "gljkhinfbefolpcbippakocpbaikhflg";
+	//non-bin'd
+	//this.extensionID = "gljkhinfbefolpcbippakocpbaikhflg";
+
+	this.extensionID = "nhdgndjpbheaiiconnkbgbblmpfhkeki";
 
 	this._update_time_interval = null;
 	this.current_track = null;

@@ -4,7 +4,7 @@ class UrlValidator < ActiveModel::EachValidator
       uri = URI.parse(value)
       #resp = uri.kind_of?(URI::HTTP)
       #strict but ok for now
-      resp = uri.host && uri.host.match(/\.com$/)
+      resp = uri.host && uri.host.match(/\.com||\.net$/)
     rescue URI::InvalidURIError
       resp = false
     end
