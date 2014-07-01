@@ -2,6 +2,8 @@
    Build:
    'grunt' for dev
    'grunt prod' for production mode
+   to install node packages:
+   npm install --save-dev
 */
 module.exports = function(grunt) {
 

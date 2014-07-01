@@ -1,5 +1,3 @@
 marklet/bin/*
-extension_chrome/bin
-extension_chrome/node_modules
 *.*~
 *~
