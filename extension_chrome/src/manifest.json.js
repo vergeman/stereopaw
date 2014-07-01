@@ -9,7 +9,10 @@
 	"scripts": [ "bg.js" ]
     },
     "externally_connectable": {
-	"matches": ["*://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com/*",
+	"matches": [
+	    //@ifdef DEBUG
+	    "*://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com/*",
+	    //@endif
 		    "*://*.stereopaw.com/*",
 		    "*://*.soundcloud.com/*",
 		    "*://*.youtube.com/*",
@@ -20,8 +23,11 @@
     "content_scripts": [
 	{
 	    "matches": [
-		"*://*.stereopaw.com/*",
+		"*://*.stereopaw.com/*"
+		//@ifdef DEBUG
+		,
 		"*://*.compute.amazonaws.com/*"
+		//@endif
 	    ],
 	    "js": ["content.js"]
 	} 

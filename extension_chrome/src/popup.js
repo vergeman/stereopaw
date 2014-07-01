@@ -1,13 +1,9 @@
-//TODO need to address in makefile
-//host not used
-//HOST = "https://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151"
-//DEBUG=true
-
 
 /*render logic*/
 function render_loading() {
-    if (DEBUG)
-	console.log("render_loading()")
+    // @ifdef DEBUG
+    console.log("render_loading()")
+    // @endif
 
     $('#sb-error').hide()
     $('#sb-track').hide()
@@ -19,8 +15,9 @@ function render_loading() {
 }
 
 function render_sleep() {
-    if (DEBUG)
-	console.log("render_sleep()")
+    // @ifdef DEBUG
+    console.log("render_sleep()")
+    // @endif
 
     $('#sb-error').hide()
     $('#sb-track').hide()
@@ -32,8 +29,9 @@ function render_sleep() {
 }
 
 function render_no_service() {
-    if (DEBUG)
-	console.log("render_no_service()")
+    // @ifdef DEBUG
+    console.log("render_no_service()")
+    // @endif
 
     $('#sb-loading').hide()
     $('#sb-track').hide()
@@ -45,8 +43,9 @@ function render_no_service() {
 }
 
 function render_active() {
-    if (DEBUG)
-	console.log("render_active()")
+    // @ifdef DEBUG
+    console.log("render_active()")
+    // @endif
 
     $('#sb-loading').hide()
     $('#sb-error').hide()
@@ -61,8 +60,9 @@ function bind_buttons() {
 
     /*bind close*/
     $('#sb-close').bind("click", function() {
-	if (DEBUG)
-	    console.log("[stereopaw 2.0] extension Exit");
+	// @ifdef DEBUG
+	console.log("[stereopaw 2.0] extension Exit");
+	// @endif
 
 	window.close()
     });
@@ -98,8 +98,9 @@ the "marklet" code that will parse track data.
  *returns true/false
  */
 function detect_play(service, tab) {
-    if (DEBUG)
-	console.log("detect_play()")
+    // @ifdef DEBUG
+    console.log("detect_play()")
+    // @endif
 
     if (!tab)
 	return false
@@ -214,23 +215,26 @@ chrome.runtime.onMessageExternal.addListener(
     function(request, sender, sendResponse) {
 
 	if (request.launchable && !LAUNCHED) {
-	    if (DEBUG)
-		console.log("RECEIVED LAUNCH MSG")
+	    //@ifdef DEBUG
+	    console.log("RECEIVED LAUNCH MSG")
+	    //@endif
 
 	    LAUNCHED = true
 
 	    chrome.tabs.executeScript(sender.tab.id, 
-				      { code: "(function(){document.getElementById('sb-app') ? false : (function() {var e = document.createElement('script');e.setAttribute('id', 'sb-script');e.setAttribute('mode', 'extension');e.setAttribute('src','https://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151/stereopaw-min.js?r='+Math.random()*99999999);document.body.appendChild(e)})() }())"
+				      { code: "(function(){document.getElementById('sb-app') ? false : (function() {var e = document.createElement('script');e.setAttribute('id', 'sb-script');e.setAttribute('mode', 'extension');e.setAttribute('src','/* @echo HOST *//stereopaw-min.js?r='+Math.random()*99999999);document.body.appendChild(e)})() }())"
 				      });
 	}
 
 	/*render services detected but possibly paused*/
 	if (!request.launchable && !LAUNCHED) {
 	    LAUNCHED = true
-	    if (DEBUG)
-		console.log("sleep")
+	    //@ifdef DEBUG
+	    console.log("sleep")
+	    //@endif
 
 	    bind_buttons()
+
 	    render_sleep()
 	}
     }
@@ -258,10 +262,13 @@ var run = function() {
 	if (i == Object.keys(urls).length-1) {
 
 	    if (results.length == 0) {
-		if (DEBUG)
-		    console.log("nothing detected")
+
+		//@ifdef DEBUG
+		console.log("nothing detected")
+		//@endif
 
 		bind_buttons()
+
 		render_no_service()
 	    }
 	}
@@ -274,8 +281,9 @@ var run = function() {
     var i = 0;
     for (var url in urls) {
 
-	if (DEBUG)
-	    console.log(url)
+	//@ifdef DEBUG
+	console.log(url)
+	//@endif
 
 	var find_tabs = function(url) {
 	    chrome.tabs.query(
@@ -285,10 +293,10 @@ var run = function() {
 		//callback
 		function(tabs) {
 
-		    if (DEBUG) {
-			console.log("TAB")
-			console.log(tabs)
-		    }
+		    //@ifdef DEBUG
+		    console.log("TAB")
+		    console.log(tabs)
+		    //@endif
 
 		    //array of matches (can be multiple)
 		    for (var tab in tabs) {
@@ -321,12 +329,17 @@ var url;
 chrome.runtime.onMessageExternal.addListener(
 
     function(request, sender, sendResponse) {
-	if (DEBUG)
-	    console.log("RECV EXTENSION")
+	//@ifdef DEBUG
+	console.log("RECV EXTENSION")
+	//@endif
 
 	/*Bind events - close/submit*/
 	if (request.track && !PAGE_INSERTED) {
+
+	    //@ifdef DEBUG
 	    console.log("Inserting Page")
+	    //@endif
+
 	    PAGE_INSERTED=true
 
 	    bind_buttons()

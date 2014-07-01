@@ -37,8 +37,9 @@ chrome.runtime.onMessageExternal.addListener(
 chrome.runtime.onMessageExternal.addListener(
 
     function(request, sender, sendResponse) {
-	if (DEBUG)
-	    console.log("SERVICE")
+	//@ifdef DEBUG
+	console.log("SERVICE")
+	//@endif
 
 	if (request.URL) {
 
@@ -275,29 +276,33 @@ var extensionID = "nhdgndjpbheaiiconnkbgbblmpfhkeki"
  */
 
 var connect_listener = function(port) {
-    if (DEBUG)
-	console.log("[Stereopaw BG] connect_listener: connected")
+    //@ifdef DEBUG
+    console.log("[Stereopaw BG] connect_listener: connected")
+    //@endif
 
     var port_listener = function(event) {
-	if (DEBUG)
-	    console.log("[Stereopaw BG] port listener")
+	//@ifdef DEBUG
+	console.log("[Stereopaw BG] port listener")
+	//@endif
 
 	/*when shutdown, 'intercept' by adding a new listener
 	 *and tell it to shutup
 	 */
 	var msg_listener = function(request, sender, sendResponse) {
-	    if (DEBUG)
-		console.log("[Stereopaw BG] msg_listener")
+	    //@ifdef DEBUG
+	    console.log("[Stereopaw BG] msg_listener")
+	    //@endif
 
 	    if (request.track) {
-		if (DEBUG)
-		    console.log("BG: sending shutdown response")
+		//@ifdef DEBUG
+		console.log("BG: sending shutdown response")
+		//@endif
 
 		sendResponse({shutdown:true})
 	    }
-
-	    if (DEBUG)
-		console.log("remove listener")
+	    //@ifdef DEBUG
+	    console.log("remove listener")
+	    //@endif
 
 	    chrome.runtime.onMessageExternal.removeListener(msg_listener)
 	}
