@@ -1,11 +1,8 @@
-if (DEBUG)
-    console.log("[stereopaw 2.0]");
+//@ifdef DEBUG
+console.log("[stereopaw 2.0]");
+//@endif
 
-if (!ENV)
-    HOST = "https://ec2-54-220-193-184.eu-west-1.compute.amazonaws.com:5151"
-
-if (ENV)
-    HOST = "https://www.stereopaw.com"
+HOST = "/* @echo HOST */"
 
 //non-bin extension
 //EXTENSION_ID = "gljkhinfbefolpcbippakocpbaikhflg"
@@ -65,14 +62,16 @@ var SB = (function () {
 
 	start: function () {
 
-	    if (DEBUG)
-		console.log("[stereopaw 2.0] start()");
+	    //@ifdef DEBUG
+	    console.log("[stereopaw 2.0] start()");
+	    //@endif
 
 	    /*determine service*/
 	    self.service = self.Service.getService();
 
-	    if (DEBUG)
-		console.log( "Service: " + self.service )
+	    //@ifdef DEBUG
+	    console.log( "Service: " + self.service )
+	    //@endif
 
 	    /*determine mode: [extension, marklet]*/
 	    if (window.chrome &&
@@ -84,8 +83,9 @@ var SB = (function () {
 		mode = MODE.MARKLET
 	    }
 	    
-	    if (DEBUG)
-		console.log("mode: " + mode)
+	    //@ifdef DEBUG
+	    console.log("mode: " + mode)
+	    //@endif
 
 	    /*build page if marklet mode*/
 	    if (mode == MODE.MARKLET &&
@@ -110,14 +110,16 @@ var SB = (function () {
 	     * attach event handlers
 	     */
 
-	    if (DEBUG)
-		console.log("[stereopaw 2.0] events()");
+	    //@ifdef DEBUG
+	    console.log("[stereopaw 2.0] events()");
+	    //@endif
 
 	    /*Exit 'X' click*/
 	    $('#sb-close').bind("click", function() {
 
-		if (DEBUG)
-		    console.log("[stereopaw 2.0] Exiting");
+		//@ifdef DEBUG
+		console.log("[stereopaw 2.0] Exiting");
+		//@endif
 
 		clearInterval(self._interval)
 		self._interval = null
@@ -137,13 +139,15 @@ var SB = (function () {
 		 e.preventDefault();
 		 window.open(self.Track.getURL(), 'stereopaw', 'top=0,left=0,width=600, height=675');
 
-		 if (DEBUG)
-		     console.log("clicked")
+		 //@ifdef DEBUG
+		 console.log("clicked")
+		 //@endif
 
 		 $('#sb-close').click();
 
-		 if (DEBUG)
-		     console.log("closing")
+		 //@ifdef DEBUG
+		 console.log("closing")
+		 //@endif
 	     });
 
 	    /*player controls*/
@@ -168,8 +172,9 @@ var SB = (function () {
 
 	    //track seek - serviceplayer unique
 	    $('#sb-display-bar').click(function(e) {
-		if (DEBUG)
-		    console.log("seek");
+		//@ifdef DEBUG
+		console.log("seek");
+		//@endif
 
 		var offset = $(this).parent().offset();
 		var x = e.pageX - offset.left;
@@ -181,11 +186,14 @@ var SB = (function () {
 
 	update: function() 
 	{
-	    if (DEBUG)
-		console.log("[stereopaw 2.0] update()");
+	    //@ifdef DEBUG
+	    console.log("[stereopaw 2.0] update()");
+	    //@endif
 
 	    self._interval = setInterval(function() {
+		//@ifdef DEBUG
 		console.log("[stereopaw 2.0] setInterval")
+		//@endif
 
 		/*get/set track information*/
 		self.Data.setTrack(mode, self.service, self.Track)
@@ -209,8 +217,9 @@ var SB = (function () {
 	 *waits fora  shutdown message from bg.js
 	 */
 	sendExtension: function() {
-	    if (DEBUG)
-		console.log("[stereopaw 2.0] sendExtension()");
+	    //@ifdef DEBUG
+	    console.log("[stereopaw 2.0] sendExtension()");
+	    //@endif
 
 	    var msg;
 
@@ -221,27 +230,41 @@ var SB = (function () {
 		msg = {track: self.Track.toJSON()}
 	    }
 
+	    //@ifdef DEBUG
 	    console.log(msg)
+	    //@endif
+
 	    /*response an 'intercept' from bg.js: 
 	     *port.onDisconnect listener
 	     */
 	    var cb = function(response) {
+		//@ifdef DEBUG
 		console.log("cb")
+		//@endif
+
 		if (response.shutdown) {
+		    //@ifdef DEBUG
 		    console.log("Shutting down")
 		    console.log(msg)
+		    //@endif
+
 		    clearInterval(SB._interval)
 		    SB._interval = null
 		}
 	    }
+
+	    //@ifdef DEBUG
 	    console.log("stereopaw 2.0 sending msg")
+	    //@endif
+
 	    chrome.runtime.sendMessage(EXTENSION_ID, msg, cb)
 	},
 
 	render: function() 
 	{
-	    if (DEBUG)
-		console.log("[stereopaw 2.0] render()");
+	    //@ifdef DEBUG
+	    console.log("[stereopaw 2.0] render()");
+	    //@endif
 
 	    if ( $('#sb-app').is(":hidden") ) {
 		$('#sb-app').fadeIn();

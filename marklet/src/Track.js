@@ -4,7 +4,7 @@
  */
 SB.Track = (function() {
 
-    _url = HOST + "/tracks/new";
+    _url = "/* @echo HOST*/" + "/tracks/new";
 
     var track = {};
 

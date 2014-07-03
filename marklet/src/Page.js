@@ -4,9 +4,7 @@
 
 SB.Page = (function() {
 
-    
-
-    var HOME = HOST;
+    var HOME = "/* @echo HOST */";
 
     var _header = [
 	'<div id = "sb-close">',
@@ -207,8 +205,9 @@ SB.Page = (function() {
     var page = {
 
 	insert_page : function() {
-	    if (DEBUG)
-		console.log("[stereopaw] Page.insert_page()")
+	    //@ifdef DEBUG
+	    console.log("[stereopaw] Page.insert_page()")
+	    //@endif
 
 	    build_element(
 		{ 
@@ -230,8 +229,9 @@ SB.Page = (function() {
 	},
 
 	insert_error_page : function() {
-	    if (DEBUG)
-		console.log("[stereopaw] Page.insert_error_page()")
+	    //@ifdef DEBUG
+	    console.log("[stereopaw] Page.insert_error_page()")
+	    //@endif
 
 	    build_element(
 		{ 
