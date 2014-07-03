@@ -16,6 +16,10 @@ module.exports = function(grunt) {
 		src : '.env.dev.json'
 	    },
 
+	    stag : {
+		src: '.env.stag.json'
+	    },
+
 	    prod : {
 		src: '.env.prod.json'
 	    }
@@ -79,6 +83,7 @@ module.exports = function(grunt) {
 
     //default task is dev mode.
     grunt.registerTask('default', ['env:dev', 'preprocess', 'concat', 'uglify', 'clean']);
+    grunt.registerTask('stag', ['env:stag', 'preprocess', 'concat', 'uglify', 'clean']);
     grunt.registerTask('prod', ['env:prod', 'preprocess', 'concat', 'uglify', 'clean']);
 
 };

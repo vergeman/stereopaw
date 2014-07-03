@@ -15,7 +15,9 @@ module.exports = function(grunt) {
 	    dev : {
 		src : '.env.dev.json'
 	    },
-
+	    stag : {
+		src: '.env.stag.json'
+	    },
 	    prod : {
 		src: '.env.prod.json'
 	    }
@@ -71,6 +73,7 @@ module.exports = function(grunt) {
 
     //default task is dev mode.
     grunt.registerTask('default', ['env:dev', 'copy', 'preprocess']);
+    grunt.registerTask('stag', ['env:stag', 'copy', 'preprocess', 'uglify']);
     grunt.registerTask('prod', ['env:prod', 'copy', 'preprocess', 'uglify']);
 
 };
