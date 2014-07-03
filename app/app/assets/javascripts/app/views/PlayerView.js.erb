@@ -22,8 +22,8 @@ app.PlayerView = Backbone.View.extend({
 
 	//non-bin'd
 	//this.extensionID = "gljkhinfbefolpcbippakocpbaikhflg";
-
-	this.extensionID = "nhdgndjpbheaiiconnkbgbblmpfhkeki";
+	//this.extensionID = "nhdgndjpbheaiiconnkbgbblmpfhkeki";
+	this.extensionID = "<%= ENV['EXTENSION_ID'] %>";
 
 	this._update_time_interval = null;
 	this.current_track = null;

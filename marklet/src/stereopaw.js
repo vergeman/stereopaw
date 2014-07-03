@@ -3,12 +3,7 @@ console.log("[stereopaw 2.0]");
 //@endif
 
 HOST = "/* @echo HOST */"
-
-//non-bin extension
-//EXTENSION_ID = "gljkhinfbefolpcbippakocpbaikhflg"
-
-//bin extension
-EXTENSION_ID = "nhdgndjpbheaiiconnkbgbblmpfhkeki"
+EXTENSION_ID = "/* @echo EXTENSION_ID */"
 
 /*
  * SB: 'main' driver
