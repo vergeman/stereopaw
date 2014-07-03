@@ -61,6 +61,19 @@ module.exports = function(grunt) {
 		    dest: 'bin'
 		}]
 	    }
+	},
+
+	compress : {
+	    build: {
+		options: {
+		    archive: 'dist/stereopaw-extension.zip'
+		},
+		files: [
+		    {
+			expand: true, cwd: "bin", src: '*'
+		    }
+		]
+	    }
 	}
 
     });
@@ -70,10 +83,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-preprocess');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-compress');
 
     //default task is dev mode.
     grunt.registerTask('default', ['env:dev', 'copy', 'preprocess']);
-    grunt.registerTask('stag', ['env:stag', 'copy', 'preprocess', 'uglify']);
-    grunt.registerTask('prod', ['env:prod', 'copy', 'preprocess', 'uglify']);
+    grunt.registerTask('stag', ['env:stag', 'copy', 'preprocess', 'uglify', 'compress']);
+    grunt.registerTask('prod', ['env:prod', 'copy', 'preprocess', 'uglify', 'compress']);
 
 };

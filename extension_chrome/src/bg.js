@@ -99,8 +99,8 @@ chrome.runtime.onMessageExternal.addListener(
 			if (x.playerStarted && x.playing && !x.loading) {
 
 			    if (x.audioPosition >= x.audioLength - 1) {
+			        var extensionID = chrome.runtime.id;
 
-				var extensionID = "gljkhinfbefolpcbippakocpbaikhflg";
 				$(window).unbind("beforeunload")
 				chrome.runtime.sendMessage(extensionID, {removetab: mixcloudtab_id,
 									 stereopawtab: stereopawtab_id})
@@ -172,11 +172,10 @@ chrome.runtime.onMessageExternal.addListener(
 								 //on end of track
 								 var next = function() {
 
-								    // var extensionID = "gljkhinfbefolpcbippakocpbaikhflg";
-								     var extensionID = "nhdgndjpbheaiiconnkbgbblmpfhkeki"
-
 								     /*if we want the sequentail stereopaw play & close tab behavior 
 								      *uncomment here and we don't need the rest.
+
+								      var extensionID = chrome.runtime.id
 
 								      chrome.runtime.sendMessage(extensionID, {removetab: spotifytab_id,
 													      stereopawtab: stereopawtab_id})
