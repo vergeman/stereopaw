@@ -173,7 +173,8 @@ chrome.runtime.onMessageExternal.addListener(
 								 var next = function() {
 
 								    // var extensionID = "gljkhinfbefolpcbippakocpbaikhflg";
-var extensionID = "nhdgndjpbheaiiconnkbgbblmpfhkeki"
+								     var extensionID = "nhdgndjpbheaiiconnkbgbblmpfhkeki"
+
 								     /*if we want the sequentail stereopaw play & close tab behavior 
 								      *uncomment here and we don't need the rest.
 

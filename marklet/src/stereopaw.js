@@ -248,6 +248,8 @@ var SB = (function () {
 		    console.log(msg)
 		    //@endif
 
+		    /*clean up*/
+		    $('#sb-script').remove()
 		    clearInterval(SB._interval)
 		    SB._interval = null
 		}
