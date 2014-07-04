@@ -1,5 +1,5 @@
 .installbuttons
-  %a{:onclick => 'return false;', :href => "/meow#signup"}
+  %a{:onclick => 'chrome.webstore.install();', :id => "install-button"}      
     %button.small
       Install Chrome Extension
 

@@ -10,7 +10,7 @@
       install the browser extension.
 
     .extension-button-wrap
-      %button#install.small
+      %button.small{:onclick => 'chrome.webstore.install();', :id => "install-button"}
         Install Extension
 
     %h5

@@ -111,17 +111,16 @@ function detect_play(service, tab) {
 	var service = args[0]
 	var extension_id = args[1]
 
-
 	/*service specific "is-playing" detect logic
 	 *context is service page
 	 */
 	var is_playing = {
 
 	    soundcloud: function(args){
-		/*
-		if (DEBUG)
-		    console.log("isplaying - soundcloud")
-		*/
+		//@ifdef DEBUG
+		console.log("isplaying - soundcloud")
+		//@endif
+
 		var _extension_id = args[0]
 		var result = false;
 
@@ -132,10 +131,9 @@ function detect_play(service, tab) {
 		}
 		catch(e) {}
 		
-		/*
-		if (DEBUG)
-		    console.log("sending message: launchable - " + result)
-		*/
+		//@ifdef DEBUG
+		console.log("sending message: launchable - " + result)
+		//@endif
 
 		chrome.runtime.sendMessage(_extension_id, 
 					   {
@@ -144,10 +142,9 @@ function detect_play(service, tab) {
 	    },
 
 	    youtube: function(args){
-		/*
-		if (DEBUG)
-		    console.log("isplaying - youtube")
-		*/
+		//@ifdef DEBUG
+		console.log("isplaying - youtube")
+		//@endif
 
 		var _extension_id = args[0]
 		var result = false;
@@ -166,18 +163,44 @@ function detect_play(service, tab) {
 					   })
 	    },
 
-	    mixcloud: function(){
-		/*
-		if (DEBUG)
-		    console.log("isplaying - mixcloud")
-		*/
+	    mixcloud: function(args){
+		//@ifdef DEBUG
+		console.log("isplaying - mixcloud")
+		//@endif
+
+		var _extension_id = args[0]
+		var result = false;
+
+		try {
+		    var mc = $('.player').scope()
+		    var result = mc.playerStarted
+		}
+		catch(e) {}
+
+		chrome.runtime.sendMessage(_extension_id,
+					   {
+					       launchable: result
+					   })
 	    },
 
-	    spotify: function(){
-		/*
-		if (DEBUG)
-		    console.log("isplaying - spotify")
-		*/
+	    spotify: function(args){
+		//@ifdef DEBUG
+		console.log("isplaying - spotify")
+		//@endif
+
+		var _extension_id = args[0]
+		var result = false;
+
+		try {
+		    var result = window.frames[1].document.getElementById('track-name').children[0].href.match(/track\/(.*)/)[1]
+		}
+		catch(e){}
+
+		chrome.runtime.sendMessage(_extension_id,
+					   {
+					       launchable: result
+					   })
+
 	    },
 
 
