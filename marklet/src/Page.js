@@ -15,7 +15,7 @@ SB.Page = (function() {
 
 	'<div id="sb-logo">',
 	[
-	    '<img width="26" src= ' + HOME + "/assets/stereopaw-logo-main.png" + '/>',
+	    '<img width="26" src= ' + HOME + "/stereopaw-logo-main.png" + '/>',
 	].join('\n'),
 	'</div>',
 
