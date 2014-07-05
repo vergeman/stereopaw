@@ -15,7 +15,7 @@ class PasswordsController < Devise::PasswordsController
       #respond_with(resource)
       respond_to do |format|        
         format.json { render :json => {errors: resource.errors} }
-        format.html { render "new" }
+        format.html { render :new }
       end
 
     end

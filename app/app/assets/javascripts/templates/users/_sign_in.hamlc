@@ -25,7 +25,7 @@
                           name: "user[email]",
                           type: "email",
                           value: "",
-                          placeholder: "Email"}
+                          placeholder: "Email"}            
         
     %div
       %div.input-label-prefix
@@ -37,6 +37,8 @@
                              placeholder: "Password"}
 
     %div.errormessage
+      - if @error
+        = @error
       
     %div
       %input.input-submit.button.expand{name: "commit", type: "submit", value: "LOGIN"}

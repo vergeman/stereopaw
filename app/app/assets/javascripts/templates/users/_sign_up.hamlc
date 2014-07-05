@@ -20,28 +20,34 @@
                           type: "email",
                           value: "",
                           placeholder: "Email"}
-        %small{class: "error_email"}
-
+        %small{class: "error_email error"}
+          - if @errors
+            = @errors['email']
+          
     %div
       %div.input-label-prefix
         %span.prefix
-          %i.fi-lock.medium
+          %i.fi-lock.medium.password
       %div.input-text-post  
         %input#user_password{name: "user[password]",
                              type: "password",
                              placeholder: "Password"}
-        %small{class: "error_password"}
-
+        %small{class: "error_password error"}
+          - if @errors
+            = @errors['password']
+            
     %div
       %div.input-label-prefix
         %span.prefix
-          %i.fi-lock.medium
+          %i.fi-lock.medium.password_confirmation
       %div.input-text-post  
         %input#user_password_confirmation{name: "user[password_confirmation]",
                                           type: "password",
                                           placeholder: "Password Confirmation"}
-        %small{class: "error_password_confirmation"}
-          
+        %small{class: "error_password_confirmation error"}
+          - if @errors
+            = @errors['password_confirmation']
+
     %div
       %input.input-submit.button.expand{name: "commit", type: "submit", value: "SIGN UP"}
 

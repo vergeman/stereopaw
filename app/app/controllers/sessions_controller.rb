@@ -16,10 +16,10 @@ class SessionsController < Devise::SessionsController
     sign_in(resource_name, resource)
     yield resource if block_given?
 
-    respond_with(resource) do |format|
+    respond_to do |format|
 
       #we need this for tracks/new
-      format.html {        
+      format.html {
         redirect_to after_sign_in_path_for(resource)
       }
  

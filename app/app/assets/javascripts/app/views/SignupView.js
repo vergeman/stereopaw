@@ -87,7 +87,7 @@ app.SignupView = Backbone.View.extend({
 
 	app.vent.trigger("Request",
 			 "POST",
-			 "/users",
+			 "/users.json",
 			 data,
 			 function(data, textStatus, jqXHR) {
 			     if (DEBUG)

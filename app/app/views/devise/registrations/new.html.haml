@@ -1,2 +1,2 @@
 #content.noside
-  = render "users/sign_up", :login_link => "/users/sign_in"
+  = render "users/sign_up", :login_link => "/users/sign_in", :errors => resource.errors.presence ? resource.errors.messages : nil

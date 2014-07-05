@@ -1,2 +1,2 @@
 #content.noside
-  = render "users/sign_in", :forgotpassword_link => "/users/password/new", :signup_link => "/users/sign_up"
+  = render "users/sign_in", :forgotpassword_link => "/users/password/new", :signup_link => "/users/sign_up", :error => flash[:alert]
