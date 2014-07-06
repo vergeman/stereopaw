@@ -243,9 +243,8 @@ chrome.runtime.onMessageExternal.addListener(
 	    //@endif
 
 	    LAUNCHED = true
-
 	    chrome.tabs.executeScript(sender.tab.id, 
-				      { code: "(function(){document.getElementById('sb-app') ? false : (function() {var e = document.createElement('script');e.setAttribute('id', 'sb-script');e.setAttribute('mode', 'extension');e.setAttribute('src','/* @echo HOST *//stereopaw-min.js?r='+Math.random()*99999999);document.body.appendChild(e)})() }())"
+				      { code: "(function(){document.getElementById('sb-script') || document.getElementById('sb-app') ? false : (function() {var e = document.createElement('script');e.setAttribute('id', 'sb-script');e.setAttribute('mode', 'extension');e.setAttribute('src','/* @echo HOST *//stereopaw-min.js?r='+Math.random()*99999999);document.body.appendChild(e)})() }())"
 				      });
 	}
 
@@ -400,6 +399,8 @@ chrome.runtime.onMessageExternal.addListener(
 	    //url
 	    url = request.track.url
 
+	    //heartbeat
+	    sendResponse({alive:true})
 
 	} //end request.track
 

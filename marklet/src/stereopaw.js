@@ -21,6 +21,9 @@ var SB = (function () {
     _sbjq = null,
     service = '';
 
+    var LIVES = 6;
+    var lives = LIVES;
+
     var mode;
 
     var sb = {
@@ -116,7 +119,7 @@ var SB = (function () {
 		console.log("[stereopaw 2.0] Exiting");
 		//@endif
 
-		clearInterval(self._interval)
+		clearInterval( document.getElementById('sb-script').getAttribute('timer') )
 		self._interval = null
 
 		$('#sb-submit-button').unbind('click');
@@ -205,6 +208,8 @@ var SB = (function () {
 
 	    }, 400)
 
+	    var sbscript_div = document.getElementById('sb-script')
+	    sbscript_div.setAttribute('timer', self._interval)
 	},
 
 	/*
@@ -244,9 +249,16 @@ var SB = (function () {
 		    //@endif
 
 		    /*clean up*/
+		    clearInterval( document.getElementById('sb-script').getAttribute('timer') )
 		    $('#sb-script').remove()
-		    clearInterval(SB._interval)
-		    SB._interval = null
+		}
+
+		/*reset "lives"*/
+		if (response.alive) {
+		    //@ifdef DEBUG
+		    console.log("heartbeat recieved")
+		    //@endif
+		    lives = LIVES;
 		}
 	    }
 
@@ -255,6 +267,24 @@ var SB = (function () {
 	    //@endif
 
 	    chrome.runtime.sendMessage(EXTENSION_ID, msg, cb)
+
+	    /* prevent runaway injection - not sure if this is
+	     * effective
+	     */
+	    lives = lives - 1;
+	    if (lives <= 0) {
+		//@ifdef DEBUG
+		console.log("shutting down marklet")
+		//@endif
+
+		clearInterval( document.getElementById('sb-script').getAttribute('timer') )
+		$('#sb-script').remove()
+	    }
+
+	    //@ifdef DEBUG
+	    console.log("LIVES: " + lives)
+	    //@endif
+
 	},
 
 	render: function() 

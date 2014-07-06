@@ -299,6 +299,26 @@ var connect_listener = function(port) {
 		//@endif
 
 		sendResponse({shutdown:true})
+
+		var kill = function() {
+		    try {
+			clearInterval(document.getElementById('sb-script').getAttribute('timer') )
+			var e = document.getElementById("sb-script");
+			e.parentNode.removeChild(e);
+		    }
+		    catch(e) {
+			//@ifdef DEBUG
+			//@endif
+		    }
+		}
+
+		chrome.tabs.executeScript(sender.tab.id,
+					  { 
+					      code: "(" + kill+ ")();"
+					  }
+					 );
+
+
 	    }
 	    //@ifdef DEBUG
 	    console.log("remove listener")
