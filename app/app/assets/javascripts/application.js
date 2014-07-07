@@ -17,7 +17,7 @@
 
 /*
  *cancel console.log in production, we pass DEBUG value
- *in uglifier
+ *in uglifier ( config/production.rb )
  */
 if (typeof DEBUG === "undefined")
     DEBUG = true;
