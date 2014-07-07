@@ -10,11 +10,7 @@
   %h6
     The browser extension allows timestamped playback across all supported sites. Please consider installing the extension.
 
-  != JST['tracks/footer']()
-
-  -# see welcome/index.html/haml as well. Partials aren't rendering
-    across hamlc/erb so havent been able to throw #how-to into its
-    rightful place
+  != JST['tracks/footer']({markletURL : "<%= ENV['markletURL'] %>"})
   
   #how-to
     %h4.tidbit

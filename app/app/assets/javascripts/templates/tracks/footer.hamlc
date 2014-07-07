@@ -6,4 +6,4 @@
     
     != JST['submit/installbuttons']()
 
-!= JST['tracks/modal']()
+!= JST['tracks/modal']({markletURL : "#{@markletURL}" })

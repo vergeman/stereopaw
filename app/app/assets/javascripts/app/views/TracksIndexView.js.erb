@@ -60,7 +60,7 @@ app.TracksIndexView = Backbone.View.extend({
 	 *triggered from TracksView collection render
 	 */
 
-	this.$el.append(this.templatefooter() );
+	this.$el.append(this.templatefooter({markletURL : "<%=ENV['markletURL']%>"}) );
 	$(document).foundation()
 
 	return this;
