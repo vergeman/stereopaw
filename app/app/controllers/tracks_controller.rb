@@ -1,4 +1,5 @@
 require 'net/http'
+require 'sanitize'
 
 class TracksController < ApplicationController
   include ApplicationHelper
@@ -6,6 +7,8 @@ class TracksController < ApplicationController
   before_filter :authenticate_user!, only: [:new, :create, :submit, :update, :destroy, :mytracks]
 
   before_filter :check_auth_or_json_redirect, only: [:update, :destroy]
+
+  rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
 
   respond_to :html, :json
 
@@ -33,35 +36,30 @@ class TracksController < ApplicationController
                                      "created_at DESC")
   end
 
+
   #find individual track given param, responds in json
   def show
-    @track = Track.find_tracks(Track,
-                               params[:id])
+    @track = Track.find_tracks(Track, params[:id])
     respond_with(@track)
   end
 
+
   #route that augments play count
   def play
-    render :json => Track.augment_plays(Track,
-                                        params[:track][:id])
+    render :json => Track.augment_plays(Track, params[:track][:id])
   end
+
 
   #delete a track from current user's set
   def destroy
-    render :json => Track.destroy(current_user.tracks, params[:id])
-  end
-
-  #receives edited track data
-  #update_params processes genres into appropriate format
-  def update
     @track = Track.find_tracks(current_user.tracks, params[:id])
 
-    if @track[:errors]
-      render :json => @track
-      return
-    end
+    #if error, return error msg
+    render :json => { "errors" => { :general => "Not owner" } } && return if @track[:errors]
 
-    if @track.update_attributes(update_params)
+    #we dissociate but not remove track
+    @track.user_id = nil
+    if @track.save
       render :json => { "success" => @track.id }
     else
       render :json => { "errors" => @track.errors.messages }
@@ -69,21 +67,34 @@ class TracksController < ApplicationController
 
   end
 
+
   #receives a marklet submission
   def new
-    unless new_params
-      redirect_to root_path
-      return
+    redirect_to root_path unless new_track_params
+    @user = current_user
+    @track = current_user.tracks.build(new_track_params)
+  end
+
+
+  #receives edited track data
+  #update_params processes genres into appropriate format
+  def update
+    @track = Track.find_tracks(current_user.tracks, params[:id])
+    render :json => @track && return if @track[:errors]
+
+    if @track.update_attributes(update_track_params)
+      render :json => { "success" => @track.id }
+    else
+      render :json => { "errors" => @track.errors.messages }
     end
 
-    @user = current_user
-    @track = current_user.tracks.build(new_params)
   end
+
 
   #post submission of a track
   def create
     @user = current_user
-    @track = current_user.tracks.build(new_params)
+    @track = current_user.tracks.build(new_track_params)
 
     if @track.save
 
@@ -112,41 +123,61 @@ class TracksController < ApplicationController
     end
   end
 
+  def record_not_found
+    render :json => {:errors => "invalid track"}
+  end
+
 #strong params
+  #separate permit params for new_tracks and update_track actions
+  #we process genre params since they are comma separated strings,
+  #instead of treating them as array type parameters
+  #(i.e. :genres => []
 
-  def update_params
+  def new_track_params
+    return nil unless params[:track]
 
-    process_genres_params( 
-                          params.require(:track).permit(:artist,
-                                                        :title,
-                                                        :timeformat,
-                                                        :timestamp,
-                                                        :comment,
-                                                        :genres)
-                          )  if params[:track]
+    track_params = sanitize_params(
+                                   params.require(:track)
+                                     .permit(:track_id, 
+                                             :artist, 
+                                             :title, 
+                                             :page_url, 
+                                             :profile_url, 
+                                             :timeformat, 
+                                             :timestamp, 
+                                             :duration,
+                                             :comment, 
+                                             :shareable,
+                                             :artwork_url,
+                                             :service,
+                                             :genres)
+                                   ) if params[:track]
+
+    track_params[:genres] = process_genres_params(track_params[:genres]) if track_params[:genres]
+
+    return track_params
   end
 
-  def new_params
-    process_genres_params (
-                           params.require(:track)
-                             .permit(:track_id, 
-                                     :artist, 
-                                     :title, 
-                                     :page_url, 
-                                     :profile_url, 
-                                     :timeformat, 
-                                     :timestamp, 
-                                     :duration,
-                                     :comment, 
-                                     :shareable,
-                                     :artwork_url,
-                                     :genres,
-                                     :service)
-                           ) if params[:track]
+  def update_track_params
+    track_params = sanitize_params(
+                                   params.require(:track)
+                                     .permit(:artist,
+                                             :title,
+                                             :timeformat,
+                                             :timestamp,
+                                             :comment,
+                                             :genres)
+                                   ) if params[:track]    
+
+    track_params[:genres] = process_genres_params(track_params[:genres])
+    return track_params
   end
 
-  def process_genres_params(params)
-    params[:genres] = params[:genres].to_s.split(',').map(&:strip) if params[:genres]
-    return params
+
+  def process_genres_params(genres)
+    return genres.to_s.split(',').map(&:strip) if genres
+    return []
   end
+
+
 end

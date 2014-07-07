@@ -219,34 +219,33 @@ describe PlaylistsController do
 
         it "sucessful request of track param responds with playlist " do
           @track4 = FactoryGirl.create(:track)
+          @p.track_ids = @p.track_ids.push(@track4.id)
           patch :update, :format => 'json', 
-          :user_id => @user.id, :id => @p.id, 
-          :track => @track4.id
+          :user_id => @user.id, :id => @p.id, :playlist => {:track_ids => @p.track_ids}
           expect(response.body).to eq(@user.playlists.last.with_track_preview.to_json(:methods => [:track_previews], except: [:user_id]))
         end
 
 
         it "playlist adding non-existent track is invalid " do
           @track4 = FactoryGirl.create(:track)
+          @p.track_ids = @p.track_ids.push(@track4.id + 1000000)
           patch :update, :format => 'json', 
-          :user_id => @user.id, :id => @p.id, 
-          :track => @track4.id + 100
+          :user_id => @user.id, :id => @p.id, :playlist => {:track_ids => @p.track_ids}
           expect(response.body).to have_content("errors")
         end
 
         it "request with invalid track param responds with error " do
           @track4 = FactoryGirl.create(:track)
           patch :update, :format => 'json', 
-          :user_id => @user.id, :id => @p.id, 
-          :track => -1
+          :user_id => @user.id, :id => @p.id, :playlist => {:track_ids => [-1]}
           expect(response.body).to have_content("errors")
         end
 
         it "request with invalid track param responds with error " do
           @track4 = FactoryGirl.create(:track)
+          @p.track_ids = @p.track_ids.push("alpha")
           patch :update, :format => 'json', 
-          :user_id => @user.id, :id => @p.id, 
-          :track => "alpha"
+          :user_id => @user.id, :id => @p.id, :playlist => {:track_ids => @p.track_ids}
           expect(response.body).to have_content("errors")
         end
 
@@ -263,7 +262,6 @@ describe PlaylistsController do
 
         it "responds with error message if attempt to update invalid playlist" do
           @p.user_id = @user
-
           patch :update, :format => 'json', 
           :user_id => @user.id, :id => @p.id+100,
           :playlist => @p.attributes

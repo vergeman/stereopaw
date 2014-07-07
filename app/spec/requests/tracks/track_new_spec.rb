@@ -54,7 +54,7 @@ describe "TrackNew" do
     end
 
 
-    describe "with form_fields populated by new_params" do
+    describe "with form_fields populated by track_params" do
       #not hidden
       it { find_field('track[artist]').value.should eq 'Artist' }
       it { find_field('track[title]').value.should eq 'Title' }

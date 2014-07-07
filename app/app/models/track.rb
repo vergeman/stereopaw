@@ -28,7 +28,10 @@
 #  index_tracks_on_genres  (genres)
 #
 
+require 'sanitize'
+
 class Track < ActiveRecord::Base
+
   include PgSearch
   pg_search_scope :search_by_meta, :against => [:artist, :title, :genres, :service, :comment]
   pg_search_scope :search_by_genre, :against => [:genres]
@@ -49,51 +52,25 @@ class Track < ActiveRecord::Base
   before_validation :default_values, :on => :create
 
   #
-  ## Controller Wrap
+  ## Model Utlities
   #
 
+  #get track utility
   def self.get_tracks(params, source, conditions, track_order)
     page = params[:page] ? params[:page].to_i : 0
-    @tracks = source.order(track_order).where(conditions).limit(10).offset(page * 10)
-    return @tracks
+    tracks = source.order(track_order).where(conditions).limit(10).offset(page * 10)
+    return tracks
   end
 
-
+  #find track utility
   def self.find_tracks(source, track_find_params)
-    begin
-      @track = source.find(track_find_params)
-    rescue ActiveRecord::RecordNotFound
-      return {:errors => "invalid track"}
-    end
-    return @track
+    return source.find(track_find_params)
   end
-
-  #DESTROY
-  def self.destroy(source, track_find_params)
-
-    @track = self.find_tracks(source, track_find_params)
-
-    if @track[:errors]
-      return { "errors" => { :general => "Not owner" } }
-
-    else
-      #we dissociate but not remove track
-      @track.user_id = nil
-
-      if @track.save
-        return { "success" => @track.id }
-      else
-        return { "errors" => @track.errors.messages }
-      end
-
-    end
-  end
-
 
   #PLAY
   def self.augment_plays(source, track_find_params)
-    @track = self.find_tracks(source, track_find_params)
-    @track[:errors] ? @track : @track.played.played_json
+    track = self.find_tracks(source, track_find_params)
+    track[:errors] ? track : track.played.played_json
   end
 
 
@@ -107,20 +84,24 @@ class Track < ActiveRecord::Base
     super
   end
 
+
   def default_values
     self.timestamp ||= 0
     self.duration ||= 0
     self.submit_id ||= self.user_id
   end
 
+
   def played
     self.update_attributes(:plays => self.plays + 1)
     return self
   end
   
+
   def played_json
     return {:track => {:id => self.id, :plays => self.plays} }
   end  
+
 
   def calculate_age
     diff = (Time.now - self.created_at)
@@ -134,6 +115,7 @@ class Track < ActiveRecord::Base
     end
 
   end
+
 
   def capitalize_genres
     self.genres = self.genres.map{|g| g.split.map(&:capitalize).join(" ")}

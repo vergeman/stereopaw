@@ -14,7 +14,6 @@
 
 class Playlist < ActiveRecord::Base
   attr_accessor :track_previews
-
   include PgSearch
   pg_search_scope :search_by_descriptions, :against => [:name, :description]
 
@@ -29,139 +28,6 @@ class Playlist < ActiveRecord::Base
   validate  :validate_tracks_exist
 
   validates_uniqueness_of :name, scope: :user_id, message: "already exists"
-
-
-#
-## Controller Wraps
-#
-  #SHOW
-  def self.show_playlist_tracks(params)
-
-    return self.load_playlist do
-      @playlist = Playlist.find(params[:id])
-
-      @tracks = Track.where(id: @playlist.track_ids)
-      return @tracks
-
-    end
-
-  end
-
-  #CREATE
-  def self.create_playlist(params, current_user)
-    @playlist = current_user.playlists
-      .build( self.new_params(params) )
-
-    if @playlist.save
-      Rails.cache.delete_matched("search-playlists/#{current_user.id}/*")
-      return @playlist.with_track_preview
-    else
-      return {:errors => @playlist.errors.messages}
-    end
-  end
-
-  #UPDATE
-  def self.update_playlist(params, current_user)
-
-    try_load = self.load_playlist do
-      @playlist = current_user.playlists.find(params[:id])
-    end
-
-    if try_load.is_a?(Hash) && try_load[:errors]
-      return try_load
-    end
-
-    #type of update is dealt with in track_params
-    if @playlist
-        .update_attributes( self.track_params(params, @playlist) )
-
-      Rails.cache.delete_matched("search-playlists/#{current_user.id}/*")
-      return @playlist.with_track_preview
-    else
-      return {:errors => @playlist.errors.messages}
-    end
-  end
-
-
-  def self.track_params(params, playlist)
-    #case of just adding a track id to params
-    if params[:track] && playlist
-
-      return {
-        :track_ids => 
-        playlist.track_ids + [ params[:track] ] 
-      }
-
-    else
-      #case where track_ids are being removed, or playlist's
-      #meta data is being changed
-      return self._parse_track_id_params(params)
-    end
-  end
-
-
-  #case where remove track_id or update playlist meta data
-  #this is UGLY but pg array saving behavior is really strange
-  def self._parse_track_id_params(params)
-
-    #track removal
-    if params[:playlist].has_key?(:track_ids)
-      #if: they've deleted the last remaining track in a playlist
-      #else: track_ids are updated (deleted any old track)
-      _params = self.new_params(params)
-
-      if params[:playlist][:track_ids].nil?
-        _params[:track_ids] = []
-      else
-        _params[:track_ids] = Array.new(params[:playlist][:track_ids])
-      end
-      return _params
-    end
-
-    #otherwise other playlist stuff updated (i.e. name, description)
-    return self.new_params(params)
-  end
-
-
-  #playlist helper for params
-  def self.new_params(params)
-    params.require(:playlist).permit(:name,
-                                     :description,
-                                     :track_ids) if params[:playlist]
-  end
-
-
-  #DESTROY
-  def self.destroy_playlist(params, current_user)
-
-    try_load = self.load_playlist do
-      @playlist = current_user.playlists.find(params[:id])
-    end
-    
-    if try_load.is_a?(Hash) && try_load[:errors]
-      return try_load
-    end
-
-    if @playlist.destroy
-      Rails.cache.delete_matched("search-playlists/#{current_user.id}/*")
-      return {:success => "playlist destroyed"}
-    else
-      return {:errors => "error destroying playlist"}
-    end
-
-  end
-
-
-#
-## Controller - Model error catching
-#
-  def self.load_playlist
-    begin
-      yield if block_given?
-    rescue ActiveRecord::RecordNotFound
-      return {:errors => "invalid playlist"}
-    end
-  end
 
 
 #
@@ -229,9 +95,10 @@ class Playlist < ActiveRecord::Base
   
   def validate_tracks_exist
     begin
-      track_ids.each do |t|
-        Track.find(t)
-      end
+      Track.find(track_ids)
+      #track_ids.each do |t|
+      #  Track.find(t)
+      #end
     rescue ActiveRecord::RecordNotFound
       errors.add(:track_ids, "track not found")
     end

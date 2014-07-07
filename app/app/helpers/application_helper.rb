@@ -19,4 +19,15 @@ module ApplicationHelper
     render :json => {'location' => path}.to_json
   end
 
+
+  def sanitize_params(params)
+    params.each do |key, value|
+      #puts "#{key} : #{value}"
+      #puts value.is_a?(Array)
+      params[key] = Sanitize.fragment(params[key], Sanitize::Config::BASIC) unless params[key].is_a?(Array)
+    end
+
+    return params
+  end
+
 end

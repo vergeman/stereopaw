@@ -145,7 +145,14 @@ app.PlaylistTracksView = Backbone.View.extend({
 	}
 
 	/*update model on server*/
-	this.playlist.save({}, {success: success_cb} )
+	this.playlist.save({'track_ids' :
+			    this.playlist.get('track_ids')
+			   },
+			   {
+			       patch:true,
+			       success: success_cb,
+			       error: function() {}
+			   })
     },
 
     add_collection : function(model) {

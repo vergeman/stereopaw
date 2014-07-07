@@ -61,44 +61,29 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 	if (DEBUG)
 	    console.log("[PlaylistDropDownView] submit_add_playlist")
 
-	$.ajax({
-	    type: "PATCH",
-	    url: playlists_url + playlist_id,
-	    data: {'track' : track_id},
-	    beforeSend: function(request) {
-		request.setRequestHeader("X-CSRF-Token", $.cookie('csrf_token'));
-	    },
-	    success: function(data, textStatus, jqXHR) {
-		if (DEBUG)
-		    console.log("[PlaylistDropDownView] playlist_submit:success")
-		if ('errors' in data) {
-		    if (DEBUG)
-			console.log("[PlaylistDropDownView] errors")
-		    if (DEBUG)
-			console.log(data)
-		}
-		/*Playlists updated in centralized PlaylistsMgr*/
-		else {
-		    app.vent.trigger("PlaylistsMgr:SetPlaylist", data)
-		}
-	    },
+	var playlist = this.playlists.get(playlist_id)
+	var track_ids = _.clone( playlist.get('track_ids') )
+	track_ids.push(parseInt(track_id))
 
-	    error: function(jqXHR, textStatus, errorThrown) {
-		if (DEBUG)
-		    console.log("[PlaylistDropDownView] submit:error")
-		if (DEBUG)
-		    console.log(textStatus)
-		if (DEBUG)
-		    console.log(errorThrown)
-		if (DEBUG)
-		    console.log(jqXHR)
-	    },
-
-	    complete : function(jqXHR, textStatus) {
-		if (DEBUG)
-		    console.log("[PlaylistDropDownView] submit:complete")
-	    }
-	})
+	playlist.save({'track_ids' : track_ids}, 
+		      {
+			  patch:true,
+			  success: 
+			  function(model, response, options)
+			  {
+			      console.log("SUCCESS")
+			      app.vent.trigger("PlaylistsMgr:SetPlaylist", response)
+			  },
+			  error:
+			  function(model, xhr, options)
+			  {
+			      if (DEBUG)
+				  console.log("[PlaylistDropDownView] errors")
+			      if (DEBUG)
+				  console.log(xhr)
+			  }
+		      }
+		     )
     },
 
     SetPlaylist : function(playlists) {

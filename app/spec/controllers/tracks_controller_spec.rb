@@ -299,7 +299,7 @@ describe TracksController do
 
       it "should return an error response if not user's track" do
         delete :destroy, :user_id => @user.id, :id => @track.id + 1
-        expect(response.body).to eq({errors: {general: "Not owner"}}.to_json)
+        expect(response.body).to eq({errors: "invalid track"}.to_json)
       end
 
       it "should return an error response if delete fails" do

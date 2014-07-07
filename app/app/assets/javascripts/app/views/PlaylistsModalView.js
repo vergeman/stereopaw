@@ -162,7 +162,8 @@ app.PlaylistsModalView = Backbone.View.extend({
 	return {
 	    playlist : {
 		name: $("input#playlist_name").val(),
-		description : $("textarea#playlist_description").val()
+		description : $("textarea#playlist_description").val(),
+		track_ids : this.playlist.get("track_ids")
 	    }
 	}
 
