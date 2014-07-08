@@ -22,10 +22,14 @@ class TracksController < ApplicationController
 
   #returns paginated set of popular tracks
   def popular
+    page = params[:page] ? params[:page].to_i : 0
+    render :json => Track.get_popular(page)
+=begin
     render :json => Track.get_tracks(params,
                                      Track,
                                      "spam = false",
                                      "plays DESC")
+=end
   end
 
   #returns paginated set of current user's tracks - requires auth

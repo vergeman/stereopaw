@@ -55,6 +55,30 @@ class Track < ActiveRecord::Base
   ## Model Utlities
   #
 
+
+  #get popular
+  def self.get_popular(page)
+=begin
+    follow hacker news ranking for starters
+    seems to give to much weight to 'new'
+    score = (p - 1) / (t + 2)^1.2
+    where p = plays (points) and t = age in hours
+=end
+
+    query = "SELECT *, " \
+    "t.plays / (POW(( ( (SELECT EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(0))) - (SELECT EXTRACT(EPOCH FROM t.created_at)) ) / 3600) + 2, 1.2)) as score " \
+    "FROM tracks t " \
+    "WHERE t.spam = false " \
+    "ORDER BY score " \
+    "DESC LIMIT 10 OFFSET ?";
+
+    return Track.find_by_sql([query, page * 10])
+    #results.each do |r|
+    #  puts "#{r.title} : \t #{r.score}"
+    #end
+    #return results
+  end
+
   #get track utility
   def self.get_tracks(params, source, conditions, track_order)
     page = params[:page] ? params[:page].to_i : 0
