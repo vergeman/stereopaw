@@ -1,3 +1,13 @@
+function load_images() {
+/*load images*/
+document.getElementById("icon-close").src = chrome.extension.getURL("icon-close.png");
+
+document.getElementById("stereopaw-logo-main").src = chrome.extension.getURL("stereopaw-logo-main.png");
+
+document.getElementById("stereopaw-marklet-title").src = chrome.extension.getURL("stereopaw-marklet-title.png");
+
+document.getElementById("sb-loading-img").src = chrome.extension.getURL("ajax-loader.gif");
+}
 
 /*render logic*/
 function render_loading() {
@@ -173,7 +183,7 @@ function detect_play(service, tab) {
 
 		try {
 		    var mc = $('.player').scope()
-		    var result = mc.playerStarted
+		    var result = mc.playerStarted && mc.playing
 		}
 		catch(e) {}
 
@@ -222,7 +232,7 @@ function detect_play(service, tab) {
     /*insert into dom*/
     chrome.tabs.executeScript(tab_id, code_obj);
 
-    return true
+    return tab_id
 }
 
 
@@ -248,7 +258,32 @@ chrome.runtime.onMessageExternal.addListener(
 				      });
 	}
 
-	/*render services detected but possibly paused*/
+	/*
+	 * recv a fase launchable message, means there is a site
+	 * that's supported, but nothing is detected to be playing
+	 * (could be paused, or on a non-audio page)
+	 */
+
+	if ( ("launchable" in request) && !request.launchable) {
+	    //@ifdef DEBUG
+	    console.log("popping tab counts")
+	    console.log(results.length)
+	    console.log(results)
+	    //@endif
+	    results.pop()
+	}
+
+	/*no tabs left, means nothing is playing*/
+	if (results.length <= 0) {
+	    //@ifdef DEBUG
+	    console.log("sleep")
+	    //@endif
+
+	    bind_buttons()
+	    render_sleep()
+	}
+
+	/*render services detected but possibly paused
 	if (!request.launchable && !LAUNCHED) {
 	    LAUNCHED = true
 	    //@ifdef DEBUG
@@ -259,17 +294,17 @@ chrome.runtime.onMessageExternal.addListener(
 
 	    render_sleep()
 	}
+	*/
     }
 )
 
 
 /*cycle through music tabs and call detect_play() */
 //chrome.browserAction.onClicked.addListener(function(tab) {
+var results = [];
 var run = function() {
 
     render_loading()
-
-    var results = [];
 
     var urls = {
 	soundcloud: "*://*.soundcloud.com/*",
@@ -280,7 +315,10 @@ var run = function() {
 
 
     var check_detect = function(i) {
-	//last iteration, and no detection
+
+	/*make sure check detect runs only
+	  last iteration of find_tabs, as it's async
+	*/
 	if (i == Object.keys(urls).length-1) {
 
 	    if (results.length == 0) {
@@ -332,6 +370,7 @@ var run = function() {
 	    )
 	}(url)
     }
+
 }
 
 
@@ -408,5 +447,6 @@ chrome.runtime.onMessageExternal.addListener(
 )
 
 //used to notify popup shutdown in bg.js
+load_images()
 chrome.extension.connect()
 run();

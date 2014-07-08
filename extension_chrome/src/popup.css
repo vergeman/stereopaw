@@ -7,19 +7,15 @@ body {
 #sb-app {
     width : 300px;
     background-color : #fff;
-//  border : 1px solid #aaa;
     z-index: 99999999999999999;
     text-align : left;
     display:none;
 }
 
-#sb-error {
-    margin : 10px 0px;
-    display:none;
-}
-
-.sb-service {
+#sb-error, #sb-sleep {
+    font-size: 14px;
     padding: 10px;
+    display:none;
 }
 
 #sb-title { 
@@ -72,13 +68,22 @@ body {
 
 .sb-label {
     font-size : 14px;
-    //font-size : 12px;
     margin-top : 10px; 
     color: #a2a2a2;
 }
+.center {
+    text-align:center;
+}
 
-#sb-track-title { font-size : 18px; }
-#sb-track-artist { font-size : 14px; }
+#sb-track-title { 
+    font-size : 18px; 
+    word-wrap: break-word;
+}
+
+#sb-track-artist { 
+    font-size : 14px; 
+    word-wrap: break-word;
+}
 
 #sb-display-seek {
     position : relative;

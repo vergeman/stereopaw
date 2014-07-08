@@ -6,33 +6,39 @@
   <body>    
 
     <div id="sb-app"><div id="sb-close">
-	<img src="<!-- @echo HOST -->/icon-close.png" width="12px">
+	<img id="icon-close" src="<!-- @echo HOST -->/icon-close.png" width="12px">
       </div>
       <div id="sb-logo">
-	<img width="26px" src="<!-- @echo HOST -->/stereopaw-logo-main.png">
+	<img id="stereopaw-logo-main" width="26px" src="<!-- @echo HOST -->/stereopaw-logo-main.png">
       </div>
       <div id="sb-title">
-	<img src="<!-- @echo HOST -->/stereopaw-marklet-title.png">
+	<img id="stereopaw-marklet-title" src="<!-- @echo HOST -->/stereopaw-marklet-title.png">
       </div>
 
 
       <!-- loading -->
       <div id="sb-loading">
-	Loading . . . 
+	<p class="center">
+	  <img id="sb-loading-img" />
+	</p>
+
+	<p class="center">
+	  Scanning
+	</p>
       </div>
 
       <!--possible pause -->
       <div id ="sb-sleep">
+	<p>
 	Service detected, but likely not playing. Please play the track.
+	</p>
       </div>
 
       <!--error-->
       <div id="sb-error">
 	<div class="sb-service">
-	  No supported services were detected playing.
-	</div>
-	<div class="sb-service"> 
-	  Sorry!
+	  <p>Unable to detect any playing services. </p>
+	  <p>Sorry!</p>
 	</div>
       </div>
 

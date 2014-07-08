@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 	    assets: {
 		expand: true,
 		flatten: true,
-		src: ['src/*.png', 'src/*.css'],
+		src: ['src/*.png', 'src/*.gif', 'src/*.css'],
 		dest: 'bin/'
 	    },
 	    libs: {
