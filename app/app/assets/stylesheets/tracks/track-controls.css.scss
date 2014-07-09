@@ -59,8 +59,8 @@ but without li.share display, we don't need the adjust. Keep handy if want to ad
 	float:left;
 	font-style:normal;
 	font-size: 18px;
-	//margin-top:.2rem;
     }
+
     span {
 	float:left;
 	padding-left: .5rem;
@@ -87,18 +87,21 @@ but without li.share display, we don't need the adjust. Keep handy if want to ad
     padding-top: .25rem;
     width: 100%;
     padding-bottom: .25rem;
+
     @media #{$large-up} {
-	width: 200px;
+	width: 320px;
     }
 
-    a { float:right;}
+    a.service { float:right;}
 }
 
-.external {
+.external.fi-link {
+    float:right;
     color: #2980b9;
+    margin-right: 16px;
 }
 
-#track-plays {
+.track-plays {
     float: left;
     width: 60px;
     margin-top: 3px;
@@ -113,5 +116,27 @@ but without li.share display, we don't need the adjust. Keep handy if want to ad
     }
     .num-plays {
 
+    }
+}
+
+.track-report {
+    @extend .track-plays;
+    margin-top: 5px;
+    font-size: 0.75rem;
+    width: 120px;
+
+    a { 
+	color: #a2a2a2;
+	&:hover {
+	    color: #3498db;
+	}
+    }
+
+    .report {
+	cursor: pointer;
+    }
+
+    .options {
+	display:none;
     }
 }

@@ -24,12 +24,15 @@ app.PlayerQueue = Backbone.Model.extend({
 	this.current_track = null
 
 	this.queue = trackscollection
-	this.history_back = new Array()
-	this.history_fwd = new Array()
+	this.history_back = new Array() //stores track obj
+	this.history_fwd = new Array() //stores track obj
 	this.route = route
+	//if we load a new page, our queue is updated so
+	//want to make sure we return track at index 0
 	this.updated = false
 
 	this.listenTo(app.vent, "PlayerQueue:update", this.update)
+	this.listenTo(app.vent, "PlayerQueue:remove_as_flagged", this.remove_as_flagged)
     },
 
     /* a new route, we flag the collection as updated
@@ -142,6 +145,36 @@ app.PlayerQueue = Backbone.Model.extend({
 
 	this.current_track = this.queue.get(id)
 	return this.current_track
+    },
+
+    remove_as_flagged : function(track_id) {
+	/*used when flagged for spam*/
+	if (DEBUG)
+	    console.log("[PlayerQueue] remove_as_flagged")
+
+	if (this.current_track && 
+	    this.current_track.id == track_id) {
+	    //syncronous, trigger ends first, then continues
+	    app.vent.trigger("Player:next")
+	}
+
+	/*
+	 *  manually remove from history_back and history_fwd stacks
+	 *i.e. could've listened to it but skipped around then decided it was spam - not as simple as popping
+	*/
+	for (var i = this.history_back.length; i--;) {
+	    if (this.history_back[i].id == track_id)
+		this.history_back.splice(i, 1)
+	}
+	for (var i = this.history_fwd.length; i--;) {
+	    if (this.history_fwd[i].id == track_id)
+		this.history_fwd.splice(i, 1)
+	}
+
+	//*remove from current queue*/
+	this.queue.remove(track_id)
+
+
     }
 
 })

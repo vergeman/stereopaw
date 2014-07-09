@@ -109,6 +109,10 @@ describe Track do
       @track.attributes.has_key?("spam").should eq true
     end
 
+    it "has a spamscore attr" do
+      @track.attributes.has_key?("spamscore").should eq true
+    end
+
   end
 
   describe "Track Validations" do
@@ -218,6 +222,27 @@ describe Track do
       it "should default to true" do
         @track.spam.should eq true
       end
+
+      it "can only be an integer value" do
+        @track.spamscore = "hello"
+        @track.should_not be_valid
+      end
+
+      it "can only be a positive integer count value" do
+        @track.spamscore = 1001
+        @track.should be_valid
+      end
+
+      it "cannot be a negative value" do
+        @track.spamscore = -1
+        @track.should_not be_valid
+      end
+
+      it "can only be an integer value" do
+        @track.spamscore = 1.123
+        @track.should_not be_valid
+      end
+
     end
 
     context "plays" do

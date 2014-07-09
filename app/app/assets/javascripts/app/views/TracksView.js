@@ -110,12 +110,14 @@ app.TracksView = Backbone.View.extend({
     add_collection : function(model) {
 	if (DEBUG)
 	    console.log("[TracksView] add")
+
 	var _editable = this._editable_url(model)
 	var tv = new app.TrackView(
 	    { 
 		model : model ,
 		editable : _editable,
-		playlistable: this.is_playlistable()
+		playlistable: this.is_playlistable(),
+		logged_in : this.collection.session.get("current_user")
 	    } 
 	) 
 	this._trackViews.push(tv)

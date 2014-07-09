@@ -208,6 +208,9 @@ app.PlayerView = Backbone.View.extend({
 	}
 
 	this.play(null, this.current_track.get("timestamp"))
+
+	if (DEBUG)
+	    console.log("[PlayerView] next completed")
     },
 
     prev: function() {

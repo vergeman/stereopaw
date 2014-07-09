@@ -16,6 +16,7 @@ app.PlaylistsDropDownView = Backbone.View.extend({
     initialize: function($track) {
 	if (DEBUG)
 	    console.log("[PlaylistDropDownView] initialize")
+
 	this.playlists = null;
 	this.$track = $track;
 	this.listenTo(app.vent, 
@@ -53,7 +54,9 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 				 playlist_id,
 				 this.$track.attr('id'))
 
-	console.log('#drop-' + this.$track.attr('id'))
+	if (DEBUG)
+	    console.log('#drop-' + this.$track.attr('id'))
+
 	$('#drop-' + this.$track.attr('id') ).foundation('reveal', 'close');
     },
 

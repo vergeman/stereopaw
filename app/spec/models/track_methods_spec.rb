@@ -35,6 +35,23 @@ describe Track do
       end
     end
 
+    describe "reported" do
+      it "increments spamscore attribute" do
+        spamscore = @track.spamscore
+        @track.reported
+        @track.spamscore.should eq (spamscore + 1)
+      end
+
+      it "toggled spam to true if spamscore exceeds 3" do
+        [0..3].each do 
+          @track.reported
+        end
+        @track.spam.should eq true
+      end
+
+    end
+
+
   end
 
 

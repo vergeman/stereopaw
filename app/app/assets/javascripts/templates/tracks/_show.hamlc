@@ -75,18 +75,29 @@
           
 
       .track-attribution
-        #track-plays
+        .track-plays
           %i.fi-play
           .num-plays
             = @track.plays
-            
-        - if @track.is_external
-          %i.fi-link.external{:title => "Opens external site"}
+         
+        - if @logged_in
+          .track-report{:title => "Report spam"}
+            %a.report
+              Report
+            .options
+              Confirm? &nbsp;
+              %a.yes{:track_id => "#{@track.id}", :title => "Yes"}
+                Yes
+              |
+              %a.no{:title => "No"}
+                No
 
-            
-        %a{:href => "#{@track.page_url}", :target => "_blank"}          
+        %a.service{:href => "#{@track.page_url}", :target => "_blank"}
           %img{src: "#{@track.attribution_url}", width: "#{@track.attribution_width}", height: "#{@track.attribution_height}"}
-
+    
+        - if @track.is_external
+          %i.external.fi-link{:title => "Opens external site"}
+            
 %hr
 
 

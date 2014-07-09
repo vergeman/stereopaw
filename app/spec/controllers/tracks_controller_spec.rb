@@ -111,6 +111,63 @@ describe TracksController do
 
   end
 
+#
+#POST REPORT
+#
+
+  describe "POST #report" do
+
+    describe "when not logged in" do
+
+      before do
+        Warden.test_reset!
+        logout(:user)
+        controller.stub(:authenticate_user!).and_return(false)
+        controller.stub(:user_signed_in?).and_return(false)
+        @track = FactoryGirl.create(:track, spam: false)
+      end
+
+      it "responds with a 401 request" do
+        #post :play, :track => {:id => @track.id }
+        expect(response.status).to eq(401)
+      end
+
+
+
+    end
+
+    describe "when logged in: " do
+
+      before do
+        Warden.test_reset!
+        @track = FactoryGirl.create(:track, spam: false)
+        @user = @track.user
+        login_as(@user, :scope => :user)
+        controller.stub(:authenticate_user!).and_return(true)
+        controller.stub(:current_user).and_return(@user)
+      end
+
+      it "responds with a 200" do
+        post :report, :user_id => @user.id, :id => @track.id
+        expect(response.status).to eq (200)
+      end
+
+      it "responds with a reported success message" do
+        post :report, :user_id =>  @user.id, :id => @track.id
+        expect(response.body).to eq({:success => "track reported"}.to_json)
+      end
+
+      it "increments the track's spam score " do
+        post :report, :user_id =>  @user.id, :id => @track.id
+        (@track.spamscore + 1).should eq Track.find(@track).spamscore        
+      end     
+    end
+  end
+
+
+#
+#POST /PLAY
+#
   describe "POST #play" do
 
     before do

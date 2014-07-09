@@ -26,4 +26,16 @@ require 'spec_helper'
 
 describe User do
   pending "add some examples to (or delete) #{__FILE__}"
+
+  context "the User attributes" do
+    before(:each) do
+      @user = User.new(:email => "test@test.com")
+    end
+
+    it "has the reported_list attr" do
+      @user.attributes.has_key?("reported_list").should eq true
+    end
+
+  end
+
 end
