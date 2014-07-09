@@ -35,22 +35,37 @@ describe Track do
       end
     end
 
-    describe "reported" do
-      it "increments spamscore attribute" do
-        spamscore = @track.spamscore
-        @track.reported
-        @track.spamscore.should eq (spamscore + 1)
-      end
+  end
 
-      it "toggled spam to true if spamscore exceeds 3" do
-        [0..3].each do 
-          @track.reported
-        end
-        @track.spam.should eq true
-      end
+  describe "reported" do
 
+    before(:each) do
+      @user = FactoryGirl.create(:user)
+      #reminder: we treat all submissions as spam by default 
+      #until checked by akismet, so set to false as if it passed
+      @track = FactoryGirl.create(:track, 
+                                  :spam => false, :user => @user)
+    end
+    
+    it "increments spamscore attribute" do
+      spamscore = @track.spamscore
+      @track.reported(@user)
+      @track.spamscore.should eq (spamscore + 1)
     end
 
+
+    it "toggles spam to true if spamscore exceeds 3" do        
+      (0..2).each do 
+        @track.reported(@user)
+      end
+
+      @track.spam.should eq true
+    end
+
+    it "adds the track to the user's reported list" do
+      @track.reported(@user)
+      @user.reported_list[0].should eq @track.id
+    end
 
   end
 

@@ -18,10 +18,11 @@
 #  service     :string(255)
 #  artwork_url :string(255)
 #  user_id     :integer
-#  genres      :string(255)      default([])
+#  genres      :string(255)      default([]), is an Array
 #  plays       :integer          default(0)
 #  submit_id   :integer
 #  spam        :boolean          default(TRUE)
+#  spamscore   :integer          default(0)
 #
 # Indexes
 #

@@ -18,6 +18,7 @@ App::Application.routes.draw do
   get '/tracks/submit/:id', to: "tracks#submit", :as => "tracks_submit"
 
   post '/tracks/play', to: 'tracks#play'
+  post '/tracks/report', to: 'tracks#report'
 
   get '/new' => "tracks#latest"
   get '/popular' => "tracks#popular"

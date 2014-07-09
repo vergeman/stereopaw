@@ -6,13 +6,14 @@ app.TracksView = Backbone.View.extend({
 
     id: 'tracks',
 
-    initialize: function(tracks_collection) {
+    initialize: function(opts) {
 	if (DEBUG)
 	    console.log("[TracksView] initialize")
 
 	this._trackViews = [];
 
-	this.collection = tracks_collection;
+	this.collection = opts.trackscollection;
+	this.displayroute = opts.displayroute;
 
 	_(this).bindAll('close') //garbage collection
 
@@ -112,12 +113,14 @@ app.TracksView = Backbone.View.extend({
 	    console.log("[TracksView] add")
 
 	var _editable = this._editable_url(model)
+
 	var tv = new app.TrackView(
 	    { 
 		model : model ,
 		editable : _editable,
 		playlistable: this.is_playlistable(),
-		logged_in : this.collection.session.get("current_user")
+		logged_in : this.collection.session.get("current_user"),
+		displayroute : this.displayroute
 	    } 
 	) 
 	this._trackViews.push(tv)

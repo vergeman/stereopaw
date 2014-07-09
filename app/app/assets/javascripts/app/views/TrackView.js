@@ -16,7 +16,8 @@ app.TrackView = Backbone.View.extend({
 	this.editable = opts.editable
 	this.playlistable = opts.playlistable
 	this.is_external = opts.is_external
-	this.logged_in = opts.logged_in,
+	this.logged_in = opts.logged_in
+	this.displayroute = opts.displayroute
 	this.playlistdropdown= null
     },
 
@@ -45,7 +46,8 @@ app.TrackView = Backbone.View.extend({
 		editable: this.editable,
 		playlistable : this.playlistable,
 		is_external : this.is_external,
-		logged_in : this.logged_in
+		logged_in : this.logged_in,
+		displayroute : this.displayroute
 	    }
 	));
 	

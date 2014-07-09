@@ -15,6 +15,7 @@
 #  last_sign_in_ip        :string(255)
 #  created_at             :datetime
 #  updated_at             :datetime
+#  reported_list          :integer          default([]), not null, is an Array
 #
 # Indexes
 #
@@ -30,4 +31,12 @@ class User < ActiveRecord::Base
 
   has_many :tracks
   has_many :playlists
+
+  def add_track_to_reported_list(track_id)
+    #active record has trouble tracking array records, need
+    #to indicate change
+    self.reported_list_will_change!
+    val = self.update_attributes(:reported_list => self.reported_list.push(track_id)) unless self.reported_list.include?(track_id)    
+  end
+
 end

@@ -18,7 +18,7 @@ describe "TrackShow" do
       it { should have_content(track.title) }
 
       it {
-        find('#track-plays').should have_content(1)
+        find('.track-plays').should have_content(1)
       }
 
       it {

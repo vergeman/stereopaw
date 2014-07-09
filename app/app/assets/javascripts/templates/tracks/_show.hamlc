@@ -80,7 +80,7 @@
           .num-plays
             = @track.plays
          
-        - if @logged_in
+        - if (@logged_in && @displayroute != "tracks")
           .track-report{:title => "Report spam"}
             %a.report
               Report

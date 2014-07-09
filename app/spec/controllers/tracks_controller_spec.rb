@@ -31,7 +31,7 @@ describe TracksController do
 
     it "responds with tracks sorted DESC by created_at" do
       get :latest, :format => :json, :page => 0
-      expect(response.body).to eq(Track.all.order("created_at DESC").limit(10).to_json(:except => [:submit_id, :updated_at, :shareable]) )
+      expect(response.body).to eq(Track.all.order("created_at DESC").limit(10).to_json(:except => [:submit_id, :updated_at, :shareable, :spamscore]) )
     end
     
     
@@ -106,7 +106,7 @@ describe TracksController do
 
     it "json request renders a json response of a track object" do
       get :show, :format => 'json', :user_id => @user.id, :id => @track.id
-      expect(response.body).to eq(@track.to_json(:except => [:submit_id, :updated_at, :shareable]))
+      expect(response.body).to eq(@track.to_json(:except => [:submit_id, :updated_at, :shareable, :spamscore]))
     end
 
   end
@@ -121,47 +121,56 @@ describe TracksController do
 
       before do
         Warden.test_reset!
-        logout(:user)
         controller.stub(:authenticate_user!).and_return(false)
-        controller.stub(:user_signed_in?).and_return(false)
+        sign_out :user
         @track = FactoryGirl.create(:track, spam: false)
       end
 
-      it "responds with a 401 request" do
-        #post :play, :track => {:id => @track.id }
-        expect(response.status).to eq(401)
+      it "responds with a 200 request" do
+        post :report, :id => @track.id
+        expect(response.status).to eq(200)
       end
 
-
+      it "but responds with a unauthorized message " do
+        post :report, :id => @track.id
+        expect(response.body).to eq({:reported => "please login"}.to_json)
+      end
 
     end
+
 
     describe "when logged in: " do
 
       before do
         Warden.test_reset!
-        @track = FactoryGirl.create(:track, spam: false)
-        @user = @track.user
+        @user = FactoryGirl.create(:user)
+        @track = FactoryGirl.create(:track, user: @user, spam: false)
         login_as(@user, :scope => :user)
         controller.stub(:authenticate_user!).and_return(true)
         controller.stub(:current_user).and_return(@user)
       end
 
       it "responds with a 200" do
-        post :report, :user_id => @user.id, :id => @track.id
+        post :report, :id => @track.id
         expect(response.status).to eq (200)
       end
 
       it "responds with a reported success message" do
-        post :report, :user_id =>  @user.id, :id => @track.id
+        post :report, :id => @track.id
         expect(response.body).to eq({:success => "track reported"}.to_json)
       end
 
       it "increments the track's spam score " do
-        post :report, :user_id =>  @user.id, :id => @track.id
+        post :report, :id => @track.id
         (@track.spamscore + 1).should eq Track.find(@track).spamscore        
       end     
+
+      it "adds the track id to the users reported_list " do
+        post :report, :id => @track.id
+        @user.reported_list[0].should eq @track.id
+      end
     end
+
   end
 
 

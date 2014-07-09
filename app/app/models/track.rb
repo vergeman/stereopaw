@@ -18,10 +18,11 @@
 #  service     :string(255)
 #  artwork_url :string(255)
 #  user_id     :integer
-#  genres      :string(255)      default([])
+#  genres      :string(255)      default([]), is an Array
 #  plays       :integer          default(0)
 #  submit_id   :integer
 #  spam        :boolean          default(TRUE)
+#  spamscore   :integer          default(0)
 #
 # Indexes
 #
@@ -45,6 +46,8 @@ class Track < ActiveRecord::Base
   validates :duration, :timestamp, numericality: true
   validate :timeformat_less_than_duration
   validates :plays, numericality: { only_integer: true, :greater_than_or_equal_to => 0 }
+  validates :spamscore, numericality: { only_integer: true, :greater_than_or_equal_to => 0 }
+
   validates_format_of :timeformat, :with => /\A^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$\Z/
 
   validates :comment, length: { maximum: 1000 }
@@ -52,19 +55,27 @@ class Track < ActiveRecord::Base
   before_validation :default_values, :on => :create
 
   #
-  ## Model Utlities
+  ## Class foos
   #
 
-
-  #get popular
-  def self.get_popular(page)
+  #get popular wrapper
+  def self.get_popular(page, current_user)
 =begin
     follow hacker news ranking for starters
     seems to give to much weight to 'new'
     score = (p - 1) / (t + 2)^1.2
     where p = plays (points) and t = age in hours
 =end
+    if current_user && current_user.reported_list.length > 0
+      tracks = self._get_popular_logged_in(page, current_user)
+    else
+      tracks = self._get_popular_logged_out(page)
+    end
 
+    return tracks
+  end
+
+  def self._get_popular_logged_out(page)
     query = "SELECT *, " \
     "t.plays / (POW(( ( (SELECT EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(0))) - (SELECT EXTRACT(EPOCH FROM t.created_at)) ) / 3600) + 2, 1.2)) as score " \
     "FROM tracks t " \
@@ -73,17 +84,37 @@ class Track < ActiveRecord::Base
     "DESC LIMIT 10 OFFSET ?";
 
     return Track.find_by_sql([query, page * 10])
-    #results.each do |r|
-    #  puts "#{r.title} : \t #{r.score}"
-    #end
-    #return results
   end
 
-  #get track utility
-  def self.get_tracks(params, source, conditions, track_order)
-    page = params[:page] ? params[:page].to_i : 0
-    tracks = source.order(track_order).where(conditions).limit(10).offset(page * 10)
+  def self._get_popular_logged_in(page, current_user)
+    query = "SELECT *, " \
+    "t.plays / (POW(( ( (SELECT EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(0))) - (SELECT EXTRACT(EPOCH FROM t.created_at)) ) / 3600) + 2, 1.2)) as score " \
+    "FROM tracks t " \
+    "WHERE t.spam = false AND t.id NOT IN (?)" \
+    "ORDER BY score " \
+    "DESC LIMIT 10 OFFSET ?";
+
+    return Track.find_by_sql([query,
+                              current_user.reported_list,
+                              page * 10])
+  end
+
+
+  #/new
+  def self.get_latest(page, current_user)
+
+    if current_user && current_user.reported_list.length > 0
+      tracks = Track.where('spam = false AND id not in (?)', current_user.reported_list).order('created_at DESC').limit(10).offset(page * 10)
+    else
+      tracks = Track.where('spam = false').order('created_at DESC').limit(10).offset(page * 10)
+    end
+
     return tracks
+  end
+
+  #my tracks
+  def self.my_tracks(page, current_user)
+    return current_user.tracks.order("created_at DESC").limit(10).offset(page * 10)
   end
 
   #find track utility
@@ -104,7 +135,7 @@ class Track < ActiveRecord::Base
 
   #override to hide some data
   def as_json(options={})
-    options[:except] ||= [:submit_id, :updated_at, :shareable]
+    options[:except] ||= [:submit_id, :updated_at, :shareable, :spamscore]
     super
   end
 
@@ -125,6 +156,20 @@ class Track < ActiveRecord::Base
   def played_json
     return {:track => {:id => self.id, :plays => self.plays} }
   end  
+
+
+  def reported(current_user)
+    self.update_attributes(:spamscore => self.spamscore + 1)
+    current_user.add_track_to_reported_list(self.id)
+    self.mark_spam?
+    return {:success => "track reported"}
+  end
+
+
+  #flag as spam if spamscore > 3
+  def mark_spam?
+    self.update_attributes(:spam => true) if self.spamscore >= 3
+  end
 
 
   def calculate_age

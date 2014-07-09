@@ -18,17 +18,22 @@ app.TracksIndexView = Backbone.View.extend({
 
     templatefooter : JST['tracks/footer'],
 
-    initialize: function(trackscollection, displayroute) {
+    initialize: function(opts) {
 	if (DEBUG)
 	    console.log("[TracksIndexView] initialize")
 
-	this.tracksView = new app.TracksView(trackscollection);
+	this.tracksView = new app.TracksView(
+	    {
+		trackscollection: opts.trackscollection, 
+		displayroute: opts.displayroute
+	    }
+	);
 
-	this.displayroute = displayroute.charAt(0).toUpperCase() + displayroute.slice(1)
+	this.displayroute = opts.displayroute.charAt(0).toUpperCase() + opts.displayroute.slice(1)
 
 	_(this).bindAll('close')
 
-	this.listenToOnce(trackscollection, 'render', this.renderfooter)
+	this.listenToOnce(opts.trackscollection, 'render', this.renderfooter)
 
     },
 

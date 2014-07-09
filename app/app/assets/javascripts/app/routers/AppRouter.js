@@ -365,7 +365,12 @@ app.AppRouter = Backbone.Router.extend({
 	    new app.SearchView(
 		{
 		    collection: this.trackscollection,
-		    View : new app.TracksView(this.trackscollection),
+		    View : new app.TracksView(
+			{
+			    trackscollection: this.trackscollection,
+			    displayroute: route
+			}
+			),
 		    session: this.session,
 		    query : query,
 		    fetch : false,
@@ -382,8 +387,12 @@ app.AppRouter = Backbone.Router.extend({
 	this.trackscollection.url = route
 	this.trackscollection.session = this.session
 	this.playerqueue.update(route, this.trackscollection)
-	this.view(new app.TracksIndexView
-		  (this.trackscollection, displayroute), displayroute )
+	this.view(new app.TracksIndexView(
+	    {
+		trackscollection: this.trackscollection, 
+		displayroute: displayroute
+	    }
+	), displayroute )
 
     },
 

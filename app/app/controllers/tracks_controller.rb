@@ -4,7 +4,7 @@ require 'sanitize'
 class TracksController < ApplicationController
   include ApplicationHelper
 
-  before_filter :authenticate_user!, only: [:new, :create, :submit, :update, :destroy, :mytracks]
+  before_filter :authenticate_user!, only: [:new, :create, :submit, :update, :destroy, :mytracks, :report]
 
   before_filter :check_auth_or_json_redirect, only: [:update, :destroy]
 
@@ -12,32 +12,31 @@ class TracksController < ApplicationController
 
   respond_to :html, :json
 
-  #returns paginated set of latest tracks
+  #returns paginated set of latest ('new') tracks
   def latest
-    render :json => Track.get_tracks(params,
-                                     Track,
-                                     "spam = false",
-                                     "created_at DESC")
+    @tracks = Track.get_latest(page_params, current_user)
+    respond_to do |format|
+      format.json { render :json => @tracks }
+      format.html { redirect_to '/meow#new' }
+    end
   end
 
   #returns paginated set of popular tracks
   def popular
-    page = params[:page] ? params[:page].to_i : 0
-    render :json => Track.get_popular(page)
-=begin
-    render :json => Track.get_tracks(params,
-                                     Track,
-                                     "spam = false",
-                                     "plays DESC")
-=end
+    @tracks = Track.get_popular(page_params, current_user)
+    respond_to do |format|
+      format.json { render :json => @tracks }
+      format.html { redirect_to '/meow#popular'}
+    end
   end
 
   #returns paginated set of current user's tracks - requires auth
   def mytracks
-    render :json => Track.get_tracks(params,
-                                     current_user.tracks,
-                                     "",
-                                     "created_at DESC")
+    @tracks = Track.my_tracks(page_params, current_user)
+    respond_to do |format|
+      format.json { render :json => @tracks }
+      format.html { redirect_to 'meow/#tracks' }
+    end
   end
 
 
@@ -112,10 +111,19 @@ class TracksController < ApplicationController
 
   #marklet's "show": what renders after successful submit
   def submit
-    @track = Track.find_by_id(params[:id])    
+    @track = Track.find_by_id(params[:id])
   end
 
-
+  #user reports track as spam
+  def report
+    if current_user
+      @track = Track.find_by_id(params[:id])
+      render :json => @track.reported(current_user)
+    else
+      render :json => {:reported => "please login"}
+    end
+  end
+  
 ###=====
   protected
 
@@ -160,7 +168,7 @@ class TracksController < ApplicationController
     track_params[:genres] = process_genres_params(track_params[:genres]) if track_params[:genres]
 
     return track_params
-  end
+  end  
 
   def update_track_params
     track_params = sanitize_params(
@@ -177,6 +185,10 @@ class TracksController < ApplicationController
     return track_params
   end
 
+  #returns page number
+  def page_params
+    return params[:page] ? params[:page].to_i : 0
+  end
 
   def process_genres_params(genres)
     return genres.to_s.split(',').map(&:strip) if genres
