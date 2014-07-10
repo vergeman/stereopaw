@@ -36,6 +36,7 @@ app.Player = Backbone.Model.extend({
 
 	return this.current_player.getElapsed();
     },
+
     play :  
     {
 	/*
@@ -64,8 +65,8 @@ app.Player = Backbone.Model.extend({
 
 	    self.current_player.play(self.youtube_player, track.get("track_id"), timestamp)
 
-
-	    console.log("VOLUME: " + self.volume)
+	    if (DEBUG)
+		console.log("VOLUME: " + self.volume)
 
 	    self.set_volume(self.volume)
 	},

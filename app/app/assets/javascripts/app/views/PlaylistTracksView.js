@@ -97,19 +97,19 @@ app.PlaylistTracksView = Backbone.View.extend({
 	)	
     },
 
-    /*refresh - we remove all and put back
-     *inefficient, but consistent - could have deleted from
-     * middle of playlist, refreshing indices are work to maintain
+    /*refresh, removes all tracks in playlist, and re-inserts
+     * and re-renders
      */
     refresh : function() {
 	this.playlistTracks.remove( this.playlistTracks.models )
-	this.update_playlist_tracks()
+	this.update_playlist_tracks()	
     },
 
     /*
      * update_playlist_tracks builds playlist from unique 
      * list of tracks and track_ids in the playlist
      */
+
     update_playlist_tracks : function() {
 	if (DEBUG)
 	    console.log("[PlaylistTracksView] update_playlist_tracks")
@@ -117,10 +117,11 @@ app.PlaylistTracksView = Backbone.View.extend({
 	_(this.playlist.get("track_ids") ).each( function(tid) {
 	    var model = this.trackscollection.get(tid).toJSON()
 	    model.mid = model.id
-	    delete model.id
-	    this.playlistTracks.add([model])    
+	    //delete model.id
+	    this.playlistTracks.add([model])
 	}, this);
 
+	//remove this - and call PlayerQueue:remove(x)
 	app.vent.trigger("PlayerQueue:update",
 			 this.playlist.url, this.playlistTracks)
 	this.render()
@@ -136,12 +137,16 @@ app.PlaylistTracksView = Backbone.View.extend({
 	this.playlist.set("track_ids", track_ids)
 
 	/*rerender*/
-	this.refresh()
+	this.render()
 
 	var success_cb = function() {
 	    if (DEBUG)
 		console.log("[PlaylistTracksView] success callback:")
 	    $.growl.notice({ title: "Deleted", message: "Track successfully deleted" });
+
+	    //remove track from player queue
+	    app.vent.trigger("PlayerQueue:remove_track", mid)
+
 	}
 
 	/*update model on server*/

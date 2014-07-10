@@ -62,6 +62,7 @@ app.Track = Backbone.Model.extend({
 	if (this.get("played") ) {
 	    return;
 	}
+
 	var data = {'track': { 'id': this.get("id") } }
 	var self = this;
 	$.post("/tracks/play.json",

@@ -50,9 +50,11 @@ app.PlaylistTrackView = Backbone.View.extend({
     render : function() {
 	if (DEBUG)
 	    console.log("[PlaylistTrackView] render")
+
 	this.$el.html( this.template(
 	    {
 		track : this.model.toJSON(),
+		mid : this.model.get('mid'),
 		cid : this.model.cid, //for player
 		pid : this.pid,  //for deleting
 		index: this.index //"

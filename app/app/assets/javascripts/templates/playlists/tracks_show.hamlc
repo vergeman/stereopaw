@@ -1,4 +1,4 @@
-%td.play{:track_id => "#{@track.track_id}", :timestamp => "#{@track.timestamp}", :service => "#{@track.service}", :artist => "#{@track.artist}", :title => "#{@track.title}", :duration => "#{@track.duration}", :duration_format => "#{@track.duration_format}", :id => "#{@cid}" }
+%td.play{:track_id => "#{@track.track_id}", :timestamp => "#{@track.timestamp}", :service => "#{@track.service}", :artist => "#{@track.artist}", :title => "#{@track.title}", :duration => "#{@track.duration}", :duration_format => "#{@track.duration_format}", :id => "#{@mid}", :cid => "#{@cid}" }
 
   %i.fi-play
 
