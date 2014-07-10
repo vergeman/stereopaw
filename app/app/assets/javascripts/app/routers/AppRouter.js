@@ -14,6 +14,7 @@ app.AppRouter = Backbone.Router.extend({
 	'new' : 'new_tracks',
 
 	/*search*/
+	'search(/)' : 'search_all',
 	'search/genres/:query' : 'search_genres',
 	'search/playlists/:query' : 'search_playlists',
 	'search/me/:query' : 'search_me',
@@ -282,10 +283,15 @@ app.AppRouter = Backbone.Router.extend({
 	if (DEBUG)
 	    console.log("[AppRouter] search_all")
 
+	if (query === undefined) {
+	    query = ""
+	}
+
 	var route = "/search/" + query
 	this.trackscollection.url = "/search?q=" + query
 	this._searchTracks(route, query, "all")
 	$(window).scrollTop(0);
+	
     },
 
     search_me : function(query) {
@@ -357,6 +363,8 @@ app.AppRouter = Backbone.Router.extend({
 
 /*private*/
     _searchTracks : function(route, query, link) {
+	if (DEBUG)
+	    console.log("[AppRouter] _searchTracks")
 
 	this.trackscollection.session = this.session
 	this.playerqueue.update(route, this.trackscollection)
@@ -380,6 +388,7 @@ app.AppRouter = Backbone.Router.extend({
 
 	//activate/hightlight linky?
 	app.vent.trigger("NavigationView:ActivateLink", "search")
+
     },
 
     generate_trackview : function(route, displayroute) {

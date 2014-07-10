@@ -18,8 +18,8 @@ describe PlaylistsController do
     #json routes
     describe "GET #index" do
       before {
-        get :index, :format => 'json', 
-        :user_id => @user.id
+        sign_in @user
+        get :index, :format => 'json', :user_id => @user.id
       }
 
       it "has a a 200 response" do
@@ -33,11 +33,26 @@ describe PlaylistsController do
 
     end
 
+    describe "GET #index logged out" do
+      before {
+        sign_out @user
+        get :index, :format => 'json', :user_id => @user.id
+      }
+
+      it "has a a 401 response" do
+        expect(response.status).to eq(401)
+      end
+
+      it "requires sign in" do
+        expect(response.body).to eq({error: "You need to sign in or sign up before continuing."}.to_json)
+      end
+    end
+
     #a single playlist w/ all tracks rendered json?
     describe "GET #show" do    
       before {
-        get :show, :format => 'json', 
-        :user_id => @user.id, :id => @playlist.id
+        sign_in @user
+        get :show, :format => 'json', :user_id => @user.id, :id => @playlist.id
       }
 
       it "has a 200 response" do
@@ -57,6 +72,7 @@ describe PlaylistsController do
 
       #non-existent playlist
       it "responds with an 'invalid playlist' error if requesting a playlist that does not exist" do
+        sign_in @user
         get :show, :format => 'json', 
         :user_id => @user.id, :id => @playlist.id + 100000
         expect(response.body).to eq({:errors => "invalid playlist"}.to_json)

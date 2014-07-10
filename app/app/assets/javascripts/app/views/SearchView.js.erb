@@ -132,6 +132,8 @@ app.SearchView = Backbone.View.extend({
 	    console.log("[SearchView] bind_search")
 
 	$(document).on('submit', '#search-form-page', function(e) {
+	    //stop submit event on multiple searchforms
+	    e.stopImmediatePropagation();
 	    e.preventDefault()
 	    var query = $('#search-box').val()
 	    var route = "/search/" + query

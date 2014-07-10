@@ -4,26 +4,57 @@ class SearchController < ApplicationController
   before_filter :authenticate_user!, only: [:mytracks, :playlists]
 
   def show
-    tracks = Search.tracks_by_meta(query_params, page_params)
-    render :json => tracks
+    respond_to do |format|
+
+      format.json {
+        tracks = Search.tracks_by_meta(query_params, page_params)
+        render :json => tracks
+      }
+
+      format.html { redirect_to '/meow#search' }
+    end
+
   end
 
 
   def mytracks
-    tracks = Search.tracks_by_meta_and_user(query_params, current_user.id, page_params)
-    render :json => tracks
+    respond_to do |format|
+
+      format.json { 
+        tracks = Search.tracks_by_meta_and_user(query_params, current_user.id, page_params)
+        render :json => tracks
+      }
+
+      format.html { redirect_to '/meow#search' }
+    end
+
   end
 
 
   def genres
-    tracks = Search.tracks_by_genre(query_params, page_params)
-    render :json => tracks
+    respond_to do |format|
+
+      format.json {
+        tracks = Search.tracks_by_genre(query_params, page_params)
+        render :json => tracks
+      }
+
+      format.html { redirect_to '/meow#search' }
+    end
+
   end
 
 
   def playlists
-    results = Search.playlists(query_params, current_user)
-    render :json => results, :methods => [:track_previews]
+    respond_to do |format|
+
+      format.json {
+        results = Search.playlists(query_params, current_user)
+        render :json => results, :methods => [:track_previews]
+      }
+
+      format.html { redirect_to '/meow#search' }
+    end
   end
 
 

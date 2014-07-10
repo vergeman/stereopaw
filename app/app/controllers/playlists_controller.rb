@@ -1,18 +1,26 @@
 class PlaylistsController < ApplicationController
   include ApplicationHelper
-  before_filter :authenticate_user!, only: [:create, :update, :destroy]
+  before_filter :authenticate_user!, only: [:create, :update, :destroy, :index, :show]
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
 
   def index
     @playlists = User.find(params[:user_id]).playlists
-    render :json => @playlists.map{|p| p.with_track_preview}, :methods => [:track_previews]
+    respond_to do |format|
+      format.json {
+        render :json => @playlists.map{|p| p.with_track_preview}, :methods => [:track_previews]
+      }
+      format.html { redirect_to '/meow#new' }
+    end
   end
 
 
   def show
     @playlist = Playlist.find(params[:id])
     @tracks = Track.where(id: @playlist.track_ids)
-    render :json => @tracks
+    respond_to do |format|
+      format.json { render :json => @tracks }
+      format.html { redirect_to '/meow#new' }
+    end
   end
 
   #Cases:

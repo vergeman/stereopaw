@@ -130,9 +130,11 @@ app.NavigationView = Backbone.View.extend({
 	if (DEBUG)
 	    console.log("[NavigationView] bind_search")
 
-
 	$(document).on('submit', form_div, function(e) {
 	    e.preventDefault()
+	    //stop submit event on multiple forms (nav and search)
+	    e.stopImmediatePropagation();
+
 	    var query = $(query_div).val()
 	    var route = "/search/" + query
 
