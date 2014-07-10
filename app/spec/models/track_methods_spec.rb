@@ -46,7 +46,8 @@ describe Track do
       @track = FactoryGirl.create(:track, 
                                   :spam => false, :user => @user)
     end
-    
+
+
     it "increments spamscore attribute" do
       spamscore = @track.spamscore
       @track.reported(@user)
@@ -58,16 +59,65 @@ describe Track do
       (0..2).each do 
         @track.reported(@user)
       end
-
       @track.spam.should eq true
     end
 
     it "adds the track to the user's reported list" do
       @track.reported(@user)
-      @user.reported_list[0].should eq @track.id
+      @user.reported_list.include?(@track.id).should eq true
     end
 
   end
 
 
+
+  describe "popular and new lists" do
+
+    before(:each) do
+      @user = FactoryGirl.create(:user, :reported_list => [])
+      @tracks = Array.new
+
+      (0..9).each do
+        @tracks.push( FactoryGirl.create(:track,
+                                         :spam => false,
+                                         :user => @user))
+      end
+      @tracks = @tracks.reverse
+    end
+
+    describe "get_popular method" do
+
+      it "when logged in reported results are excluded" do
+        @user.update_attributes(:reported_list =>
+                                @user.reported_list.push(@tracks[0].id))
+        tracks = Track.get_popular(0, @user)
+        @tracks.shift
+        expect(tracks).to eq @tracks
+      end
+
+      it "when logged out there is no exclusion done" do
+        tracks = Track.get_popular(0, nil)
+        expect(tracks).to eq @tracks
+      end
+
+    end
+
+    describe "get_latest" do
+
+      it "when logged in reported results are excluded" do
+        @user.update_attributes(:reported_list =>
+                                @user.reported_list.push(@tracks[0].id))
+        tracks = Track.get_latest(0, @user)
+        @tracks.shift
+        expect(tracks).to eq @tracks
+      end
+
+      it "when logged out there is no exclusion done" do
+        tracks = Track.get_latest(0, nil)
+        expect(tracks).to eq @tracks
+      end
+
+    end
+
+  end
 end

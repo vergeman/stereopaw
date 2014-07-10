@@ -167,7 +167,7 @@ describe TracksController do
 
       it "adds the track id to the users reported_list " do
         post :report, :id => @track.id
-        @user.reported_list[0].should eq @track.id
+        @user.reported_list.include?(@track.id).should eq true
       end
     end
 
