@@ -60,7 +60,6 @@ app.PlaylistsModalView = Backbone.View.extend({
 	var obj = { 
 	    type : type,
 	    user_id: this.user_id,
-	    authenticity_token: $.cookie('csrf_token'),
 	    playlist: playlist
 	} 
 
@@ -163,10 +162,9 @@ app.PlaylistsModalView = Backbone.View.extend({
 	    playlist : {
 		name: $("input#playlist_name").val(),
 		description : $("textarea#playlist_description").val(),
-		track_ids : this.playlist.get("track_ids")
+		track_ids : this.playlist ? this.playlist.get("track_ids") : []
 	    }
 	}
-
     },
 
     build_type : function() {
@@ -183,9 +181,6 @@ app.PlaylistsModalView = Backbone.View.extend({
 	    type: self.build_type(),
 	    url: self.build_url(),
 	    data: self.build_data(),
-	    beforeSend: function(request) {
-		request.setRequestHeader("X-CSRF-Token", $.cookie('csrf_token'));
-	    },
 	    success: function(data, textStatus, jqXHR) {
 		if (DEBUG)
 		    console.log("[PlaylistsModalView] playlist_submit:success")

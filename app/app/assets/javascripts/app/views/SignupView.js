@@ -31,8 +31,6 @@ app.SignupView = Backbone.View.extend({
 	
 	/*view inits*/
 	_(this).bindAll('close')
-
-	this.authenticity_token = $("meta[name=csrf-token]").attr("content")
 	
     },
 
@@ -64,7 +62,6 @@ app.SignupView = Backbone.View.extend({
 	    console.log("[SignupView] __render")
 	this.$el.html(this.template(
 	    {
-		authenticity_token : this.authenticity_token,
 		login_link : "/meow#login"
 	    }
 	) );

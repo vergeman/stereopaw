@@ -10,8 +10,6 @@
     %div{style: "margin:0;padding:0;display:inline"}
       %input{name: "_method", type:"hidden", value:"patch"}      
       %input{name: "utf8", type: "hidden", value: "✓"}
-      %input{name: "authenticity_token", type: "hidden",
-             value: "#{@authenticity_token}"}
 
     .track-meta  
       .track-artwork-wrap

@@ -134,40 +134,6 @@ app.Session = Backbone.Model.extend({
 	)
     },
 
-    /*FUCK NOT USED*/
-    check_auth: function(loggedin_handler,
-			 busyinit_handler, 
-			 unauthorized_handler) {
-
-	switch (this.get("state") ) {
-
-	    //logged in already
-	case app.Session.SessionState.LOGGEDIN :
-	    if (DEBUG)
-		console.log("[Session] loggedin_handler")
-
-	    loggedin_handler()
-	    break;
-	    
-	    //mid-auth request (busy) || page was directly loaded (init)
-	case app.Session.SessionState.INIT:
-	case app.Session.SessionState.BUSY:
-	    if (DEBUG)
-		console.log("[Session] busyinit_handler")
-
-	    busyinit_handler()
-	    break;
-
-	    //not authorized/ indeterminate state (finished/ error)
-	default:
-	    if (DEBUG)
-		console.log("[Session] unauthorized_handler")
-
-	    unauthorized_handler()
-	}
-
-    },
-
     /* request()
      * a wrapper for ajax requests, bound to "Request" event
      * in session. We strap on the csrf token to headers
@@ -181,7 +147,6 @@ app.Session = Backbone.Model.extend({
 	    url: url,
 	    data: post_data,
 	    beforeSend: function(request) {
-		request.setRequestHeader("X-CSRF-Token", $.cookie('csrf_token'));
 		document.body.style.cursor='wait'
 	    },
 

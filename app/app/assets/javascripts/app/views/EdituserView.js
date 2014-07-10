@@ -28,8 +28,6 @@ app.EdituserView = Backbone.View.extend({
 
 	//View-specific Initializations
 	_(this).bindAll('close')
-	
-	this.authenticity_token = $("meta[name=csrf-token]").attr("content")
     },
 
     redirect : function() {
@@ -59,8 +57,14 @@ app.EdituserView = Backbone.View.extend({
 	this.$el.html(
 	    this.template(
 		{
-		    authenticity_token : self.authenticity_token,
-		    user: self.session.get("current_user")
+		    user : self.session.get("current_user"),
+		    authenticity_token : $("meta[name=csrf-token]").attr("content")
+		    /*
+		     * need auth token here since delete is treated
+		     * as a tradiitional rails form submission
+		     * and not ajax (where jquery-rails appends
+		     * a csrf token header)
+		     */
 		}
 	    ));
 	return this;
@@ -92,12 +96,11 @@ app.EdituserView = Backbone.View.extend({
 			      *'successful ajaxresponse
 			      */
 
-			     if (DEBUG)
+			     if (DEBUG) {
 				 console.log(data)
-			     if (DEBUG)
 				 console.log(textStatus)
-			     if (DEBUG)
 				 console.log(jqXHR)
+			     }
 
 			     if ('errors' in data) {
 				 app.vent.trigger("EdituserView:signup:error", data.errors)

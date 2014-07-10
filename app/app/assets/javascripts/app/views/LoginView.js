@@ -30,9 +30,6 @@ app.LoginView = Backbone.View.extend({
 		      self)
 
 	_(this).bindAll('close')
-
-	this.authenticity_token = $("meta[name=csrf-token]").attr("content")
-
     },
 
     signup : function(e) {
@@ -73,7 +70,6 @@ app.LoginView = Backbone.View.extend({
 	    console.log("[LoginView] __render")
 	this.$el.html(this.template(
 	    {
-		authenticity_token : this.authenticity_token, 
 		forgotpassword_link: "/meow#forgot", 
 		signup_link: "/meow/#signup"
 	    }
@@ -117,7 +113,7 @@ app.LoginView = Backbone.View.extend({
 	    'POST',
 	    '/users/sign_in.json', 
 	    login_data,
-
+	    //success
 	    function(data) { 
 		if ( ('user' in data) && 
 		     data.user.id && 
@@ -129,12 +125,16 @@ app.LoginView = Backbone.View.extend({
 		    self.session.set("state", 
 				     app.Session.SessionState.LOGGEDOUT)
 		}
+
+		/*update auth token*/
+		$("meta[name=csrf-token]").attr("content", $.cookie('csrf_token') )
+
 		if (DEBUG)
 		    console.log("state: " + self.session.get("state"))
 
 		app.vent.trigger("Session:logged-in", data) 
 	    },
-
+	    //eror
 	    function(jqXHR, textStatus, errorThrown) {
 		if (DEBUG)
 		    console.log("[LoginView:sign_in] error")

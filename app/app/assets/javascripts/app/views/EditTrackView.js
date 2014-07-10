@@ -12,7 +12,6 @@ app.EditTrackView = Backbone.View.extend({
 	if (DEBUG)
 	    console.log("[EditTrackView] initialize")
 
-	this.authenticity_token = $("meta[name=csrf-token]").attr("content")
 	this.session = opts.session
 
 	this.model = new app.Track()
@@ -80,7 +79,6 @@ app.EditTrackView = Backbone.View.extend({
 	this.$el.html(this.template(
 	    {
 		track : this.model.toJSON(),
-		authenticity_token : this.authenticity_token
 	    }
 	));
 
@@ -130,10 +128,7 @@ app.EditTrackView = Backbone.View.extend({
 	    type: "DELETE",
 	    url: self.model.url(),
 	    data: {},
-	    beforeSend: function(request) {
-		request.setRequestHeader("X-CSRF-Token", $.cookie('csrf_token'));
-	    },
-	    //redirect 
+	    //success - redirect
 	    success: function(data, textStatus, jqXHR) {
 		if (DEBUG)
 		    console.log("[EditTrackView] delete_track:success")
@@ -156,7 +151,7 @@ app.EditTrackView = Backbone.View.extend({
 		}
 
 	    },
-	    //redirect 
+	    //error - redirect 
 	    error: function(jqXHR, textStatus, errorThrown) {
 		if (DEBUG)
 		    console.log("[EditTrackView] delete_tracK: submit error")
@@ -191,9 +186,7 @@ app.EditTrackView = Backbone.View.extend({
 	    type: "PATCH",
 	    url: self.model.url(),
 	    data: post_data,
-	    beforeSend: function(request) {
-		request.setRequestHeader("X-CSRF-Token", $.cookie('csrf_token'));
-	    },
+
 	    success: function(data, textStatus, jqXHR) {
 		if (DEBUG)
 		    console.log("[EditTrackView] success")
