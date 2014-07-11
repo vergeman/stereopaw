@@ -9,6 +9,7 @@ app.PlaylistsDropDownView = Backbone.View.extend({
     template: JST['playlists/dropdown'],
 
     events : {
+	'click .tracks' : 'add_to_tracks',
 	'click .create' : 'create',
 	'click .playlist-dd' : 'add'
     },
@@ -28,6 +29,37 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 
     },
 
+    /*adds to track collection*/
+    add_to_tracks : function(e) {
+	if (DEBUG)
+	    console.log("[PlaylistsDropDownView] add_to_tracks")
+
+	e.preventDefault();
+
+	var data = {'id' : $(e.currentTarget).attr('track_id')}
+
+	$.post('/tracks/add.json',
+	       data,
+	       //success
+	       function(data) {
+		   $.growl.notice(
+		       {title: "Added",
+			message: "Track successfully added to your collection"
+		       });
+	       }
+	      ).fail(function() {
+		  if (DEBUG)
+		      console.log("[PlaylistsDropDownView] POST error")
+		   $.growl.error(
+		       {title: "Error",
+			message: "There was an error adding the track to your collection"
+		       });
+
+	      });
+
+    },
+
+    /*creates playlist*/
     create : function(e) {
 	if (DEBUG)
 	    console.log("[PlaylistsDropDownView] create")
@@ -43,6 +75,7 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 	app.vent.trigger("PlaylistsModalView:openModal", "new")
     },
 
+    /*adds to playlist*/
     add : function(e) {
 	if (DEBUG)
 	    console.log("[PlaylistsDropDownView] add")
@@ -68,22 +101,23 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 	var track_ids = _.clone( playlist.get('track_ids') )
 	track_ids.push(parseInt(track_id))
 
-	playlist.save({'track_ids' : track_ids}, 
+	playlist.save({'track_ids' : track_ids},
 		      {
 			  patch:true,
-			  success: 
+			  success:
 			  function(model, response, options)
 			  {
-			      console.log("SUCCESS")
 			      app.vent.trigger("PlaylistsMgr:SetPlaylist", response)
 			  },
 			  error:
 			  function(model, xhr, options)
 			  {
-			      if (DEBUG)
+			      if (DEBUG) {
 				  console.log("[PlaylistDropDownView] errors")
-			      if (DEBUG)
+				  console.log(model)
 				  console.log(xhr)
+				  console.log(options)
+			      }
 			  }
 		      }
 		     )

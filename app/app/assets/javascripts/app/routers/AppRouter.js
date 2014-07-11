@@ -32,6 +32,9 @@ app.AppRouter = Backbone.Router.extend({
 	'forgot' : 'forgot',
 	'signup' : 'signup',
 	'edituser' : 'edituser',
+
+	/*anything else*/
+	'*action' : 'root',
     },
 
 

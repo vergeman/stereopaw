@@ -1,9 +1,20 @@
 %ul.playlist-dropdown.f-dropdown{:id => "drop-#{@track_id}",
                                  :'data-dropdown-content' => ''}
   %li
-    %a.create{:href => '#', :track_id => "#{@track_id}"} Create Playlist
+    %a.tracks{:href => '#',
+              :track_id => "#{@track_id}"}
+      Add to Tracks
+    
+  %li
+    %a.create{:href => '#',
+              :track_id => "#{@track_id}"}
+      Create Playlist
+    
   - if @playlists
     %hr
+    .sub-header
+      Select Playlist
+
     - for p in @playlists
       %li
         %a{:href => '#', :playlist_id => p.id, :class=>"playlist-dd"}

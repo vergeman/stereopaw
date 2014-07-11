@@ -19,13 +19,14 @@ $link-color: darken(#a2a2a2, 30%);
     li a {
 	width: 100%;
 	color: #000;
-	&:hover {
-	    color: #000;
-	}
     }
 
-    li:first-child a {
+    li:first-child a, li:second-child a {
 	color: $link-color;
     }
-
+    .sub-header {
+	padding-top: 8px;
+	text-align: center;
+	color:#a2a2a2;
+    }
 }

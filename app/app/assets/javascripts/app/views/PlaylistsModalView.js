@@ -212,14 +212,12 @@ app.PlaylistsModalView = Backbone.View.extend({
 	    },
 
 	    error: function(jqXHR, textStatus, errorThrown) {
-		if (DEBUG)
+		if (DEBUG) {
 		    console.log("[PlaylistsModalView] submit:error")
-		if (DEBUG)
 		    console.log(textStatus)
-		if (DEBUG)
 		    console.log(errorThrown)
-		if (DEBUG)
 		    console.log(jqXHR)
+		}
 	    },
 
 	    complete : function(jqXHR, textStatus) {
