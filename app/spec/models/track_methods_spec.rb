@@ -37,11 +37,33 @@ describe Track do
 
   end
 
+  describe "add" do
+    before(:each) do
+      @user = FactoryGirl.create(:user)
+      @user2 = FactoryGirl.create(:user)
+      @track = FactoryGirl.create(:track, 
+                                  :spam => false, :user => @user)
+    end
+
+    it "adds a track to the users collection" do
+      count = @user2.tracks.count
+      Track.add(@user2.id, @track.id)
+      (@user2.tracks.count).should eq (count + 1)
+    end     
+
+    it "marks the track as a copy" do
+      Track.add(@user2.id, @track.id)
+      @user2.tracks.last.copy.should eq true
+    end
+
+  end
+
+
   describe "reported" do
 
     before(:each) do
       @user = FactoryGirl.create(:user)
-      #reminder: we treat all submissions as spam by default 
+      #reminder: we treat all submissions as default spam (true) 
       #until checked by akismet, so set to false as if it passed
       @track = FactoryGirl.create(:track, 
                                   :spam => false, :user => @user)

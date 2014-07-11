@@ -23,6 +23,7 @@
 #  submit_id   :integer
 #  spam        :boolean          default(TRUE)
 #  spamscore   :integer          default(0)
+#  copy        :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -79,7 +80,7 @@ class Track < ActiveRecord::Base
     query = "SELECT *, " \
     "t.plays / (POW(( ( (SELECT EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(0))) - (SELECT EXTRACT(EPOCH FROM t.created_at)) ) / 3600) + 2, 1.2)) as score " \
     "FROM tracks t " \
-    "WHERE t.spam = false " \
+    "WHERE t.spam = false AND t.copy = false " \
     "ORDER BY score " \
     "DESC LIMIT 10 OFFSET ?";
 
@@ -90,7 +91,7 @@ class Track < ActiveRecord::Base
     query = "SELECT *, " \
     "t.plays / (POW(( ( (SELECT EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(0))) - (SELECT EXTRACT(EPOCH FROM t.created_at)) ) / 3600) + 2, 1.2)) as score " \
     "FROM tracks t " \
-    "WHERE t.spam = false AND t.id NOT IN (?)" \
+    "WHERE t.spam = false AND t.copy = false AND t.id NOT IN (?)" \
     "ORDER BY score " \
     "DESC LIMIT 10 OFFSET ?";
 
@@ -104,9 +105,9 @@ class Track < ActiveRecord::Base
   def self.get_latest(page, current_user)
 
     if current_user && current_user.reported_list.length > 0
-      tracks = Track.where('spam = false AND id not in (?)', current_user.reported_list).order('created_at DESC').limit(10).offset(page * 10)
+      tracks = Track.where('spam = false AND copy=false AND id not in (?)', current_user.reported_list).order('created_at DESC').limit(10).offset(page * 10)
     else
-      tracks = Track.where('spam = false').order('created_at DESC').limit(10).offset(page * 10)
+      tracks = Track.where('spam = false AND copy=false').order('created_at DESC').limit(10).offset(page * 10)
     end
 
     return tracks
@@ -115,6 +116,21 @@ class Track < ActiveRecord::Base
   #my tracks
   def self.my_tracks(page, current_user)
     return current_user.tracks.order("created_at DESC").limit(10).offset(page * 10)
+  end
+
+  #add tracks to users 'collection' from pre-existing submission
+  def self.add(current_user_id, track_id)
+    track = Track.find(track_id)
+    track_copy = Track.create(track
+                                .attributes
+                                .merge({
+                                         "id" => nil,
+                                         "copy" => true,
+                                         "user_id" => current_user_id,
+                                         "plays" => 0
+                                       })
+                              )
+    return track_copy
   end
 
   #find track utility

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140709060423) do
+ActiveRecord::Schema.define(version: 20140711083442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,11 +58,12 @@ ActiveRecord::Schema.define(version: 20140709060423) do
     t.string   "service"
     t.string   "artwork_url"
     t.integer  "user_id"
-    t.string   "genres",      default: [],   array: true
+    t.string   "genres",      default: [],    array: true
     t.integer  "plays",       default: 0
     t.integer  "submit_id"
     t.boolean  "spam",        default: true
     t.integer  "spamscore",   default: 0
+    t.boolean  "copy",        default: false
   end
 
   add_index "tracks", ["genres"], name: "index_tracks_on_genres", using: :gin

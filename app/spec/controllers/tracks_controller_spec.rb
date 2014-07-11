@@ -111,6 +111,84 @@ describe TracksController do
 
   end
 
+
+#
+#POST COPY
+#
+
+describe "POST #copy" do
+
+    describe "when not logged in" do
+
+      before do
+        Warden.test_reset!
+        @user = FactoryGirl.create(:user)
+        @track = FactoryGirl.create(:track, spam: false)
+        controller.stub(:authenticate_user!).and_return(false)
+        sign_out @user
+      end
+
+      it "responds with a 200 request" do
+        post :add, :id => @track.id
+        expect(response.status).to eq(200)
+      end
+
+      it "but responds with a unauthorized message " do
+        post :add, :id => @track.id
+        expect(response.body).to eq({:reported => "please login"}.to_json)
+      end
+
+    end
+
+    describe "when logged in" do
+
+      before do
+        Warden.test_reset!
+        @user = FactoryGirl.create(:user)
+        @user2 = FactoryGirl.create(:user)
+        @track = FactoryGirl.create(:track, user: @user, spam: false)
+        login_as(@user2, :scope => :user)
+        controller.stub(:authenticate_user!).and_return(true)
+        controller.stub(:current_user).and_return(@user2)
+      end
+
+      it "responds with a 200" do
+        post :add, :id => @track.id
+        expect(response.status).to eq (200)
+      end
+
+      it "responds with the copied track, reset" do
+        post :add, :id => @track.id
+        @track.copy = true
+        @track.user = @user2
+        @track.plays = 0
+        @track.id = @user2.tracks.last.id
+        expect(response.body).to eq(@track.to_json)
+      end
+
+      it "a non-existent track reponds with an error message" do
+        post :add, :id => @track.id + 901902
+        expect(response.body).to eq({:errors => "invalid track"}.to_json)
+      end
+
+      it "the track does not appear in the new listing" do
+        post :add, :id => @track.id
+        @track.id = @user2.tracks.last.id
+        get :latest, :page => '0', :format => :json
+        expect(response.body).not_to have_content(@track.id)
+      end
+
+      it "the track does not appear in the popular listing" do
+        post :add, :id => @track.id
+        @track.id = @user2.tracks.last.id
+        get :popular, :page => '0', :format => :json
+        expect(response.body).not_to have_content(@track.id)
+      end
+
+    end
+
+  end
+
 #
 #POST REPORT
 #
@@ -137,7 +215,6 @@ describe TracksController do
       end
 
     end
-
 
     describe "when logged in: " do
 

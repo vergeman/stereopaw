@@ -23,6 +23,7 @@
 #  submit_id   :integer
 #  spam        :boolean          default(TRUE)
 #  spamscore   :integer          default(0)
+#  copy        :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -49,6 +50,7 @@ FactoryGirl.define do
     plays "1"
     spam true
     spamscore "0"
+    copy false
     association :user, factory: :user
     submit_id { "#{user_id}" }   
   end

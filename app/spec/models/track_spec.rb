@@ -23,6 +23,7 @@
 #  submit_id   :integer
 #  spam        :boolean          default(TRUE)
 #  spamscore   :integer          default(0)
+#  copy        :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -112,6 +113,10 @@ describe Track do
 
     it "has a spamscore attr" do
       @track.attributes.has_key?("spamscore").should eq true
+    end
+
+    it "has a copy attr" do
+      @track.attributes.has_key?("copy").should eq true
     end
 
   end
@@ -216,6 +221,12 @@ describe Track do
       it "artwork_url must only be of uri type" do
         @track.artwork_url = "aalkenfek"
         @track.should_not be_valid
+      end
+    end
+
+    context "copy" do
+      it "should default to false" do
+        @track.copy.should eq false
       end
     end
 

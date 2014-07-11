@@ -19,6 +19,7 @@ App::Application.routes.draw do
 
   post '/tracks/play', to: 'tracks#play'
   post '/tracks/report', to: 'tracks#report'
+  post '/tracks/add', to: 'tracks#add'
 
   get '/new' => "tracks#latest"
   get '/popular' => "tracks#popular"

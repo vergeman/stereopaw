@@ -4,7 +4,7 @@ require 'sanitize'
 class TracksController < ApplicationController
   include ApplicationHelper
 
-  before_filter :authenticate_user!, only: [:new, :create, :submit, :update, :destroy, :mytracks, :report]
+  before_filter :authenticate_user!, only: [:new, :create, :submit, :update, :destroy, :mytracks, :report, :add]
 
   before_filter :check_auth_or_json_redirect, only: [:update, :destroy]
 
@@ -52,6 +52,13 @@ class TracksController < ApplicationController
     render :json => Track.augment_plays(Track, params[:track][:id])
   end
 
+  def add
+    if current_user
+      render :json => Track.add(current_user.id, params[:id])
+    else
+      render :json => {:reported => "please login"}
+    end
+  end
 
   #delete a track from current user's set
   def destroy
