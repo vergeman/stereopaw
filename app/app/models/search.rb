@@ -1,7 +1,7 @@
 class Search
 
   def self.tracks_by_meta(query, page)
-    Track.search_by_meta(query).where(spam: false).limit(10).offset(page * 10).as_json(except: track_exceptions)
+    Track.search_by_meta(query).where("spam = false AND copy = false").limit(10).offset(page * 10).as_json(except: track_exceptions)
   end
 
 
@@ -11,7 +11,7 @@ class Search
 
 
   def self.tracks_by_genre(query, page)
-    Track.search_by_genre(query).where(spam: false).limit(10).offset(page * 10).as_json(except: track_exceptions)
+    Track.search_by_genre(query).where("spam = false AND user_id IS NOT NULL AND copy = false").limit(10).offset(page * 10).as_json(except: track_exceptions)
   end
 
 

@@ -35,8 +35,8 @@ require 'sanitize'
 class Track < ActiveRecord::Base
 
   include PgSearch
-  pg_search_scope :search_by_meta, :against => [:artist, :title, :genres, :service, :comment]
-  pg_search_scope :search_by_genre, :against => [:genres]
+  pg_search_scope :search_by_meta, :against => [:artist, :title, :genres, :service, :comment], :order_within_rank => "tracks.created_at DESC"
+  pg_search_scope :search_by_genre, :against => [:genres], :order_within_rank => "tracks.created_at DESC"
 
   belongs_to :user
 
@@ -127,7 +127,9 @@ class Track < ActiveRecord::Base
                                          "id" => nil,
                                          "copy" => true,
                                          "user_id" => current_user_id,
-                                         "plays" => 0
+                                         "plays" => 0,
+                                         "created_at" => DateTime.now.utc,
+                                         "spam" => false
                                        })
                               )
     return track_copy

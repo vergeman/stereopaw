@@ -1,9 +1,12 @@
 %ul.playlist-dropdown.f-dropdown{:id => "drop-#{@track_id}",
                                  :'data-dropdown-content' => ''}
+  
+  -#- if @displayroute != "tracks"
+    exclude 'copy' from tracks route, but leave out for now
   %li
     %a.tracks{:href => '#',
               :track_id => "#{@track_id}"}
-      Add to Tracks
+      Copy to Tracks
     
   %li
     %a.create{:href => '#',

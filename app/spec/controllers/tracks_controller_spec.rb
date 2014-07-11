@@ -163,6 +163,7 @@ describe "POST #copy" do
         @track.user = @user2
         @track.plays = 0
         @track.id = @user2.tracks.last.id
+        @track.created_at = (JSON.parse response.body)["created_at"]
         expect(response.body).to eq(@track.to_json)
       end
 
@@ -414,12 +415,12 @@ describe "POST #copy" do
         expect(response.status).to eq (200)
       end
 
-      it "a successful destroy should render success response" do
+      it "a destroy should render success response" do
         delete :destroy, :user_id =>  @user.id, :id => @track.id
         expect(response.body).to eq({:success => @track.id}.to_json)
       end
 
-      it "a succesful 'destroy' does not actually remove from the database" do
+      it "a 'destroy' does not actually remove from the database" do
         count = Track.all.count
         delete :destroy, :user_id =>  @user.id, :id => @track.id
         Track.all.count.should eq(count)
@@ -427,11 +428,20 @@ describe "POST #copy" do
       end
 
 
-      it "a succesful 'destroy' does disassociate the user" do
+      it "a 'destroy' does disassociate the user" do
         count = Track.all.count
         delete :destroy, :user_id =>  @user.id, :id => @track.id
         Track.all.count.should eq(count)
         Track.find_by_id(@track.id).user_id.should eq(nil)
+      end
+
+      it "a copy track will be succesfully/actually 'destroyed'" do
+        count = Track.all.count
+        @track.copy = true
+        @track.save
+        delete :destroy, :user_id =>  @user.id, :id => @track.id
+        Track.all.count.should eq(count-1)
+        Track.find_by_id(@track.id).should eq nil
       end
 
       it "should not allow destroy of other user owned tracks" do

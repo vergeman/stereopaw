@@ -133,7 +133,7 @@ describe SearchController do
         my_response = JSON.parse(response.body)
         track_previews = my_response.first['track_previews']
         track_previews = track_previews.collect{|t| t.except('pg_search_rank')}
-        my_response.first['track_previews'] = track_previews
+        my_response.first['track_previews'] = track_previews.sort{|a,b| a['created_at'] <=> b['created_at']}
 
         my_expect = [@playlist.with_track_preview].to_json(methods: [:track_previews])
 

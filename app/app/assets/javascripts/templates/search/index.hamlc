@@ -10,7 +10,7 @@
       %i.fi-magnifying-glass
         
     %ul#search-filters
-      %li.all.filter All Tracks
+      %li.all.filter Submissions
       - if @current_user
         %li.mytracks.filter My Tracks
         %li.playlists.filter Playlists

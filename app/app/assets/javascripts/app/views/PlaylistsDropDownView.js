@@ -14,12 +14,14 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 	'click .playlist-dd' : 'add'
     },
 
-    initialize: function($track) {
+    initialize: function(opts) {
 	if (DEBUG)
 	    console.log("[PlaylistDropDownView] initialize")
 
 	this.playlists = null;
-	this.$track = $track;
+	this.$track = opts.$track;
+	this.displayroute = opts.displayroute;
+
 	this.listenTo(app.vent, 
 		      "PlaylistsDropDownView:SetPlaylist", 
 		      this.SetPlaylist)
@@ -136,7 +138,8 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 	this.$el.html( this.template(
 	    {
 		playlists: this.playlists.toJSON(),
-		track_id: this.$track.attr("id")
+		track_id: this.$track.attr("id"),
+		displayroute: this.displayroute
 	    } 
 	));
 

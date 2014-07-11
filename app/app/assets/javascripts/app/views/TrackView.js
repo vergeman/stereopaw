@@ -120,11 +120,17 @@ app.TrackView = Backbone.View.extend({
 	 *that (rarely) messes dropdowns, so we create anew
 	 *everytime, seems to lead to consistent behavior
 	 */
-	if(this.playlistdropdown) {
+	if (this.playlistdropdown) {
 	    this.playlistdropdown.close()
 	}
 
-	this.playlistdropdown = new app.PlaylistsDropDownView($track) 
+	this.playlistdropdown = new app
+	    .PlaylistsDropDownView(
+		{
+		    $track: $track,
+		    displayroute: this.displayroute
+		})
+
 	this.$el.find('.playlist').append(this.playlistdropdown.$el)
     },
 

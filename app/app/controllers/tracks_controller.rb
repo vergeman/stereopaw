@@ -67,6 +67,12 @@ class TracksController < ApplicationController
     #if error, return error msg
     render :json => { "errors" => { :general => "Not owner" } } && return if @track[:errors]
 
+    #if it's a copy track being deleted, remove completely
+    if (@track.copy && @track.user_id == current_user.id)
+      render :json => { "success" => @track.id} if @track.destroy
+      return
+    end
+
     #we dissociate but not remove track
     @track.user_id = nil
     if @track.save
