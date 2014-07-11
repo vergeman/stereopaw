@@ -48,14 +48,18 @@ app.PlaylistsDropDownView = Backbone.View.extend({
 		       {title: "Added",
 			message: "Track successfully added to your collection"
 		       });
+
+		   /*lazy hack reload  :( */
+		   Backbone.history.navigate('/', {trigger:false})
+		   Backbone.history.navigate('/tracks', {trigger:true})
 	       }
 	      ).fail(function() {
 		  if (DEBUG)
 		      console.log("[PlaylistsDropDownView] POST error")
-		   $.growl.error(
-		       {title: "Error",
-			message: "There was an error adding the track to your collection"
-		       });
+		  $.growl.error(
+		      {title: "Error",
+		       message: "There was an error adding the track to your collection"
+		      });
 
 	      });
 
