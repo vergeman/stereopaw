@@ -52,7 +52,7 @@ class Search
   private
 
   def self.track_exceptions
-    [:submit_id, :user_id, :updated_at, :shareable, :pg_search_rank]
+    [:submit_id, :updated_at, :shareable, :pg_search_rank]
   end
 
 end

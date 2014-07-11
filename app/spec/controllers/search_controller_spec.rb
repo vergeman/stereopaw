@@ -6,7 +6,7 @@ Warden.test_reset!
 describe SearchController do
 
   before do
-      @exceptions = [:submit_id, :user_id, :updated_at, :shareable, :pg_search_rank]
+      @exceptions = [:submit_id, :updated_at, :shareable, :pg_search_rank]
   end
 
   describe "GET #show" do

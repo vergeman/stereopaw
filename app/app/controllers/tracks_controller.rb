@@ -86,6 +86,7 @@ class TracksController < ApplicationController
     render :json => @track && return if @track[:errors]
 
     if @track.update_attributes(update_track_params)
+      SpamCheck.new(current_user, @track, request.remote_ip, request.user_agent, request.referer).delay.check
       render :json => { "success" => @track.id }
     else
       render :json => { "errors" => @track.errors.messages }
@@ -170,6 +171,10 @@ class TracksController < ApplicationController
     return track_params
   end  
 
+  #on any update, we toggle spam to true, and send it through akismet
+  #just in case we have nefarious types who submit valid, 
+  #and then make it spam on edit
+
   def update_track_params
     track_params = sanitize_params(
                                    params.require(:track)
@@ -182,6 +187,7 @@ class TracksController < ApplicationController
                                    ) if params[:track]    
 
     track_params[:genres] = process_genres_params(track_params[:genres])
+    track_params[:spam] = true
     return track_params
   end
 
