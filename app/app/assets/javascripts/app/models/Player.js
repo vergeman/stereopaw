@@ -15,7 +15,7 @@ app.Player = Backbone.Model.extend({
 	this.current_player = null;
 	this.soundmanager_player = null;
 	this.youtube_player = null;
-
+	this.state = app.Player.PlayerState.OFF;
 
 	/*
 	 *set initial volume value 
@@ -50,6 +50,8 @@ app.Player = Backbone.Model.extend({
 	    if (DEBUG)
 		console.log(self)
 
+	    this.state = app.Player.PlayerState.BUSY
+
 	    if (!self.initialized_players['youtube']) 
 	    {
 		if (DEBUG)
@@ -63,6 +65,7 @@ app.Player = Backbone.Model.extend({
 
 	    self.current_player = self.youtube_player;
 
+	    this.state = app.Player.PlayerState.PLAY
 	    self.current_player.play(self.youtube_player, track.get("track_id"), timestamp)
 
 	    if (DEBUG)
@@ -76,6 +79,8 @@ app.Player = Backbone.Model.extend({
 	    /* load SMplayer */
 	    if (DEBUG)
 		console.log(self)
+
+	    this.state = app.Player.PlayerState.BUSY
 	    
 	    if (!self.initialized_players['soundmanager'])
 	    {
@@ -92,6 +97,7 @@ app.Player = Backbone.Model.extend({
 	    //play new track
 	    self.current_player = self.soundmanager_player;
 
+	    this.state = app.Player.PlayerState.PLAY
 	    self.current_player.play(track, timestamp)
 
 	    self.set_volume(self.volume)
@@ -112,12 +118,16 @@ app.Player = Backbone.Model.extend({
 
     },
     seek : function(time) {
+	this.state = app.Player.PlayerState.BUSY
 	this.current_player.seek(time)
+	this.state = app.Player.PlayerState.PLAY
    },
     pause : function(){
+	this.state = app.Player.PlayerState.PAUSE
 	this.current_player.pause()
     },
     resume : function(){
+	this.state = app.Player.PlayerState.PLAY
 	this.current_player.resume()
     },
 
@@ -129,5 +139,16 @@ app.Player = Backbone.Model.extend({
 	this.volume = vol
 	this.current_player.set_volume(this.volume)
     }
+},
+{
+    PlayerState :
+    {
+	'OFF' : 0,
+	'STOP' : 0,
+	'PAUSE' : 0,
+	'PLAY' : 1,
+	'BUSY' : 2
+    }
+
 });
 

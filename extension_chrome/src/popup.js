@@ -220,8 +220,10 @@ function detect_play(service, tab) {
 		var _extension_id = args[0]
 		var result = false;
 
+		//state {1 - playing, 0 - other states)
 		try {
-		    if (app.current_track)
+		    if (app.current_track &&
+			app.current_track.state)
 			result = true
 		}
 		catch(e){}
