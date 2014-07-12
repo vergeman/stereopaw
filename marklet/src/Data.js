@@ -315,11 +315,8 @@ current track in set
 */
 
 	'stereopaw' : function() {
-	    //service
-	    //duration & elapsed
 
 	    if (!app.current_track) {
-		console.log("EMPTY TRACK")
 		load_empty_track()
 		return
 	    }

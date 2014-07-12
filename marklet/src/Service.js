@@ -13,7 +13,7 @@ SB.Service = (function () {
 		/^https?:\/\/.*(youtube).com/g,
 		/^https?:\/\/.*(spotify).com/g,
 		/^https?:\/\/.*(stereopaw).com/g
-	    /*diffuclty passing regex via .env.dev*/
+	    /*difficulty passing regex via .env.dev*/
 	    /*@ifdef DEBUG*/
 	    ,
 	    	/^https?:\/\/.*(compute.amazonaws.com:5151)/g
