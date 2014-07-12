@@ -239,6 +239,10 @@ app.PlayerView = Backbone.View.extend({
 
 	    //update bar
 	    self.update_slider(elapsed, self.current_track.get("duration") )
+	    /*for extension/marklet access*/
+	    app.current_track = self.current_track.toJSON();
+	    app.current_track.elapsed = elapsed
+	    app.current_track.timeformat = elapsed_format
 
 	}, 350)
     },

@@ -213,6 +213,26 @@ function detect_play(service, tab) {
 
 	    },
 
+	    stereopaw : function(args) {
+		//@ifdef DEBUG
+		console.log("isplaying - stereopaw")
+		//@endif
+		var _extension_id = args[0]
+		var result = false;
+
+		try {
+		    if (app.current_track)
+			result = true
+		}
+		catch(e){}
+
+		chrome.runtime.sendMessage(_extension_id,
+					   {
+					       launchable: result
+					   })
+
+
+	    }
 
 	}
 
@@ -310,10 +330,15 @@ var run = function() {
 	soundcloud: "*://*.soundcloud.com/*",
 	mixcloud: "*://*.mixcloud.com/*",
 	youtube: "*://*.youtube.com/*",
-	spotify: "*://*.spotify.com/*"
+	spotify: "*://*.spotify.com/*",
+	stereopaw: "*://*.stereopaw.com/*"
+	/*@ifdef DEBUG*/
+	,
+	stereopaw: "/* @echo DEV_HOST */"
+	/*@endif*/
     }
 
-
+    console.log(urls)
     var check_detect = function(i) {
 
 	/*make sure check detect runs only

@@ -313,6 +313,36 @@ current track in set
 	'earbits' : function() {},
 	'pandora': function() {},
 */
+
+	'stereopaw' : function() {
+	    //service
+	    //duration & elapsed
+
+	    if (!app.current_track) {
+		console.log("EMPTY TRACK")
+		load_empty_track()
+		return
+	    }
+
+	    refresh_view()	   
+
+	    _track.set
+	    (
+		app.current_track.track_id,
+		app.current_track.artist,
+		app.current_track.title,
+		app.current_track.profile_url,
+		app.current_track.duration,
+		app.current_track.elapsed,
+		app.current_track.timeformat,
+		app.current_track.page_url,
+		true,
+		app.current_track.service,
+		app.current_track.artwork_url
+	    )
+
+	},
+
 	'NA' : function()
 	{
 	    return "NA"
