@@ -40,11 +40,6 @@ app.PlaylistsView = Backbone.View.extend({
 	if (DEBUG)
 	    console.log("[PlaylistsView] render")
 
-	/*
-	 *this sweet tune goes out to the listeners out there
-	 *i.e. SearchView
-	 */
-
 	$(window).scrollTop(0);
 
 	_(this._playlistViews).each(function(pv) {

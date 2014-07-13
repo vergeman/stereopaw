@@ -12,6 +12,8 @@ app.SearchView = Backbone.View.extend({
 
     templatefooter : JST['tracks/footer'],
 
+    template_loading : JST['tracks/loading'],
+
     events : 
     {	
 	'click .all' : 'search_alltracks',
@@ -36,7 +38,12 @@ app.SearchView = Backbone.View.extend({
 	    this.listenTo(this.collection, 'reset',
 			  this.resetView)
 
-	    this.collection.fetch( { reset : true } )
+	    this.collection.fetch( { 
+		reset : true,
+		success : function() {
+		    $('.loading').remove()
+		}
+	    })
 	}
 
 	this.bind_search_form()
@@ -84,6 +91,13 @@ app.SearchView = Backbone.View.extend({
 		}
 	    )
 	)
+
+	/*exception:
+	 *other loading is handled by collection views
+	 */
+	if (this.link == "playlists") {
+	    this.$el.append(this.template_loading())
+	}
 
 	this.activate_link(this.link)
 

@@ -55,7 +55,7 @@ $image-size-default: 75px;
 
 
 .addfooter {
-    margin-top: 8rem;
+    margin-top: 20rem;
     text-align:center;
 
 
@@ -64,5 +64,14 @@ $image-size-default: 75px;
 	a {
 	    padding: 1rem;
 	}
+    }
+}
+
+.loading {
+    text-align:center;
+    margin-top: 3rem;
+    p {
+	font-family: 'lato', 'helvetica neue', 'georgia';
+	margin-top: 1rem;
     }
 }

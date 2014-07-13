@@ -10,6 +10,8 @@ app.PlaylistTracksView = Backbone.View.extend({
 
     template: JST['playlists/tracks_index'],
 
+    template_loading: JST['tracks/loading'],
+
     events : {
 	'click .edit-playlist' : 'edit_playlist',
 	'click .delete-playlist' : 'delete_playlist'
@@ -88,8 +90,12 @@ app.PlaylistTracksView = Backbone.View.extend({
 
     fetch_tracks : function() {
 	var self = this;
-	var success = function() { 
+	var success = function() {
+
 	    self.update_playlist_tracks()
+
+	    $('.loading').remove()
+	    $('.playlist-tracks-wrap').show()
 	}
 
 	this.trackscollection.fetch(
@@ -188,6 +194,8 @@ app.PlaylistTracksView = Backbone.View.extend({
 	    console.log("[PlaylistTracksView] render")
 
 	this.$el.html( this.template({playlist: this.playlist.toJSON()}) )
+
+	this.$el.append(this.template_loading())
 
 	_(this._pltv).each(function(pltv) {
 	    this.$el.find('tbody').append(pltv.render().el)

@@ -6,6 +6,8 @@ app.TracksView = Backbone.View.extend({
 
     id: 'tracks',
 
+    template_loading: JST['tracks/loading'],
+
     initialize: function(opts) {
 	if (DEBUG)
 	    console.log("[TracksView] initialize")
@@ -39,7 +41,12 @@ app.TracksView = Backbone.View.extend({
 	    console.log("[TracksView] fetch_next_page: " + this.page)
 	var self = this;
 
+	/*append loading*/
+	this.$el.append(this.template_loading())
+
 	var success =  function(collection, response, options) {
+	    /*remove loading*/
+	    $('.loading').remove()
 
 	    /*initial render as we need to trigger
 	     * footer render
@@ -137,6 +144,8 @@ app.TracksView = Backbone.View.extend({
     render: function() {
 	if (DEBUG)
 	    console.log("[TracksView] render")
+
+	$('.loading').remove()
 
 	_(this._trackViews).each(function(tv) {
 	    this.$el.append( tv.render().el )
