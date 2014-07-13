@@ -148,6 +148,7 @@ app.Session = Backbone.Model.extend({
 	    data: post_data,
 	    beforeSend: function(request) {
 		document.body.style.cursor='wait'
+		request.setRequestHeader('X-CSRF-Token', $.cookie('csrf_token'))
 	    },
 
 	    success: function(data, textStatus, jqXHR) {

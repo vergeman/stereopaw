@@ -186,6 +186,9 @@ app.PlaylistsModalView = Backbone.View.extend({
 	    type: self.build_type(),
 	    url: self.build_url(),
 	    data: self.build_data(),
+	    beforeSend: function(request) {
+		request.setRequestHeader('X-CSRF-Token', $.cookie('csrf_token'))
+	    },
 	    success: function(data, textStatus, jqXHR) {
 		if (DEBUG)
 		    console.log("[PlaylistsModalView] playlist_submit:success")

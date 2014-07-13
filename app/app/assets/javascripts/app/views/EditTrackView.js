@@ -186,7 +186,9 @@ app.EditTrackView = Backbone.View.extend({
 	    type: "PATCH",
 	    url: self.model.url(),
 	    data: post_data,
-
+	    beforeSend: function(request) {
+		request.setRequestHeader('X-CSRF-Token', $.cookie('csrf_token'))
+	    },
 	    success: function(data, textStatus, jqXHR) {
 		if (DEBUG)
 		    console.log("[EditTrackView] success")

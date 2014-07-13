@@ -12,6 +12,8 @@
       %input{name: "utf8",
              type: "hidden",
              value: "✓"}
+      %input{name: "authenticity_token",
+             type: "hidden", value: "#{@authenticity_token}"}
         
     %div
       %div.input-label-prefix
