@@ -1,0 +1,26 @@
+%ul.share-dropdown.f-dropdown{:id => "drop-share-#{@track.id}",
+                              :'data-dropdown-content' => ''}
+  %li
+    %a.link{:href => "#"}
+      Link    
+  %li
+    %a.facebook{:href => '#'}
+      Facebook      
+  %li
+    %a.twitter{:href => '#'}
+      Twitter
+
+.reveal-modal.small{:id => "linkModal-#{@track.id}", :'data-reveal' => ''}
+  %h4 Link
+  %textarea#link-modal-content{:readonly => ''}
+    
+  %a.close-reveal-modal
+    &#215;
+    
+    -#
+      'https://twitter.com/intent/tweet?
+      text=Gaslight Software Blog — Web apps are dead, long live web apps&amp;
+      url=http%3A%2F%2Fblog.gaslightsoftware.com%2Fpost%2F10859784934%2Fweb-apps-are-dead-long-live-web-apps%3Futm_medium%3Dhackernews
+      &amp;via=delicious"
+      class="share-social noscript'}
+      Twitter

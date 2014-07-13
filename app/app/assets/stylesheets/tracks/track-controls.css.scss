@@ -16,10 +16,6 @@ $control-large-width: 6rem;
     padding-left: .25rem;
     width: 100%;
 
-    @media #{$large-up} {
-	margin-bottom: -1rem;
-    }
-
     li, li a { 
 	float:left;
 	display: inline;
@@ -31,29 +27,11 @@ $control-large-width: 6rem;
 	    cursor:pointer;
 	}
 
-	@media #{$medium-up} { margin-right: 1.25rem;}
+	@media #{$large-up} { margin-right: 0rem;}
 
 	a { color: #a2a2a2; }
     }
 
-/*
-if we have li.share, controls are a little big, so we adjust
-but without li.share display, we don't need the adjust. Keep handy if want to add functionality
-
-    li.edit {
-	@media #{$screen} and 
-	(min-width: 445px) and (max-width: 750px) {
-	    clear: both;
-	    margin-top: -1rem;
-	}
-    }
-
-    li {
-	@media #{$screen} and (max-width: 445px) {
-	    margin-top: -1rem;
-	}
-    }
-*/
         
     i { 
 	float:left;
@@ -89,7 +67,7 @@ but without li.share display, we don't need the adjust. Keep handy if want to ad
     padding-bottom: .25rem;
 
     @media #{$large-up} {
-	width: 320px;
+	width: 300px;
     }
 
     a.service { float:right;}
@@ -139,4 +117,12 @@ but without li.share display, we don't need the adjust. Keep handy if want to ad
     .options {
 	display:none;
     }
+}
+
+#link-modal-content {
+    font-family: 'lato', 'helvetica neue', 'georgia', 'open-sans';
+    word-wrap:break-word;
+    resize: none;
+    height: 100px;
+    overflow:hidden;
 }

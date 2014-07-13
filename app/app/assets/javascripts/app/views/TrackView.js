@@ -19,6 +19,7 @@ app.TrackView = Backbone.View.extend({
 	this.logged_in = opts.logged_in
 	this.displayroute = opts.displayroute
 	this.playlistdropdown= null
+	this.sharedropdown=null
     },
 
     events : 
@@ -28,7 +29,8 @@ app.TrackView = Backbone.View.extend({
 	'click .playlist' : 'playlist',
 	'click .report' : 'report_show',
 	'click .options .yes' : 'report_yes',
-	'click .options .no' : 'report_no'
+	'click .options .no' : 'report_no',
+	'click .share' : 'share'
     },
 
     render: function() {
@@ -134,12 +136,36 @@ app.TrackView = Backbone.View.extend({
 	this.$el.find('.playlist').append(this.playlistdropdown.$el)
     },
 
+    share : function(e) {
+	if (DEBUG)
+	    console.log("[TrackView] share")
+	var $track = $(e.currentTarget).closest('.track-meta')
+
+	if (this.sharedropdown) {
+	    this.sharedropdown.close()
+	}
+
+	this.sharedropdown = new app
+	    .ShareDropDownView(
+		{
+		    track: this.model.toJSON()
+		})
+
+	this.$el.find('.share')
+	    .append(this.sharedropdown.render().$el)
+
+    },
+
     close : function() {
 	if (DEBUG)
 	    console.log("[TrackView] close")
 
 	if (this.playlistdropdown) {
 	    this.playlistdropdown.close()
+	}
+
+	if (this.sharedropdown) {
+	    this.sharedropdown.close()
 	}
 
 	this.remove()

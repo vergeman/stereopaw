@@ -60,11 +60,10 @@
           %span
             Add
 
-      -#
-        %li.share
-          %i.fi-share
-          %span
-            Share
+      %li.share{:'data-dropdown' => "drop-share-#{@track.id}"}
+        %i.fi-share
+        %span
+          Share
 
       - if (@editable && /(tracks|search)/.test(@displayroute) )
         %li.edit

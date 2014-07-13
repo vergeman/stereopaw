@@ -30,6 +30,8 @@ app.PlaylistsModalView = Backbone.View.extend({
 	this.listenTo(app.vent,
 		      "PlaylistsModalView:submit:error",
 		      app.Util.show_error)
+
+	this.listenTo(app.vent, "Modal:reset", this.reset_modal)
     },
 
     set_user_id : function() {
@@ -75,10 +77,13 @@ app.PlaylistsModalView = Backbone.View.extend({
 
     /*foundation fix for weird bg/css undefined errors*/
     reset_modal : function(div) {
+	if (DEBUG)
+	    console.log("[PlaylistsModalView] reset_modal")
+
 	$(div).data('reveal-init', {
 	    animation: 'fadeAndPop',
 	    animation_speed: 250,
-	    close_on_background_click: false,
+	    close_on_background_click: true,
 	    close_on_esc: false,
 	    dismiss_modal_class: 'close-reveal-modal',
 	    bg_class: 'reveal-modal-bg',
