@@ -50,7 +50,7 @@ app.Player = Backbone.Model.extend({
 	    if (DEBUG)
 		console.log(self)
 
-	    this.state = app.Player.PlayerState.BUSY
+	    self.state = app.Player.PlayerState.BUSY
 
 	    if (!self.initialized_players['youtube']) 
 	    {
@@ -65,7 +65,7 @@ app.Player = Backbone.Model.extend({
 
 	    self.current_player = self.youtube_player;
 
-	    this.state = app.Player.PlayerState.PLAY
+	    self.state = app.Player.PlayerState.PLAY
 	    self.current_player.play(self.youtube_player, track.get("track_id"), timestamp)
 
 	    if (DEBUG)
@@ -80,7 +80,7 @@ app.Player = Backbone.Model.extend({
 	    if (DEBUG)
 		console.log(self)
 
-	    this.state = app.Player.PlayerState.BUSY
+	    self.state = app.Player.PlayerState.BUSY
 	    
 	    if (!self.initialized_players['soundmanager'])
 	    {
@@ -97,7 +97,7 @@ app.Player = Backbone.Model.extend({
 	    //play new track
 	    self.current_player = self.soundmanager_player;
 
-	    this.state = app.Player.PlayerState.PLAY
+	    self.state = app.Player.PlayerState.PLAY
 	    self.current_player.play(track, timestamp)
 
 	    self.set_volume(self.volume)
