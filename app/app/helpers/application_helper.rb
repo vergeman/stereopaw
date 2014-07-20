@@ -22,9 +22,10 @@ module ApplicationHelper
 
   def sanitize_params(params)
     params.each do |key, value|
-      #puts "#{key} : #{value}"
-      #puts value.is_a?(Array)
-      params[key] = Sanitize.fragment(params[key]) unless params[key].is_a?(Array)
+      #params[key] = Sanitize.fragment(params[key], ) unless params[key].is_a?(Array)
+      params[key] = ActionController::Base.helpers.
+        strip_tags(ActionController::Base.helpers
+                     .sanitize(params[key])) unless params[key].is_a?(Array)
     end
 
     return params
