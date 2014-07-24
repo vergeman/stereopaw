@@ -65,15 +65,22 @@ app.Track = Backbone.Model.extend({
 
 	var data = {'track': { 'id': this.get("id") } }
 	var self = this;
-	$.post("/tracks/play.json",
-	       data,
-	       function(data) {
-		   /*clear played flag in *all* models*/
-		   app.vent.trigger("Track:ResetPlayed")
-		   self.set("plays", self.get("plays") + 1)
-		   self.played()
-	       }
-	      )
+	$.ajax(
+	    {
+		type: "POST",
+		url: "/tracks/play.json",
+		data: data,
+		beforeSend: function(request) {
+		    request.setRequestHeader('X-CSRF-Token', $.cookie('csrf_token'))
+		},
+		success: function(data) {
+		    /*clear played flag in *all* models*/
+		    app.vent.trigger("Track:ResetPlayed")
+		    self.set("plays", self.get("plays") + 1)
+		    self.played()
+		}
+	    }
+	)
 
     },
 
