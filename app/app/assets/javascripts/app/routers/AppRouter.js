@@ -419,7 +419,7 @@ app.AppRouter = Backbone.Router.extend({
 	if (this.session.get("state") == state) {
 	    return true
 	}
-	otherwise()
+	//otherwise()
 	return false
     },
 

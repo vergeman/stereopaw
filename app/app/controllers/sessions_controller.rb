@@ -1,15 +1,9 @@
 class SessionsController < Devise::SessionsController
 
   def auth
-
-    #self.resource = warden.authenticate!(auth_options)
-    #sign_in(resource_name, resource)
-    #puts resource.inspect
-    if user_signed_in?
-      render :json => current_user
-    else
-      render :json => {error: "you must be signed in"}, :status => 403
-    end
+    self.resource = warden.authenticate!(auth_options)
+    sign_in(resource_name, resource)
+    render :json => resource
   end
 
 

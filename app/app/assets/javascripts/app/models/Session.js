@@ -76,7 +76,7 @@ app.Session = Backbone.Model.extend({
 	    if (DEBUG)
 		console.log("[Session] reload heard")
 
-	    this.notifiable = false
+	    self.notifiable = false
 	    self.auth()
 	});
     },
