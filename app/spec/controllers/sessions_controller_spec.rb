@@ -72,9 +72,9 @@ describe SessionsController do
         sign_out(@user)
       }
 
-      it "should return a 401 unauthorized response" do
+      it "should return a 403 forbidden response" do
         post :auth, :format => :json
-        expect(response.status).to eq(401)
+        expect(response.status).to eq(403)
       end
 
     end
