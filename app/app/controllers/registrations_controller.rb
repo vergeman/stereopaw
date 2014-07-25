@@ -30,7 +30,7 @@ class RegistrationsController < Devise::RegistrationsController
         }
         format.json { 
           #plain signup (no track submission from backbone)
-          render_json_redirect("/meow#popular") 
+          render_json_redirect("/meow")
         }
       end
 
