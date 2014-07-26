@@ -30,16 +30,29 @@
 #logo {
     width: 76px;
     margin: 0 auto;
-    padding-top: 4rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 #title {
     text-align:center;
-    padding-top:2rem;
-    padding-bottom: 1rem;
+    //padding-top:1rem;
+    //padding-bottom: 1rem;
 }
 
 #tag {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top:1rem;
     text-align:center;
+    @media #{$medium-up} {
+	padding-left: 6rem;
+	padding-right: 6rem;
+	text-align:center;
+    }
+
+}
+h4#tag {
+    width: 100%;
 }
 
 /*images*/
@@ -57,7 +70,7 @@
 }
 /*SIGNUP*/
 #signage {
-    margin-top: 4rem;
+    margin-top: 1rem;
     text-align:center;
 
     button { 
