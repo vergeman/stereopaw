@@ -16,6 +16,11 @@ SB.Data = (function() {
     _track = null,
     _player = null;
     _mode =null;
+    
+    /*soundcloud toggles and data*/
+    var sc_data = sc_data || {};
+    _sc_load_status = 0;
+    
     /* 
      * try/catch around data grab
      * handles only main and one alternate for now
@@ -148,14 +153,10 @@ current track in set
 	'soundcloud': function() 
 	{
 	    /*distinct vs mobile - need mobile filter*/		
-	    var sc_mgr = require("lib/play-manager")
-
-	    //player
-	    _player = sc_mgr.getCurrentSound()
+            _isPlaying = $('.playControls__playPauseSkip .playing');
 
 	    /* no sound loaded/playing */
-	    if(!_player) {
-
+	    if(!_isPlaying) {
 		load_empty_track()
 		return
 	    }
@@ -163,24 +164,59 @@ current track in set
 	    refresh_view()
 
 	    /*load track meta data*/
-	    var sc_md = sc_mgr.getCurrentMetadata()
-	    var sc_time = sc_md.sound.audio.currentTime()
+            var title = $('title').text();
+            var track_artist = title.split(/ by / );
+            var track = track_artist[0].trim();
+            var artist = track_artist[1].trim();
 
-	    var artwork_url = sc_md.sound.attributes.artwork_url || 
-		sc_md.sound.attributes.user.avatar_url;
+            /*
+             *_sc_load_status:
+             * 0 - neverloaded
+             * 1 - loading
+             * 2 - done
+             */
+
+            if (_sc_load_status == 0) {
+                _sc_load_status = 1;
+
+                $.get("http://api.soundcloud.com/search",
+                      {q: title + " " + artist,
+                       client_id: "b45b1aa10f1ac2941910a7f0d10f8e28"},
+                      function(data) {
+                          var obj = data['collection'][0];
+                          if (obj['kind'] == "track") {
+                              sc_data = obj;
+                              _sc_load_status = 2;
+                          }
+                      });
+            }
+
+
+            /* old track ends, new track plays, so retoggle for info*/
+            if (sc_data['title'] != track && _sc_load_status == 2)
+                _sc_load_status = 0;
+
+            /*if we're not done loading, don't update values*/
+            if (_sc_load_status != 2)
+                return;
+
+            var sc_time = $('.playbackTitle__progress')[0].getAttribute('aria-valuenow');
+            var sc_duration = $('.playbackTitle__progress')[0].getAttribute('aria-valuemax');
+
+            var artwork_url = sc_data['artwork_url'] || sc_data['user']['avatar_url'];
 	    artwork_url == null ? "" : artwork_url.replace("-large.jpg", "-t200x200.jpg");
-
+            
 	    _track.set
 	    (
-		sc_md.sound.attributes.id,
-		sc_md.sound.attributes.user.username,
-		sc_md.sound.attributes.title,
-		sc_md.sound.attributes.user.permalink_url.replace(/^(http|https):\/\//, "//"),
-		sc_md.sound.attributes.duration,
+		sc_data['id'],
+		sc_data['user']['username'],
+		sc_data['title'],
+		sc_data['user']['permalink_url'].replace(/^(http|https):\/\//, "//"),
+		sc_duration,
 		sc_time,
 		SB.Util.toTime(sc_time, "ms"),
-		sc_md.sound.attributes.permalink_url.replace(/^(http|https):\/\//, "//"),
-		(sc_md.sound.attributes.sharing == "public" ? true : false),
+		sc_data['user']['permalink_url'].replace(/^(http|https):\/\//, "//"),
+		(sc_data['sharing'] == "public" ? true : false),
 		_service,
 		artwork_url.replace(/^(http|https):\/\//, "//")
 	    );
