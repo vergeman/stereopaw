@@ -90,25 +90,25 @@ current track in set
 
 	    var mc = $('.player').scope()
 
-	    if (mc.playerStarted) {
+	    if (mc.player.playerStarted) {
 
 		_track.set(
 
 		    try_get(
-			function() { return mc.waveformUrl.match(/([^\/]+)\.json/)[1] },
-			function() { return mc.currentCloudcast.url }
+			function() { return mc.player.waveformUrl.match(/([^\/]+)\.json/)[1] },
+			function() { return mc.player.currentCloudcast.url }
 		    ),
 
-		    mc.currentCloudcast.owner,
-		    mc.currentCloudcast.title,
-		    "//www.mixcloud.com" + mc.currentCloudcast.ownerUrl,
-		    mc.audioLength * 1000,
-		    mc.audioPosition,
-		    SB.Util.toTime(mc.audioPosition, "secs"),
-		    "//www.mixcloud.com" + mc.currentCloudcast.url,
+		    mc.player.currentCloudcast.owner,
+		    mc.player.currentCloudcast.title,
+		    "//www.mixcloud.com" + mc.player.currentCloudcast.ownerUrl,
+		    mc.player.audioLength * 1000,
+		    mc.player.audioPosition,
+		    SB.Util.toTime(mc.player.audioPosition, "secs"),
+		    "//www.mixcloud.com" + mc.player.currentCloudcast.url,
 		    true,
 		    "mixcloud",
-		    mc.currentCloudcast.mobilePlayerFullImage
+		    mc.player.currentCloudcast.mobilePlayerFullImage
 		)
 
 	    } else {
