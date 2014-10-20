@@ -179,18 +179,24 @@ current track in set
             if (_sc_load_status == 0) {
                 _sc_load_status = 1;
 
-                $.get("http://api.soundcloud.com/search",
+                $.get("https://api.soundcloud.com/search",
                       {q: title + " " + artist,
                        client_id: "b45b1aa10f1ac2941910a7f0d10f8e28"},
                       function(data) {
-                          var obj = data['collection'][0];
-                          if (obj['kind'] == "track") {
-                              sc_data = obj;
-                              _sc_load_status = 2;
+
+                          /*loop and try to find exact track match from search results*/
+                          for (var i = 0; i < data['collection'].length; i++ ) {
+                              var obj = data['collection'][i];
+
+                              if (obj['kind'] == "track" &&
+                                  (obj['title'] + " by " +
+                                   obj['user']['username'] == track_artist.join(' by '))) {
+                                  sc_data = obj;
+                                  _sc_load_status = 2; //toggle complete
+                              }
                           }
                       });
             }
-
 
             /* old track ends, new track plays, so retoggle for info*/
             if (sc_data['title'] != track && _sc_load_status == 2)

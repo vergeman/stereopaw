@@ -134,10 +134,12 @@ function detect_play(service, tab) {
 		var _extension_id = args[0]
 		var result = false;
 
-		var sc_mgr = require("lib/play-manager")
+                var  _isPlaying = document.getElementsByClassName("playControl playing").length;
 
 		try {
-		    result = sc_mgr.getCurrentMetadata().sound.audio._isPlaying
+                    if (_isPlaying)
+		        result = true;
+
 		}
 		catch(e) {}
 		
@@ -183,7 +185,7 @@ function detect_play(service, tab) {
 
 		try {
 		    var mc = $('.player').scope()
-		    var result = mc.playerStarted && mc.playing
+		    var result = mc.player.playerStarted && mc.player.playing
 		}
 		catch(e) {}
 

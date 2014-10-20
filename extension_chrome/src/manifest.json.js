@@ -36,7 +36,7 @@
     "name": "stereo paw",
     "description": "stereo paw for Chrome",
     "homepage_url": "https://www.stereopaw.com",
-    "version": "0.4",
+    "version": "0.5",
     "permissions": [ "tabs", "*://*/*", "activeTab" ],
     "icons": {
 	"16": "icon-16.png",

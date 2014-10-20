@@ -67,6 +67,7 @@ chrome.runtime.onMessageExternal.addListener(
 		    var stereopawtab_id = args[2]
 
 		    x = $('.player').scope()
+                    x=x.player;
 		    x.volume = 0;
 
 		    if (!x.playerStarted && !x.playing) {
