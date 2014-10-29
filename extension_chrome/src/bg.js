@@ -82,8 +82,8 @@ chrome.runtime.onMessageExternal.addListener(
 			    x.playing && 
 			    !y.webPlayer.loading) {
 
-			    x.$apply(function() { 
-				x.$emit("slider:stop", time / 1000)
+			    y.$apply(function() { 
+				y.$emit("slider:stop", time / 1000)
 				x.volume=1
 			    })
 
