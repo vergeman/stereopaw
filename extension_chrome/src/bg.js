@@ -66,8 +66,8 @@ chrome.runtime.onMessageExternal.addListener(
 		    var mixcloudtab_id = args[1]
 		    var stereopawtab_id = args[2]
 
-		    x = $('.player').scope()
-                    x=x.player;
+		    y = $('.player').scope()
+                    x=y.player;
 		    x.volume = 0;
 
 		    if (!x.playerStarted && !x.playing) {
@@ -80,7 +80,7 @@ chrome.runtime.onMessageExternal.addListener(
 
 			if (x.playerStarted && 
 			    x.playing && 
-			    !x.loading) {
+			    !y.webPlayer.loading) {
 
 			    x.$apply(function() { 
 				x.$emit("slider:stop", time / 1000)
