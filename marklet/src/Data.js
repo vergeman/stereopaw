@@ -166,8 +166,20 @@ current track in set
 	    /*load track meta data*/
             var title = $('title').text();
             var track_artist = title.split(/ by / );
-            var track = track_artist[0].trim();
-            var artist = track_artist[1].trim();
+            var track, artist;
+
+            if (track_artist.length == 1) {
+                /*edge case sometimes there's no 'by'?*/
+                track_artist = title.split(/-/);
+                artist = track_artist[0].trim();
+                track = track_artist[1].trim();
+            }
+            else {
+                /*most cases has split w/ 'by' b/w artist and track*/
+                track = track_artist[0].trim();
+                artist = track_artist[1].trim();               
+            }
+
 
             /*
              *_sc_load_status:
