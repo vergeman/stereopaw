@@ -1,0 +1,20 @@
+#prod first
+version: '3.3'
+services:
+  web:
+    image: "stereopaw/stereopaw:latest"
+    env_file:
+      - .env
+    user: ${USER}:${USER}
+    command: bash -c "bundle exec rails s -p 8081 -b '0.0.0.0'"
+    ports:
+      - "80:8081"
+    depends_on:
+      - db
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.labels.group == app

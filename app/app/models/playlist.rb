@@ -3,13 +3,13 @@
 # Table name: playlists
 #
 #  id          :integer          not null, primary key
-#  name        :string(255)
+#  name        :string
 #  description :text
 #  track_ids   :integer          default([]), is an Array
 #  user_id     :integer
 #  created_at  :datetime
 #  updated_at  :datetime
-#  top_genres  :string(255)      default([]), is an Array
+#  top_genres  :string           default([]), is an Array
 #
 
 class Playlist < ActiveRecord::Base
