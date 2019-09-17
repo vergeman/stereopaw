@@ -3,22 +3,22 @@
 # Table name: tracks
 #
 #  id          :integer          not null, primary key
-#  artist      :string(255)
-#  title       :string(255)
-#  profile_url :string(255)
-#  page_url    :string(255)
+#  artist      :string
+#  title       :string
+#  profile_url :string
+#  page_url    :string
 #  duration    :decimal(, )
 #  timestamp   :decimal(, )
-#  timeformat  :string(255)
+#  timeformat  :string
 #  created_at  :datetime
 #  updated_at  :datetime
 #  comment     :text
-#  track_id    :string(255)
+#  track_id    :string
 #  shareable   :boolean
-#  service     :string(255)
-#  artwork_url :string(255)
+#  service     :string
+#  artwork_url :string
 #  user_id     :integer
-#  genres      :string(255)      default([]), is an Array
+#  genres      :string           default([]), is an Array
 #  plays       :integer          default(0)
 #  submit_id   :integer
 #  spam        :boolean          default(TRUE)
