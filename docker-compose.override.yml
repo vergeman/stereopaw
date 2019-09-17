@@ -23,3 +23,4 @@ services:
       - RAILS_ENV=development
     volumes:
       - ./app:/app
+    command: ["entrypoint.sh", "rails", "server", "-b", "0.0.0.0", "-p", "8081"]
