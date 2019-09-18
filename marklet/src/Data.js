@@ -218,7 +218,7 @@ SB.Data = (function() {
 
 	    var yt_artist = try_get
 	    (
-		function() { return document.getElementsByClassName('metadata-info-title')[1].nextSibling.nextSibling.innerHTML},
+		function() { return _player.getVideoData().author },
 		function() { return "" },
 		""
 	    )
@@ -228,11 +228,11 @@ SB.Data = (function() {
 	    (
 		function()
 		{
-		    return document.getElementsByClassName('metadata-info-title')[0].innerHTML.match(/"(.*)\"/)[1]
+		    return $('title')[0].innerText;
 		},
 		function()
 		{
-		    return ytplayer.config.args.title
+		    return _player.getVideoData().title;
 		},
 		""
 	    )
@@ -260,7 +260,7 @@ SB.Data = (function() {
 	    refresh_view()
 
 	    /*nothing loaded*/
-	    if (!ytplayer.config.args.loaderUrl) {
+	    if (!("https://www.youtube.com/watch?v=" + _player.getVideoData().video_id)) {
 		load_empty_track()
 
 		return
@@ -269,17 +269,19 @@ SB.Data = (function() {
 	    /*populate yt args*/
 	    _track.set
 	    (
-		ytplayer.config.args.video_id,
+		_player.getVideoData().video_id,
 		yt_artist,
 		yt_title,
-		ytplayer.config.args.loaderUrl.replace(/^(http|https):\/\//, "//"),
+		("https://www.youtube.com/watch?v=" + _player.getVideoData().video_id)
+                    .replace(/^(http|https):\/\//, "//"),
 		yt_duration,
 		yt_time,
 		SB.Util.toTime(yt_time, "secs"),
-		ytplayer.config.args.loaderUrl.replace(/^(http|https):\/\//, "//"),
+                ("https://www.youtube.com/watch?v=" + _player.getVideoData().video_id)
+                    .replace(/^(http|https):\/\//, "//"),
 		true,
 		_service,
-		"//img.youtube.com/vi/" + ytplayer.config.args.video_id + "/0.jpg"
+		"//img.youtube.com/vi/" + _player.getVideoData().video_id + "/0.jpg"
 	    );
 
 	},
