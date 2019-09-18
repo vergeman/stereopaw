@@ -27,11 +27,11 @@
         = image_tag("stereopaw-logo-main.png", width: "76px", height: "125px", alt: "stereopaw")
 
       %h1#title Bookmark Your Streaming Music
-      %h2#title.subheader Remember The Mix - Paw It!
+      %h2#title.subheader Remember The Mix!
       %h3#tag
         Save time-stamped tracks with the stereopaw Chrome Extension or Bookmarklet
       %h4#tag
-        Supports YouTube, SoundCloud, Mixcloud, and the Spotify Web Player
+        Supports YouTube and SoundCloud
 
       #signage
         = render :partial => "submit/installbuttons"          
@@ -57,7 +57,7 @@
         #description
           %br
           %h3
-            stereopaw is a streaming music bookmarking service.
+            stereopaw is a streaming music bookmarklet side project.
           %br
           %ul.problems
             %li
@@ -113,18 +113,6 @@
             Soundcloud
           %li
             YouTube
-          %li
-            Mixcloud
-          %li
-            Spotify Web Player
-
-        %h4
-          Audio from these services are played on their respective sites. The browser extension is required for timestamped playback.
-        %ul.services
-          %li
-            Mixcloud
-          %li
-            Spotify Web Player
 
         %h4
           For ideal audio streaming, your browser/os needs to support partial http range requests for mp3.
