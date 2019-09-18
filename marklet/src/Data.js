@@ -73,80 +73,6 @@ SB.Data = (function() {
     var _set = {
 
 	/*
-	 * MIXCLOUD
-	 */
-
-	'mixcloud': function() 
-	{
-
-/*
-current track in set
-		    mc.nowPlaying.currentDisplayTrack.artist,
-		    mc.nowPlaying.currentDisplayTrack.title,
-*/
-
-
-	    refresh_view()
-
-	    var mc = $('.player').scope()
-
-	    if (mc.player.playerStarted) {
-
-		_track.set(
-
-		    try_get(
-			function() { return mc.player.waveformUrl.match(/([^\/]+)\.json/)[1] },
-			function() { return mc.player.currentCloudcast.url }
-		    ),
-
-		    mc.player.currentCloudcast.owner,
-		    mc.player.currentCloudcast.title,
-		    "//www.mixcloud.com" + mc.player.currentCloudcast.ownerUrl,
-		    mc.player.audioLength * 1000,
-		    mc.player.audioPosition,
-		    SB.Util.toTime(mc.player.audioPosition, "secs"),
-		    "//www.mixcloud.com" + mc.player.currentCloudcast.url,
-		    true,
-		    "mixcloud",
-		    mc.player.currentCloudcast.mobilePlayerFullImage
-		)
-
-	    } else {
-
-		if (!$('.cloudcast-head').length) {
-
-		    load_empty_track()
-		    
-		    return
-		}
-
-
-		/*not playing but on track*/
-		var hrs = $('.cloudcast-time').html().match(/(\d+)h/)
-		var mins = $('.cloudcast-time').html().match(/(\d+)m/)
-
-		_track.set(
-		    undefined,
-		    $('span[itemprop="name"]').html(),
-		    $('.cloudcast-title').html(),
-		    "//www.mixcloud.com" + $('.cloudcast-uploader').attr("href"),
-		    SB.Util.textToSecs(hrs, mins, 0) * 1000,
-		    0,
-		    "0:00",
-		    window.location.href.match("[^(http|https):]\.*"),
-		    true,
-		    "mixcloud",
-		    $('.cloudcast-image').attr("src")
-		);
-
-
-	    }
-
-
-
-	},
-
-	/*
 	 * SOUNDCLOUD
 	 */
 
@@ -317,56 +243,6 @@ current track in set
 
 	},
 
-
-	/*
-	 * SPOTIFY
-	 */
-
-	'spotify': function() 
-	{
-
-	    if (!window.frames[1].document.getElementById('track-name').children[0].href.match(/track\/(.*)/) ) {
-
-		load_empty_track()
-
-		return
-	    }
-
-	    /*not sure if it's always window.frames[1] - will have to do a check */
-	    
-	    var duration = SB.Util.TimetoMs(window.frames[1].document.getElementById('track-length').innerHTML);
-
-	    var time = SB.Util.TimetoMs(window.frames[1].document.getElementById('track-current').innerHTML);
-
-	    //convert track-length/track-current to ms
-	    _track.set
-	    (
-		window.frames[1].document.getElementById('track-name').children[0].href.match(/track\/(.*)/)[1],
-		window.frames[1].document.getElementById('track-artist').children[0].text,
-		window.frames[1].document.getElementById('track-name').children[0].text,
-		window.frames[1].document.getElementById('track-artist').children[0].href.match(/[^(http:||https:)].*/)[0],
-		duration,
-		time,
-		window.frames[1].document.getElementById('track-current').innerHTML,
-		window.frames[1].document.getElementById('track-name').children[0].href.match(/[^(http:||https:)].*/)[0],
-		true,
-		"spotify",
-		try_get(
-		    function() {
-			return window.frames[1].document.getElementsByClassName('sp-image-img')[0].getAttribute("style").match(/\/\/[^);]+/)[0] },
-		    function() { return null }
-		)
-	    )
-
-
-	    refresh_view()
-	},
-/*
-	'grooveshark' : function() {},
-	'8tracks' : function() {},
-	'earbits' : function() {},
-	'pandora': function() {},
-*/
 
 	'stereopaw' : function() {
 
