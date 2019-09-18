@@ -1,4 +1,3 @@
-
 SB.Util = (function() {
 
     var util = {};
@@ -37,10 +36,18 @@ SB.Util = (function() {
 
 
     util.TimetoMs = function(timestring) {
-	min = timestring.split(":")[0];
-	sec = timestring.split(":")[1];
 
-	return (min * 60 * 1000) + (sec * 1000)
+        var times = timestring.split(":");
+        var ms = 0;
+        var modifier = 1;
+        console.log(times);
+        while (times.length) {
+            var unit = times.pop();
+            ms += (modifier * unit * 1000);
+            modifier *= 60;
+        }
+
+        return ms;
     }
 
     /*toTime - returns formatted time from ms or secs*/
@@ -52,10 +59,10 @@ SB.Util = (function() {
 
 	var min = Math.floor( (secs / (60.0 * alpha)) - 60 * hours )
 
-	var sec = (secs / (60 * alpha) - (60 * hours) -  min) * 60 
+	var sec = (secs / (60 * alpha) - (60 * hours) -  min) * 60
 
 	/*granularity: round vs floor*/
-	if (scale == "secs") 
+	if (scale == "secs")
 	{
 	    return formatTime(hours, min, Math.round(sec))
 	}
@@ -79,8 +86,3 @@ SB.Util = (function() {
 
     return util;
 }());
-
-
-
-
-

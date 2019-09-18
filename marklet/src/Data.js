@@ -1,11 +1,10 @@
-
 /*
  * SBData
  * parses data for given service, updates track
 
 
 TODO:
-  Error handling for each data piece 
+  Error handling for each data piece
     (things can change, don't want to totally break submission)
   SubTrack & SubArtists for services with it
   probably need a widget friendly ID from each service
@@ -16,12 +15,12 @@ SB.Data = (function() {
     _track = null,
     _player = null;
     _mode =null;
-    
+
     /*soundcloud toggles and data*/
     var sc_data = sc_data || {};
     _sc_load_status = 0;
-    
-    /* 
+
+    /*
      * try/catch around data grab
      * handles only main and one alternate for now
      */
@@ -31,7 +30,7 @@ SB.Data = (function() {
 	}
 	catch(err) {
 	    try {
-		return f2(); 
+		return f2();
 	    }
 	    catch (err2) {
 		return def;
@@ -62,9 +61,9 @@ SB.Data = (function() {
 
     function refresh_view() {
 	if (_mode == MODE.MARKLET) {
-	    document.getElementById('sb-track-title-label').style.display = 'block'
+	    document.getElementById('sb-track-title-label').style.display = 'block';
 
-	    document.getElementById('sb-track-artist-label').style.display='block'
+	    document.getElementById('sb-track-artist-label').style.display='block';
 
 	    $("#sb-submit-button").css('display', 'block');
 	}
@@ -76,37 +75,59 @@ SB.Data = (function() {
 	 * SOUNDCLOUD
 	 */
 
-	'soundcloud': function() 
+	'soundcloud': function()
 	{
-	    /*distinct vs mobile - need mobile filter*/		
+
+            var noresults = false;
+
+	    /*distinct vs mobile - need mobile filter*/
             _isPlaying = $('.playControls__playPauseSkip .playing');
 
 	    /* no sound loaded/playing */
 	    if(!_isPlaying) {
-		load_empty_track()
-		return
+		load_empty_track();
+		return;
 	    }
 
-	    refresh_view()
+	    refresh_view();
 
 	    /*load track meta data*/
-            var title = $('title').text();
+            var $title = $('title');
+            var title =
+                (typeof $title.text == "function") ? $title.text() : $title.text;
+
+            track = sc_data['title'];
+
             var track_artist = title.split(/ by / );
             var track, artist;
 
             if (track_artist.length == 1) {
                 /*edge case sometimes there's no 'by'?*/
                 track_artist = title.split(/-/);
-                artist = track_artist[0].trim();
-                track = track_artist[1].trim();
+
+                if(track_artist.length == 1) {
+                    track = track_artist[0].trim();
+                } else {
+                    artist = track_artist[0].trim();
+                    track = track_artist[1].trim();
+                }
             }
             else {
                 /*most cases has split w/ 'by' b/w artist and track*/
                 track = track_artist[0].trim();
-                artist = track_artist[1].trim();               
+                artist = track_artist[1].trim();
             }
 
+            //weird playlist case
+            if (!track) {
+                track = $('.playbackSoundBadge__title > a').attr('title').trim();
+            }
 
+            if (!artist) {
+                artist = $('.playbackSoundBadge__titleContextContainer > a')[0].innerText.trim();
+            }
+
+            sc_data['title'] = sc_data['track'] || track;
             /*
              *_sc_load_status:
              * 0 - neverloaded
@@ -114,17 +135,22 @@ SB.Data = (function() {
              * 2 - done
              */
 
-            if (_sc_load_status == 0) {
+            if (_sc_load_status == 0 && !noresults) {
                 _sc_load_status = 1;
 
-                $.get("https://api.soundcloud.com/search",
+                $.get("https://api.soundcloud.com/tracks",
                       {q: title + " " + artist,
-                       client_id: "b45b1aa10f1ac2941910a7f0d10f8e28"},
+                       client_id: "82d79419cef128093cfca50715c23cd7"},
                       function(data) {
 
+                          if ( data.length == 0 ) {
+                              noresults = true;
+                              _sc_load_status = 2; //toggle complete
+                          }
+
                           /*loop and try to find exact track match from search results*/
-                          for (var i = 0; i < data['collection'].length; i++ ) {
-                              var obj = data['collection'][i];
+                          for (var i = 0; i < data.length; i++ ) {
+                              var obj = data[i];
 
                               if (obj['kind'] == "track" &&
                                   (obj['title'] + " by " +
@@ -133,38 +159,53 @@ SB.Data = (function() {
                                   _sc_load_status = 2; //toggle complete
                               }
                           }
+
                       });
             }
 
+
             /* old track ends, new track plays, so retoggle for info*/
-            if (sc_data['title'] != track && _sc_load_status == 2)
+            if (sc_data['title'] != track && _sc_load_status == 2) {
                 _sc_load_status = 0;
+            }
 
             /*if we're not done loading, don't update values*/
             if (_sc_load_status != 2)
                 return;
 
-            var sc_time = $('.playbackTitle__progress')[0].getAttribute('aria-valuenow');
-            var sc_duration = $('.playbackTitle__progress')[0].getAttribute('aria-valuemax');
+            var sc_time = $('.playbackTimeline__timePassed > span')[1].innerText;
+            var sc_duration = $('.playbackTimeline__duration > span')[1].innerText;
+
+            //weird playlist format hack
+            sc_data['user'] = {
+                username: artist,
+                permalink_url: (sc_data['user'] && sc_data['user']['permalink_url']) ||
+                    $('.playbackSoundBadge__titleLink')[0].href
+            };
 
             var artwork_url = sc_data['artwork_url'] || sc_data['user']['avatar_url'];
-	    artwork_url == null ? "" : artwork_url.replace("-large.jpg", "-t200x200.jpg");
-            
+	    artwork_url = artwork_url == null ?
+                "" : artwork_url.replace("-large.jpg", "-t200x200.jpg");
+
+
 	    _track.set
 	    (
 		sc_data['id'],
 		sc_data['user']['username'],
 		sc_data['title'],
 		sc_data['user']['permalink_url'].replace(/^(http|https):\/\//, "//"),
-		sc_duration,
-		sc_time,
-		SB.Util.toTime(sc_time, "ms"),
+
+                SB.Util.TimetoMs(sc_duration),
+                SB.Util.TimetoMs(sc_time),
+                SB.Util.toTime(SB.Util.TimetoMs(sc_time) / 1000, "secs"),
+
 		sc_data['user']['permalink_url'].replace(/^(http|https):\/\//, "//"),
 		(sc_data['sharing'] == "public" ? true : false),
 		_service,
 		artwork_url.replace(/^(http|https):\/\//, "//")
 	    );
-
+            console.log(_track.toJSON())
+            console.log(_track.getElapsed())
 	},
 
 	/*
@@ -185,11 +226,11 @@ SB.Data = (function() {
 
 	    var yt_title = try_get
 	    (
-		function() 
+		function()
 		{
 		    return document.getElementsByClassName('metadata-info-title')[0].innerHTML.match(/"(.*)\"/)[1]
 		},
-		function() 
+		function()
 		{
 		    return ytplayer.config.args.title
 		},
@@ -198,8 +239,8 @@ SB.Data = (function() {
 
 	    var yt_time = try_get
 	    (
-		function() 
-		{ 
+		function()
+		{
 		    return _player.getCurrentTime();
 		},
 		function() { return 0 },
@@ -208,8 +249,8 @@ SB.Data = (function() {
 
 	    var yt_duration = try_get
 	    (
-		function() 
-		{ 
+		function()
+		{
 		    return _player.getDuration();
 		},
 		function() { return 0 },
@@ -251,7 +292,7 @@ SB.Data = (function() {
 		return
 	    }
 
-	    refresh_view()	   
+	    refresh_view()
 
 	    _track.set
 	    (
@@ -279,7 +320,7 @@ SB.Data = (function() {
     }
 
 /*
- * _audiomgr: service specific interface for controlling their player 
+ * _audiomgr: service specific interface for controlling their player
  * set the reference to the player in _set
  */
     var _audiomgr = {
@@ -313,7 +354,7 @@ SB.Data = (function() {
 
     }
 
-    
+
     var data = {};
 
     //called in stereopaw.js
