@@ -58,7 +58,7 @@ GEM
     capistrano-bundler (1.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
-    capistrano-rails (1.1.1)
+    capistrano-rails (1.4.0)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
     capistrano-rvm (0.1.1)
@@ -147,7 +147,7 @@ GEM
     multi_json (1.13.1)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
-    net-ssh (2.9.1)
+    net-ssh (5.2.0)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     nokogumbo (2.0.1)
@@ -157,10 +157,9 @@ GEM
       rack
       rake (>= 0.8.1)
     pg (0.17.1)
-    pg_search (0.7.3)
-      activerecord (>= 3.1)
-      activesupport (>= 3.1)
-      arel
+    pg_search (2.1.4)
+      activerecord (>= 4.2)
+      activesupport (>= 4.2)
     poltergeist (1.5.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -266,7 +265,7 @@ DEPENDENCIES
   annotate
   capistrano (~> 3.1)
   capistrano-bundler
-  capistrano-rails (~> 1.1)
+  capistrano-rails (~> 1.4)
   capistrano-rvm
   capybara
   coffee-rails (~> 4.0.0)
@@ -283,8 +282,9 @@ DEPENDENCIES
   haml_coffee_assets!
   jbuilder (~> 1.2)
   jquery-rails (>= 3.1.3)
+  net-ssh (>= 3.2)
   passenger (>= 5.1.0)
-  pg
+  pg (= 0.17.1)
   pg_search
   poltergeist
   rails (= 4.2.11)

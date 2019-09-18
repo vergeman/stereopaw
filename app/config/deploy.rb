@@ -7,12 +7,12 @@ Dotenv.load
 
 
 set :application, 'stereopaw'
-set :repo_url, 'git@github.com:vergeman/SoundByte.git'
+set :repo_url, 'git@github.com:vergeman/stereopaw.git'
 set :user, "ubuntu"
 set :ssh_options, { :forward_agent => true }
 
 #REPO
-set :repository, "git@github.com:vergeman/SoundByte.git"
+set :repository, "git@github.com:vergeman/stereopaw.git"
 set :scm, :git
 set :branch, "master"
 set :subdir, "app"
