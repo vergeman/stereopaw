@@ -1,2 +1,0 @@
-note:
-RAILS_ENV=production delayed_job start
