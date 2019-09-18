@@ -1,20 +1,27 @@
 #prod first
 version: '3.3'
 services:
+  db:
+    image: postgres
+    volumes:
+      - /mnt/data/postgresql/data:/var/lib/postgresql/data
+    user: ${USER}:${USER}
+    ports:
+      - "5432:5432"
   web:
+    build: ./
     image: "stereopaw/stereopaw:latest"
     env_file:
       - .env
     user: ${USER}:${USER}
-    command: bash -c "bundle exec rails s -p 8081 -b '0.0.0.0'"
+    volumes:
+      - ./:/stereopaw
+      # change for marklet/extension .env location
+      # needed for symlinked .env.json config
+      - /home/vergeman/Dropbox/stereopaw/:/home/vergeman/Dropbox/stereopaw/
+    working_dir: /stereopaw/app
+    command: ["entrypoint.sh", "rails", "server", "-b", "0.0.0.0", "-p", "8081"]
     ports:
-      - "80:8081"
+      - "8081:8081"
     depends_on:
       - db
-    deploy:
-      replicas: 3
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints:
-          - node.labels.group == app
