@@ -1,5 +1,6 @@
 .installbuttons
-  %a{:onclick => 'chrome.webstore.install();', :id => "install-button"}      
+  %a{:href => "https://chrome.google.com/webstore/detail/stereo-paw/gcgoenndigjegpgpfnnmgfnbiollgimk?hl=en-US",
+     :id => "install-button"}
     %button.small
       Install Chrome Extension
 
