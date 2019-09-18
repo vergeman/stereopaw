@@ -16,11 +16,14 @@ services:
         constraints:
           - node.labels.group == db
   web:
-    build: ./app/
+    build: ./
     ports:
       - "8081:8081"
     environment:
       - RAILS_ENV=development
     volumes:
-      - ./app:/app
+      - ./:/stereopaw
+      # needed for .env.json config
+      - /home/vergeman/Dropbox/stereopaw/:/home/vergeman/Dropbox/stereopaw/
+    working_dir: /stereopaw/app
     command: ["entrypoint.sh", "rails", "server", "-b", "0.0.0.0", "-p", "8081"]

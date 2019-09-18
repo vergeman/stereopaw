@@ -8,12 +8,16 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources
 RUN apt-get update && apt-get install yarn
 
 
-WORKDIR /app
-COPY . /app
+WORKDIR /tmp
+ADD ./app/Gemfile /tmp/
+ADD ./app/Gemfile.lock /tmp/
 RUN bundle install
-COPY Gemfile /app/Gemfile
-COPY Gemfile.lock /app/Gemfile.lock
-COPY . /app
 
-COPY entrypoint.sh /usr/bin/
+COPY ./app/entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
+
+RUN npm install -g grunt
+
+WORKDIR /stereopaw
+
+
