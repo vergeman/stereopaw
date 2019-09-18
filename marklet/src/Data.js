@@ -1,11 +1,10 @@
-
 /*
  * SBData
  * parses data for given service, updates track
 
 
 TODO:
-  Error handling for each data piece 
+  Error handling for each data piece
     (things can change, don't want to totally break submission)
   SubTrack & SubArtists for services with it
   probably need a widget friendly ID from each service
@@ -16,12 +15,12 @@ SB.Data = (function() {
     _track = null,
     _player = null;
     _mode =null;
-    
+
     /*soundcloud toggles and data*/
     var sc_data = sc_data || {};
     _sc_load_status = 0;
-    
-    /* 
+
+    /*
      * try/catch around data grab
      * handles only main and one alternate for now
      */
@@ -31,7 +30,7 @@ SB.Data = (function() {
 	}
 	catch(err) {
 	    try {
-		return f2(); 
+		return f2();
 	    }
 	    catch (err2) {
 		return def;
@@ -62,9 +61,9 @@ SB.Data = (function() {
 
     function refresh_view() {
 	if (_mode == MODE.MARKLET) {
-	    document.getElementById('sb-track-title-label').style.display = 'block'
+	    document.getElementById('sb-track-title-label').style.display = 'block';
 
-	    document.getElementById('sb-track-artist-label').style.display='block'
+	    document.getElementById('sb-track-artist-label').style.display='block';
 
 	    $("#sb-submit-button").css('display', 'block');
 	}
@@ -73,114 +72,62 @@ SB.Data = (function() {
     var _set = {
 
 	/*
-	 * MIXCLOUD
-	 */
-
-	'mixcloud': function() 
-	{
-
-/*
-current track in set
-		    mc.nowPlaying.currentDisplayTrack.artist,
-		    mc.nowPlaying.currentDisplayTrack.title,
-*/
-
-
-	    refresh_view()
-
-	    var mc = $('.player').scope()
-
-	    if (mc.player.playerStarted) {
-
-		_track.set(
-
-		    try_get(
-			function() { return mc.player.waveformUrl.match(/([^\/]+)\.json/)[1] },
-			function() { return mc.player.currentCloudcast.url }
-		    ),
-
-		    mc.player.currentCloudcast.owner,
-		    mc.player.currentCloudcast.title,
-		    "//www.mixcloud.com" + mc.player.currentCloudcast.ownerUrl,
-		    mc.player.audioLength * 1000,
-		    mc.player.audioPosition,
-		    SB.Util.toTime(mc.player.audioPosition, "secs"),
-		    "//www.mixcloud.com" + mc.player.currentCloudcast.url,
-		    true,
-		    "mixcloud",
-		    mc.player.currentCloudcast.mobilePlayerFullImage
-		)
-
-	    } else {
-
-		if (!$('.cloudcast-head').length) {
-
-		    load_empty_track()
-		    
-		    return
-		}
-
-
-		/*not playing but on track*/
-		var hrs = $('.cloudcast-time').html().match(/(\d+)h/)
-		var mins = $('.cloudcast-time').html().match(/(\d+)m/)
-
-		_track.set(
-		    undefined,
-		    $('span[itemprop="name"]').html(),
-		    $('.cloudcast-title').html(),
-		    "//www.mixcloud.com" + $('.cloudcast-uploader').attr("href"),
-		    SB.Util.textToSecs(hrs, mins, 0) * 1000,
-		    0,
-		    "0:00",
-		    window.location.href.match("[^(http|https):]\.*"),
-		    true,
-		    "mixcloud",
-		    $('.cloudcast-image').attr("src")
-		);
-
-
-	    }
-
-
-
-	},
-
-	/*
 	 * SOUNDCLOUD
 	 */
 
-	'soundcloud': function() 
+	'soundcloud': function()
 	{
-	    /*distinct vs mobile - need mobile filter*/		
+
+            var noresults = false;
+
+	    /*distinct vs mobile - need mobile filter*/
             _isPlaying = $('.playControls__playPauseSkip .playing');
 
 	    /* no sound loaded/playing */
 	    if(!_isPlaying) {
-		load_empty_track()
-		return
+		load_empty_track();
+		return;
 	    }
 
-	    refresh_view()
+	    refresh_view();
 
 	    /*load track meta data*/
-            var title = $('title').text();
+            var $title = $('title');
+            var title =
+                (typeof $title.text == "function") ? $title.text() : $title.text;
+
+            track = sc_data['title'];
+
             var track_artist = title.split(/ by / );
             var track, artist;
 
             if (track_artist.length == 1) {
                 /*edge case sometimes there's no 'by'?*/
                 track_artist = title.split(/-/);
-                artist = track_artist[0].trim();
-                track = track_artist[1].trim();
+
+                if(track_artist.length == 1) {
+                    track = track_artist[0].trim();
+                } else {
+                    artist = track_artist[0].trim();
+                    track = track_artist[1].trim();
+                }
             }
             else {
                 /*most cases has split w/ 'by' b/w artist and track*/
                 track = track_artist[0].trim();
-                artist = track_artist[1].trim();               
+                artist = track_artist[1].trim();
             }
 
+            //weird playlist case
+            if (!track) {
+                track = $('.playbackSoundBadge__title > a').attr('title').trim();
+            }
 
+            if (!artist) {
+                artist = $('.playbackSoundBadge__titleContextContainer > a')[0].innerText.trim();
+            }
+
+            sc_data['title'] = sc_data['track'] || track;
             /*
              *_sc_load_status:
              * 0 - neverloaded
@@ -188,17 +135,22 @@ current track in set
              * 2 - done
              */
 
-            if (_sc_load_status == 0) {
+            if (_sc_load_status == 0 && !noresults) {
                 _sc_load_status = 1;
 
-                $.get("https://api.soundcloud.com/search",
+                $.get("https://api.soundcloud.com/tracks",
                       {q: title + " " + artist,
-                       client_id: "b45b1aa10f1ac2941910a7f0d10f8e28"},
+                       client_id: "82d79419cef128093cfca50715c23cd7"},
                       function(data) {
 
+                          if ( data.length == 0 ) {
+                              noresults = true;
+                              _sc_load_status = 2; //toggle complete
+                          }
+
                           /*loop and try to find exact track match from search results*/
-                          for (var i = 0; i < data['collection'].length; i++ ) {
-                              var obj = data['collection'][i];
+                          for (var i = 0; i < data.length; i++ ) {
+                              var obj = data[i];
 
                               if (obj['kind'] == "track" &&
                                   (obj['title'] + " by " +
@@ -207,38 +159,53 @@ current track in set
                                   _sc_load_status = 2; //toggle complete
                               }
                           }
+
                       });
             }
 
+
             /* old track ends, new track plays, so retoggle for info*/
-            if (sc_data['title'] != track && _sc_load_status == 2)
+            if (sc_data['title'] != track && _sc_load_status == 2) {
                 _sc_load_status = 0;
+            }
 
             /*if we're not done loading, don't update values*/
             if (_sc_load_status != 2)
                 return;
 
-            var sc_time = $('.playbackTitle__progress')[0].getAttribute('aria-valuenow');
-            var sc_duration = $('.playbackTitle__progress')[0].getAttribute('aria-valuemax');
+            var sc_time = $('.playbackTimeline__timePassed > span')[1].innerText;
+            var sc_duration = $('.playbackTimeline__duration > span')[1].innerText;
+
+            //weird playlist format hack
+            sc_data['user'] = {
+                username: artist,
+                permalink_url: (sc_data['user'] && sc_data['user']['permalink_url']) ||
+                    $('.playbackSoundBadge__titleLink')[0].href
+            };
 
             var artwork_url = sc_data['artwork_url'] || sc_data['user']['avatar_url'];
-	    artwork_url == null ? "" : artwork_url.replace("-large.jpg", "-t200x200.jpg");
-            
+	    artwork_url = artwork_url == null ?
+                "" : artwork_url.replace("-large.jpg", "-t200x200.jpg");
+
+
 	    _track.set
 	    (
 		sc_data['id'],
 		sc_data['user']['username'],
 		sc_data['title'],
 		sc_data['user']['permalink_url'].replace(/^(http|https):\/\//, "//"),
-		sc_duration,
-		sc_time,
-		SB.Util.toTime(sc_time, "ms"),
+
+                SB.Util.TimetoMs(sc_duration),
+                SB.Util.TimetoMs(sc_time),
+                SB.Util.toTime(SB.Util.TimetoMs(sc_time) / 1000, "secs"),
+
 		sc_data['user']['permalink_url'].replace(/^(http|https):\/\//, "//"),
 		(sc_data['sharing'] == "public" ? true : false),
 		_service,
 		artwork_url.replace(/^(http|https):\/\//, "//")
 	    );
-
+            console.log(_track.toJSON())
+            console.log(_track.getElapsed())
 	},
 
 	/*
@@ -251,7 +218,7 @@ current track in set
 
 	    var yt_artist = try_get
 	    (
-		function() { return document.getElementsByClassName('metadata-info-title')[1].nextSibling.nextSibling.innerHTML},
+		function() { return _player.getVideoData().author },
 		function() { return "" },
 		""
 	    )
@@ -259,21 +226,21 @@ current track in set
 
 	    var yt_title = try_get
 	    (
-		function() 
+		function()
 		{
-		    return document.getElementsByClassName('metadata-info-title')[0].innerHTML.match(/"(.*)\"/)[1]
+		    return $('title')[0].innerText;
 		},
-		function() 
+		function()
 		{
-		    return ytplayer.config.args.title
+		    return _player.getVideoData().title;
 		},
 		""
 	    )
 
 	    var yt_time = try_get
 	    (
-		function() 
-		{ 
+		function()
+		{
 		    return _player.getCurrentTime();
 		},
 		function() { return 0 },
@@ -282,8 +249,8 @@ current track in set
 
 	    var yt_duration = try_get
 	    (
-		function() 
-		{ 
+		function()
+		{
 		    return _player.getDuration();
 		},
 		function() { return 0 },
@@ -293,7 +260,7 @@ current track in set
 	    refresh_view()
 
 	    /*nothing loaded*/
-	    if (!ytplayer.config.args.loaderUrl) {
+	    if (!("https://www.youtube.com/watch?v=" + _player.getVideoData().video_id)) {
 		load_empty_track()
 
 		return
@@ -302,71 +269,23 @@ current track in set
 	    /*populate yt args*/
 	    _track.set
 	    (
-		ytplayer.config.args.video_id,
+		_player.getVideoData().video_id,
 		yt_artist,
 		yt_title,
-		ytplayer.config.args.loaderUrl.replace(/^(http|https):\/\//, "//"),
+		("https://www.youtube.com/watch?v=" + _player.getVideoData().video_id)
+                    .replace(/^(http|https):\/\//, "//"),
 		yt_duration,
 		yt_time,
 		SB.Util.toTime(yt_time, "secs"),
-		ytplayer.config.args.loaderUrl.replace(/^(http|https):\/\//, "//"),
+                ("https://www.youtube.com/watch?v=" + _player.getVideoData().video_id)
+                    .replace(/^(http|https):\/\//, "//"),
 		true,
 		_service,
-		"//img.youtube.com/vi/" + ytplayer.config.args.video_id + "/0.jpg"
+		"//img.youtube.com/vi/" + _player.getVideoData().video_id + "/0.jpg"
 	    );
 
 	},
 
-
-	/*
-	 * SPOTIFY
-	 */
-
-	'spotify': function() 
-	{
-
-	    if (!window.frames[1].document.getElementById('track-name').children[0].href.match(/track\/(.*)/) ) {
-
-		load_empty_track()
-
-		return
-	    }
-
-	    /*not sure if it's always window.frames[1] - will have to do a check */
-	    
-	    var duration = SB.Util.TimetoMs(window.frames[1].document.getElementById('track-length').innerHTML);
-
-	    var time = SB.Util.TimetoMs(window.frames[1].document.getElementById('track-current').innerHTML);
-
-	    //convert track-length/track-current to ms
-	    _track.set
-	    (
-		window.frames[1].document.getElementById('track-name').children[0].href.match(/track\/(.*)/)[1],
-		window.frames[1].document.getElementById('track-artist').children[0].text,
-		window.frames[1].document.getElementById('track-name').children[0].text,
-		window.frames[1].document.getElementById('track-artist').children[0].href.match(/[^(http:||https:)].*/)[0],
-		duration,
-		time,
-		window.frames[1].document.getElementById('track-current').innerHTML,
-		window.frames[1].document.getElementById('track-name').children[0].href.match(/[^(http:||https:)].*/)[0],
-		true,
-		"spotify",
-		try_get(
-		    function() {
-			return window.frames[1].document.getElementsByClassName('sp-image-img')[0].getAttribute("style").match(/\/\/[^);]+/)[0] },
-		    function() { return null }
-		)
-	    )
-
-
-	    refresh_view()
-	},
-/*
-	'grooveshark' : function() {},
-	'8tracks' : function() {},
-	'earbits' : function() {},
-	'pandora': function() {},
-*/
 
 	'stereopaw' : function() {
 
@@ -375,7 +294,7 @@ current track in set
 		return
 	    }
 
-	    refresh_view()	   
+	    refresh_view()
 
 	    _track.set
 	    (
@@ -403,7 +322,7 @@ current track in set
     }
 
 /*
- * _audiomgr: service specific interface for controlling their player 
+ * _audiomgr: service specific interface for controlling their player
  * set the reference to the player in _set
  */
     var _audiomgr = {
@@ -437,7 +356,7 @@ current track in set
 
     }
 
-    
+
     var data = {};
 
     //called in stereopaw.js
