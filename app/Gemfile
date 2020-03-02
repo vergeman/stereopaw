@@ -5,7 +5,7 @@ gem 'dotenv-rails'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 #gem 'json', '>=1.8.5'
-gem 'rake', '< 11.0'
+gem 'rake', '=12.3.3'
 gem 'rails', '=4.2.11.1'
 gem 'sanitize', ">=4.6.3"
 gem 'sprockets', ">= 2.12.5"
@@ -21,6 +21,7 @@ gem 'devise', ">= 4.7.1"
 gem 'devise-async'
 
 gem 'loofah', ">= 2.3.1"
+gem 'nokogiri', "=1.10.8"
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
