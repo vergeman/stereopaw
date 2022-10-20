@@ -21,7 +21,7 @@ gem 'devise', ">= 4.7.1"
 gem 'devise-async'
 
 gem 'loofah', ">= 2.3.1"
-gem 'nokogiri', "=1.10.8"
+gem 'nokogiri', "1.13.9"
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
